@@ -26,6 +26,20 @@ namespace WhoWiredThis.UI
             panelRoot?.SetActive(false);
         }
 
+        void Update()
+        {
+            if (panelRoot == null || !panelRoot.activeSelf)
+            {
+                return;
+            }
+
+            // Space or Enter closes an open popup (keyboard OK).
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {
+                Hide();
+            }
+        }
+
         public void Show(string message)
         {
             if (messageText != null)
@@ -37,5 +51,7 @@ namespace WhoWiredThis.UI
         }
 
         public void Hide() => panelRoot?.SetActive(false);
+
+        public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
     }
 }

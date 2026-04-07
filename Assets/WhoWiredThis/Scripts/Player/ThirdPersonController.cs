@@ -34,11 +34,7 @@ namespace WhoWiredThis.Player
             HandleMovement();
             HandleInventoryHotkeys();
             HandleInteraction();
-
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                HUDController.Instance?.ToggleInventory();
-            }
+            HandleUIHotkeys();
         }
 
         void HandleMovement()
@@ -124,6 +120,19 @@ namespace WhoWiredThis.Player
             if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
             {
                 currentInteractable.Interact(gameObject);
+            }
+        }
+
+        void HandleUIHotkeys()
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                HUDController.Instance?.ToggleInventory();
+            }
+
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                HUDController.Instance?.ToggleHelp();
             }
         }
 

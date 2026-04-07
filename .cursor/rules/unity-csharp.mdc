@@ -1,0 +1,78 @@
+---
+description: Unity 6.3 LTS C# conventions, ecosystem awareness, and project architecture for Who Wired This
+globs: **/*.cs
+alwaysApply: false
+---
+
+# Unity 6.3 LTS — C# Conventions & Ecosystem
+
+## Engine & Stack
+- **Unity 6000.3.6f1** (Unity 6.3 LTS), URP 17.3.0, C# 9 (`LangVersion 9.0`), `netstandard2.1`
+- **Old Input System** — use `UnityEngine.Input` (`Input.GetAxis`, `Input.GetKeyDown`). Do NOT use `InputSystem` package APIs.
+- **TextMeshPro** is part of `com.unity.ugui` 2.0.0 — use `TMPro.TMP_Text` / `TMPro.TextMeshProUGUI`
+- **Single scene** — no `DontDestroyOnLoad`, no additive loading, no scene transitions
+- **Solution**: `who-wired-this.sln` → `Assembly-CSharp.csproj` + `Assembly-CSharp-Editor.csproj`
+
+## Namespace Convention
+All project scripts live under `WhoWiredThis.*`:
+```
+WhoWiredThis.Core          → GameManager, ScoreManager, TimerManager
+WhoWiredThis.Player        → ThirdPersonController, CameraOrbit
+WhoWiredThis.Interactables → IInteractable, Collectible, ClueInteractable, PuzzleSocket, TestButton
+WhoWiredThis.Inventory     → InventoryManager
+WhoWiredThis.UI            → HUDController, InventoryUI, InventorySlotUI, MessagePanel
+WhoWiredThis.Environment   → ZoneTrigger
+WhoWiredThis.Data          → ItemData (ScriptableObject)
+```
+
+## Unity Lifecycle Order
+```
+Awake → OnEnable → Start → Update / FixedUpdate / LateUpdate → OnDisable → OnDestroy
+```
+- Use `Awake` for self-initialisation and singleton registration
+- Use `Start` for cross-component references (other singletons are ready)
+- Use `LateUpdate` for camera follow
+
+## Serialization Rules
+- `[SerializeField] private` — prefer over `public` for Inspector-exposed fields
+- `[Header("...")]` to group related Inspector fields
+- `[Tooltip("...")]` on public/serialized fields when intent is non-obvious
+- ScriptableObjects use `[CreateAssetMenu]`
+
+## Singleton Pattern (this project)
+```csharp
+public static MyManager Instance { get; private set; }
+void Awake()
+{
+    if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+    Instance = this;
+}
+```
+
+## Component Access
+- Cache `GetComponent<T>()` in `Awake`, never in `Update`
+- Use `CompareTag("Player")` not `tag == "Player"`
+- Prefer `TryGetComponent<T>(out T c)` over null-checked `GetComponent`
+
+## Unity C# Specifics
+- `MonoBehaviour` cannot use constructors — use `Awake`/`Start`
+- `Vector3`, `Quaternion`, `Color` are value types (structs)
+- `Mathf` for math (not `System.Math`)
+- `Time.deltaTime` for frame-rate-independent motion
+- `Physics.OverlapSphere` / `Raycast` for spatial queries
+- `CharacterController.Move()` — not Rigidbody, in this project
+- `Renderer.material` creates an instance; use `sharedMaterial` when not modifying per-instance
+
+## Events & Callbacks
+Use `System.Action` / `System.Action<T>` for lightweight events. Unsubscribe in `OnDestroy` when subscribing in `Start`.
+
+## URP Materials
+- Use `UnityEngine.Rendering.Universal` namespace for URP-specific APIs
+- Lit Shader properties: `_BaseColor`, `_BaseMap`, `_Metallic`, `_Smoothness`
+- Set material color at runtime: `renderer.material.SetColor("_BaseColor", color)`
+
+## Common Pitfalls to Avoid
+- Never call `FindObjectOfType` in `Update` — cache in `Awake`/`Start`
+- Don't use `GameObject.Find` — wire references via Inspector or singleton
+- `Destroy(gameObject)` is deferred to end of frame; set active false if immediate hide is needed
+- `Physics.Raycast` uses world-space origin; local-to-world transform when needed

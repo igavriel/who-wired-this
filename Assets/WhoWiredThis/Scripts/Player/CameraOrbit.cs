@@ -18,8 +18,10 @@ namespace WhoWiredThis.Player
 
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // Free cursor so the mouse can interact with UI and buttons.
+            // Hold Right Mouse Button to orbit the camera.
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         void LateUpdate()
@@ -29,9 +31,13 @@ namespace WhoWiredThis.Player
                 return;
             }
 
-            yaw   += Input.GetAxis("Mouse X") * mouseSensitivity;
-            pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-            pitch  = Mathf.Clamp(pitch, minPitch, maxPitch);
+            // Only orbit while right mouse button is held — keeps cursor free for UI otherwise.
+            if (Input.GetMouseButton(1))
+            {
+                yaw   += Input.GetAxis("Mouse X") * mouseSensitivity;
+                pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+                pitch  = Mathf.Clamp(pitch, minPitch, maxPitch);
+            }
 
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
             transform.position = target.position + rotation * offset;
