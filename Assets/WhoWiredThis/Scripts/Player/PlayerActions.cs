@@ -15,8 +15,17 @@ namespace WhoWiredThis.Player
         [SerializeField] private float interactRange = 2.5f;
         [Tooltip("Physics layers included in the nearby-collider scan.")]
         [SerializeField] private LayerMask detectionMask = ~0;
+        [SerializeField] private PlayerInputBridge inputBridge;
 
         private IInteractable currentInteractable;
+
+        void Awake()
+        {
+            if (inputBridge == null)
+            {
+                inputBridge = GetComponent<PlayerInputBridge>();
+            }
+        }
 
         void Start()
         {
@@ -42,17 +51,27 @@ namespace WhoWiredThis.Player
 
         private void HandleInventoryHotkeys()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            bool slot1Pressed = inputBridge != null
+                ? inputBridge.Slot1PressedThisFrame
+                : Input.GetKeyDown(KeyCode.Alpha1);
+            bool slot2Pressed = inputBridge != null
+                ? inputBridge.Slot2PressedThisFrame
+                : Input.GetKeyDown(KeyCode.Alpha2);
+            bool slot3Pressed = inputBridge != null
+                ? inputBridge.Slot3PressedThisFrame
+                : Input.GetKeyDown(KeyCode.Alpha3);
+
+            if (slot1Pressed)
             {
                 InventoryManager.Instance?.SelectIndex(0);
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (slot2Pressed)
             {
                 InventoryManager.Instance?.SelectIndex(1);
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (slot3Pressed)
             {
                 InventoryManager.Instance?.SelectIndex(2);
             }
@@ -95,8 +114,12 @@ namespace WhoWiredThis.Player
                 HUDController.Instance?.SetInteractPrompt(nearest?.GetPromptText());
             }
 
-            bool activateFromKeyboard = Input.GetKeyDown(KeyCode.E);
-            bool activateFromMouse = Input.GetMouseButtonDown(0);
+            bool activateFromInput = inputBridge != null
+                ? inputBridge.InteractPressedThisFrame
+                : Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0);
+            bool activateFromMouse = inputBridge != null
+                ? inputBridge.InteractPressedFromPointerThisFrame
+                : Input.GetMouseButtonDown(0);
             bool pointerOverUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
             if (activateFromMouse && pointerOverUi)
@@ -104,7 +127,7 @@ namespace WhoWiredThis.Player
                 return;
             }
 
-            if ((activateFromKeyboard || activateFromMouse) && currentInteractable != null)
+            if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
             }
@@ -112,14 +135,27 @@ namespace WhoWiredThis.Player
 
         private void HandleUIHotkeys()
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            bool inventoryPressed = inputBridge != null
+                ? inputBridge.InventoryPressedThisFrame
+                : Input.GetKeyDown(KeyCode.I);
+            bool helpPressed = inputBridge != null
+                ? inputBridge.HelpPressedThisFrame
+                : Input.GetKeyDown(KeyCode.H);
+            bool menuPressed = inputBridge != null && inputBridge.MenuPressedThisFrame;
+
+            if (inventoryPressed)
             {
                 HUDController.Instance?.ToggleInventory();
             }
 
-            if (Input.GetKeyDown(KeyCode.H))
+            if (helpPressed)
             {
                 HUDController.Instance?.ToggleHelp();
+            }
+
+            if (menuPressed)
+            {
+                HUDController.Instance?.ToggleMenuPanel();
             }
         }
 

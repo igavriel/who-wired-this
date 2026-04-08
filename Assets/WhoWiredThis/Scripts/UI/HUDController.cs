@@ -156,6 +156,11 @@ namespace WhoWiredThis.UI
             }
         }
 
+        public void ToggleMenuPanel()
+        {
+            ToggleHamburgerMenu();
+        }
+
         private void ToggleHamburgerMenu()
         {
             if (menuPanel != null)

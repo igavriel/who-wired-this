@@ -1,0 +1,40 @@
+---
+description: Project architecture and interaction flow for Who Wired This gameplay scripts
+globs: Assets/WhoWiredThis/Scripts/**/*.cs
+alwaysApply: false
+---
+
+# Who Wired This - Architecture
+
+## Core Runtime Pattern
+- Managers are scene singletons (`GameManager`, `ScoreManager`, `TimerManager`, `InventoryManager`, `HUDController`, `MessagePanel`)
+- Singleton setup pattern:
+  - `if (Instance != null && Instance != this) { Destroy(gameObject); return; }`
+  - `Instance = this;`
+- No cross-scene persistence pattern is currently used (`DontDestroyOnLoad` is not part of this architecture)
+
+## Interaction Model
+- Nearby interactions use interface-driven discovery:
+  - `IInteractable.GetPromptText()`
+  - `IInteractable.Interact(GameObject interactor)`
+- Player interaction scan currently uses `Physics.OverlapSphere` + nearest candidate selection
+- UI prompt updates only when candidate changes (`HUDController.SetInteractPrompt(...)`)
+
+## Inventory/Puzzle Contract
+- Inventory capacity is fixed (`MaxSlots = 3`)
+- Puzzle item matching is ID-based via `ItemData.itemId`
+- `TestButton` validates socketed `ItemData.itemId` against expected IDs
+- Preserve this contract when adding new puzzle items or sockets
+
+## Event Wiring Expectations
+- Managers expose events (for example score/timer/zone changes)
+- UI subscribers should detach listeners during teardown
+- Avoid hidden side effects in event handlers; keep handlers focused on UI/state refresh
+
+## Safe Extension Guidelines
+- Prefer extending existing systems (`IInteractable`, manager events, UI refresh APIs) over creating parallel systems
+- Keep user-facing strings centralized in the owning component (for example help/about text in `HUDController`)
+- Keep scene reference wiring inspector-driven for UI and interactables
+- Prefer using existing scene objects instead of creating runtime objects in code
+- Use prefabs for repeatable objects with gameplay meaning (interactables, machines, pickups, reusable UI blocks)
+- Connect scene objects to scripts via serialized inspector properties (`[SerializeField]`) rather than lookup/creation code

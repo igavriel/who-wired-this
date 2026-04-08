@@ -1,0 +1,32 @@
+---
+description: Input and UI implementation rules for Who Wired This
+globs: Assets/WhoWiredThis/Scripts/{Player,UI}/**/*.cs
+alwaysApply: false
+---
+
+# Who Wired This - Input & UI Rules
+
+## Input Source of Truth
+- `PlayerInputBridge` is the primary source of gameplay intent state
+- For gameplay actions, prefer reading through `PlayerInputBridge` first
+- Legacy `UnityEngine.Input` checks are fallback paths; do not expand fallback usage unless needed for compatibility
+
+## Pointer/UI Guardrails
+- Preserve pointer-over-UI protection for click-based interactions:
+  - Check `EventSystem.current != null`
+  - Use `EventSystem.current.IsPointerOverGameObject()`
+- Mouse/pointer interactions should not fire world interactions when pointer is over UI
+
+## HUD and Panels
+- `HUDController` owns top-bar and panel toggles (`ToggleInventory`, `ToggleHelp`, `ToggleMenuPanel`)
+- `MessagePanel` owns popup/confirmation behavior
+- New UI behavior should integrate through these existing controllers before adding new panel managers
+
+## UI Binding Conventions
+- Use null-safe listener setup for optional inspector refs (`button?.onClick.AddListener(...)`)
+- Keep display refresh logic isolated in dedicated methods (`RefreshScore`, `RefreshTimer`, etc.)
+- Prefer one-way manager-to-UI updates via events, not polling
+
+## Restart/Scene Behavior
+- Restart currently reloads active scene name through `SceneManager.LoadScene(activeScene.name)`
+- Any new reset behavior should keep manager/UI state consistent with scene reload flow
