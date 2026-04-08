@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,11 @@ namespace WhoWiredThis.UI
         public GameObject panelRoot;
         public TMP_Text messageText;
         public Button closeButton;
+        public TMP_Text closeButtonText;
+
+        private Action onConfirm;
+        private Action onCancel;
+        private bool isConfirmationVisible;
 
         void Awake()
         {
@@ -22,7 +28,7 @@ namespace WhoWiredThis.UI
             }
 
             Instance = this;
-            closeButton?.onClick.AddListener(Hide);
+            closeButton?.onClick.AddListener(OnClosePressed);
             panelRoot?.SetActive(false);
         }
 
@@ -33,7 +39,23 @@ namespace WhoWiredThis.UI
                 return;
             }
 
-            // Space or Enter closes an open popup (keyboard OK).
+            if (isConfirmationVisible)
+            {
+                if (Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    Confirm();
+                    return;
+                }
+
+                if (Input.GetKeyDown(KeyCode.N) || Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Cancel();
+                }
+
+                return;
+            }
+
+            // Space or Enter closes a normal popup.
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
             {
                 Hide();
@@ -42,6 +64,11 @@ namespace WhoWiredThis.UI
 
         public void Show(string message)
         {
+            isConfirmationVisible = false;
+            onConfirm = null;
+            onCancel = null;
+            SetCloseButtonLabel("Close");
+
             if (messageText != null)
             {
                 messageText.text = message;
@@ -50,8 +77,63 @@ namespace WhoWiredThis.UI
             panelRoot?.SetActive(true);
         }
 
+        public void ShowConfirmation(string message, Action confirmAction, Action cancelAction = null)
+        {
+            isConfirmationVisible = true;
+            onConfirm = confirmAction;
+            onCancel = cancelAction;
+            SetCloseButtonLabel("No");
+
+            if (messageText != null)
+            {
+                messageText.text = $"{message}\n\nYes: Enter / Y\nNo: Esc / N";
+            }
+
+            panelRoot?.SetActive(true);
+        }
+
         public void Hide() => panelRoot?.SetActive(false);
 
         public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
+
+        private void OnClosePressed()
+        {
+            if (isConfirmationVisible)
+            {
+                Cancel();
+                return;
+            }
+
+            Hide();
+        }
+
+        private void Confirm()
+        {
+            Action callback = onConfirm;
+            Hide();
+            callback?.Invoke();
+        }
+
+        private void Cancel()
+        {
+            Action callback = onCancel;
+            Hide();
+            callback?.Invoke();
+        }
+
+        private void SetCloseButtonLabel(string text)
+        {
+            if (closeButtonText != null)
+            {
+                closeButtonText.text = text;
+                return;
+            }
+
+            TMP_Text nestedLabel = closeButton != null ? closeButton.GetComponentInChildren<TMP_Text>() : null;
+            if (nestedLabel != null)
+            {
+                nestedLabel.text = text;
+            }
+        }
     }
 }

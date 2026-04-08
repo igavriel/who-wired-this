@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WhoWiredThis.Core;
 
@@ -18,11 +19,19 @@ namespace WhoWiredThis.UI
         [Header("Buttons")]
         public Button bagButton;
         public Button terminalButton;
+        public Button menuButton;
+        public Button soundToggleButton;
+        public Button restartButton;
+        public Button helpMenuButton;
+        public Button aboutMenuButton;
+        public TMP_Text soundButtonLabel;
 
         [Header("Panels")]
         public GameObject inventoryPanel;
+        public GameObject menuPanel;
 
         private bool inventoryVisible;
+        private bool soundEnabled = true;
 
         void Awake()
         {
@@ -40,6 +49,11 @@ namespace WhoWiredThis.UI
             bagButton?.onClick.AddListener(ToggleInventory);
             terminalButton?.onClick.AddListener(
                 () => MessagePanel.Instance?.Show("Terminal is offline.\nCheck the relay first."));
+            menuButton?.onClick.AddListener(ToggleHamburgerMenu);
+            soundToggleButton?.onClick.AddListener(ToggleSound);
+            restartButton?.onClick.AddListener(RequestRestart);
+            helpMenuButton?.onClick.AddListener(ToggleHelp);
+            aboutMenuButton?.onClick.AddListener(ShowAbout);
 
             ScoreManager.Instance.OnScoreChanged += RefreshScore;
             TimerManager.Instance.OnTimerUpdated  += RefreshTimer;
@@ -49,6 +63,8 @@ namespace WhoWiredThis.UI
             RefreshZone(GameManager.Instance.currentZoneName);
 
             inventoryPanel?.SetActive(false);
+            menuPanel?.SetActive(false);
+            RefreshSoundButtonLabel();
             SetInteractPrompt(null);
         }
 
@@ -63,6 +79,11 @@ namespace WhoWiredThis.UI
             "<b>I</b>  or  [BAG]         Toggle Inventory\n" +
             "<b>Space / Enter</b>         Close Popup\n" +
             "<b>H</b>                    Toggle This Help";
+
+        private const string AboutContent =
+            "<b>WHO WIRED THIS</b>\n" +
+            "Puzzle adventure prototype built with Unity.\n\n" +
+            "Use the top bar to manage inventory, terminal, and game options.";
 
         // ── Refresh helpers ──────────────────────────────────────────────────
 
@@ -132,6 +153,47 @@ namespace WhoWiredThis.UI
             else
             {
                 MessagePanel.Instance.Show(HelpContent);
+            }
+        }
+
+        private void ToggleHamburgerMenu()
+        {
+            if (menuPanel != null)
+            {
+                menuPanel.SetActive(!menuPanel.activeSelf);
+            }
+        }
+
+        private void ToggleSound()
+        {
+            soundEnabled = !soundEnabled;
+            AudioListener.volume = soundEnabled ? 1f : 0f;
+            RefreshSoundButtonLabel();
+        }
+
+        private void RequestRestart()
+        {
+            MessagePanel.Instance?.ShowConfirmation(
+                "Restart game?",
+                ConfirmRestart);
+        }
+
+        private void ConfirmRestart()
+        {
+            Scene activeScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(activeScene.name);
+        }
+
+        private void ShowAbout()
+        {
+            MessagePanel.Instance?.Show(AboutContent);
+        }
+
+        private void RefreshSoundButtonLabel()
+        {
+            if (soundButtonLabel != null)
+            {
+                soundButtonLabel.text = soundEnabled ? "Sound: On" : "Sound: Off";
             }
         }
     }
