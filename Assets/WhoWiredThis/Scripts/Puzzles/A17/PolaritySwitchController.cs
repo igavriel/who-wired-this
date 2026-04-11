@@ -1,15 +1,9 @@
 using UnityEngine;
+using WhoWiredThis.Data.A17;
 using WhoWiredThis.Interactables;
 
 namespace WhoWiredThis.Puzzles.A17
 {
-    public enum PolarityState
-    {
-        Negative = -1,
-        Off = 0,
-        Positive = 1
-    }
-
     public class PolaritySwitchController : MonoBehaviour, IInteractable
     {
         [Header("State")]
@@ -21,7 +15,6 @@ namespace WhoWiredThis.Puzzles.A17
         [SerializeField] private Material offMaterial;
         [SerializeField] private Material positiveMaterial;
 
-        public int SwitchValue => (int)currentState;
         public PolarityState CurrentState => currentState;
 
         void Awake()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using WhoWiredThis.Data.A17;
 using WhoWiredThis.Interactables;
 using WhoWiredThis.UI;
 
@@ -9,19 +10,13 @@ namespace WhoWiredThis.Puzzles.A17
         [Header("Puzzle")]
         [SerializeField] private A17PuzzleManager puzzleManager;
 
+        [Header("Message Bank")]
+        [SerializeField] private LcdMessageBankSO messageBank;
+
         [Header("Visuals")]
         [SerializeField] private Renderer buttonRenderer;
         [SerializeField] private Material idleMaterial;
         [SerializeField] private Material successMaterial;
-
-        private static readonly string[] FailMessages =
-        {
-            "POLARITY ERROR: Configuration matrix unstable. Adjust and retry.",
-            "SYSTEM ALERT: Incorrect polarity pattern detected. Recalibrate.",
-            "UNIT A17: Energy alignment rejected. Check switch settings.",
-            "WARNING: Polarity mismatch on one or more channels. Reset and retry.",
-            "ERROR 0x17A: Invalid polarity configuration. Review the diagram.",
-        };
 
         private int failIndex;
 
@@ -67,12 +62,14 @@ namespace WhoWiredThis.Puzzles.A17
 
         private void HandleFail(int currentAttempts)
         {
-            string msg = FailMessages[failIndex % FailMessages.Length];
+            string[] pool = messageBank.engageFailMessages;
+
+            string msg = pool[failIndex % pool.Length];
             failIndex++;
 
             if (currentAttempts >= puzzleManager.HintTriggerAttempt)
             {
-                msg += $"\n<size=70%>Attempts: {currentAttempts} | Hint: check the diagram.</size>";
+                msg += $"\n\n<size=70%>Attempts: {currentAttempts} | Hint: check the diagram.</size>";
             }
 
             MessagePanel.Instance?.Show(msg);
