@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6945844046017910621}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcbbeee6fb4214ad0b4f144296c5c693, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.AutoInteractDetector
   detectorOrigin: {fileID: 4818049524081802719}
   interactRange: 1.5
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 389d5c7da9dd3463c98a5992e0b0cce2, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.PlayerInputBridge
   interactKey: 101
   inventoryKey: 105
@@ -89,7 +89,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 930835575820435323, guid: 9e65ee88df9e24aef827610e476e0a0b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 930835576417554107, guid: 9e65ee88df9e24aef827610e476e0a0b, type: 3}
+      propertyPath: CameraDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3781194305145430326, guid: 9e65ee88df9e24aef827610e476e0a0b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -145,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6635485778787756929, guid: 9e65ee88df9e24aef827610e476e0a0b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
