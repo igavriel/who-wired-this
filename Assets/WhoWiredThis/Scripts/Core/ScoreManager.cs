@@ -7,7 +7,7 @@ namespace WhoWiredThis.Core
     {
         public static ScoreManager Instance { get; private set; }
 
-        public const int MaxScore = 5;
+        public const int MaxScore = 100;
         public int CurrentScore { get; private set; }
 
         public event Action<int> OnScoreChanged;
@@ -27,6 +27,17 @@ namespace WhoWiredThis.Core
         {
             CurrentScore = Mathf.Clamp(CurrentScore + amount, 0, MaxScore);
             OnScoreChanged?.Invoke(CurrentScore);
+        }
+
+        public void SetScore(int value)
+        {
+            CurrentScore = Mathf.Clamp(value, 0, MaxScore);
+            OnScoreChanged?.Invoke(CurrentScore);
+        }
+
+        public void DeductScore(int amount)
+        {
+            SetScore(CurrentScore - amount);
         }
     }
 }
