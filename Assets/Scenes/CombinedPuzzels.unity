@@ -4058,6 +4058,7 @@ GameObject:
   - component: {fileID: 1390674261}
   - component: {fileID: 1390674263}
   - component: {fileID: 1390674262}
+  - component: {fileID: 1390674264}
   m_Layer: 0
   m_Name: Diagram_Label
   m_TagString: Untagged
@@ -4234,6 +4235,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1390674264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390674260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44202476c329245f8b03325b6bf54caa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Interactables.ClueInteractable
+  clueText: More power is not the same as correct flow.
+  scoreValue: 1
 --- !u!1 &1398646324
 GameObject:
   m_ObjectHideFlags: 0
@@ -4311,27 +4326,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4326825305207899585, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.20000006
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326825305207899585, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.375
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326825305207899585, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5
+      value: 0.20000005
       objectReference: {fileID: 0}
     - target: {fileID: 6022487967724686189, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.22857963
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6022487967724686189, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.000003133906
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6022487967724686189, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.896463
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6022487967724686189, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4364,14 +4371,6 @@ PrefabInstance:
     - target: {fileID: 6945844046017910621, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
       propertyPath: m_Name
       value: ThirdPersonGameObject
-      objectReference: {fileID: 0}
-    - target: {fileID: 7851178907067273531, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.20000006
-      objectReference: {fileID: 0}
-    - target: {fileID: 7851178907067273531, guid: c7f7c5788a49d4c2cb2461a6a7e2c1d8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5356,8 +5355,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 461192059}
   - {fileID: 114388220}
+  - {fileID: 461192059}
   - {fileID: 1475207413}
   - {fileID: 1165680765}
   - {fileID: 34650262}
