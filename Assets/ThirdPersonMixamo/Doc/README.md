@@ -21,7 +21,7 @@ If Unity was already running another instance, close it and run the menu command
 | `PlayerControlBindings` | ScriptableObject: move / sprint / interact / **jump** keys. Assets: `Data/PlayerControlBindings_PlayerA.asset`, `PlayerControlBindings_PlayerB.asset`. |
 | `PlayerController` | `CharacterController` movement, camera-relative WASD, sprint, gravity, **jump**, events `JumpStarted` / `Landed`. |
 | `PlayerCameraRig` | Late-update follow camera: yaw lock option, distance/height, look-at offset. |
-| `ThirdPersonAnimatorBridge` | Drives Starter-style Animator parameters (`Speed`, `Grounded`, `Jump`, `FreeFall`, `MotionSpeed`) from controller velocity. |
+| `ThirdPersonAnimatorBridge` | Drives Starter-style Animator parameters (`Speed`, `Grounded`, `Jump`, `FreeFall`, `MotionSpeed`). `Speed` / `MotionSpeed` follow **Starter Assets** semantics (lerped target move speed, not raw velocity). Root motion is forced **off** on the child `Animator`. |
 | `ThirdPersonPlayerAudio` | Footstep cadence + land one-shots using clips under `Audio/`. |
 | `Animations/ThirdPersonMixamoAnimator.controller` | Humanoid animator (`ThirdPersonMixamoHumanoidAnimator`); motion clips live under **`Animations/Motions/`** as package-local copies of Starter Assets FBX animations. |
 | `Audio/` | Duplicated footstep/land `.wav` files (new GUIDs). |

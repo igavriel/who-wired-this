@@ -5,12 +5,9 @@ namespace ThirdPersonMixamo
     [RequireComponent(typeof(PlayerController))]
     public class ThirdPersonAnimatorBridge : MonoBehaviour
     {
-        [SerializeField] private float speedSmoothing = 10f;
-
         private PlayerController _player;
         private CharacterController _controller;
         private Animator _animator;
-        private float _speedBlend;
         private bool _jumpLatch;
 
         private static readonly int Speed = Animator.StringToHash("Speed");
@@ -24,6 +21,14 @@ namespace ThirdPersonMixamo
             _player = GetComponent<PlayerController>();
             _controller = _player.CharacterController;
             _animator = GetComponentInChildren<Animator>();
+            if (_animator != null)
+            {
+                _animator.applyRootMotion = false;
+            }
+            else
+            {
+                Debug.LogError("[ThirdPersonMixamo] ThirdPersonAnimatorBridge found no Animator under " + gameObject.name + ".");
+            }
         }
 
         private void OnEnable()
@@ -49,19 +54,16 @@ namespace ThirdPersonMixamo
 
         private void LateUpdate()
         {
-            if (_animator == null || _controller == null)
+            if (_animator == null || _controller == null || _player == null)
             {
                 return;
             }
 
-            Vector3 horizontal = new Vector3(_controller.velocity.x, 0f, _controller.velocity.z);
-            float horizontalSpeed = horizontal.magnitude;
-            _speedBlend = Mathf.Lerp(_speedBlend, horizontalSpeed, Time.deltaTime * speedSmoothing);
-
             bool grounded = _controller.isGrounded;
-            _animator.SetFloat(Speed, _speedBlend);
+
+            _animator.SetFloat(Speed, _player.AnimatorSpeedBlend);
+            _animator.SetFloat(MotionSpeed, _player.AnimatorMotionSpeed);
             _animator.SetBool(Grounded, grounded);
-            _animator.SetFloat(MotionSpeed, horizontalSpeed > 0.05f ? 1f : 0f);
             _animator.SetBool(FreeFall, !grounded && _controller.velocity.y < -0.1f);
 
             if (_jumpLatch)

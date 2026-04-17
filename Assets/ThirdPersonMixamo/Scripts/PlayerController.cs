@@ -42,6 +42,12 @@ namespace ThirdPersonMixamo
         public bool IsGrounded => _controller != null && _controller.isGrounded;
         public Vector3 Velocity => _controller != null ? _controller.velocity : Vector3.zero;
 
+        /// <summary>Lerped toward move/sprint speed when there is input, else 0 — same idea as StarterAssets ThirdPersonController._animationBlend.</summary>
+        public float AnimatorSpeedBlend => _animationSpeedBlend;
+
+        /// <summary>1 when movement keys are held (after camera-relative aim), 0 otherwise.</summary>
+        public float AnimatorMotionSpeed { get; private set; }
+
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
@@ -52,6 +58,16 @@ namespace ThirdPersonMixamo
             bool groundedBeforeMove = _controller.isGrounded;
 
             Vector3 moveDirection = GetMoveDirectionFromInput();
+            bool hasMoveInput = moveDirection.sqrMagnitude > 0.001f;
+            AnimatorMotionSpeed = hasMoveInput ? 1f : 0f;
+
+            float animTargetSpeed = hasMoveInput ? GetTargetSpeed() : 0f;
+            _animationSpeedBlend = Mathf.Lerp(_animationSpeedBlend, animTargetSpeed, Time.deltaTime * animationBlendRate);
+            if (_animationSpeedBlend < 0.01f)
+            {
+                _animationSpeedBlend = 0f;
+            }
+
             float targetSpeed = GetTargetSpeed();
             Vector3 velocity = moveDirection * targetSpeed;
 
