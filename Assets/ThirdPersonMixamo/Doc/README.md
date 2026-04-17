@@ -23,7 +23,7 @@ If Unity was already running another instance, close it and run the menu command
 | `PlayerCameraRig` | Late-update follow camera: yaw lock option, distance/height, look-at offset. |
 | `ThirdPersonAnimatorBridge` | Drives Starter-style Animator parameters (`Speed`, `Grounded`, `Jump`, `FreeFall`, `MotionSpeed`) from controller velocity. |
 | `ThirdPersonPlayerAudio` | Footstep cadence + land one-shots using clips under `Audio/`. |
-| `Animations/ThirdPersonMixamoAnimator.controller` | Duplicate of Starter sample controller; motion clips still reference Starter FBX GUIDs until you optionally remap copies. |
+| `Animations/ThirdPersonMixamoAnimator.controller` | Humanoid animator (`ThirdPersonMixamoHumanoidAnimator`); motion clips live under **`Animations/Motions/`** as package-local copies of Starter Assets FBX animations. |
 | `Audio/` | Duplicated footstep/land `.wav` files (new GUIDs). |
 
 ```text
@@ -31,7 +31,7 @@ ThirdPersonMixamo/
   ThirdPersonMixamo_Single.unity
   ThirdPersonMixamo_LocalDuel.unity
   Prefabs/          (generated player prefab)
-  Animations/       (ThirdPersonMixamoAnimator.controller)
+  Animations/       (ThirdPersonMixamoAnimator.controller + Motions/*.anim.fbx)
   Audio/            (duplicated SFX)
   Data/             (PlayerControlBindings Player A / B)
   Scripts/          (runtime types)
