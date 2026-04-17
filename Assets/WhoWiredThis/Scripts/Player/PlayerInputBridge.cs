@@ -8,6 +8,7 @@ namespace WhoWiredThis.Player
     // Centralized gameplay intents from Input System actions.
     public class PlayerInputBridge : MonoBehaviour
     {
+#if !ENABLE_INPUT_SYSTEM
         [Header("Keyboard Fallback")]
         [SerializeField] private KeyCode interactKey = KeyCode.E;
         [SerializeField] private KeyCode inventoryKey = KeyCode.I;
@@ -16,6 +17,7 @@ namespace WhoWiredThis.Player
         [SerializeField] private KeyCode slot1Key = KeyCode.Alpha1;
         [SerializeField] private KeyCode slot2Key = KeyCode.Alpha2;
         [SerializeField] private KeyCode slot3Key = KeyCode.Alpha3;
+#endif
 
         public Vector2 Move { get; private set; }
         public Vector2 Look { get; private set; }

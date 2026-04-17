@@ -8,7 +8,7 @@
      public float speed;
      public float strength;
 
-     private bool noFlicker;
+     private bool noFlicker = false;
      private Light source;
      private float initialIntensity;
  
