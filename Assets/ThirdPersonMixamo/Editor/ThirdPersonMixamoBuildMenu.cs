@@ -92,10 +92,24 @@ namespace ThirdPersonMixamo.Editor
 
             var foot = AssetDatabase.LoadAssetAtPath<AudioClip>(FootstepPath);
             var land = AssetDatabase.LoadAssetAtPath<AudioClip>(LandPath);
+            if (foot == null || land == null)
+            {
+                Debug.LogError("[ThirdPersonMixamo] Missing Audio clips at " + FootstepPath + " / " + LandPath);
+            }
+
             var soAudio = new SerializedObject(audio);
-            soAudio.FindProperty("footstepClip").objectReferenceValue = foot;
-            soAudio.FindProperty("landClip").objectReferenceValue = land;
-            soAudio.ApplyModifiedPropertiesWithoutUndo();
+            var pFoot = soAudio.FindProperty("footstepClip");
+            var pLand = soAudio.FindProperty("landClip");
+            if (pFoot != null && pLand != null)
+            {
+                pFoot.objectReferenceValue = foot;
+                pLand.objectReferenceValue = land;
+                soAudio.ApplyModifiedPropertiesWithoutUndo();
+            }
+            else
+            {
+                Debug.LogError("[ThirdPersonMixamo] SerializedProperty footstepClip/landClip not found on ThirdPersonPlayerAudio.");
+            }
 
             Directory.CreateDirectory(Path.GetDirectoryName(PrefabPath) ?? "Assets");
             PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
