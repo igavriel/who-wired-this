@@ -14,7 +14,7 @@ namespace ThirdPersonMixamo.Editor
     {
         private const string PrefabPath = "Assets/ThirdPersonMixamo/Prefabs/ThirdPersonMixamoPlayer.prefab";
         private const string AstraPrefabPath = "Assets/Mixamo/astra-prefab.prefab";
-        private const string AnimatorPath = "Assets/ThirdPersonMixamo/Animations/ThirdPersonMixamoAnimator.controller";
+        private const string AnimatorPath = "Assets/ThirdPersonMixamo/Animations/ThirdPersonMixamo_StarterThirdPerson.controller";
         private const string BindingsAPath = "Assets/ThirdPersonMixamo/Data/PlayerControlBindings_PlayerA.asset";
         private const string BindingsBPath = "Assets/ThirdPersonMixamo/Data/PlayerControlBindings_PlayerB.asset";
         private const string FootstepPath = "Assets/ThirdPersonMixamo/Audio/Player_Footstep_01.wav";

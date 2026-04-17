@@ -7,7 +7,7 @@ Self-contained third-person sample package (Mixamo **astra** visual, forked move
 1. Open this Unity project in the Editor.
 2. Run menu **ThirdPersonMixamo → Rebuild Package Assets (Prefab + Scenes)**.  
    This generates:
-   - `Prefabs/ThirdPersonMixamoPlayer.prefab` (CharacterController + `PlayerController` + animator/audio helpers + nested `Assets/Mixamo/astra-prefab.prefab` with `ThirdPersonMixamoAnimator.controller`).
+   - `Prefabs/ThirdPersonMixamoPlayer.prefab` (CharacterController + `PlayerController` + animator/audio helpers + nested `Assets/Mixamo/astra-prefab.prefab` with **`ThirdPersonMixamo_StarterThirdPerson.controller`**).
    - `ThirdPersonMixamo_Single.unity` — one player, full-screen camera, jump gym boxes.
    - `ThirdPersonMixamo_LocalDuel.unity` — two players, horizontal split viewports, **Player A / Player B** bindings, **one** `AudioListener` (left camera only).
    - Appends both scenes to **File → Build Settings** (non-destructive append).
@@ -23,7 +23,8 @@ If Unity was already running another instance, close it and run the menu command
 | `PlayerCameraRig` | Late-update follow camera: yaw lock option, distance/height, look-at offset. |
 | `ThirdPersonAnimatorBridge` | Drives Starter-style Animator parameters (`Speed`, `Grounded`, `Jump`, `FreeFall`, `MotionSpeed`). `Speed` / `MotionSpeed` follow **Starter Assets** semantics (lerped target move speed, not raw velocity). Root motion is forced **off** on the child `Animator`. |
 | `ThirdPersonPlayerAudio` | Footstep cadence + land one-shots using clips under `Audio/`. |
-| `Animations/ThirdPersonMixamoAnimator.controller` | Humanoid animator (`ThirdPersonMixamoHumanoidAnimator`); motion clips live under **`Animations/Motions/`** as package-local copies of Starter Assets FBX animations. |
+| `Animations/ThirdPersonMixamo_StarterThirdPerson.controller` | Clone of Starter **`StarterAssetsThirdPerson.controller`** (assigned on `astra-prefab` + rebuild menu). Uses Starter motion FBX assets by GUID. |
+| `Animations/ThirdPersonMixamoAnimator.controller` | Alternate animator with clips remapped to **`Animations/Motions/`** (optional). |
 | `Audio/` | Duplicated footstep/land `.wav` files (new GUIDs). |
 
 ```text
@@ -31,7 +32,7 @@ ThirdPersonMixamo/
   ThirdPersonMixamo_Single.unity
   ThirdPersonMixamo_LocalDuel.unity
   Prefabs/          (generated player prefab)
-  Animations/       (ThirdPersonMixamoAnimator.controller + Motions/*.anim.fbx)
+  Animations/       (ThirdPersonMixamo_StarterThirdPerson.controller; optional Motions/*.anim.fbx + ThirdPersonMixamoAnimator.controller)
   Audio/            (duplicated SFX)
   Data/             (PlayerControlBindings Player A / B)
   Scripts/          (runtime types)
