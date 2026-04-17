@@ -6,12 +6,7 @@ namespace WhoWiredThis.Player
     public class CoOpController : MonoBehaviour
     {
         [Header("Input")]
-        [SerializeField] private KeyCode moveForward = KeyCode.W;
-        [SerializeField] private KeyCode moveBack = KeyCode.S;
-        [SerializeField] private KeyCode moveLeft = KeyCode.A;
-        [SerializeField] private KeyCode moveRight = KeyCode.D;
-        [SerializeField] private KeyCode sprint = KeyCode.LeftShift;
-        [SerializeField] private KeyCode interact = KeyCode.LeftControl;
+        [SerializeField] private CoOpControlBindings inputBindings;
 
         [Header("Movement")]
         [SerializeField] private Transform cameraTransform;
@@ -22,6 +17,12 @@ namespace WhoWiredThis.Player
 
         private CharacterController _controller;
         private float _verticalVelocity;
+
+        private KeyCode MoveForwardKey => inputBindings != null ? inputBindings.MoveForward : KeyCode.W;
+        private KeyCode MoveBackKey => inputBindings != null ? inputBindings.MoveBack : KeyCode.S;
+        private KeyCode MoveLeftKey => inputBindings != null ? inputBindings.MoveLeft : KeyCode.A;
+        private KeyCode MoveRightKey => inputBindings != null ? inputBindings.MoveRight : KeyCode.D;
+        private KeyCode SprintKey => inputBindings != null ? inputBindings.Sprint : KeyCode.LeftShift;
 
         private void Awake()
         {
@@ -56,10 +57,10 @@ namespace WhoWiredThis.Player
             float horizontal = 0f;
             float vertical = 0f;
 
-            if (Input.GetKey(moveLeft)) horizontal -= 1f;
-            if (Input.GetKey(moveRight)) horizontal += 1f;
-            if (Input.GetKey(moveBack)) vertical -= 1f;
-            if (Input.GetKey(moveForward)) vertical += 1f;
+            if (Input.GetKey(MoveLeftKey)) horizontal -= 1f;
+            if (Input.GetKey(MoveRightKey)) horizontal += 1f;
+            if (Input.GetKey(MoveBackKey)) vertical -= 1f;
+            if (Input.GetKey(MoveForwardKey)) vertical += 1f;
 
             Vector3 inputDirection = new Vector3(horizontal, 0f, vertical);
             if (inputDirection.sqrMagnitude < 0.001f)
@@ -86,7 +87,7 @@ namespace WhoWiredThis.Player
 
         private float GetTargetSpeed()
         {
-            return Input.GetKey(sprint) ? sprintSpeed : moveSpeed;
+            return Input.GetKey(SprintKey) ? sprintSpeed : moveSpeed;
         }
     }
 }
