@@ -71,7 +71,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6601cfbcd0e424b45adf5d6be4f1ebbc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.CoOpController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.DuelController
   moveForward: 119
   moveBack: 115
   moveLeft: 97
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a34e6f4c0ec894a829b519d17eb3e53b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.CoOpCameraRig
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.DuelCameraRig
   target: {fileID: 6449547654614178894}
   distance: 6
   height: 3
@@ -240,7 +240,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 698023102464890377, guid: c7274f7e6b8d2415ca2e300c56e6b393, type: 3}
       propertyPath: m_Name
-      value: CoOpPlayer
+      value: DuelPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 7664177685911369163, guid: c7274f7e6b8d2415ca2e300c56e6b393, type: 3}
       propertyPath: m_LocalPosition.x

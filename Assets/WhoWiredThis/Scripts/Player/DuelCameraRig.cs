@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace WhoWiredThis.Player
 {
-    public class CoOpCameraRig : MonoBehaviour
+    public class DuelCameraRig : MonoBehaviour
     {
         [SerializeField] private Transform target;
         [SerializeField] private float distance = 6f;

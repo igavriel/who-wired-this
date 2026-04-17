@@ -19,9 +19,14 @@ namespace ThirdPersonMixamo
         [Header("Jump")]
         [SerializeField] private float jumpHeight = 1.2f;
 
+        [Header("Animation")]
+        [Tooltip("Matches Starter Assets SpeedChangeRate — drives Animator \"Speed\" toward move/sprint target.")]
+        [SerializeField] private float animationBlendRate = 10f;
+
         private CharacterController _controller;
         private float _verticalVelocity;
         private bool _wasGrounded = true;
+        private float _animationSpeedBlend;
 
         public event Action JumpStarted;
         public event Action Landed;

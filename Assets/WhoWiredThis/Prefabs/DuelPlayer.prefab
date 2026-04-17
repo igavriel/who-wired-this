@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3103497447406991015}
   - component: {fileID: 2514910239751164155}
   m_Layer: 0
-  m_Name: CoOpPlayer
+  m_Name: DuelPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,13 +71,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6601cfbcd0e424b45adf5d6be4f1ebbc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.CoOpController
-  moveForward: 119
-  moveBack: 115
-  moveLeft: 97
-  moveRight: 100
-  sprint: 304
-  interact: 306
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.DuelController
+  inputBindings: {fileID: 0}
   cameraTransform: {fileID: 0}
   moveSpeed: 4
   sprintSpeed: 6.5

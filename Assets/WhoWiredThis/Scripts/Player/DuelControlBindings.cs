@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace WhoWiredThis.Player
 {
-    [CreateAssetMenu(fileName = "CoOpControlBindings", menuName = "Who Wired This/Player/CoOp Control Bindings")]
-    public class CoOpControlBindings : ScriptableObject
+    [CreateAssetMenu(fileName = "DuelControlBindings", menuName = "Who Wired This/Player/Duel Control Bindings")]
+    public class DuelControlBindings : ScriptableObject
     {
         [SerializeField] private KeyCode moveForward = KeyCode.W;
         [SerializeField] private KeyCode moveBack = KeyCode.S;

@@ -3,10 +3,10 @@ using UnityEngine;
 namespace WhoWiredThis.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CoOpController : MonoBehaviour
+    public class DuelController : MonoBehaviour
     {
         [Header("Input")]
-        [SerializeField] private CoOpControlBindings inputBindings;
+        [SerializeField] private DuelControlBindings inputBindings;
 
         [Header("Movement")]
         [SerializeField] private Transform cameraTransform;
