@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ThirdPersonMixamo
@@ -10,27 +11,37 @@ namespace ThirdPersonMixamo
         [SerializeField] private PlayerControlBindings inputBindings;
 
         [Header("Movement")]
-        [SerializeField] private Transform cameraTransform;
-        [SerializeField] private float moveSpeed = 4f;
-        [SerializeField] private float sprintSpeed = 6.5f;
-        [SerializeField] private float rotationLerpSpeed = 10f;
-        [SerializeField] private float gravity = -20f;
-
-        [Header("Jump")]
-        [SerializeField] private float jumpHeight = 1.2f;
-
-        [Header("Animation")]
-        [Tooltip("Matches Starter Assets SpeedChangeRate — drives Animator \"Speed\" toward move/sprint target.")]
+        [SerializeField] private float velocity = 5f;
+        [SerializeField] private float sprintAdittion = 3.5f;
+        [SerializeField] private float jumpForce = 18f;
+        [SerializeField] private float jumpTime = 0.85f;
+        [SerializeField] private float gravity = 9.8f;
         [SerializeField] private float animationBlendRate = 10f;
 
-        private CharacterController _controller;
-        private float _verticalVelocity;
+        private float _jumpElapsedTime;
+        private bool _isJumping;
+        private bool _isSprinting;
+        private bool _jumpAnimatorLatch;
         private bool _wasGrounded = true;
-        private float _animationSpeedBlend;
+        private float _animatorSpeedBlend;
+
+        private float _inputHorizontal;
+        private float _inputVertical;
+        private bool _inputJump;
+        private bool _inputSprint;
+
+        private CharacterController _controller;
+        private Animator _animator;
+        private readonly HashSet<string> _animatorParameters = new HashSet<string>();
 
         public event Action JumpStarted;
         public event Action Landed;
 
+        public CharacterController CharacterController => _controller;
+        public bool IsGrounded => _controller != null && _controller.isGrounded;
+        public Vector3 Velocity => _controller != null ? _controller.velocity : Vector3.zero;
+        public float AnimatorSpeedBlend => _animatorSpeedBlend;
+        public float AnimatorMotionSpeed { get; private set; }
         private KeyCode MoveForwardKey => inputBindings != null ? inputBindings.MoveForward : KeyCode.W;
         private KeyCode MoveBackKey => inputBindings != null ? inputBindings.MoveBack : KeyCode.S;
         private KeyCode MoveLeftKey => inputBindings != null ? inputBindings.MoveLeft : KeyCode.A;
@@ -38,106 +49,214 @@ namespace ThirdPersonMixamo
         private KeyCode SprintKey => inputBindings != null ? inputBindings.Sprint : KeyCode.LeftShift;
         private KeyCode JumpKey => inputBindings != null ? inputBindings.Jump : KeyCode.Space;
 
-        public CharacterController CharacterController => _controller;
-        public bool IsGrounded => _controller != null && _controller.isGrounded;
-        public Vector3 Velocity => _controller != null ? _controller.velocity : Vector3.zero;
-
-        /// <summary>Lerped toward move/sprint speed when there is input, else 0 — same idea as StarterAssets ThirdPersonController._animationBlend.</summary>
-        public float AnimatorSpeedBlend => _animationSpeedBlend;
-
-        /// <summary>1 when movement keys are held (after camera-relative aim), 0 otherwise.</summary>
-        public float AnimatorMotionSpeed { get; private set; }
-
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
+            _animator = GetComponentInChildren<Animator>();
+
+            if (_animator == null)
+            {
+                Debug.LogWarning("[ThirdPersonMixamo] PlayerController found no Animator under " + gameObject.name + ".");
+                return;
+            }
+
+            CacheAnimatorParameters();
+            EnsureAnimationEventReceiver();
         }
 
         private void Update()
         {
-            bool groundedBeforeMove = _controller.isGrounded;
+            _inputHorizontal = 0f;
+            _inputVertical = 0f;
+            if (Input.GetKey(MoveLeftKey)) _inputHorizontal -= 1f;
+            if (Input.GetKey(MoveRightKey)) _inputHorizontal += 1f;
+            if (Input.GetKey(MoveBackKey)) _inputVertical -= 1f;
+            if (Input.GetKey(MoveForwardKey)) _inputVertical += 1f;
 
-            Vector3 moveDirection = GetMoveDirectionFromInput();
-            bool hasMoveInput = moveDirection.sqrMagnitude > 0.001f;
-            AnimatorMotionSpeed = hasMoveInput ? 1f : 0f;
+            _inputJump = Input.GetKeyDown(JumpKey);
+            _inputSprint = Input.GetKey(SprintKey);
+            bool hasMoveInput = Mathf.Abs(_inputHorizontal) > 0.01f || Mathf.Abs(_inputVertical) > 0.01f;
+            _isSprinting = hasMoveInput && _inputSprint;
 
-            float animTargetSpeed = hasMoveInput ? GetTargetSpeed() : 0f;
-            _animationSpeedBlend = Mathf.Lerp(_animationSpeedBlend, animTargetSpeed, Time.deltaTime * animationBlendRate);
-            if (_animationSpeedBlend < 0.01f)
+            if (_controller.isGrounded && _animator != null)
             {
-                _animationSpeedBlend = 0f;
+                float targetAnimSpeed = hasMoveInput ? (_isSprinting ? velocity + sprintAdittion : velocity) : 0f;
+                _animatorSpeedBlend = Mathf.Lerp(_animatorSpeedBlend, targetAnimSpeed, Time.deltaTime * animationBlendRate);
+                if (_animatorSpeedBlend < 0.01f)
+                {
+                    _animatorSpeedBlend = 0f;
+                }
+                AnimatorMotionSpeed = hasMoveInput ? 1f : 0f;
+                SetFloatIfExists("Speed", _animatorSpeedBlend);
+                SetFloatIfExists("MotionSpeed", AnimatorMotionSpeed);
             }
 
-            float targetSpeed = GetTargetSpeed();
-            Vector3 velocity = moveDirection * targetSpeed;
-
-            if (groundedBeforeMove && _verticalVelocity < 0f)
+            if (_animator != null)
             {
-                _verticalVelocity = -2f;
+                bool isAir = !_controller.isGrounded;
+                SetBoolIfExists("Grounded", !isAir);
+                SetBoolIfExists("FreeFall", isAir && _controller.velocity.y < -0.1f);
+                if (_jumpAnimatorLatch)
+                {
+                    SetBoolIfExists("Jump", true);
+                    _jumpAnimatorLatch = false;
+                }
+                else
+                {
+                    SetBoolIfExists("Jump", false);
+                }
             }
 
-            if (groundedBeforeMove && Input.GetKeyDown(JumpKey))
+            if (_inputJump && _controller.isGrounded)
             {
-                _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                _isJumping = true;
+                _jumpAnimatorLatch = true;
                 JumpStarted?.Invoke();
             }
 
-            _verticalVelocity += gravity * Time.deltaTime;
-            velocity.y = _verticalVelocity;
+            HeadHittingDetect();
+        }
 
-            _controller.Move(velocity * Time.deltaTime);
+        private void FixedUpdate()
+        {
+            bool groundedBeforeMove = _controller.isGrounded;
+            float velocityAdittion = 0f;
+            if (_isSprinting) velocityAdittion = sprintAdittion;
 
-            if (moveDirection.sqrMagnitude > 0.001f)
+            float directionX = _inputHorizontal * (velocity + velocityAdittion) * Time.deltaTime;
+            float directionZ = _inputVertical * (velocity + velocityAdittion) * Time.deltaTime;
+            float directionY = 0f;
+
+            if (_isJumping)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationLerpSpeed * Time.deltaTime);
+                directionY = Mathf.SmoothStep(jumpForce, jumpForce * 0.30f, _jumpElapsedTime / jumpTime) * Time.deltaTime;
+                _jumpElapsedTime += Time.deltaTime;
+                if (_jumpElapsedTime >= jumpTime)
+                {
+                    _isJumping = false;
+                    _jumpElapsedTime = 0f;
+                }
             }
+
+            directionY -= gravity * Time.deltaTime;
+
+            Camera activeCamera = Camera.main;
+            if (activeCamera == null)
+            {
+                _controller.Move(Vector3.up * directionY);
+                return;
+            }
+
+            Vector3 forward = activeCamera.transform.forward;
+            Vector3 right = activeCamera.transform.right;
+            forward.y = 0f;
+            right.y = 0f;
+            forward.Normalize();
+            right.Normalize();
+
+            forward *= directionZ;
+            right *= directionX;
+
+            if (directionX != 0f || directionZ != 0f)
+            {
+                float angle = Mathf.Atan2(forward.x + right.x, forward.z + right.z) * Mathf.Rad2Deg;
+                Quaternion rotation = Quaternion.Euler(0f, angle, 0f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.15f);
+            }
+
+            Vector3 movement = Vector3.up * directionY + forward + right;
+            _controller.Move(movement);
 
             bool groundedAfterMove = _controller.isGrounded;
             if (groundedAfterMove && !_wasGrounded)
             {
                 Landed?.Invoke();
             }
-
             _wasGrounded = groundedAfterMove;
         }
 
-        private Vector3 GetMoveDirectionFromInput()
+        private void CacheAnimatorParameters()
         {
-            float horizontal = 0f;
-            float vertical = 0f;
-
-            if (Input.GetKey(MoveLeftKey)) horizontal -= 1f;
-            if (Input.GetKey(MoveRightKey)) horizontal += 1f;
-            if (Input.GetKey(MoveBackKey)) vertical -= 1f;
-            if (Input.GetKey(MoveForwardKey)) vertical += 1f;
-
-            Vector3 inputDirection = new Vector3(horizontal, 0f, vertical);
-            if (inputDirection.sqrMagnitude < 0.001f)
+            _animatorParameters.Clear();
+            foreach (AnimatorControllerParameter parameter in _animator.parameters)
             {
-                return Vector3.zero;
+                _animatorParameters.Add(parameter.name);
             }
-
-            inputDirection.Normalize();
-
-            if (cameraTransform == null)
-            {
-                return inputDirection;
-            }
-
-            Vector3 forward = cameraTransform.forward;
-            Vector3 right = cameraTransform.right;
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
-            return (forward * inputDirection.z + right * inputDirection.x).normalized;
         }
 
-        private float GetTargetSpeed()
+        private void SetBoolIfExists(string parameterName, bool value)
         {
-            return Input.GetKey(SprintKey) ? sprintSpeed : moveSpeed;
+            if (_animator != null && _animatorParameters.Contains(parameterName))
+            {
+                _animator.SetBool(parameterName, value);
+            }
+        }
+
+        private void SetFloatIfExists(string parameterName, float value)
+        {
+            if (_animator != null && _animatorParameters.Contains(parameterName))
+            {
+                _animator.SetFloat(parameterName, value);
+            }
+        }
+
+        private void HeadHittingDetect()
+        {
+            float headHitDistance = 1.1f;
+            Vector3 ccCenter = transform.TransformPoint(_controller.center);
+            float hitCalc = _controller.height / 2f * headHitDistance;
+
+            if (Physics.Raycast(ccCenter, Vector3.up, hitCalc))
+            {
+                _jumpElapsedTime = 0f;
+                _isJumping = false;
+            }
+        }
+
+        private void EnsureAnimationEventReceiver()
+        {
+            if (_animator == null)
+            {
+                return;
+            }
+
+            PlayerAnimationEventReceiver receiver = _animator.gameObject.GetComponent<PlayerAnimationEventReceiver>();
+            if (receiver == null)
+            {
+                receiver = _animator.gameObject.AddComponent<PlayerAnimationEventReceiver>();
+            }
+
+            receiver.Initialize(this);
+        }
+
+        public void HandleFootstepAnimationEvent(AnimationEvent animationEvent)
+        {
+            // Intentionally empty: this consumes OnFootstep events so Animator does not log missing receiver errors.
+        }
+
+        public void HandleLandAnimationEvent(AnimationEvent animationEvent)
+        {
+            // Intentionally empty: some clips may emit OnLand.
+        }
+    }
+
+    public class PlayerAnimationEventReceiver : MonoBehaviour
+    {
+        private PlayerController _owner;
+
+        public void Initialize(PlayerController owner)
+        {
+            _owner = owner;
+        }
+
+        private void OnFootstep(AnimationEvent animationEvent)
+        {
+            _owner?.HandleFootstepAnimationEvent(animationEvent);
+        }
+
+        private void OnLand(AnimationEvent animationEvent)
+        {
+            _owner?.HandleLandAnimationEvent(animationEvent);
         }
     }
 }
