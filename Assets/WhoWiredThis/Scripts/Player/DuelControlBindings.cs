@@ -11,6 +11,7 @@ namespace WhoWiredThis.Player
         [SerializeField] private KeyCode moveRight = KeyCode.D;
         [SerializeField] private KeyCode sprint = KeyCode.LeftShift;
         [SerializeField] private KeyCode interact = KeyCode.LeftControl;
+        [SerializeField] private KeyCode jump = KeyCode.Space;
 
         public KeyCode MoveForward => moveForward;
         public KeyCode MoveBack => moveBack;
@@ -18,5 +19,6 @@ namespace WhoWiredThis.Player
         public KeyCode MoveRight => moveRight;
         public KeyCode Sprint => sprint;
         public KeyCode Interact => interact;
+        public KeyCode Jump => jump;
     }
 }

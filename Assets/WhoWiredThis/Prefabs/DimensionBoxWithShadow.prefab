@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400000}
   - component: {fileID: 11400000}
+  - component: {fileID: 407913363653022551}
   m_Layer: 0
   m_Name: DimensionBoxWithShadow
   m_TagString: Untagged
@@ -50,7 +51,20 @@ MonoBehaviour:
   objectRenderers: []
   objectColliders: []
   shadowRenderers: []
-  shadowColliders: []
+--- !u!114 &407913363653022551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44202476c329245f8b03325b6bf54caa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Interactables.ClueInteractable
+  clueText: More power is not the same as correct flow.
+  scoreValue: 1
 --- !u!1 &100001
 GameObject:
   m_ObjectHideFlags: 0

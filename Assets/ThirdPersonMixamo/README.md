@@ -80,5 +80,3 @@ ThirdPersonMixamo/
 
 - Tune capsule on root (`CharacterController`), jump height on `PlayerController`, camera distance on `PlayerCameraRig`.
 - Duplicate a `PlayerControlBindings` asset for a third profile (menu **Create → ThirdPersonMixamo → Player Control Bindings**).
-
-This package is independent from `WhoWiredThis.Player.DuelController` / `DuelCameraRig` at the type level; keep fixes in sync manually if you need parity.

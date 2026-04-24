@@ -16,6 +16,7 @@ namespace WhoWiredThis.Player
         [Tooltip("Physics layers included in the nearby-collider scan.")]
         [SerializeField] private LayerMask detectionMask = ~0;
         [SerializeField] private PlayerInputBridge inputBridge;
+        [SerializeField] private DuelController duelController;
 
         private IInteractable currentInteractable;
 
@@ -24,6 +25,11 @@ namespace WhoWiredThis.Player
             if (inputBridge == null)
             {
                 inputBridge = GetComponent<PlayerInputBridge>();
+            }
+
+            if (duelController == null)
+            {
+                duelController = GetComponent<DuelController>();
             }
         }
 
@@ -116,7 +122,8 @@ namespace WhoWiredThis.Player
 
             bool activateFromInput = inputBridge != null
                 ? inputBridge.InteractPressedThisFrame
-                : Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0);
+                : (duelController != null ? duelController.InteractPressedThisFrame : Input.GetKeyDown(KeyCode.E))
+                    || Input.GetMouseButtonDown(0);
             bool activateFromMouse = inputBridge != null
                 ? inputBridge.InteractPressedFromPointerThisFrame
                 : Input.GetMouseButtonDown(0);

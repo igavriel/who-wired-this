@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace WhoWiredThis.Player
 {
@@ -14,15 +15,23 @@ namespace WhoWiredThis.Player
         [SerializeField] private float sprintSpeed = 6.5f;
         [SerializeField] private float rotationLerpSpeed = 10f;
         [SerializeField] private float gravity = -20f;
+        [SerializeField] private float jumpHeight = 1.2f;
+
+        [Header("Actions")]
+        [SerializeField] private UnityEvent onInteract;
 
         private CharacterController _controller;
         private float _verticalVelocity;
+        private bool _interactPressedThisFrame;
 
         private KeyCode MoveForwardKey => inputBindings != null ? inputBindings.MoveForward : KeyCode.W;
         private KeyCode MoveBackKey => inputBindings != null ? inputBindings.MoveBack : KeyCode.S;
         private KeyCode MoveLeftKey => inputBindings != null ? inputBindings.MoveLeft : KeyCode.A;
         private KeyCode MoveRightKey => inputBindings != null ? inputBindings.MoveRight : KeyCode.D;
         private KeyCode SprintKey => inputBindings != null ? inputBindings.Sprint : KeyCode.LeftShift;
+        private KeyCode JumpKey => inputBindings != null ? inputBindings.Jump : KeyCode.Space;
+        private KeyCode InteractKey => inputBindings != null ? inputBindings.Interact : KeyCode.LeftControl;
+        public bool InteractPressedThisFrame => _interactPressedThisFrame;
 
         private void Awake()
         {
@@ -38,6 +47,18 @@ namespace WhoWiredThis.Player
             if (_controller.isGrounded && _verticalVelocity < 0f)
             {
                 _verticalVelocity = -2f;
+            }
+
+            if (_controller.isGrounded && Input.GetKeyDown(JumpKey))
+            {
+                // Same jump math used by other character controllers in project.
+                _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+
+            _interactPressedThisFrame = Input.GetKeyDown(InteractKey);
+            if (_interactPressedThisFrame)
+            {
+                onInteract?.Invoke();
             }
 
             _verticalVelocity += gravity * Time.deltaTime;
