@@ -1,8 +1,9 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using ThirdPersonMixamo;
 using WhoWiredThis.Interactables;
 using WhoWiredThis.Inventory;
 using WhoWiredThis.UI;
+using UnityEngine.Assertions;
 
 namespace WhoWiredThis.Player
 {
@@ -15,22 +16,20 @@ namespace WhoWiredThis.Player
         [SerializeField] private float interactRange = 2.5f;
         [Tooltip("Physics layers included in the nearby-collider scan.")]
         [SerializeField] private LayerMask detectionMask = ~0;
+
+        [Header("References")]
+        [Tooltip("Reference to the PlayerInputBridge component for reading input states.")]
         [SerializeField] private PlayerInputBridge inputBridge;
-        [SerializeField] private DuelController duelController;
+
+        [Tooltip("Reference to the PlayerController component for reading player states.")]
+        [SerializeField] private PlayerController playerController;
 
         private IInteractable currentInteractable;
 
         void Awake()
         {
-            if (inputBridge == null)
-            {
-                inputBridge = GetComponent<PlayerInputBridge>();
-            }
-
-            if (duelController == null)
-            {
-                duelController = GetComponent<DuelController>();
-            }
+            Assert.IsNotNull(inputBridge, "PlayerInputBridge is required for PlayerActions");
+            Assert.IsNotNull(playerController, "PlayerController is required for PlayerActions");
         }
 
         void Start()
@@ -57,15 +56,9 @@ namespace WhoWiredThis.Player
 
         private void HandleInventoryHotkeys()
         {
-            bool slot1Pressed = inputBridge != null
-                ? inputBridge.Slot1PressedThisFrame
-                : Input.GetKeyDown(KeyCode.Alpha1);
-            bool slot2Pressed = inputBridge != null
-                ? inputBridge.Slot2PressedThisFrame
-                : Input.GetKeyDown(KeyCode.Alpha2);
-            bool slot3Pressed = inputBridge != null
-                ? inputBridge.Slot3PressedThisFrame
-                : Input.GetKeyDown(KeyCode.Alpha3);
+            bool slot1Pressed = inputBridge.Slot1PressedThisFrame;
+            bool slot2Pressed = inputBridge.Slot2PressedThisFrame;
+            bool slot3Pressed = inputBridge.Slot3PressedThisFrame;
 
             if (slot1Pressed)
             {
@@ -120,20 +113,7 @@ namespace WhoWiredThis.Player
                 HUDController.Instance?.SetInteractPrompt(nearest?.GetPromptText());
             }
 
-            bool activateFromInput = inputBridge != null
-                ? inputBridge.InteractPressedThisFrame
-                : (duelController != null ? duelController.InteractPressedThisFrame : Input.GetKeyDown(KeyCode.E))
-                    || Input.GetMouseButtonDown(0);
-            bool activateFromMouse = inputBridge != null
-                ? inputBridge.InteractPressedFromPointerThisFrame
-                : Input.GetMouseButtonDown(0);
-            bool pointerOverUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
-
-            if (activateFromMouse && pointerOverUi)
-            {
-                return;
-            }
-
+            bool activateFromInput = playerController.InteractPressedThisFrame;
             if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
@@ -142,13 +122,9 @@ namespace WhoWiredThis.Player
 
         private void HandleUIHotkeys()
         {
-            bool inventoryPressed = inputBridge != null
-                ? inputBridge.InventoryPressedThisFrame
-                : Input.GetKeyDown(KeyCode.I);
-            bool helpPressed = inputBridge != null
-                ? inputBridge.HelpPressedThisFrame
-                : Input.GetKeyDown(KeyCode.H);
-            bool menuPressed = inputBridge != null && inputBridge.MenuPressedThisFrame;
+            bool inventoryPressed = inputBridge.InventoryPressedThisFrame;
+            bool helpPressed = inputBridge.HelpPressedThisFrame;
+            bool menuPressed = inputBridge.MenuPressedThisFrame;
 
             if (inventoryPressed)
             {

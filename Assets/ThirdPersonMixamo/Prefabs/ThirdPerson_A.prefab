@@ -84,8 +84,10 @@ MonoBehaviour:
   interactRange: 1.5
   detectionMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
   inputBridge: {fileID: 2850619866039406524}
+  duelController: {fileID: 0}
+  playerController: {fileID: 8680275687584093684}
 --- !u!114 &2850619866039406524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +165,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4749843045205138977, guid: 41d33307df3ca4c8fae23c9e7a54129e, type: 3}
   m_PrefabInstance: {fileID: 923400836501384963}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8680275687584093684 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8405437178428947191, guid: 41d33307df3ca4c8fae23c9e7a54129e, type: 3}
+  m_PrefabInstance: {fileID: 923400836501384963}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4d5e6f708192a3b4c5d6e7f8090a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonMixamo.PlayerController
 --- !u!1001 &1181246069012692158
 PrefabInstance:
   m_ObjectHideFlags: 0

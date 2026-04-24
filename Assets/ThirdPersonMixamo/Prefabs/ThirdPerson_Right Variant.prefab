@@ -212,6 +212,17 @@ PrefabInstance:
       addedObject: {fileID: 387012196875311743}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61922245c28d44f94bc65f1aaad79a40, type: 3}
+--- !u!114 &3562843418666362680 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8902783968045852101, guid: 61922245c28d44f94bc65f1aaad79a40, type: 3}
+  m_PrefabInstance: {fileID: 5403415685308613373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4d5e6f708192a3b4c5d6e7f8090a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonMixamo.PlayerController
 --- !u!4 &7806002223880554859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2785674581578828694, guid: 61922245c28d44f94bc65f1aaad79a40, type: 3}
@@ -233,6 +244,14 @@ PrefabInstance:
       propertyPath: detectorOrigin
       value: 
       objectReference: {fileID: 7806002223880554859}
+    - target: {fileID: 1650757169936880970, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 3562843418666362680}
+    - target: {fileID: 1650757169936880970, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+      propertyPath: detectionMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 2863320204935059248, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

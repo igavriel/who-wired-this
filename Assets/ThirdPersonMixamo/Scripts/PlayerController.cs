@@ -29,6 +29,7 @@ namespace ThirdPersonMixamo
         private float _inputVertical;
         private bool _inputJump;
         private bool _inputSprint;
+        private bool _inputInteract;
 
         private CharacterController _controller;
         private Animator _animator;
@@ -42,12 +43,14 @@ namespace ThirdPersonMixamo
         public Vector3 Velocity => _controller != null ? _controller.velocity : Vector3.zero;
         public float AnimatorSpeedBlend => _animatorSpeedBlend;
         public float AnimatorMotionSpeed { get; private set; }
+        public bool InteractPressedThisFrame => _inputInteract;
         private KeyCode MoveForwardKey => inputBindings != null ? inputBindings.MoveForward : KeyCode.W;
         private KeyCode MoveBackKey => inputBindings != null ? inputBindings.MoveBack : KeyCode.S;
         private KeyCode MoveLeftKey => inputBindings != null ? inputBindings.MoveLeft : KeyCode.A;
         private KeyCode MoveRightKey => inputBindings != null ? inputBindings.MoveRight : KeyCode.D;
         private KeyCode SprintKey => inputBindings != null ? inputBindings.Sprint : KeyCode.LeftShift;
         private KeyCode JumpKey => inputBindings != null ? inputBindings.Jump : KeyCode.Space;
+        private KeyCode InteractKey => inputBindings != null ? inputBindings.Interact : KeyCode.LeftControl;
 
         private void Awake()
         {
@@ -75,6 +78,7 @@ namespace ThirdPersonMixamo
 
             _inputJump = Input.GetKeyDown(JumpKey);
             _inputSprint = Input.GetKey(SprintKey);
+            _inputInteract = Input.GetKeyDown(InteractKey);
             bool hasMoveInput = Mathf.Abs(_inputHorizontal) > 0.01f || Mathf.Abs(_inputVertical) > 0.01f;
             _isSprinting = hasMoveInput && _inputSprint;
 
