@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4394424921049586927}
   - component: {fileID: 4935711618533088660}
   - component: {fileID: 6151463977448403461}
+  - component: {fileID: 5566198571770203838}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -84,3 +85,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c82dda3f81b485aac056fdbd49cc82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Inventory.InventoryManager
+--- !u!114 &5566198571770203838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249580574213425681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7f56cf3380c04bb2bf5ed15c12f265e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActivateDisplays
