@@ -1,4 +1,4 @@
-namespace WhoWiredThis.Data.A17
+namespace WhoWiredThis.Enums
 {
     public enum PolarityState
     {

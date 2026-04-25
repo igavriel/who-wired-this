@@ -2,19 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using WhoWiredThis.Puzzles.A17;
+using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Visibility
 {
-    public enum DimensionVisibilityMode
-    {
-        PlayerAVisability = 0,
-        PlayerBVisability = 1
-    }
 
     public class DimensionVisibilityObject : MonoBehaviour
     {
         [Header("Dimension Data")]
-        [SerializeField] private DimensionVisibilityMode mode = DimensionVisibilityMode.PlayerAVisability;
+        [SerializeField] private DimensionVisibilityMode mode = DimensionVisibilityMode.Player_A_Visibility;
 
         [Header("Optional Switch Control")]
         [SerializeField] private PolaritySwitchController controlledPolaritySwitch;
@@ -44,8 +40,8 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            int objectLayer = mode == DimensionVisibilityMode.PlayerAVisability ? dimensionALayerIndex : dimensionBLayerIndex;
-            int placeholderLayer = mode == DimensionVisibilityMode.PlayerAVisability ? dimensionBLayerIndex : dimensionALayerIndex;
+            int objectLayer = mode == DimensionVisibilityMode.Player_A_Visibility ? dimensionALayerIndex : dimensionBLayerIndex;
+            int placeholderLayer = mode == DimensionVisibilityMode.Player_A_Visibility ? dimensionBLayerIndex : dimensionALayerIndex;
 
             SetTargetsLayer(objectRenderers, objectColliders, objectLayer);
             SetTargetsLayer(placeholderRenderers, Array.Empty<Collider>(), placeholderLayer);
@@ -60,10 +56,10 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            PolaritySwitchController.AllowedPlayerTag allowedTag =
-                mode == DimensionVisibilityMode.PlayerAVisability
-                    ? PolaritySwitchController.AllowedPlayerTag.PlayerA
-                    : PolaritySwitchController.AllowedPlayerTag.PlayerB;
+            AllowedPlayerTag allowedTag =
+                mode == DimensionVisibilityMode.Player_A_Visibility
+                    ? AllowedPlayerTag.Player_A
+                    : AllowedPlayerTag.Player_B;
 
             controlledPolaritySwitch.SetAllowedPlayerTag(allowedTag);
         }

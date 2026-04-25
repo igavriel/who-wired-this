@@ -8,7 +8,7 @@ namespace WhoWiredThis.Core
         public static GameManager Instance { get; private set; }
 
         [Header("State")]
-        public string currentZoneName = "Relay Room";
+        public string currentZoneName = "Unknown Zone";
         public bool PuzzleSolved { get; private set; }
 
         public event Action<string> OnZoneChanged;

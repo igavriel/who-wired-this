@@ -1,17 +1,11 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Core
 {
-    public class CameraViewportPresetApplier : MonoBehaviour
+    public partial class CameraViewportPresetApplier : MonoBehaviour
     {
-        public enum ViewportPreset
-        {
-            LeftHalfDisplay1,
-            RightHalfDisplay1,
-            FullDisplay1,
-            FullDisplay2
-        }
 
         [Header("References")]
         [SerializeField] private Camera targetCamera;
@@ -23,7 +17,7 @@ namespace WhoWiredThis.Core
 
         private void Awake()
         {
-            Assert.IsNotNull(targetCamera, "CameraViewportPresetApplier requires a target Camera.");
+            Assert.IsNotNull(targetCamera, "[CameraViewportPresetApplier] requires a target Camera.");
         }
 
         private void OnEnable()
@@ -35,14 +29,15 @@ namespace WhoWiredThis.Core
         {
             if (targetCamera == null)
             {
+                Debug.LogWarning("[CameraViewportPresetApplier] Target camera is null, skipping preset application");
                 return;
             }
 
-            ApplyPreset(force: true);
+            ApplyPreset(force: true);  // Force application to ensure proper initialization
         }
 
         [ContextMenu("Apply Preset")]
-        public void ApplyPreset(bool force = false)
+        public void ApplyPreset(bool force)
         {
             if (!force && hasAppliedPreset && lastAppliedPreset == preset)
             {
@@ -74,6 +69,7 @@ namespace WhoWiredThis.Core
 
             lastAppliedPreset = preset;
             hasAppliedPreset = true;
+            Debug.Log($"[CameraViewportPresetApplier] Applied preset {preset}");
         }
 
         public void SetPreset(ViewportPreset nextPreset)
@@ -83,8 +79,9 @@ namespace WhoWiredThis.Core
                 return;
             }
 
+            Debug.Log($"[CameraViewportPresetApplier] Setting preset to {nextPreset} from {preset}");
             preset = nextPreset;
-            ApplyPreset();
+            ApplyPreset(force: false);  // Don't force application to avoid infinite recursion
         }
     }
 }

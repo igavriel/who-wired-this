@@ -1,4 +1,6 @@
 using UnityEngine;
+using WhoWiredThis.Enums;
+
 namespace WhoWiredThis.Core
 {
     public class DualSingleViewportSwitcher : MonoBehaviour
@@ -8,16 +10,16 @@ namespace WhoWiredThis.Core
         [SerializeField] private CameraViewportPresetApplier secondCameraApplier;
 
         [Header("Dual Layout")]
-        [SerializeField] private CameraViewportPresetApplier.ViewportPreset firstDualPreset =
-            CameraViewportPresetApplier.ViewportPreset.LeftHalfDisplay1;
-        [SerializeField] private CameraViewportPresetApplier.ViewportPreset secondDualPreset =
-            CameraViewportPresetApplier.ViewportPreset.RightHalfDisplay1;
+        [SerializeField] private ViewportPreset firstDualPreset =
+            ViewportPreset.LeftHalfDisplay1;
+        [SerializeField] private ViewportPreset secondDualPreset =
+            ViewportPreset.RightHalfDisplay1;
 
         [Header("Single Layout")]
-        [SerializeField] private CameraViewportPresetApplier.ViewportPreset firstSinglePreset =
-            CameraViewportPresetApplier.ViewportPreset.FullDisplay1;
-        [SerializeField] private CameraViewportPresetApplier.ViewportPreset secondSinglePreset =
-            CameraViewportPresetApplier.ViewportPreset.FullDisplay2;
+        [SerializeField] private ViewportPreset firstSinglePreset =
+            ViewportPreset.FullDisplay1;
+        [SerializeField] private ViewportPreset secondSinglePreset =
+            ViewportPreset.FullDisplay2;
 
         [Header("Input")]
         [SerializeField] private KeyCode toggleKey = KeyCode.P;
@@ -72,18 +74,18 @@ namespace WhoWiredThis.Core
                 {
                     secondCameraApplier.SetPreset(secondDualPreset);
                 }
-
-                return;
             }
-
-            if (firstCameraApplier != null)
+            else
             {
-                firstCameraApplier.SetPreset(firstSinglePreset);
-            }
+                if (firstCameraApplier != null)
+                {
+                    firstCameraApplier.SetPreset(firstSinglePreset);
+                }
 
-            if (secondCameraApplier != null)
-            {
-                secondCameraApplier.SetPreset(secondSinglePreset);
+                if (secondCameraApplier != null)
+                {
+                    secondCameraApplier.SetPreset(secondSinglePreset);
+                }
             }
         }
     }

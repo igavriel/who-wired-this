@@ -1,12 +1,12 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
 
-namespace WhoWiredThis.Puzzles.A17
+namespace WhoWiredThis.Puzzles.FloorColor
 {
-    public class ResultLightController : MonoBehaviour
+    public partial class FloorColorResultLightController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private A17PuzzleManager puzzleManager;
+        [SerializeField] private FloorColorMatrixPuzzleManager puzzleManager;
         [SerializeField] private Renderer lightRenderer;
         [SerializeField] private Light indicatorLight;
 
@@ -20,13 +20,15 @@ namespace WhoWiredThis.Puzzles.A17
         [SerializeField] private Color failureColor = Color.red;
         [SerializeField] private Color successColor = Color.green;
 
-        void Awake()
+        private void Awake()
         {
             if (lightRenderer == null)
+            {
                 lightRenderer = GetComponent<Renderer>();
+            }
         }
 
-        void Start()
+        private void Start()
         {
             if (puzzleManager != null)
             {
@@ -37,7 +39,7 @@ namespace WhoWiredThis.Puzzles.A17
             SetState(LightState.Idle);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (puzzleManager != null)
             {
@@ -46,32 +48,41 @@ namespace WhoWiredThis.Puzzles.A17
             }
         }
 
-        private void HandleSuccess() => SetState(LightState.Success);
-        private void HandleFailure(int _) => SetState(LightState.Failure);
+        private void HandleSuccess()
+        {
+            SetState(LightState.Success);
+        }
+
+        private void HandleFailure(int _)
+        {
+            SetState(LightState.Failure);
+        }
 
         private void SetState(LightState state)
         {
-            Material mat = state switch
+            Material nextMaterial = state switch
             {
                 LightState.Success => successMaterial,
                 LightState.Failure => failureMaterial,
                 _ => idleMaterial
             };
 
-            Color lightColor = state switch
+            Color nextColor = state switch
             {
                 LightState.Success => successColor,
                 LightState.Failure => failureColor,
                 _ => idleColor
             };
 
-            if (lightRenderer != null && mat != null)
-                lightRenderer.sharedMaterial = mat;
+            if (lightRenderer != null && nextMaterial != null)
+            {
+                lightRenderer.sharedMaterial = nextMaterial;
+            }
 
             if (indicatorLight != null)
             {
-                indicatorLight.color = lightColor;
-                indicatorLight.enabled = (state != LightState.Idle);
+                indicatorLight.color = nextColor;
+                indicatorLight.enabled = state != LightState.Idle;
             }
         }
     }

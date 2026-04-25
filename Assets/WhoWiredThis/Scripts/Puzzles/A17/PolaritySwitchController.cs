@@ -1,17 +1,11 @@
 using UnityEngine;
-using WhoWiredThis.Data.A17;
+using WhoWiredThis.Enums;
 using WhoWiredThis.Interactables;
 
 namespace WhoWiredThis.Puzzles.A17
 {
-    public class PolaritySwitchController : MonoBehaviour, IInteractable
+    public partial class PolaritySwitchController : MonoBehaviour, IInteractable
     {
-        public enum AllowedPlayerTag
-        {
-            Any = 0,
-            PlayerA = 1,
-            PlayerB = 2
-        }
 
         [Header("State")]
         [SerializeField] private PolarityState currentState = PolarityState.Off;
@@ -22,7 +16,7 @@ namespace WhoWiredThis.Puzzles.A17
         [SerializeField] private float topSurfaceOffsetY = 0.2f;
         [SerializeField] private float topDetectionTolerance = 0.05f;
         [SerializeField] private float triggerCooldownSeconds = 0.2f;
-        [SerializeField] private AllowedPlayerTag allowedPlayerTag = AllowedPlayerTag.Any;
+        [SerializeField] private AllowedPlayerTag allowedPlayerTag = AllowedPlayerTag.Any_Player;
 
         [Header("Visuals")]
         [SerializeField] private Renderer switchRenderer;
@@ -183,8 +177,8 @@ namespace WhoWiredThis.Puzzles.A17
         {
             return allowedPlayerTag switch
             {
-                AllowedPlayerTag.PlayerA => "PlayerA",
-                AllowedPlayerTag.PlayerB => "PlayerB",
+                AllowedPlayerTag.Player_A => "PlayerA",
+                AllowedPlayerTag.Player_B => "PlayerB",
                 _ => null
             };
         }
