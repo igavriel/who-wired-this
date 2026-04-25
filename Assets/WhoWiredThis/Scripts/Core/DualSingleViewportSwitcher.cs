@@ -1,0 +1,90 @@
+using UnityEngine;
+namespace WhoWiredThis.Core
+{
+    public class DualSingleViewportSwitcher : MonoBehaviour
+    {
+        [Header("References")]
+        [SerializeField] private CameraViewportPresetApplier firstCameraApplier;
+        [SerializeField] private CameraViewportPresetApplier secondCameraApplier;
+
+        [Header("Dual Layout")]
+        [SerializeField] private CameraViewportPresetApplier.ViewportPreset firstDualPreset =
+            CameraViewportPresetApplier.ViewportPreset.LeftHalfDisplay1;
+        [SerializeField] private CameraViewportPresetApplier.ViewportPreset secondDualPreset =
+            CameraViewportPresetApplier.ViewportPreset.RightHalfDisplay1;
+
+        [Header("Single Layout")]
+        [SerializeField] private CameraViewportPresetApplier.ViewportPreset firstSinglePreset =
+            CameraViewportPresetApplier.ViewportPreset.FullDisplay1;
+        [SerializeField] private CameraViewportPresetApplier.ViewportPreset secondSinglePreset =
+            CameraViewportPresetApplier.ViewportPreset.FullDisplay2;
+
+        [Header("Input")]
+        [SerializeField] private KeyCode toggleKey = KeyCode.P;
+        [SerializeField] private bool startInDualMode = true;
+
+        private bool isDualMode;
+
+        private void Awake()
+        {
+            if (firstCameraApplier == null)
+            {
+                Debug.LogWarning("[DualSingleViewportSwitcher] First CameraViewportPresetApplier is not assigned.", this);
+            }
+
+            if (secondCameraApplier == null)
+            {
+                Debug.LogWarning("[DualSingleViewportSwitcher] Second CameraViewportPresetApplier is not assigned.", this);
+            }
+        }
+
+        private void OnEnable()
+        {
+            isDualMode = startInDualMode;
+            ApplyCurrentLayout();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(toggleKey))
+            {
+                ToggleLayout();
+            }
+        }
+
+        [ContextMenu("Toggle Layout")]
+        public void ToggleLayout()
+        {
+            isDualMode = !isDualMode;
+            ApplyCurrentLayout();
+        }
+
+        private void ApplyCurrentLayout()
+        {
+            if (isDualMode)
+            {
+                if (firstCameraApplier != null)
+                {
+                    firstCameraApplier.SetPreset(firstDualPreset);
+                }
+
+                if (secondCameraApplier != null)
+                {
+                    secondCameraApplier.SetPreset(secondDualPreset);
+                }
+
+                return;
+            }
+
+            if (firstCameraApplier != null)
+            {
+                firstCameraApplier.SetPreset(firstSinglePreset);
+            }
+
+            if (secondCameraApplier != null)
+            {
+                secondCameraApplier.SetPreset(secondSinglePreset);
+            }
+        }
+    }
+}

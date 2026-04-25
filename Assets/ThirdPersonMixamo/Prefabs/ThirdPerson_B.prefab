@@ -188,7 +188,11 @@ PrefabInstance:
       objectReference: {fileID: 3562843418666362680}
     - target: {fileID: 1650757169936880970, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
       propertyPath: detectionMask.m_Bits
-      value: 256
+      value: 257
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767499599541379171, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+      propertyPath: preset
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1899013431239899201, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
       propertyPath: m_Enabled
@@ -247,8 +251,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6670348511946456673, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670348511946456673, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 311
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670348511946456673, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7380672659269795231, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
       propertyPath: m_Name

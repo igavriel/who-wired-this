@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2863320204935059248}
   - component: {fileID: 1650757169936880970}
   - component: {fileID: 2850619866039406524}
+  - component: {fileID: 1767499599541379171}
   m_Layer: 0
   m_Name: ThirdPerson_A
   m_TagString: Untagged
@@ -52,7 +53,7 @@ MonoBehaviour:
   interactRange: 1.5
   detectionMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 129
   inputBridge: {fileID: 2850619866039406524}
   playerController: {fileID: 8680275687584093684}
 --- !u!114 &2850619866039406524
@@ -67,6 +68,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389d5c7da9dd3463c98a5992e0b0cce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.PlayerInputBridge
+--- !u!114 &1767499599541379171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5404914802588021650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed159eb8593814f308a35b20b1d67c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
+  targetCamera: {fileID: 6670348511946456673}
+  preset: 2
 --- !u!1001 &923400836501384963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -233,6 +248,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 5564832025803321634}
+    - target: {fileID: 5201058027999244416, guid: d1831e398cbd44fedbd8ff3ccffdab95, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5477139525883977468, guid: d1831e398cbd44fedbd8ff3ccffdab95, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -285,6 +304,11 @@ PrefabInstance:
 --- !u!4 &6394756844142317597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5477139525883977468, guid: d1831e398cbd44fedbd8ff3ccffdab95, type: 3}
+  m_PrefabInstance: {fileID: 1494078080812650209}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &6670348511946456673 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5201058027999244416, guid: d1831e398cbd44fedbd8ff3ccffdab95, type: 3}
   m_PrefabInstance: {fileID: 1494078080812650209}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7565643048335537596
