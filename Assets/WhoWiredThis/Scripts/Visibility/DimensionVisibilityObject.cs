@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using WhoWiredThis.Puzzles.A17;
 
 namespace WhoWiredThis.Visibility
 {
@@ -15,25 +16,21 @@ namespace WhoWiredThis.Visibility
         [Header("Dimension Data")]
         [SerializeField] private DimensionVisibilityMode mode = DimensionVisibilityMode.PlayerAVisability;
 
+        [Header("Optional Switch Control")]
+        [SerializeField] private PolaritySwitchController controlledPolaritySwitch;
+
         [Header("Controlled Components - runtime debugging - no need to set")]
         [SerializeField] private Renderer[] objectRenderers = Array.Empty<Renderer>();
         [SerializeField] private Collider[] objectColliders = Array.Empty<Collider>();
-        [SerializeField] private Renderer[] shadowRenderers = Array.Empty<Renderer>();
+        [SerializeField] private Renderer[] placeholderRenderers = Array.Empty<Renderer>();
 
         private const string DimensionALayer = "DimensionA";
         private const string DimensionBLayer = "DimensionB";
-        private const string ShadowToken = "SHADOW";
+        private const string PlaceholderToken = "PLACEHOLDER";
 
         private void Awake()
         {
             ApplyVisibilitySetup();
-        }
-
-        private void OnValidate()
-        {
-            // Avoid layer reassignment during validation. Unity can emit
-            // "SendMessage cannot be called during OnValidate" for layer changes.
-            // Runtime setup still happens in Awake.
         }
 
         private void ApplyVisibilitySetup()
@@ -48,19 +45,35 @@ namespace WhoWiredThis.Visibility
             }
 
             int objectLayer = mode == DimensionVisibilityMode.PlayerAVisability ? dimensionALayerIndex : dimensionBLayerIndex;
-            int shadowLayer = mode == DimensionVisibilityMode.PlayerAVisability ? dimensionBLayerIndex : dimensionALayerIndex;
+            int placeholderLayer = mode == DimensionVisibilityMode.PlayerAVisability ? dimensionBLayerIndex : dimensionALayerIndex;
 
             SetTargetsLayer(objectRenderers, objectColliders, objectLayer);
-            SetTargetsLayer(shadowRenderers, Array.Empty<Collider>(), shadowLayer);
+            SetTargetsLayer(placeholderRenderers, Array.Empty<Collider>(), placeholderLayer);
             ApplyColliderState(objectColliders, true);
+            ApplySwitchAllowedPlayerTag();
+        }
+
+        private void ApplySwitchAllowedPlayerTag()
+        {
+            if (controlledPolaritySwitch == null)
+            {
+                return;
+            }
+
+            PolaritySwitchController.AllowedPlayerTag allowedTag =
+                mode == DimensionVisibilityMode.PlayerAVisability
+                    ? PolaritySwitchController.AllowedPlayerTag.PlayerA
+                    : PolaritySwitchController.AllowedPlayerTag.PlayerB;
+
+            controlledPolaritySwitch.SetAllowedPlayerTag(allowedTag);
         }
 
         private void AutoCollectIfNeeded()
         {
             bool needsObjects = objectRenderers == null || objectRenderers.Length == 0;
-            bool needsShadows = shadowRenderers == null || shadowRenderers.Length == 0;
+            bool needsPlaceholders = placeholderRenderers == null || placeholderRenderers.Length == 0;
 
-            if (!needsObjects && !needsShadows)
+            if (!needsObjects && !needsPlaceholders)
             {
                 return;
             }
@@ -70,99 +83,92 @@ namespace WhoWiredThis.Visibility
 
             if (needsObjects)
             {
-                List<Renderer> objectRendererList = new List<Renderer>();
-                List<Collider> objectColliderList = new List<Collider>();
-
-                for (int i = 0; i < allRenderers.Length; i++)
-                {
-                    if (!IsShadowTransform(allRenderers[i].transform))
-                    {
-                        objectRendererList.Add(allRenderers[i]);
-                    }
-                }
-
-                for (int i = 0; i < allColliders.Length; i++)
-                {
-                    if (!IsShadowTransform(allColliders[i].transform))
-                    {
-                        objectColliderList.Add(allColliders[i]);
-                    }
-                }
-
-                objectRenderers = objectRendererList.ToArray();
-                objectColliders = objectColliderList.ToArray();
+                objectRenderers = FilterRenderersByPlaceholder(allRenderers, includePlaceholders: false);
+                objectColliders = FilterCollidersByPlaceholder(allColliders, includePlaceholders: false);
             }
 
-            if (needsShadows)
+            if (needsPlaceholders)
             {
-                List<Renderer> shadowRendererList = new List<Renderer>();
-                List<Collider> shadowColliderList = new List<Collider>();
+                placeholderRenderers = FilterRenderersByPlaceholder(allRenderers, includePlaceholders: true);
 
-                for (int i = 0; i < allRenderers.Length; i++)
+                if (placeholderRenderers.Length == 0)
                 {
-                    if (IsShadowTransform(allRenderers[i].transform))
-                    {
-                        shadowRendererList.Add(allRenderers[i]);
-                    }
-                }
-
-                for (int i = 0; i < allColliders.Length; i++)
-                {
-                    if (IsShadowTransform(allColliders[i].transform))
-                    {
-                        shadowColliderList.Add(allColliders[i]);
-                    }
-                }
-
-                shadowRenderers = shadowRendererList.ToArray();
-
-                if (shadowRenderers.Length == 0)
-                {
-                    EnsureAutoShadow();
-                    shadowRenderers = GetComponentsInChildren<Renderer>(true);
-
-                    List<Renderer> autoShadowRenderers = new List<Renderer>();
-                    for (int i = 0; i < shadowRenderers.Length; i++)
-                    {
-                        if (IsShadowTransform(shadowRenderers[i].transform))
-                        {
-                            autoShadowRenderers.Add(shadowRenderers[i]);
-                        }
-                    }
-
-                    shadowRenderers = autoShadowRenderers.ToArray();
+                    EnsureAutoPlaceholder();
+                    placeholderRenderers = FilterRenderersByPlaceholder(GetComponentsInChildren<Renderer>(true), includePlaceholders: true);
                 }
             }
         }
 
-        private void EnsureAutoShadow()
+        private static Renderer[] FilterRenderersByPlaceholder(Renderer[] renderers, bool includePlaceholders)
         {
-            Transform existingShadow = transform.Find("SHADOW_Auto");
-            if (existingShadow != null)
+            List<Renderer> filtered = new List<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                if (renderer == null)
+                {
+                    continue;
+                }
+
+                bool isPlaceholder = IsPlaceholderTransform(renderer.transform);
+                if (isPlaceholder == includePlaceholders)
+                {
+                    filtered.Add(renderer);
+                }
+            }
+
+            return filtered.ToArray();
+        }
+
+        private static Collider[] FilterCollidersByPlaceholder(Collider[] colliders, bool includePlaceholders)
+        {
+            List<Collider> filtered = new List<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider collider = colliders[i];
+                if (collider == null)
+                {
+                    continue;
+                }
+
+                bool isPlaceholder = IsPlaceholderTransform(collider.transform);
+                if (isPlaceholder == includePlaceholders)
+                {
+                    filtered.Add(collider);
+                }
+            }
+
+            return filtered.ToArray();
+        }
+
+        private void EnsureAutoPlaceholder()
+        {
+            Transform existingPlaceholder = transform.Find("PLACEHOLDER_Auto");
+            if (existingPlaceholder != null)
             {
                 return;
             }
 
-            GameObject shadow = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            shadow.name = "SHADOW_Auto";
-            shadow.transform.SetParent(transform, false);
-            shadow.transform.localPosition = new Vector3(0f, 0.02f, 0f);
-            shadow.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-            shadow.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            GameObject Placeholder = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            Placeholder.name = "PLACEHOLDER_Auto";
+            Placeholder.transform.SetParent(transform, false);
+            Placeholder.transform.localPosition = new Vector3(0f, 0.02f, 0f);
+            Placeholder.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            Placeholder.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
-            Collider shadowCollider = shadow.GetComponent<Collider>();
-            if (shadowCollider != null)
+            Collider PlaceholderCollider = Placeholder.GetComponent<Collider>();
+            if (PlaceholderCollider != null)
             {
-                DestroyImmediate(shadowCollider);
+                DestroyImmediate(PlaceholderCollider);
             }
         }
 
-        private static bool IsShadowTransform(Transform target)
+        private static bool IsPlaceholderTransform(Transform target)
         {
             Transform current = target;
             while (current != null)
             {
-                if (current.name.IndexOf(ShadowToken, StringComparison.OrdinalIgnoreCase) >= 0)
+                if (current.name.IndexOf(PlaceholderToken, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return true;
                 }
