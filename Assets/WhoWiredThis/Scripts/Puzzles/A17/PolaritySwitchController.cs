@@ -32,7 +32,7 @@ namespace WhoWiredThis.Puzzles.A17
                 PolarityState.Positive => "[ + ]",
                 _ => "[ 0 ]"
             };
-            return $"[E] Polarity: {stateLabel}";
+            return $"$INTERACT$ Polarity: {stateLabel}";
         }
 
         public void Interact(GameObject interactor)

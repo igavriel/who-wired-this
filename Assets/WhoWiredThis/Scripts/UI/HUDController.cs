@@ -32,6 +32,7 @@ namespace WhoWiredThis.UI
 
         private bool inventoryVisible;
         private bool soundEnabled = true;
+        private string interactKeyLabel = "E";
 
         void Awake()
         {
@@ -69,17 +70,6 @@ namespace WhoWiredThis.UI
         }
 
         // ── Help content ────────────────────────────────────────────────────
-        private const string HelpContent =
-            "<b>CONTROLS</b>\n" +
-            "──────────────────────────\n" +
-            "<b>WASD / Arrows</b>        Move\n" +
-            "<b>Right-Click + Drag</b>   Rotate Camera\n" +
-            "<b>E</b>                    Interact\n" +
-            "<b>1 / 2 / 3</b>            Select Inventory Slot\n" +
-            "<b>I</b>  or  [BAG]         Toggle Inventory\n" +
-            "<b>Space / Enter</b>         Close Popup\n" +
-            "<b>H</b>                    Toggle This Help";
-
         private const string AboutContent =
             "<b>WHO WIRED THIS</b>\n" +
             "Puzzle adventure prototype built with Unity.\n\n" +
@@ -133,6 +123,16 @@ namespace WhoWiredThis.UI
             }
         }
 
+        public void SetInteractKeyLabel(string keyLabel)
+        {
+            if (string.IsNullOrWhiteSpace(keyLabel))
+            {
+                return;
+            }
+
+            interactKeyLabel = keyLabel;
+        }
+
         public void ToggleInventory()
         {
             inventoryVisible = !inventoryVisible;
@@ -152,7 +152,7 @@ namespace WhoWiredThis.UI
             }
             else
             {
-                MessagePanel.Instance.Show(HelpContent);
+                MessagePanel.Instance.Show(BuildHelpContent());
             }
         }
 
@@ -200,6 +200,20 @@ namespace WhoWiredThis.UI
             {
                 soundButtonLabel.text = soundEnabled ? "Sound: On" : "Sound: Off";
             }
+        }
+
+        private string BuildHelpContent()
+        {
+            return
+                "<b>CONTROLS</b>\n" +
+                "──────────────────────────\n" +
+                "<b>WASD / Arrows</b>        Move\n" +
+                "<b>Right-Click + Drag</b>   Rotate Camera\n" +
+                $"<b>{interactKeyLabel}</b>                    Interact\n" +
+                "<b>1 / 2 / 3</b>            Select Inventory Slot\n" +
+                "<b>I</b>  or  [BAG]         Toggle Inventory\n" +
+                "<b>Space / Enter</b>         Close Popup\n" +
+                "<b>H</b>                    Toggle This Help";
         }
     }
 }

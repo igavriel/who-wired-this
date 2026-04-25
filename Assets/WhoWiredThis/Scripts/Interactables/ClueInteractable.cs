@@ -12,7 +12,7 @@ namespace WhoWiredThis.Interactables
 
         private bool hasBeenRead;
 
-        public string GetPromptText() => "[E] Examine note";
+        public string GetPromptText() => "$INTERACT$ Examine note";
 
         public void Interact(GameObject interactor)
         {

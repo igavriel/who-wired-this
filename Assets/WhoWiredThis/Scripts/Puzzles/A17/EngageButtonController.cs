@@ -30,7 +30,7 @@ namespace WhoWiredThis.Puzzles.A17
         {
             if (puzzleManager != null && puzzleManager.IsSolved)
                 return "POLARITY ENGAGED";
-            return "[E] ENGAGE";
+            return "$INTERACT$ ENGAGE";
         }
 
         public void Interact(GameObject interactor)

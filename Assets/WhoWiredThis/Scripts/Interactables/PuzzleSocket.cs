@@ -21,13 +21,13 @@ namespace WhoWiredThis.Interactables
         {
             if (PlacedItem != null)
             {
-                return $"[E] Remove {PlacedItem.itemName} from {socketLabel}";
+                return $"$INTERACT$ Remove {PlacedItem.itemName} from {socketLabel}";
             }
 
             ItemData sel = InventoryManager.Instance?.SelectedItem;
             return sel != null
-                ? $"[E] Place {sel.itemName} in {socketLabel}"
-                : $"[E] {socketLabel} — select an item first (1/2/3)";
+                ? $"$INTERACT$ Place {sel.itemName} in {socketLabel}"
+                : $"$INTERACT$ {socketLabel} — select an item first (1/2/3)";
         }
 
         public void Interact(GameObject interactor)

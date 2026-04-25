@@ -44,13 +44,13 @@ namespace ThirdPersonMixamo
         public float AnimatorSpeedBlend => _animatorSpeedBlend;
         public float AnimatorMotionSpeed { get; private set; }
         public bool InteractPressedThisFrame => _inputInteract;
+        public KeyCode InteractKey => inputBindings != null ? inputBindings.Interact : KeyCode.LeftControl;
         private KeyCode MoveForwardKey => inputBindings != null ? inputBindings.MoveForward : KeyCode.W;
         private KeyCode MoveBackKey => inputBindings != null ? inputBindings.MoveBack : KeyCode.S;
         private KeyCode MoveLeftKey => inputBindings != null ? inputBindings.MoveLeft : KeyCode.A;
         private KeyCode MoveRightKey => inputBindings != null ? inputBindings.MoveRight : KeyCode.D;
         private KeyCode SprintKey => inputBindings != null ? inputBindings.Sprint : KeyCode.LeftShift;
         private KeyCode JumpKey => inputBindings != null ? inputBindings.Jump : KeyCode.Space;
-        private KeyCode InteractKey => inputBindings != null ? inputBindings.Interact : KeyCode.LeftControl;
 
         private void Awake()
         {

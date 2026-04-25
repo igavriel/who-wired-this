@@ -35,6 +35,7 @@ namespace WhoWiredThis.Player
         void Start()
         {
             EnsureCursorVisible();
+            HUDController.Instance?.SetInteractKeyLabel(GetInteractKeyLabel());
         }
 
         void Update()
@@ -110,14 +111,35 @@ namespace WhoWiredThis.Player
             if (nearest != currentInteractable)
             {
                 currentInteractable = nearest;
-                HUDController.Instance?.SetInteractPrompt(nearest?.GetPromptText());
+                HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(nearest?.GetPromptText()));
             }
 
             bool activateFromInput = playerController.InteractPressedThisFrame;
             if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
+                HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(currentInteractable.GetPromptText()));
             }
+        }
+
+        private string FormatPromptForPlayer(string prompt)
+        {
+            if (string.IsNullOrEmpty(prompt))
+            {
+                return prompt;
+            }
+
+            string interactKeyLabel = GetInteractKeyLabel();
+            string interactToken = $"[{interactKeyLabel}]";
+
+            return prompt.Replace("$INTERACT$", interactToken);
+        }
+
+        private string GetInteractKeyLabel()
+        {
+            return playerController.InteractKey != KeyCode.None
+                ? playerController.InteractKey.ToString()
+                : "?";
         }
 
         private void HandleUIHotkeys()

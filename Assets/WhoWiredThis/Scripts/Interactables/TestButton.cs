@@ -34,7 +34,7 @@ namespace WhoWiredThis.Interactables
         public string GetPromptText() =>
             GameManager.Instance != null && GameManager.Instance.PuzzleSolved
                 ? "Relay online."
-                : "[E] Test relay";
+                : "$INTERACT$ Test relay";
 
         public void Interact(GameObject interactor)
         {

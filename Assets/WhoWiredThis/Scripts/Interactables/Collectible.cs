@@ -12,7 +12,7 @@ namespace WhoWiredThis.Interactables
         public int scoreValue = 1;
 
         public string GetPromptText() =>
-            itemData != null ? $"[E] Pick up {itemData.itemName}" : "[E] Pick up";
+            itemData != null ? $"$INTERACT$ Pick up {itemData.itemName}" : "$INTERACT$ Pick up";
 
         public void Interact(GameObject interactor)
         {
