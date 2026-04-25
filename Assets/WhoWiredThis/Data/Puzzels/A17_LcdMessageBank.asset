@@ -11,24 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ee1dec0649074773843f6b50ec76c73, type: 3}
   m_Name: A17_LcdMessageBank
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Data.A17.LcdMessageBankSO
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Data.Common.LcdMessageBankSO
   idleMessage: 'UNIT A17 - POLARITY CONTROL
 
     SET SWITCH CONFIGURATION
 
     AWAITING
     ENGAGE'
-  failureMessage: 'POLARITY ERROR
+  failureMessage: '<b>[*] POLARITY ERROR [*]</b>
 
     CONFIGURATION REJECTED
 
     RECALIBRATE AND
     RETRY'
-  successMessage: 'POLARITY ENGAGED
+  successMessage: '<b>[*] POLARITY ENGAGED [*]</b>
 
-    ENERGY MATRIX STABLE
-
-    UNIT A17 ONLINE'
+    UNIT A17 ONLINE. Energy matrix stabilized.'
   engageFailMessages:
   - 'POLARITY ERROR: Configuration matrix unstable. Adjust and retry.'
   - 'SYSTEM ALERT: Incorrect polarity pattern detected. Recalibrate.'

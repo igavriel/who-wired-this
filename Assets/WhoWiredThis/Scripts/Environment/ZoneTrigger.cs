@@ -11,7 +11,9 @@ namespace WhoWiredThis.Environment
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") ||
+                other.CompareTag("PlayerA") ||
+                other.CompareTag("PlayerB"))
             {
                 GameManager.Instance?.SetZone(zoneName);
             }

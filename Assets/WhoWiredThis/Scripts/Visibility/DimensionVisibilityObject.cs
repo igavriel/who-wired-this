@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using WhoWiredThis.Puzzles.A17;
 using WhoWiredThis.Enums;
+using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.Visibility
 {

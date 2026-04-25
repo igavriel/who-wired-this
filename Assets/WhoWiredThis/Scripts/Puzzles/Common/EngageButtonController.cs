@@ -1,14 +1,15 @@
 using UnityEngine;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Data.Puzzels;
-using WhoWiredThis.Interactables;
 using WhoWiredThis.UI;
+using WhoWiredThis.Util;
 
-namespace WhoWiredThis.Puzzles.A17
+namespace WhoWiredThis.Puzzles.Common
 {
     public class EngageButtonController : MonoBehaviour, IInteractable
     {
         [Header("Puzzle")]
-        [SerializeField] private A17PuzzleManager puzzleManager;
+        [SerializeField] private MonoBehaviour puzzleManager;
 
         [Header("Message Bank")]
         [SerializeField] private LcdMessageBankSO messageBank;
@@ -19,34 +20,39 @@ namespace WhoWiredThis.Puzzles.A17
         [SerializeField] private Material successMaterial;
 
         private int failIndex;
+        private IPuzzleManager resolvedPuzzleManager;
+        private IPuzzleManager PuzzleManager => resolvedPuzzleManager;
 
         void Awake()
         {
             if (buttonRenderer == null)
                 buttonRenderer = GetComponent<Renderer>();
+
+            resolvedPuzzleManager = PuzzleManagerResolver.ResolvePuzzleManagerReference(
+                puzzleManager,
+                this,
+                nameof(EngageButtonController));
         }
 
         public string GetPromptText()
         {
-            if (puzzleManager != null && puzzleManager.IsSolved)
-                return "POLARITY ENGAGED";
-            return "$INTERACT$ ENGAGE";
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null && manager.IsSolved)
+                return messageBank.promptSolvedMessage;
+            return messageBank.promptUnsolvedMessage;
         }
 
         public void Interact(GameObject interactor)
         {
-            if (puzzleManager == null || puzzleManager.IsSolved) return;
+            IPuzzleManager manager = PuzzleManager;
+            if (manager == null || manager.IsSolved) return;
 
-            bool success = puzzleManager.TryEngage();
+            bool success = manager.TryEngage();
 
             if (success)
-            {
                 HandleSuccess();
-            }
             else
-            {
-                HandleFail(puzzleManager.Attempts);
-            }
+                HandleFail(manager.Attempts);
         }
 
         private void HandleSuccess()
@@ -54,10 +60,15 @@ namespace WhoWiredThis.Puzzles.A17
             if (buttonRenderer != null && successMaterial != null)
                 buttonRenderer.sharedMaterial = successMaterial;
 
-            MessagePanel.Instance?.Show(
-                "<b>[*] POLARITY ENGAGED [*]</b>\n\n" +
-                $"Unit A17 online. Energy matrix stabilized.\n" +
-                $"<size=70%>Score recorded: {puzzleManager.ComputeCurrentScore()}</size>");
+            IPuzzleManager manager = PuzzleManager;
+            if (manager == null)
+            {
+                return;
+            }
+
+            string msg = messageBank.successMessage;
+            msg += $"\n\n<size=70%>Score recorded: {manager.ComputeCurrentScore()}</size>";
+            MessagePanel.Instance?.Show(msg);
         }
 
         private void HandleFail(int currentAttempts)
@@ -67,12 +78,12 @@ namespace WhoWiredThis.Puzzles.A17
             string msg = pool[failIndex % pool.Length];
             failIndex++;
 
-            if (currentAttempts >= puzzleManager.HintTriggerAttempt)
-            {
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null && currentAttempts >= manager.HintTriggerAttempt)
                 msg += $"\n\n<size=70%>Attempts: {currentAttempts} | Hint: check the diagram.</size>";
-            }
 
             MessagePanel.Instance?.Show(msg);
         }
+
     }
 }

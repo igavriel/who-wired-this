@@ -1,4 +1,5 @@
 using UnityEngine;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
 using WhoWiredThis.UI;
 

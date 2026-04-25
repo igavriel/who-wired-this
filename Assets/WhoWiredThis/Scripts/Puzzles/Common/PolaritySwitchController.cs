@@ -1,10 +1,10 @@
 using UnityEngine;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Enums;
-using WhoWiredThis.Interactables;
 
-namespace WhoWiredThis.Puzzles.A17
+namespace WhoWiredThis.Puzzles.Common
 {
-    public partial class PolaritySwitchController : MonoBehaviour, IInteractable
+    public class PolaritySwitchController : MonoBehaviour, IInteractable
     {
 
         [Header("State")]

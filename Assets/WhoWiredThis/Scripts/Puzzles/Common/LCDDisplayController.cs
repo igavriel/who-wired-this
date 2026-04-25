@@ -1,35 +1,53 @@
 using UnityEngine;
 using TMPro;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Data.Puzzels;
+using WhoWiredThis.Util;
 
-namespace WhoWiredThis.Puzzles.A17
+namespace WhoWiredThis.Puzzles.Common
 {
     public class LCDDisplayController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private A17PuzzleManager puzzleManager;
+        [SerializeField] private MonoBehaviour puzzleManager;
         [SerializeField] private TextMeshPro displayText;
 
         [Header("Message Bank")]
         [SerializeField] private LcdMessageBankSO messageBank;
 
+        private IPuzzleManager resolvedPuzzleManager;
+        private IPuzzleManager PuzzleManager => resolvedPuzzleManager;
+
         void Awake()
         {
             if (displayText == null)
                 displayText = GetComponentInChildren<TextMeshPro>();
+
+            resolvedPuzzleManager = PuzzleManagerResolver.ResolvePuzzleManagerReference(
+                puzzleManager,
+                this,
+                nameof(LCDDisplayController));
         }
 
         void Start()
         {
             ShowMessage(messageBank.idleMessage);
-            puzzleManager.OnSuccess += HandleSuccess;
-            puzzleManager.OnFailure += HandleFailure;
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null)
+            {
+                manager.OnSuccess += HandleSuccess;
+                manager.OnFailure += HandleFailure;
+            }
         }
 
         void OnDestroy()
         {
-            puzzleManager.OnSuccess -= HandleSuccess;
-            puzzleManager.OnFailure -= HandleFailure;
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null)
+            {
+                manager.OnSuccess -= HandleSuccess;
+                manager.OnFailure -= HandleFailure;
+            }
         }
 
         private void HandleSuccess() => ShowMessage(messageBank.successMessage);
@@ -37,7 +55,8 @@ namespace WhoWiredThis.Puzzles.A17
         private void HandleFailure(int attempts)
         {
             string msg = messageBank.failureMessage;
-            if (attempts >= puzzleManager.HintTriggerAttempt)
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null && attempts >= manager.HintTriggerAttempt)
                 msg += $"\n\n<size=70%>Attempts: {attempts} | Hint: check the diagram.</size>";
             ShowMessage(msg);
         }
@@ -47,5 +66,6 @@ namespace WhoWiredThis.Puzzles.A17
             if (displayText != null)
                 displayText.text = message;
         }
+
     }
 }

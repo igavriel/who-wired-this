@@ -2080,6 +2080,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed159eb8593814f308a35b20b1d67c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
+--- !u!114 &1917210248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031585010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ac03b1141f54df39ef967ce9892a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.EngageButtonController
+  puzzleManager: {fileID: 1289321612}
+  messageBank: {fileID: 11400000, guid: 16c68069e75c849b0a4bcb910f175d83, type: 2}
+  buttonRenderer: {fileID: 2031585015}
+  idleMaterial: {fileID: 2100000, guid: fabfbe5fb7b944753bf5a66532069ed4, type: 2}
+  successMaterial: {fileID: 2100000, guid: b921bd12f021b4287acbdef77c98149c, type: 2}
 --- !u!1 &2031585007
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,7 +2161,7 @@ GameObject:
   - component: {fileID: 2031585014}
   - component: {fileID: 2031585015}
   - component: {fileID: 2031585016}
-  - component: {fileID: 2031585017}
+  - component: {fileID: 1917210248}
   m_Layer: 0
   m_Name: EngageButton
   m_TagString: Untagged
@@ -2281,22 +2298,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2031585017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031585010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55d0550739734f81848ed1e533f84a57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.FloorColor.FloorColorEngageButtonController
-  puzzleManager: {fileID: 2031585009}
-  buttonRenderer: {fileID: 2031585015}
-  idleMaterial: {fileID: 2100000, guid: fabfbe5fb7b944753bf5a66532069ed4, type: 2}
-  successMaterial: {fileID: 2100000, guid: b921bd12f021b4287acbdef77c98149c, type: 2}
 --- !u!33 &2031585018
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2428,15 +2429,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2031585012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7863f42eb0c546e19f0f0ec56f2d2065, type: 3}
+  m_Script: {fileID: 11500000, guid: 8421fea77d6474dafb285ccab3875ab0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.FloorColor.FloorColorResultLightController
-  puzzleManager: {fileID: 2031585009}
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ResultLightController
+  puzzleManager: {fileID: 1289321612}
   lightRenderer: {fileID: 2031585019}
   indicatorLight: {fileID: 2031585020}
-  idleMaterial: {fileID: 2100000, guid: fabfbe5fb7b944753bf5a66532069ed4, type: 2}
+  idleMaterial: {fileID: 2100000, guid: ac2414ee6dc9b4596b3d60014ff15754, type: 2}
   failureMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
-  successMaterial: {fileID: 2100000, guid: b921bd12f021b4287acbdef77c98149c, type: 2}
+  successMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   idleColor: {r: 1, g: 0.75, b: 0, a: 1}
   failureColor: {r: 1, g: 0, b: 0, a: 1}
   successColor: {r: 0, g: 1, b: 0, a: 1}

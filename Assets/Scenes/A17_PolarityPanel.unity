@@ -556,6 +556,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 1545646908113008810, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: startInDualMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545646908113008810, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: firstCameraApplier
+      value: 
+      objectReference: {fileID: 814512347}
+    - target: {fileID: 1545646908113008810, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: secondCameraApplier
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7373003079995886324, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.48521
@@ -763,67 +775,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
---- !u!1001 &567454875
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2401201084985969722, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5058406821173649684, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 684606182}
-    - target: {fileID: 5072578946911451047, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
-      propertyPath: m_Name
-      value: PlayerCamera_Single
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9b39b61824f8f4a388daf588d26fe459, type: 3}
 --- !u!1 &615977768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,11 +1027,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
---- !u!4 &684606182 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2863320204935059248, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
+--- !u!114 &814512347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1767499599541379171, guid: 7840ca6f417024c03a2486090c629e32, type: 3}
   m_PrefabInstance: {fileID: 1809390580}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed159eb8593814f308a35b20b1d67c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
 --- !u!1 &932706920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1273,7 +1230,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.PolaritySwitchController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!1 &1176078570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,7 +1359,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.PolaritySwitchController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &1186242345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
@@ -1418,7 +1375,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.PolaritySwitchController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &1202654014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
@@ -1434,7 +1391,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.PolaritySwitchController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!1 &1323289603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,7 +1749,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.PolaritySwitchController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!1 &2051963720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,7 +1796,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20ac03b1141f54df39ef967ce9892a10, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.EngageButtonController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.EngageButtonController
   puzzleManager: {fileID: 1645449554}
   messageBank: {fileID: 11400000, guid: 23dfe41c3930c448c971dde419fd0715, type: 2}
   buttonRenderer: {fileID: 2051963723}
@@ -1970,7 +1927,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8421fea77d6474dafb285ccab3875ab0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.ResultLightController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ResultLightController
   puzzleManager: {fileID: 1645449554}
   lightRenderer: {fileID: 2061730447}
   indicatorLight: {fileID: 294677552}
@@ -2154,7 +2111,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 241768a8cfb4b4c84864adb6ed542b87, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.LCDDisplayController
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.LCDDisplayController
   puzzleManager: {fileID: 1645449554}
   displayText: {fileID: 219376611}
   messageBank: {fileID: 11400000, guid: 23dfe41c3930c448c971dde419fd0715, type: 2}
@@ -2308,7 +2265,6 @@ SceneRoots:
   - {fileID: 316812443}
   - {fileID: 388879543}
   - {fileID: 1809390580}
-  - {fileID: 567454875}
   - {fileID: 1891739720}
   - {fileID: 229192780}
   - {fileID: 1323289604}

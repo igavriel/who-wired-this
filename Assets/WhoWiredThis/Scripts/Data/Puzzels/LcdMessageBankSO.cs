@@ -5,6 +5,12 @@ namespace WhoWiredThis.Data.Puzzels
     [CreateAssetMenu(menuName = "WhoWiredThis/LCD Message Bank", fileName = "LcdMessageBank")]
     public class LcdMessageBankSO : ScriptableObject
     {
+        [Header("Prompt Messages")]
+        [TextArea(1, 1)]
+        public string promptUnsolvedMessage = "$INTERACT$ ENGAGE";
+        [TextArea(1, 1)]
+        public string promptSolvedMessage = "POLARITY ENGAGED";
+
         [Header("LCD Screen Messages")]
         [TextArea(2, 4)]
         public string idleMessage = "UNIT A17 - POLARITY CONTROL\nSET SWITCH CONFIGURATION\nAWAITING ENGAGE";

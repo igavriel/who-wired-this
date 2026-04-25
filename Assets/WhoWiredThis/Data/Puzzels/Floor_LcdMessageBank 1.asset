@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee1dec0649074773843f6b50ec76c73, type: 3}
+  m_Name: Floor_LcdMessageBank 1
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Data.Common.LcdMessageBankSO
+  promptUnsolvedMessage: $INTERACT$ ENGAGE
+  promptSolvedMessage: FLOOR PATTERN ENGAGED
+  idleMessage: 'B52 - FLOOR PATTERN CONTROL
+
+    SET PATTERN CONFIGURATION
+
+    AWAITING
+    ENGAGE'
+  failureMessage: '<b>[*] PATTERN ERROR [*]</b>
+
+    CONFIGURATION REJECTED
+
+    RECALIBRATE
+    AND RETRY'
+  successMessage: '<b>[*] PATTERN ENGAGED [*]</b>
+
+    B52 ONLINE. Energy matrix
+    stabilized.'
+  engageFailMessages:
+  - 'PATTERN ERROR: Configuration matrix unstable. Adjust and retry.'
+  - 'SYSTEM ALERT: Incorrect pattern detected. Recalibrate.'
+  - 'B52: Energy alignment rejected. Check pattern settings.'
+  - 'WARNING: Pattern mismatch on one or more channels. Reset and retry.'
+  - 'ERROR 0x18A: Invalid pattern configuration. Review the diagram.'

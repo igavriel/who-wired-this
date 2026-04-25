@@ -1,9 +1,9 @@
 using UnityEngine;
-using ThirdPersonMixamo;
-using WhoWiredThis.Core;
-using WhoWiredThis.Interactables;
-using WhoWiredThis.UI;
 using UnityEngine.Assertions;
+using ThirdPersonMixamo;
+using WhoWiredThis.Interfaces;
+using WhoWiredThis.Core;
+using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Player
 {

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
 using WhoWiredThis.Data.Puzzels;
-using WhoWiredThis.Puzzles.A17;
 using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.Puzzles.FloorColor
 {
-    public class FloorColorMatrixPuzzleManager : MonoBehaviour
+    public class FloorColorMatrixPuzzleManager : MonoBehaviour, IPuzzleManager
     {
         [Serializable]
         private class SwitchRow

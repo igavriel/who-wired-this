@@ -1,12 +1,14 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
+using WhoWiredThis.Interfaces;
+using WhoWiredThis.Util;
 
-namespace WhoWiredThis.Puzzles.A17
+namespace WhoWiredThis.Puzzles.Common
 {
     public class ResultLightController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private A17PuzzleManager puzzleManager;
+        [SerializeField] private MonoBehaviour puzzleManager;
         [SerializeField] private Renderer lightRenderer;
         [SerializeField] private Light indicatorLight;
 
@@ -19,19 +21,27 @@ namespace WhoWiredThis.Puzzles.A17
         [SerializeField] private Color idleColor = new Color(1f, 0.75f, 0f);
         [SerializeField] private Color failureColor = Color.red;
         [SerializeField] private Color successColor = Color.green;
+        private IPuzzleManager resolvedPuzzleManager;
+        private IPuzzleManager PuzzleManager => resolvedPuzzleManager;
 
         void Awake()
         {
             if (lightRenderer == null)
                 lightRenderer = GetComponent<Renderer>();
+
+            resolvedPuzzleManager = PuzzleManagerResolver.ResolvePuzzleManagerReference(
+                puzzleManager,
+                this,
+                nameof(ResultLightController));
         }
 
         void Start()
         {
-            if (puzzleManager != null)
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null)
             {
-                puzzleManager.OnSuccess += HandleSuccess;
-                puzzleManager.OnFailure += HandleFailure;
+                manager.OnSuccess += HandleSuccess;
+                manager.OnFailure += HandleFailure;
             }
 
             SetState(LightState.Idle);
@@ -39,10 +49,11 @@ namespace WhoWiredThis.Puzzles.A17
 
         void OnDestroy()
         {
-            if (puzzleManager != null)
+            IPuzzleManager manager = PuzzleManager;
+            if (manager != null)
             {
-                puzzleManager.OnSuccess -= HandleSuccess;
-                puzzleManager.OnFailure -= HandleFailure;
+                manager.OnSuccess -= HandleSuccess;
+                manager.OnFailure -= HandleFailure;
             }
         }
 
@@ -74,5 +85,6 @@ namespace WhoWiredThis.Puzzles.A17
                 indicatorLight.enabled = (state != LightState.Idle);
             }
         }
+
     }
 }

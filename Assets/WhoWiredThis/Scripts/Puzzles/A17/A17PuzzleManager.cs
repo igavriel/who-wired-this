@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
+using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Data.Puzzels;
 
 namespace WhoWiredThis.Puzzles.A17
 {
-    public class A17PuzzleManager : MonoBehaviour
+    public class A17PuzzleManager : MonoBehaviour, IPuzzleManager
     {
         [Header("Config")]
         [SerializeField] private Array_PuzzleConfigSO config;

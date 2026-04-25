@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WhoWiredThis.Interactables
+namespace WhoWiredThis.Interfaces
 {
     public interface IInteractable
     {
