@@ -112,6 +112,13 @@ MonoBehaviour:
   smoothSpeed: 5
   lookOffset: {x: 0, y: 1.2, z: 0}
   lockYawOnStart: 1
+  cinematicModeEnabled: 1
+  occluderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  occlusionProbeRadius: 0.2
+  blockedHeight: 3
+  blockedDistance: 0.5
 --- !u!114 &3958428015321354073
 MonoBehaviour:
   m_ObjectHideFlags: 0
