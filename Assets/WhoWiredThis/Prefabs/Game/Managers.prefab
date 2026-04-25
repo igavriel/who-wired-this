@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4935711618533088660}
   - component: {fileID: 6151463977448403461}
   - component: {fileID: 5566198571770203838}
+  - component: {fileID: 4859528642009553313}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -97,3 +98,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f56cf3380c04bb2bf5ed15c12f265e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateDisplays
+  setMinimumSharedResolution: 0
+--- !u!114 &4859528642009553313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249580574213425681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 654907cef530648cf97e00c9f4e6895a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.SceneHotkeySwitcher
+  bindings:
+  - sceneName: LocalDuel Mini
+    shortcut: 49
+  - sceneName: TestMultiDisplays
+    shortcut: 50
+  - sceneName: SampleScene
+    shortcut: 51
+  ignoreWhenAlreadyInTargetScene: 1
+  bossKey: 293
+  hotkeysEnabled: 0

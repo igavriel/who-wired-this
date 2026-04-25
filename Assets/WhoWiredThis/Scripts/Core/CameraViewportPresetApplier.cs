@@ -18,6 +18,8 @@ namespace WhoWiredThis.Core
 
         [Header("Configuration")]
         [SerializeField] private ViewportPreset preset = ViewportPreset.FullDisplay1;
+        private ViewportPreset lastAppliedPreset;
+        private bool hasAppliedPreset;
 
         private void Awake()
         {
@@ -26,7 +28,7 @@ namespace WhoWiredThis.Core
 
         private void OnEnable()
         {
-            ApplyPreset();
+            ApplyPreset(force: true);
         }
 
         private void OnValidate()
@@ -36,12 +38,17 @@ namespace WhoWiredThis.Core
                 return;
             }
 
-            ApplyPreset();
+            ApplyPreset(force: true);
         }
 
         [ContextMenu("Apply Preset")]
-        public void ApplyPreset()
+        public void ApplyPreset(bool force = false)
         {
+            if (!force && hasAppliedPreset && lastAppliedPreset == preset)
+            {
+                return;
+            }
+
             switch (preset)
             {
                 case ViewportPreset.LeftHalfDisplay1:
@@ -64,10 +71,18 @@ namespace WhoWiredThis.Core
                     targetCamera.targetDisplay = 1; // Display 2
                     break;
             }
+
+            lastAppliedPreset = preset;
+            hasAppliedPreset = true;
         }
 
         public void SetPreset(ViewportPreset nextPreset)
         {
+            if (preset == nextPreset)
+            {
+                return;
+            }
+
             preset = nextPreset;
             ApplyPreset();
         }
