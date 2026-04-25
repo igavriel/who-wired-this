@@ -910,7 +910,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1249580574213425681, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1559946501}
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
 --- !u!4 &508520411 stripped
 Transform:
@@ -1122,7 +1125,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806460691}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &806460694
 Camera:
   m_ObjectHideFlags: 0
@@ -2097,6 +2100,23 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
+--- !u!1 &1559946495 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1249580574213425681, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+  m_PrefabInstance: {fileID: 491408169}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1559946501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559946495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7f56cf3380c04bb2bf5ed15c12f265e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActivateDisplays
 --- !u!4 &1824452859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9041911933769316260, guid: 64646ce2b60f541fa93c8e562a959071, type: 3}
