@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using WhoWiredThis.Core;
-using WhoWiredThis.Data.FloorColor;
+using WhoWiredThis.Data.Puzzels;
 using WhoWiredThis.Puzzles.A17;
 using WhoWiredThis.Puzzles.Common;
 
@@ -17,7 +17,7 @@ namespace WhoWiredThis.Puzzles.FloorColor
         }
 
         [Header("Config")]
-        [SerializeField] private Floor_PuzzleConfigSO config;
+        [SerializeField] private Matrix_PuzzleConfigSO config;
 
         [Header("Switch Matrix")]
         [SerializeField] private Transform matrixRoot;
@@ -144,7 +144,7 @@ namespace WhoWiredThis.Puzzles.FloorColor
             for (int rowIndex = 0; rowIndex < switchRows.Length; rowIndex++)
             {
                 SwitchRow row = switchRows[rowIndex];
-                Floor_PuzzleConfigSO.PolaritySolutionRow solutionRow = config.solutionRows[rowIndex];
+                Matrix_PuzzleConfigSO.PolaritySolutionRow solutionRow = config.solutionRows[rowIndex];
 
                 if (row == null || row.switches == null || solutionRow == null || solutionRow.values == null)
                 {

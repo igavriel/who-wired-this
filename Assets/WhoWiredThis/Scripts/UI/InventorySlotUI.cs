@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WhoWiredThis.Data;
-using WhoWiredThis.Inventory;
+using WhoWiredThis.Core;
 
 namespace WhoWiredThis.UI
 {

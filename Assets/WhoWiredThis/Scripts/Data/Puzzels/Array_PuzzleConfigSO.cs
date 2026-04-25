@@ -1,10 +1,10 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
 
-namespace WhoWiredThis.Data.A17
+namespace WhoWiredThis.Data.Puzzels
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/A17/Puzzle Config", fileName = "A17_PuzzleConfig")]
-    public class PuzzleConfigSO : ScriptableObject
+    [CreateAssetMenu(menuName = "WhoWiredThis/Array Puzzle Config", fileName = "Array_PuzzleConfig")]
+    public class Array_PuzzleConfigSO : ScriptableObject
     {
         [Header("Solution")]
         [Tooltip("Five values: -1 = Negative, 0 = Off, 1 = Positive. Must include at least one of each.")]

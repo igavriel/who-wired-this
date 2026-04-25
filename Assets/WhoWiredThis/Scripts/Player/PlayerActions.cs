@@ -1,7 +1,7 @@
 using UnityEngine;
 using ThirdPersonMixamo;
+using WhoWiredThis.Core;
 using WhoWiredThis.Interactables;
-using WhoWiredThis.Inventory;
 using WhoWiredThis.UI;
 using UnityEngine.Assertions;
 

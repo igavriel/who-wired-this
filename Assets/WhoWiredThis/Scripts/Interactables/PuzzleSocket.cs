@@ -1,6 +1,6 @@
 using UnityEngine;
 using WhoWiredThis.Data;
-using WhoWiredThis.Inventory;
+using WhoWiredThis.Core;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Interactables

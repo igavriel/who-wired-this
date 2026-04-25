@@ -2,10 +2,10 @@ using System;
 using UnityEngine;
 using WhoWiredThis.Enums;
 
-namespace WhoWiredThis.Data.FloorColor
+namespace WhoWiredThis.Data.Puzzels
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/Floor Puzzle Config", fileName = "Floor_PuzzleConfig")]
-    public class Floor_PuzzleConfigSO : ScriptableObject
+    [CreateAssetMenu(menuName = "WhoWiredThis/Matrix Puzzle Config", fileName = "Matrix_PuzzleConfig")]
+    public class Matrix_PuzzleConfigSO : ScriptableObject
     {
         [Serializable]
         public class PolaritySolutionRow

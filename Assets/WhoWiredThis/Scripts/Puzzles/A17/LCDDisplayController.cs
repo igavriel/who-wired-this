@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using WhoWiredThis.Data.A17;
+using WhoWiredThis.Data.Puzzels;
 
 namespace WhoWiredThis.Puzzles.A17
 {

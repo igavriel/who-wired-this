@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WhoWiredThis.Data;
 
-namespace WhoWiredThis.Inventory
+namespace WhoWiredThis.Core
 {
     public class InventoryManager : MonoBehaviour
     {

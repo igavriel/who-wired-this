@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace WhoWiredThis.Data.A17
+namespace WhoWiredThis.Data.Puzzels
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/A17/LCD Message Bank", fileName = "A17_LcdMessageBank")]
+    [CreateAssetMenu(menuName = "WhoWiredThis/LCD Message Bank", fileName = "LcdMessageBank")]
     public class LcdMessageBankSO : ScriptableObject
     {
         [Header("LCD Screen Messages")]

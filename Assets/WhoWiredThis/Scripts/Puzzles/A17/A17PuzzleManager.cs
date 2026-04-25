@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 using WhoWiredThis.Core;
-using WhoWiredThis.Data.A17;
+using WhoWiredThis.Data.Puzzels;
 
 namespace WhoWiredThis.Puzzles.A17
 {
     public class A17PuzzleManager : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private PuzzleConfigSO config;
+        [SerializeField] private Array_PuzzleConfigSO config;
 
         [Header("Switches")]
         [SerializeField] private PolaritySwitchController[] switches;

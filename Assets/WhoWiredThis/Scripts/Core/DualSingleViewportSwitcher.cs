@@ -10,16 +10,20 @@ namespace WhoWiredThis.Core
         [SerializeField] private CameraViewportPresetApplier secondCameraApplier;
 
         [Header("Dual Layout")]
-        [SerializeField] private ViewportPreset firstDualPreset =
-            ViewportPreset.LeftHalfDisplay1;
-        [SerializeField] private ViewportPreset secondDualPreset =
-            ViewportPreset.RightHalfDisplay1;
+        [SerializeField]
+        private ViewportPreset firstDualPreset =
+            ViewportPreset.Left_Half_Display1;
+        [SerializeField]
+        private ViewportPreset secondDualPreset =
+            ViewportPreset.Right_Half_Display1;
 
         [Header("Single Layout")]
-        [SerializeField] private ViewportPreset firstSinglePreset =
-            ViewportPreset.FullDisplay1;
-        [SerializeField] private ViewportPreset secondSinglePreset =
-            ViewportPreset.FullDisplay2;
+        [SerializeField]
+        private ViewportPreset firstSinglePreset =
+            ViewportPreset.Full_Display1;
+        [SerializeField]
+        private ViewportPreset secondSinglePreset =
+            ViewportPreset.Full_Display2;
 
         [Header("Input")]
         [SerializeField] private KeyCode toggleKey = KeyCode.P;

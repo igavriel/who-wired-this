@@ -4,14 +4,14 @@ using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Core
 {
-    public partial class CameraViewportPresetApplier : MonoBehaviour
+    public class CameraViewportPresetApplier : MonoBehaviour
     {
 
         [Header("References")]
         [SerializeField] private Camera targetCamera;
 
         [Header("Configuration")]
-        [SerializeField] private ViewportPreset preset = ViewportPreset.FullDisplay1;
+        [SerializeField] private ViewportPreset preset = ViewportPreset.Full_Display1;
         private ViewportPreset lastAppliedPreset;
         private bool hasAppliedPreset;
 
@@ -46,22 +46,22 @@ namespace WhoWiredThis.Core
 
             switch (preset)
             {
-                case ViewportPreset.LeftHalfDisplay1:
+                case ViewportPreset.Left_Half_Display1:
                     targetCamera.rect = new Rect(0f, 0f, 0.5f, 1f);
                     targetCamera.targetDisplay = 0; // Display 1
                     break;
 
-                case ViewportPreset.RightHalfDisplay1:
+                case ViewportPreset.Right_Half_Display1:
                     targetCamera.rect = new Rect(0.5f, 0f, 0.5f, 1f);
                     targetCamera.targetDisplay = 0; // Display 1
                     break;
 
-                case ViewportPreset.FullDisplay1:
+                case ViewportPreset.Full_Display1:
                     targetCamera.rect = new Rect(0f, 0f, 1f, 1f);
                     targetCamera.targetDisplay = 0; // Display 1
                     break;
 
-                case ViewportPreset.FullDisplay2:
+                case ViewportPreset.Full_Display2:
                     targetCamera.rect = new Rect(0f, 0f, 1f, 1f);
                     targetCamera.targetDisplay = 1; // Display 2
                     break;

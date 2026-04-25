@@ -2,9 +2,9 @@ namespace WhoWiredThis.Enums
 {
     public enum ViewportPreset
     {
-        LeftHalfDisplay1,
-        RightHalfDisplay1,
-        FullDisplay1,
-        FullDisplay2
+        Left_Half_Display1,
+        Right_Half_Display1,
+        Full_Display1,
+        Full_Display2
     }
 }

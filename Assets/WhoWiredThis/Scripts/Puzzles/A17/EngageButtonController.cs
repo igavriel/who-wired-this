@@ -1,5 +1,5 @@
 using UnityEngine;
-using WhoWiredThis.Data.A17;
+using WhoWiredThis.Data.Puzzels;
 using WhoWiredThis.Interactables;
 using WhoWiredThis.UI;
 

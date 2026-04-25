@@ -1,5 +1,5 @@
 using UnityEngine;
-using WhoWiredThis.Inventory;
+using WhoWiredThis.Core;
 
 namespace WhoWiredThis.UI
 {
