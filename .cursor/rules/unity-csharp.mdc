@@ -9,11 +9,11 @@ alwaysApply: false
 ## Engine & Stack
 - **Unity 6000.3.6f1** (Unity 6.3 LTS), URP 17.3.0, C# 9 (`LangVersion 9.0`), `netstandard2.1`
 - **Input stack is mixed**:
-  - Primary gameplay intents are read via `UnityEngine.InputSystem.InputAction` (`PlayerInputBridge`)
-  - Legacy key polling still exists in some UI/gameplay scripts via `UnityEngine.Input`
+  - `PlayerInputBridge` uses `UnityEngine.InputSystem.InputAction` when `ENABLE_INPUT_SYSTEM` is present
+  - Legacy key polling is still actively used in `ThirdPersonMixamo.PlayerController`, `MessagePanel`, and scene/display switch helpers
   - Do not introduce a third input abstraction unless explicitly requested
 - **TextMeshPro** is part of `com.unity.ugui` 2.0.0 — use `TMPro.TMP_Text` / `TMPro.TextMeshProUGUI`
-- **Single scene** — no `DontDestroyOnLoad`, no additive loading, no scene transitions
+- **Scene model**: single-scene-at-a-time (`LoadSceneMode.Single`), but multiple scenes are used in development via hotkey switching and restart reload
 - **Solution**: `who-wired-this.sln` → `Assembly-CSharp.csproj` + `Assembly-CSharp-Editor.csproj`
 
 ## Namespace Convention
@@ -21,13 +21,18 @@ Gameplay scripts should live under `WhoWiredThis.*`:
 ```
 WhoWiredThis.Core          → GameManager, ScoreManager, TimerManager
 WhoWiredThis.Player        → PlayerInputBridge, PlayerActions
-WhoWiredThis.Interactables → IInteractable, Collectible, ClueInteractable, PuzzleSocket, TestButton
-WhoWiredThis.Inventory     → InventoryManager
+WhoWiredThis.Interfaces    → IInteractable, IPuzzleManager
+WhoWiredThis.Interactables → Collectible, ClueInteractable, PuzzleSocket, TestButton
+WhoWiredThis.Core          → InventoryManager (currently kept in Core)
 WhoWiredThis.UI            → HUDController, InventoryUI, InventorySlotUI, MessagePanel
 WhoWiredThis.Environment   → ZoneTrigger
-WhoWiredThis.Data          → ItemData (ScriptableObject)
+WhoWiredThis.Data          → ItemData + puzzle config/message ScriptableObjects
+WhoWiredThis.Puzzles       → Puzzle managers and common puzzle presentation controllers
+WhoWiredThis.Visibility    → Dimension-based visibility/layer assignment helpers
+WhoWiredThis.Util          → Cross-cutting utilities (for example `PuzzleManagerResolver`)
 ```
 - If touching legacy scripts without a namespace (for example utility/test scripts), prefer keeping edits minimal unless the task is explicitly a cleanup/refactor.
+- Third-party/adjacent gameplay modules may keep their own namespaces (`ThirdPersonMixamo`) and should not be force-migrated unless explicitly requested.
 
 ## Unity Lifecycle Order
 ```
@@ -72,6 +77,7 @@ void Awake()
 Use `System.Action` / `System.Action<T>` for lightweight events.
 - Subscribe in `Start`/`OnEnable`
 - Unsubscribe in `OnDestroy`/`OnDisable` to avoid stale listeners on scene reload or object recreation
+- For singleton event subscriptions, null-guard instance access and prefer explicit unsubscribe paths when adding new listeners
 
 ## URP Materials
 - Use `UnityEngine.Rendering.Universal` namespace for URP-specific APIs
@@ -85,3 +91,4 @@ Use `System.Action` / `System.Action<T>` for lightweight events.
 - `Physics.Raycast` uses world-space origin; local-to-world transform when needed
 - Before assuming singleton instances exist, null-check where reasonable (`Instance?....`) to avoid race/missing-reference errors
 - Prefer scene-authored objects and prefabs over runtime creation when objects are gameplay-meaningful and repeatable
+- When working on puzzle UI controllers, resolve inspector `MonoBehaviour` puzzle manager references through `IPuzzleManager` utilities rather than concrete manager types

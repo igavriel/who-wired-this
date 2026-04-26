@@ -7,29 +7,62 @@ alwaysApply: false
 # Who Wired This - Architecture
 
 ## Core Runtime Pattern
-- Managers are scene singletons (`GameManager`, `ScoreManager`, `TimerManager`, `InventoryManager`, `HUDController`, `MessagePanel`)
+- Core managers/UI controllers are scene singletons:
+  - `GameManager`, `ScoreManager`, `TimerManager`, `InventoryManager`
+  - `HUDController`, `MessagePanel`
 - Singleton setup pattern:
   - `if (Instance != null && Instance != this) { Destroy(gameObject); return; }`
   - `Instance = this;`
 - No cross-scene persistence pattern is currently used (`DontDestroyOnLoad` is not part of this architecture)
+
+## Scene Flow and Display Topology
+- Runtime supports scene switching and scene reload:
+  - `SceneHotkeySwitcher` maps keybindings to scene names and calls `SceneManager.LoadScene(..., LoadSceneMode.Single)`
+  - `HUDController` restart flow reloads active scene by name
+- Multi-display and viewport layout are first-class systems:
+  - `ActivateDisplays` activates secondary displays and can normalize render resolution
+  - `CameraViewportPresetApplier` applies `ViewportPreset` to `Camera.rect` and `targetDisplay`
+  - `DualSingleViewportSwitcher` toggles dual/single viewport layouts at runtime
 
 ## Interaction Model
 - Nearby interactions use interface-driven discovery:
   - `IInteractable.GetPromptText()`
   - `IInteractable.Interact(GameObject interactor)`
 - Player interaction scan currently uses `Physics.OverlapSphere` + nearest candidate selection
+- Prompt text can include `$INTERACT$` token and is formatted by `PlayerActions`
 - UI prompt updates only when candidate changes (`HUDController.SetInteractPrompt(...)`)
 
-## Inventory/Puzzle Contract
+## Puzzle and Scoring Contract
+- Puzzle orchestration is interface-based through `IPuzzleManager`:
+  - `bool IsSolved`, `int Attempts`, `int HintTriggerAttempt`
+  - `event Action OnSuccess`, `event Action<int> OnFailure`
+  - `int ComputeCurrentScore()`, `bool TryEngage()`
+- Shared puzzle presentation controllers live in `Puzzles/Common` and consume `IPuzzleManager`:
+  - `EngageButtonController`, `LCDDisplayController`, `ResultLightController`, `PolaritySwitchController`
+- Puzzle manager references in common controllers resolve via `Util/PuzzleManagerResolver` (do not duplicate local resolve helpers)
+- Scoring session logic is reusable through `PuzzleScoreSession` (used by matrix/floor-color puzzle flow)
+
+## Inventory/Puzzle Item Contract
 - Inventory capacity is fixed (`MaxSlots = 3`)
 - Puzzle item matching is ID-based via `ItemData.itemId`
 - `TestButton` validates socketed `ItemData.itemId` against expected IDs
 - Preserve this contract when adding new puzzle items or sockets
 
+## Dimension and Access Model
+- Dimension visibility uses layer-based assignment (`DimensionA`/`DimensionB`) through `DimensionVisibilityObject`
+- `DimensionVisibilityObject` can auto-collect renderers/colliders and auto-create a placeholder quad when needed
+- Player-specific switch permissions are controlled by `AllowedPlayerTag` and applied to `PolaritySwitchController`
+
 ## Event Wiring Expectations
 - Managers expose events (for example score/timer/zone changes)
-- UI subscribers should detach listeners during teardown
+- `IPuzzleManager` consumers subscribe in `Start` and unsubscribe in `OnDestroy`
+- For long-lived singleton/UI subscribers, add teardown unsubscription when introducing new listeners
 - Avoid hidden side effects in event handlers; keep handlers focused on UI/state refresh
+
+## External Folder Integration
+- `WhoWiredThis.Player.PlayerActions` depends on `ThirdPersonMixamo.PlayerController` for interact key and interaction trigger state
+- `ThirdPersonMixamo` remains a separate namespace/module for movement/camera rig primitives
+- `MiniMap/CameraFollowAbove` is a lightweight standalone minimap camera follower (currently global namespace)
 
 ## Safe Extension Guidelines
 - Prefer extending existing systems (`IInteractable`, manager events, UI refresh APIs) over creating parallel systems

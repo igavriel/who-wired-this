@@ -8,25 +8,27 @@ alwaysApply: false
 
 ## Input Source of Truth
 - `PlayerInputBridge` is the primary source of gameplay intent state
-- For gameplay actions, prefer reading through `PlayerInputBridge` first
-- Legacy `UnityEngine.Input` checks are fallback paths; do not expand fallback usage unless needed for compatibility
+- `WhoWiredThis.Player.PlayerActions` uses `PlayerInputBridge` for inventory/help/menu intent
+- Interaction trigger in `PlayerActions` currently comes from `ThirdPersonMixamo.PlayerController.InteractPressedThisFrame`
+- If input ownership changes, update both `PlayerActions` and HUD help text to keep prompts consistent
+- Legacy `UnityEngine.Input` checks are still intentional in some systems (`MessagePanel`, scene/layout toggles, ThirdPerson movement)
 
 ## Pointer/UI Guardrails
-- Preserve pointer-over-UI protection for click-based interactions:
-  - Check `EventSystem.current != null`
-  - Use `EventSystem.current.IsPointerOverGameObject()`
-- Mouse/pointer interactions should not fire world interactions when pointer is over UI
+- `PlayerInputBridge` exposes `InteractPressedFromPointerThisFrame` for pointer-specific interaction gating
+- If click-through-on-UI becomes an issue, handle it in `PlayerActions` (single interaction authority) instead of scattering UI checks across interactables
 
 ## HUD and Panels
 - `HUDController` owns top-bar and panel toggles (`ToggleInventory`, `ToggleHelp`, `ToggleMenuPanel`)
 - `MessagePanel` owns popup/confirmation behavior
+- `HUDController.SetInteractKeyLabel(...)` feeds help/prompt display for the active interact key
 - New UI behavior should integrate through these existing controllers before adding new panel managers
 
 ## UI Binding Conventions
 - Use null-safe listener setup for optional inspector refs (`button?.onClick.AddListener(...)`)
 - Keep display refresh logic isolated in dedicated methods (`RefreshScore`, `RefreshTimer`, etc.)
 - Prefer one-way manager-to-UI updates via events, not polling
+- For panels with keyboard confirm/cancel flow, keep the key handling centralized in `MessagePanel`
 
 ## Restart/Scene Behavior
 - Restart currently reloads active scene name through `SceneManager.LoadScene(activeScene.name)`
-- Any new reset behavior should keep manager/UI state consistent with scene reload flow
+- Scene hotkey switching (`SceneHotkeySwitcher`) also uses single-scene loads; new UI reset behavior must remain compatible with full scene reload semantics
