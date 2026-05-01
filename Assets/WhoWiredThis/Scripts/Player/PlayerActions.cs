@@ -4,6 +4,7 @@ using ThirdPersonMixamo;
 using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
 using WhoWiredThis.UI;
+using FirstPerson;
 
 namespace WhoWiredThis.Player
 {
@@ -21,10 +22,11 @@ namespace WhoWiredThis.Player
         [Tooltip("Reference to the PlayerInputBridge component for reading input states.")]
         [SerializeField] private PlayerInputBridge inputBridge;
 
-        [Tooltip("Reference to the PlayerController component for reading player states.")]
-        [SerializeField] private PlayerController playerController;
-        [Tooltip("Fallback interact key label used when PlayerController is not present.")]
-        [SerializeField] private KeyCode fallbackInteractKey = KeyCode.E;
+        [Header("Player Controllers - Choose only one")]
+        [Tooltip("Reference to the ThirdPersonMixamo.PlayerController component for reading player states.")]
+        [SerializeField] private PlayerController playerController = null;
+        [Tooltip("Reference to the FirstPerson.FirstPersonController component for reading player states.")]
+        [SerializeField] private FirstPersonController firstPersonController = null;
 
         private IInteractable currentInteractable;
 
@@ -115,8 +117,9 @@ namespace WhoWiredThis.Player
                 HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(nearest?.GetPromptText()));
             }
 
-            bool activateFromInput = playerController != null
-                ? playerController.InteractPressedThisFrame
+            bool activateFromInput =
+                playerController != null ? playerController.InteractPressedThisFrame
+                : firstPersonController != null ? firstPersonController.InteractPressedThisFrame
                 : inputBridge.InteractPressedThisFrame;
             if (activateFromInput && currentInteractable != null)
             {
@@ -146,10 +149,13 @@ namespace WhoWiredThis.Player
                     ? playerController.InteractKey.ToString()
                     : "?";
             }
-
-            return fallbackInteractKey != KeyCode.None
-                ? fallbackInteractKey.ToString()
-                : "?";
+            if (firstPersonController != null)
+            {
+                return firstPersonController.InteractKey != KeyCode.None
+                    ? firstPersonController.InteractKey.ToString()
+                    : "?";
+            }
+            return "?";
         }
 
         private void HandleUIHotkeys()

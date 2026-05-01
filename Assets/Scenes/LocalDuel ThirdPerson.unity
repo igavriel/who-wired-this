@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102806662236301435, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_Material
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -396,10 +396,6 @@ Transform:
   m_Children:
   - {fileID: 508520411}
   - {fileID: 1824452859}
-  - {fileID: 2123456701}
-  - {fileID: 1473111676}
-  - {fileID: 939798569}
-  - {fileID: 405707938}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &264704254
@@ -836,7 +832,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8421fea77d6474dafb285ccab3875ab0, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ResultLightController
   puzzleManager: {fileID: 579872187}
   lightRenderer: {fileID: 313052092}
@@ -939,7 +935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102806662236301435, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_Material
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1106,7 +1102,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 217447781}
+    m_TransformParent: {fileID: 1507811379}
     m_Modifications:
     - target: {fileID: 100000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_Name
@@ -1122,7 +1118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230001, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalScale.x
@@ -1146,7 +1142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1276,7 +1272,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 241768a8cfb4b4c84864adb6ed542b87, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.LCDDisplayController
   puzzleManager: {fileID: 579872187}
   displayText: {fileID: 1082906853}
@@ -1373,11 +1369,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1545646908113008810, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: firstCameraApplier
-      value:
+      value: 
       objectReference: {fileID: 1599453432}
     - target: {fileID: 1545646908113008810, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: secondCameraApplier
-      value:
+      value: 
       objectReference: {fileID: 1824452860}
     - target: {fileID: 7373003079995886324, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1591,7 +1587,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8e97f4228b0144cda3146f947ae0384, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.A17.A17PuzzleManager
   config: {fileID: 11400000, guid: 215693ab7364b40f285af6273e081daf, type: 2}
   switches:
@@ -1770,7 +1766,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &749547528 stripped
 Transform:
@@ -2053,7 +2049,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &881048908 stripped
 Transform:
@@ -2201,7 +2197,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 217447781}
+    m_TransformParent: {fileID: 1507811379}
     m_Modifications:
     - target: {fileID: 100000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_Name
@@ -2217,7 +2213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230001, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalScale.x
@@ -2241,7 +2237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2396,7 +2392,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20ac03b1141f54df39ef967ce9892a10, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.EngageButtonController
   puzzleManager: {fileID: 579872187}
   messageBank: {fileID: 11400000, guid: 23dfe41c3930c448c971dde419fd0715, type: 2}
@@ -2524,7 +2520,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -2827,7 +2823,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshPro
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3359,7 +3355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102806662236301435, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_Material
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3412,7 +3408,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 217447781}
+    m_TransformParent: {fileID: 1507811379}
     m_Modifications:
     - target: {fileID: 100000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_Name
@@ -3420,7 +3416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230001, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 68c1182e756294e2db060dcd334ba282, type: 2}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalScale.x
@@ -3444,7 +3440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3517,6 +3513,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2123456701}
+  - {fileID: 1473111676}
+  - {fileID: 939798569}
+  - {fileID: 405707938}
   - {fileID: 116308979}
   - {fileID: 597552691}
   - {fileID: 825627983}
@@ -3539,7 +3539,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed159eb8593814f308a35b20b1d67c14, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
 --- !u!1001 &1709903482
 PrefabInstance:
@@ -3612,7 +3612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102806662236301435, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_Material
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3668,7 +3668,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &1734228843 stripped
 Transform:
@@ -3689,7 +3689,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed159eb8593814f308a35b20b1d67c14, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
 --- !u!114 &1902884418 stripped
 MonoBehaviour:
@@ -3700,7 +3700,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &1902884422 stripped
 Transform:
@@ -3721,7 +3721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6102806662236301435, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_Material
-      value:
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7239292956343075207, guid: f0a6cf93cf17c48ef91a4f11b48d99a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3809,7 +3809,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ea4272dccbda4478af36d451979b6a3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.PolaritySwitchController
 --- !u!4 &2039266227 stripped
 Transform:
@@ -4019,7 +4019,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -4044,7 +4044,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 217447781}
+    m_TransformParent: {fileID: 1507811379}
     m_Modifications:
     - target: {fileID: 100000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_Name
@@ -4052,7 +4052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230001, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 68c1182e756294e2db060dcd334ba282, type: 2}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalScale.x
@@ -4076,7 +4076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f9e049c9bc85488ca66f1f28ea8770cf, type: 3}
       propertyPath: m_LocalRotation.w

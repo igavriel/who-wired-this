@@ -92,3 +92,9 @@ Use `System.Action` / `System.Action<T>` for lightweight events.
 - Before assuming singleton instances exist, null-check where reasonable (`Instance?....`) to avoid race/missing-reference errors
 - Prefer scene-authored objects and prefabs over runtime creation when objects are gameplay-meaningful and repeatable
 - When working on puzzle UI controllers, resolve inspector `MonoBehaviour` puzzle manager references through `IPuzzleManager` utilities rather than concrete manager types
+
+## Mandatory Validation Expectations
+- After editing C# scripts, verify Unity compilation status and resolve newly introduced compile errors.
+- After compile completes, check editor console output and resolve new errors before final delivery.
+- Treat missing reference warnings caused by your changes as blockers unless the user explicitly accepts the risk.
+- If validation cannot be executed (for example no active Unity session), state that clearly and ask for guidance rather than assuming success.

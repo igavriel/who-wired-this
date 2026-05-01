@@ -24,9 +24,17 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.98039216
       objectReference: {fileID: 0}
+    - target: {fileID: 2916447649248360072, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 339816460428077418}
     - target: {fileID: 3303198345674741970, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: preset
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807121963542716939, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
+      propertyPath: detectionMask.m_Bits
+      value: 257
       objectReference: {fileID: 0}
     - target: {fileID: 6947513872697578746, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_TargetTexture
@@ -84,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonPlayer_B Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8755933333531992623, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
+      propertyPath: m_TagString
+      value: PlayerB
+      objectReference: {fileID: 0}
     - target: {fileID: 9117038479895661553, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_TargetDisplay
       value: 1
@@ -97,3 +109,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
+--- !u!4 &339816460428077418 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
+  m_PrefabInstance: {fileID: 8035755377664306954}
+  m_PrefabAsset: {fileID: 0}

@@ -1,0 +1,30 @@
+---
+description: Enforce local multiplayer parity and ScriptableObject-first gameplay configuration
+globs: Assets/{WhoWiredThis,FirstPerson}/**/*.{cs,prefab,asset,unity}
+alwaysApply: false
+---
+
+# Who Wired This - Local Multiplayer and ScriptableObject Rules
+
+## Local Multiplayer Consistency
+- Treat Player A and Player B as a paired contract; avoid one-sided behavior unless explicitly required.
+- Keep control bindings/data assets mirrored across players when introducing new actions.
+- For split/dual viewport logic, preserve compatibility with existing viewport switching systems.
+- If a change touches one player prefab variant, evaluate whether the other variant requires equivalent updates.
+
+## Player Prefab Variant Policy
+- Prefer editing shared/base behavior first, then apply minimal variant-specific overrides.
+- Do not duplicate logic across player variant scripts when one shared script can own behavior.
+- Keep variant prefab changes explicit and intentional; avoid accidental overrides from broad inspector edits.
+- Preserve existing naming and folder conventions under `Assets/WhoWiredThis/Prefabs/Players` and `Assets/FirstPerson/Prefabs`.
+
+## ScriptableObject-First Configuration
+- Gameplay tuning and station/module setup data must live in ScriptableObject assets where the project already follows that pattern.
+- Add new serialized config fields to ScriptableObjects before hardcoding constants in gameplay scripts.
+- Keep runtime systems consuming ScriptableObject data through explicit serialized references.
+- If adding new data assets, place them in existing domain folders (`Data/...`) and keep naming deterministic by role/player.
+
+## Integration Guardrails
+- Reuse existing adapters/configurators for tutorial and first-person integration before introducing new entry points.
+- Keep input, player action routing, and tutorial station configuration contracts aligned across `WhoWiredThis` and `FirstPerson`.
+- If a requested change breaks parity or data ownership, call it out and request confirmation before proceeding.

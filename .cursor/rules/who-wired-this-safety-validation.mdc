@@ -1,0 +1,37 @@
+---
+description: Strict safety-first Unity workflow with mandatory validation checkpoints
+globs: Assets/**/*.{cs,unity,prefab,asset}
+alwaysApply: false
+---
+
+# Who Wired This - Safety Validation Workflow
+
+## Core Policy
+- Safety over speed: do not guess hidden scene wiring or runtime behavior.
+- Use smallest viable edits; avoid broad refactors unless explicitly requested.
+- If requirements are ambiguous and impact scene/prefab/data wiring, stop and ask.
+
+## Pre-Change Checklist (mandatory)
+- Inspect relevant scripts/prefabs/assets before editing; confirm ownership and dependencies.
+- Reuse existing systems before adding new ones (`IInteractable`, `IPuzzleManager`, manager events, existing player/UI adapters).
+- For scene setup paths, keep authoring inspector-driven and prefab-based.
+- If touching local multiplayer behavior, verify Player A/B symmetry requirements first.
+
+## Script and Asset Editing Constraints
+- Prefer `[SerializeField] private` references over runtime lookup/creation for gameplay objects.
+- Do not add `GameObject.Find` or `FindObjectOfType` for core wiring.
+- Do not introduce runtime-instantiated gameplay-critical objects when prefab/scene references are expected.
+- Avoid changing multiple unrelated scenes/prefabs in one task unless explicitly required.
+- Preserve ScriptableObject-driven configuration contracts; avoid hardcoding equivalent data in code.
+
+## Validation Loop (mandatory after changes)
+- After modifying scripts, check Unity compilation state and resolve all compile errors.
+- Read console output and resolve new errors before proceeding.
+- If warnings indicate potential broken wiring (missing refs, nulls, missing scripts), treat as blockers for delivery unless explicitly waived.
+- Only continue to follow-up edits once compile + console checks are clean or known issues are clearly reported.
+
+## Stop-And-Ask Triggers (mandatory)
+- Required reference or asset path is unclear.
+- Multiple valid architecture directions exist (new manager/system vs extending existing one).
+- A requested change risks breaking Player A/B parity, viewport behavior, or existing tutorial flow.
+- Validation cannot be completed (for example Unity instance unavailable); report exact gap and ask for direction.

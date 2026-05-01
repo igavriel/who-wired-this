@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 using WhoWiredThis.Interfaces;
+using System;
 
 namespace FirstPerson
 {
@@ -25,11 +26,15 @@ namespace FirstPerson
         private CharacterController _characterController;
         private float _verticalVelocity;
 
-        private KeyCode MoveForwardKey => inputBindings.MoveForward;
-        private KeyCode MoveBackKey => inputBindings.MoveBack;
-        private KeyCode MoveLeftKey => inputBindings.MoveLeft;
-        private KeyCode MoveRightKey => inputBindings.MoveRight;
-        private KeyCode InteractKey => inputBindings.Interact;
+        private bool _inputInteract;
+
+        public bool InteractPressedThisFrame => _inputInteract;
+
+        public KeyCode MoveForwardKey => inputBindings.MoveForward;
+        public KeyCode MoveBackKey => inputBindings.MoveBack;
+        public KeyCode MoveLeftKey => inputBindings.MoveLeft;
+        public KeyCode MoveRightKey => inputBindings.MoveRight;
+        public KeyCode InteractKey => inputBindings.Interact;
 
         private void Awake()
         {
@@ -47,6 +52,8 @@ namespace FirstPerson
             if (Input.GetKey(MoveRightKey)) turnInput += 1f;
             if (Input.GetKey(MoveBackKey)) moveInput -= 1f;
             if (Input.GetKey(MoveForwardKey)) moveInput += 1f;
+
+            _inputInteract = Input.GetKeyDown(InteractKey);
 
             if (Mathf.Abs(turnInput) > 0.01f)
             {
@@ -75,10 +82,35 @@ namespace FirstPerson
             }
 
             Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask, QueryTriggerInteraction.Collide))
+            RaycastHit[] hits = Physics.RaycastAll(ray, interactDistance, interactMask, QueryTriggerInteraction.Collide);
+            if (hits.Length == 0)
             {
-                IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
-                interactable?.Interact(gameObject);
+                return;
+            }
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Collider hitCollider = hits[i].collider;
+                if (hitCollider == null)
+                {
+                    continue;
+                }
+
+                // Ignore this player's own colliders (body/eyes/mouth) and keep searching.
+                if (hitCollider.transform.IsChildOf(transform))
+                {
+                    continue;
+                }
+
+                IInteractable interactable = hitCollider.GetComponentInParent<IInteractable>();
+                if (interactable == null)
+                {
+                    continue;
+                }
+
+                interactable.Interact(gameObject);
+                return;
             }
         }
     }

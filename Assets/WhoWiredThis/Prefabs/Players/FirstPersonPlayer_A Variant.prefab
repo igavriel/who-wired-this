@@ -52,10 +52,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonPlayer_A Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5860461033597811501, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
+      propertyPath: m_TagString
+      value: PlayerA
+      objectReference: {fileID: 0}
     - target: {fileID: 6220001643313697523, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 183
       objectReference: {fileID: 0}
+    - target: {fileID: 7665561215355173641, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
+      propertyPath: inputBridge
+      value: 
+      objectReference: {fileID: 5699141469526230919}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -70,6 +78,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3303198345674741970}
   m_SourcePrefab: {fileID: 100100000, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
+--- !u!114 &5699141469526230919 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7476171385597828741, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
+  m_PrefabInstance: {fileID: 2943059180685138178}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755933333531992623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389d5c7da9dd3463c98a5992e0b0cce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Player.PlayerInputBridge
 --- !u!4 &7724792345534187104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4892071442441068386, guid: 5ddd00d4d8abe4809a308a295997d39c, type: 3}
@@ -107,6 +126,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7724792345534187104}
     m_Modifications:
+    - target: {fileID: 2102387070423521950, guid: 6d46f8c7d085d4f47af8f1a4bee6742c, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 7724792345534187104}
     - target: {fileID: 2102387070423521950, guid: 6d46f8c7d085d4f47af8f1a4bee6742c, type: 3}
       propertyPath: offset.x
       value: 0
