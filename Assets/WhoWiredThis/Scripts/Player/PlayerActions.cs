@@ -23,13 +23,14 @@ namespace WhoWiredThis.Player
 
         [Tooltip("Reference to the PlayerController component for reading player states.")]
         [SerializeField] private PlayerController playerController;
+        [Tooltip("Fallback interact key label used when PlayerController is not present.")]
+        [SerializeField] private KeyCode fallbackInteractKey = KeyCode.E;
 
         private IInteractable currentInteractable;
 
         void Awake()
         {
             Assert.IsNotNull(inputBridge, "PlayerInputBridge is required for PlayerActions");
-            Assert.IsNotNull(playerController, "PlayerController is required for PlayerActions");
         }
 
         void Start()
@@ -114,7 +115,9 @@ namespace WhoWiredThis.Player
                 HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(nearest?.GetPromptText()));
             }
 
-            bool activateFromInput = playerController.InteractPressedThisFrame;
+            bool activateFromInput = playerController != null
+                ? playerController.InteractPressedThisFrame
+                : inputBridge.InteractPressedThisFrame;
             if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
@@ -137,8 +140,15 @@ namespace WhoWiredThis.Player
 
         private string GetInteractKeyLabel()
         {
-            return playerController.InteractKey != KeyCode.None
-                ? playerController.InteractKey.ToString()
+            if (playerController != null)
+            {
+                return playerController.InteractKey != KeyCode.None
+                    ? playerController.InteractKey.ToString()
+                    : "?";
+            }
+
+            return fallbackInteractKey != KeyCode.None
+                ? fallbackInteractKey.ToString()
                 : "?";
         }
 
