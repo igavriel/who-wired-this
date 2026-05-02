@@ -44,9 +44,14 @@ namespace WhoWiredThis.EditorTools
             MultiDimension md = Undo.AddComponent<MultiDimension>(root);
 
             SerializedObject serialized = new SerializedObject(md);
-            serialized.FindProperty("subjects").arraySize = 2;
-            serialized.FindProperty("subjects").GetArrayElementAtIndex(0).objectReferenceValue = box;
-            serialized.FindProperty("subjects").GetArrayElementAtIndex(1).objectReferenceValue = sphere;
+            SerializedProperty subjectsProp = serialized.FindProperty("subjects");
+            subjectsProp.arraySize = 2;
+            SerializedProperty e0 = subjectsProp.GetArrayElementAtIndex(0);
+            e0.FindPropertyRelative("subject").objectReferenceValue = box;
+            e0.FindPropertyRelative("displayName").stringValue = "Box";
+            SerializedProperty e1 = subjectsProp.GetArrayElementAtIndex(1);
+            e1.FindPropertyRelative("subject").objectReferenceValue = sphere;
+            e1.FindPropertyRelative("displayName").stringValue = "Sphere";
             serialized.FindProperty("generalObject").objectReferenceValue = capsule;
             serialized.FindProperty("configurationMode").enumValueIndex = (int)MultiDimension.MultiDimensionMode.SplitPlayers;
             serialized.FindProperty("indexPlayerA").intValue = 0;

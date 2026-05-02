@@ -38,7 +38,21 @@ namespace WhoWiredThis.Visibility
 
         public string GetPromptText()
         {
-            return promptText;
+            if (multiDimension == null)
+            {
+                return promptText;
+            }
+
+            int idx = multiDimension.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers
+                ? -1
+                : multiDimension.GetCurrentIndexForSolutionCheck();
+            if (idx < 0)
+            {
+                return promptText;
+            }
+
+            string label = multiDimension.GetSubjectDisplayName(idx);
+            return string.IsNullOrEmpty(label) ? promptText : $"{promptText} — {label}";
         }
 
         public void Interact(GameObject interactor)

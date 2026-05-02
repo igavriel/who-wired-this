@@ -4,6 +4,21 @@ using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Visibility
 {
+    [Serializable]
+    public class MultiDimensionSubject
+    {
+        [Tooltip("Root GameObject for this subject index (visibility and layers apply here).")]
+        [SerializeField]
+        private GameObject subject;
+
+        [Tooltip("Player-facing label (HUD, prompts). Falls back to the subject's GameObject name when empty.")]
+        [SerializeField]
+        private string displayName;
+
+        public GameObject Subject => subject;
+        public string DisplayName => displayName;
+    }
+
     /// <summary>
     /// Inspector-driven multi-subject visibility for split dimensions (Who Wired This).
     /// CASE 1: different subject indices for Player A vs Player B (DimensionA / DimensionB routing).
@@ -24,7 +39,7 @@ namespace WhoWiredThis.Visibility
         [Header("Subjects (indexed)")]
         [Tooltip("Ordered list; index i selects which object is active for a given case.")]
         [SerializeField]
-        private GameObject[] subjects = Array.Empty<GameObject>();
+        private MultiDimensionSubject[] subjects = Array.Empty<MultiDimensionSubject>();
 
         [Header("General (always on for all players)")]
         [Tooltip("If set, always stays active and on Default layer—not driven by subject indices.")]
@@ -53,6 +68,10 @@ namespace WhoWiredThis.Visibility
         [Header("CASE 3 — All players (Any_Player semantics)")]
         [SerializeField]
         private int sharedSubjectIndex;
+
+        [Header("Runtime Lock")]
+        [SerializeField]
+        private bool interactionLocked;
 
         private int[] _defaultLayerPerSubject;
         private int _defaultLayerGeneral = -1;
@@ -110,6 +129,40 @@ namespace WhoWiredThis.Visibility
 
         /// <summary>Number of subject slots (length of the subjects array).</summary>
         public int SubjectCount => subjects == null ? 0 : subjects.Length;
+        public MultiDimensionMode CurrentMode => configurationMode;
+        public bool IsSolved => interactionLocked;
+
+        /// <summary>
+        /// Resolved label for prompts/UI: <see cref="MultiDimensionSubject.DisplayName"/> if set, otherwise the subject <see cref="GameObject.name"/>.
+        /// </summary>
+        public string GetSubjectDisplayName(int index)
+        {
+            if (subjects == null || index < 0 || index >= subjects.Length)
+            {
+                return string.Empty;
+            }
+
+            MultiDimensionSubject entry = subjects[index];
+            if (entry == null)
+            {
+                return string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(entry.DisplayName))
+            {
+                return entry.DisplayName;
+            }
+
+            return entry.Subject != null ? entry.Subject.name : string.Empty;
+        }
+
+        /// <summary>Display name for the subject at <paramref name="index"/>; equivalent to <see cref="GetSubjectDisplayName"/>.</summary>
+        public string this[int index] => GetSubjectDisplayName(index);
+
+        public void SetSolved(bool solved)
+        {
+            interactionLocked = solved;
+        }
 
         /// <summary>
         /// Advances the active subject index for the given player according to <see cref="configurationMode"/>.
@@ -119,6 +172,11 @@ namespace WhoWiredThis.Visibility
         /// </summary>
         public void AdvanceIndexForPlayer(AllowedPlayerTag player)
         {
+            if (interactionLocked)
+            {
+                return;
+            }
+
             int n = SubjectCount;
             if (n == 0)
             {
@@ -172,6 +230,30 @@ namespace WhoWiredThis.Visibility
                     sharedSubjectIndex = (sharedSubjectIndex + 1) % n;
                     SetCase3(sharedSubjectIndex);
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Returns the active index used by solution checks.
+        /// CASE 2: <see cref="exclusiveSubjectIndex"/>, CASE 3: <see cref="sharedSubjectIndex"/>,
+        /// CASE 1: ignored sentinel (-1) for now.
+        /// </summary>
+        public int GetCurrentIndexForSolutionCheck()
+        {
+            if (SubjectCount == 0)
+            {
+                return -1;
+            }
+
+            int max = Mathf.Max(SubjectCount - 1, 0);
+            switch (configurationMode)
+            {
+                case MultiDimensionMode.ExclusiveSinglePlayer:
+                    return Mathf.Clamp(exclusiveSubjectIndex, 0, max);
+                case MultiDimensionMode.AllPlayers:
+                    return Mathf.Clamp(sharedSubjectIndex, 0, max);
+                default:
+                    return -1;
             }
         }
 
@@ -234,12 +316,13 @@ namespace WhoWiredThis.Visibility
             {
                 for (int i = 0; i < subjects.Length && i < _defaultLayerPerSubject.Length; i++)
                 {
-                    if (subjects[i] == null)
+                    GameObject go = GetSubjectGameObject(i);
+                    if (go == null)
                     {
                         continue;
                     }
 
-                    SetRootLayerRecursive(subjects[i].transform, _defaultLayerPerSubject[i]);
+                    SetRootLayerRecursive(go.transform, _defaultLayerPerSubject[i]);
                 }
             }
 
@@ -261,7 +344,8 @@ namespace WhoWiredThis.Visibility
             _defaultLayerPerSubject = new int[subjects.Length];
             for (int i = 0; i < subjects.Length; i++)
             {
-                _defaultLayerPerSubject[i] = subjects[i] != null ? subjects[i].layer : 0;
+                GameObject go = GetSubjectGameObject(i);
+                _defaultLayerPerSubject[i] = go != null ? go.layer : 0;
             }
 
             _defaultLayerGeneral = generalObject != null ? generalObject.layer : -1;
@@ -303,7 +387,7 @@ namespace WhoWiredThis.Visibility
 
             for (int i = 0; i < subjects.Length; i++)
             {
-                GameObject go = subjects[i];
+                GameObject go = GetSubjectGameObject(i);
                 if (go == null || IsGeneral(go))
                 {
                     continue;
@@ -338,7 +422,7 @@ namespace WhoWiredThis.Visibility
 
             for (int i = 0; i < subjects.Length; i++)
             {
-                GameObject go = subjects[i];
+                GameObject go = GetSubjectGameObject(i);
                 if (go == null || IsGeneral(go))
                 {
                     continue;
@@ -374,7 +458,7 @@ namespace WhoWiredThis.Visibility
 
             for (int i = 0; i < subjects.Length; i++)
             {
-                GameObject go = subjects[i];
+                GameObject go = GetSubjectGameObject(i);
                 if (go == null || IsGeneral(go))
                 {
                     continue;
@@ -394,6 +478,17 @@ namespace WhoWiredThis.Visibility
         private bool IsGeneral(GameObject go)
         {
             return generalObject != null && go == generalObject;
+        }
+
+        private GameObject GetSubjectGameObject(int index)
+        {
+            if (subjects == null || index < 0 || index >= subjects.Length)
+            {
+                return null;
+            }
+
+            MultiDimensionSubject entry = subjects[index];
+            return entry != null ? entry.Subject : null;
         }
 
         private static void SetRootLayerRecursive(Transform root, int layer)

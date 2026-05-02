@@ -50,9 +50,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
   subjects:
-  - {fileID: 2688666554774453846}
-  - {fileID: 7174195475870810628}
-  - {fileID: 4421825329405305578}
+  - subject: {fileID: 2688666554774453846}
+    displayName: RED
+  - subject: {fileID: 7174195475870810628}
+    displayName: GRN
+  - subject: {fileID: 4421825329405305578}
+    displayName: BLU
   generalObject: {fileID: 900352660180242742}
   configurationMode: 1
   indexPlayerA: 0
@@ -60,6 +63,7 @@ MonoBehaviour:
   exclusivePlayer: 1
   exclusiveSubjectIndex: 0
   sharedSubjectIndex: 0
+  interactionLocked: 0
 --- !u!114 &7067363398698298973
 MonoBehaviour:
   m_ObjectHideFlags: 0
