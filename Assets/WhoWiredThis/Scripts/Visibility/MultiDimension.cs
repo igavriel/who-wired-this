@@ -108,6 +108,73 @@ namespace WhoWiredThis.Visibility
             ApplyConfiguration();
         }
 
+        /// <summary>Number of subject slots (length of the subjects array).</summary>
+        public int SubjectCount => subjects == null ? 0 : subjects.Length;
+
+        /// <summary>
+        /// Advances the active subject index for the given player according to <see cref="configurationMode"/>.
+        /// Split: only <see cref="AllowedPlayerTag.Player_A"/> / <see cref="AllowedPlayerTag.Player_B"/> move their slot;
+        /// Exclusive: only the configured <see cref="exclusivePlayer"/> may advance (or either player when that is <see cref="AllowedPlayerTag.Any_Player"/>);
+        /// All players: shared index advances for any call.
+        /// </summary>
+        public void AdvanceIndexForPlayer(AllowedPlayerTag player)
+        {
+            int n = SubjectCount;
+            if (n == 0)
+            {
+                return;
+            }
+
+            switch (configurationMode)
+            {
+                case MultiDimensionMode.SplitPlayers:
+                    if (player == AllowedPlayerTag.Any_Player)
+                    {
+                        return;
+                    }
+
+                    if (player == AllowedPlayerTag.Player_A)
+                    {
+                        indexPlayerA = (indexPlayerA + 1) % n;
+                    }
+                    else
+                    {
+                        indexPlayerB = (indexPlayerB + 1) % n;
+                    }
+
+                    SetCase1(indexPlayerA, indexPlayerB);
+                    break;
+
+                case MultiDimensionMode.ExclusiveSinglePlayer:
+                    if (exclusivePlayer == AllowedPlayerTag.Player_A && player != AllowedPlayerTag.Player_A)
+                    {
+                        return;
+                    }
+
+                    if (exclusivePlayer == AllowedPlayerTag.Player_B && player != AllowedPlayerTag.Player_B)
+                    {
+                        return;
+                    }
+
+                    if (exclusivePlayer == AllowedPlayerTag.Any_Player)
+                    {
+                        if (player == AllowedPlayerTag.Any_Player)
+                        {
+                            return;
+                        }
+                    }
+
+                    exclusiveSubjectIndex = (exclusiveSubjectIndex + 1) % n;
+                    SetCase2(exclusivePlayer, exclusiveSubjectIndex);
+                    break;
+
+                case MultiDimensionMode.AllPlayers:
+                    sharedSubjectIndex = (sharedSubjectIndex + 1) % n;
+                    SetCase3(sharedSubjectIndex);
+                    break;
+            }
+        }
+
         /// <summary>Re-applies inspector configuration (dimensions, activation, general object).</summary>
         public void ApplyConfiguration()
         {
