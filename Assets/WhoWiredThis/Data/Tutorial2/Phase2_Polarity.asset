@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2553eac5353ac4d05b4766ef8d058288, type: 3}
+  m_Name: Phase2_Polarity
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Tutorial2.PuzzlePhaseSO
+  phaseId: phase_2_polarity
+  phaseTitle: Polarity Alignment
+  inputPlayer: 1
+  observerPlayer: 0
+  inputStationId: SideB
+  diagnosticStationId: SideA
+  valueSet: {fileID: 11400000, guid: 7703d0dae8144423db925371a7071df1, type: 2}
+  slotCount: 2
+  fixedSolution:
+  - +
+  - '-'
+  allowDuplicates: 0
+  metric1Label: Detected
+  metric2Label: Locked
+  successMessage: B-SIDE CALIBRATED
+  observerSuccessInstruction: Core stabilized.
