@@ -1,6 +1,7 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.Player;
 
 namespace WhoWiredThis.Visibility
 {
@@ -12,9 +13,6 @@ namespace WhoWiredThis.Visibility
     /// </summary>
     public class MultiDimensionSubjectCycler : MonoBehaviour, IInteractable
     {
-        private const string PlayerATag = "PlayerA";
-        private const string PlayerBTag = "PlayerB";
-
         [Header("Target")]
         [SerializeField]
         private MultiDimension multiDimension;
@@ -83,31 +81,7 @@ namespace WhoWiredThis.Visibility
 
         private static bool TryResolveInteractorPlayer(Transform start, out AllowedPlayerTag playerTag)
         {
-            playerTag = AllowedPlayerTag.Any_Player;
-            if (start == null)
-            {
-                return false;
-            }
-
-            Transform current = start;
-            while (current != null)
-            {
-                if (current.CompareTag(PlayerATag))
-                {
-                    playerTag = AllowedPlayerTag.Player_A;
-                    return true;
-                }
-
-                if (current.CompareTag(PlayerBTag))
-                {
-                    playerTag = AllowedPlayerTag.Player_B;
-                    return true;
-                }
-
-                current = current.parent;
-            }
-
-            return false;
+            return PlayerInteractorResolver.TryResolve(start, out playerTag);
         }
 
         /// <summary>

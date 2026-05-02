@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using WhoWiredThis.Enums;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.Player;
 
 namespace WhoWiredThis.Visibility
 {
@@ -64,6 +66,9 @@ namespace WhoWiredThis.Visibility
         /// <summary>Invoked after a failed check when <see cref="CaptureRetryStrings"/> is true: (1-based attempt index, full line).</summary>
         public event Action<int, string> OnRetryStringCaptured;
 
+        /// <summary>Invoked after every combination check from <see cref="Interact"/> or <see cref="TryCheckSolution"/> (success or failure).</summary>
+        public event Action<MultiDimensionAttemptResult> OnAttemptSubmitted;
+
         public bool Solved => solved;
 
         /// <summary>Inspector option: record lines on each wrong combination check.</summary>
@@ -102,7 +107,16 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            TryCheckSolution();
+            AllowedPlayerTag actor = AllowedPlayerTag.Any_Player;
+            if (interactor != null)
+            {
+                if (PlayerInteractorResolver.TryResolve(interactor.transform, out AllowedPlayerTag resolved))
+                {
+                    actor = resolved;
+                }
+            }
+
+            TryCheckSolutionWithActor(actor);
         }
 
         /// <summary>Clears <see cref="RetryStrings"/> and resets <see cref="FailedCheckCount"/> (e.g. new session).</summary>
@@ -172,9 +186,14 @@ namespace WhoWiredThis.Visibility
 
         /// <summary>
         /// Validates current MultiDimension indices against configured entries.
-        /// Returns true when solved.
+        /// Returns true when solved. Uses <see cref="AllowedPlayerTag.Any_Player"/> for <see cref="OnAttemptSubmitted"/> actor when not called from <see cref="Interact"/>.
         /// </summary>
         public bool TryCheckSolution()
+        {
+            return TryCheckSolutionWithActor(AllowedPlayerTag.Any_Player);
+        }
+
+        private bool TryCheckSolutionWithActor(AllowedPlayerTag actor)
         {
             if (solved)
             {
@@ -183,18 +202,29 @@ namespace WhoWiredThis.Visibility
 
             if (puzzleElements == null || puzzleElements.Length == 0)
             {
+                RaiseAttemptSubmitted(actor, Array.Empty<int>(), false);
                 return false;
             }
 
-            bool foundParticipatingTarget = false;
-            for (int i = 0; i < puzzleElements.Length; i++)
+            int n = puzzleElements.Length;
+            int[] submittedIndices = new int[n];
+
+            for (int i = 0; i < n; i++)
             {
                 MultiDimensionPuzzleElement entry = puzzleElements[i];
                 if (entry == null || entry.Element == null)
                 {
+                    RaiseAttemptSubmitted(actor, submittedIndices, false);
                     return false;
                 }
 
+                submittedIndices[i] = entry.Element.GetCurrentIndexForSolutionCheck();
+            }
+
+            bool foundParticipatingTarget = false;
+            for (int i = 0; i < n; i++)
+            {
+                MultiDimensionPuzzleElement entry = puzzleElements[i];
                 MultiDimension target = entry.Element;
                 if (target.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
                 {
@@ -202,11 +232,12 @@ namespace WhoWiredThis.Visibility
                 }
 
                 foundParticipatingTarget = true;
-                int currentIndex = target.GetCurrentIndexForSolutionCheck();
+                int currentIndex = submittedIndices[i];
                 if (currentIndex < 0 || currentIndex != entry.CorrectIndex)
                 {
                     ApplyFeedbackMaterial(failMaterial);
                     RecordFailedCheckIfEnabled();
+                    RaiseAttemptSubmitted(actor, submittedIndices, false);
                     return false;
                 }
             }
@@ -215,6 +246,7 @@ namespace WhoWiredThis.Visibility
             {
                 ApplyFeedbackMaterial(failMaterial);
                 RecordFailedCheckIfEnabled();
+                RaiseAttemptSubmitted(actor, submittedIndices, false);
                 return false;
             }
 
@@ -222,7 +254,38 @@ namespace WhoWiredThis.Visibility
             LockTargetMultiDimensions();
             ApplyFeedbackMaterial(solvedMaterial);
             DisableInteractionsAfterSolve();
+            RaiseAttemptSubmitted(actor, submittedIndices, true);
             return true;
+        }
+
+        private void RaiseAttemptSubmitted(AllowedPlayerTag actor, int[] submittedIndices, bool isSolved)
+        {
+            int[] copy = submittedIndices == null ? Array.Empty<int>() : (int[])submittedIndices.Clone();
+            var result = new MultiDimensionAttemptResult
+            {
+                Actor = actor,
+                ActorLabel = MapActorLabel(actor),
+                SubmittedIndices = copy,
+                IsSolved = isSolved,
+                PublicStatus = isSolved ? "CALIBRATED" : "UNSTABLE",
+                PhaseNumber = null,
+                PhaseLabel = null
+            };
+
+            OnAttemptSubmitted?.Invoke(result);
+        }
+
+        private static string MapActorLabel(AllowedPlayerTag actor)
+        {
+            switch (actor)
+            {
+                case AllowedPlayerTag.Player_A:
+                    return "P1";
+                case AllowedPlayerTag.Player_B:
+                    return "P2";
+                default:
+                    return "?";
+            }
         }
 
         private void LockTargetMultiDimensions()
