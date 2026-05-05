@@ -351,5 +351,81 @@ namespace WhoWiredThis.Visibility
             retryStrings.Add(line);
             OnRetryStringCaptured?.Invoke(failedCheckCount, line);
         }
+
+        /// <summary>
+        /// Builds private diagnostic counts from current selector state.
+        /// recognizedCount = right symbols regardless of slot, alignedCount = exact slot+symbol matches.
+        /// Returns false when no participating dimensions are available.
+        /// </summary>
+        public bool TryGetDiagnosticSnapshot(out int recognizedCount, out int alignedCount, out int totalCount)
+        {
+            recognizedCount = 0;
+            alignedCount = 0;
+            totalCount = 0;
+
+            if (puzzleElements == null || puzzleElements.Length == 0)
+            {
+                return false;
+            }
+
+            var expectedCounts = new Dictionary<int, int>();
+            var currentIndices = new List<int>();
+
+            for (int i = 0; i < puzzleElements.Length; i++)
+            {
+                MultiDimensionPuzzleElement entry = puzzleElements[i];
+                if (entry?.Element == null)
+                {
+                    continue;
+                }
+
+                MultiDimension target = entry.Element;
+                if (target.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
+                {
+                    continue;
+                }
+
+                totalCount++;
+                int currentIndex = target.GetCurrentIndexForSolutionCheck();
+                int expectedIndex = entry.CorrectIndex;
+                currentIndices.Add(currentIndex);
+
+                if (currentIndex >= 0 && currentIndex == expectedIndex)
+                {
+                    alignedCount++;
+                }
+
+                if (!expectedCounts.TryGetValue(expectedIndex, out int count))
+                {
+                    count = 0;
+                }
+
+                expectedCounts[expectedIndex] = count + 1;
+            }
+
+            if (totalCount == 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < currentIndices.Count; i++)
+            {
+                int currentIndex = currentIndices[i];
+                if (currentIndex < 0)
+                {
+                    continue;
+                }
+
+                if (!expectedCounts.TryGetValue(currentIndex, out int remaining) || remaining <= 0)
+                {
+                    continue;
+                }
+
+                recognizedCount++;
+                expectedCounts[currentIndex] = remaining - 1;
+            }
+
+            return true;
+        }
     }
 }
