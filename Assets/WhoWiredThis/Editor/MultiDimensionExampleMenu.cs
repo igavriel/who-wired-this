@@ -53,18 +53,14 @@ namespace WhoWiredThis.EditorTools
             e1.FindPropertyRelative("subject").objectReferenceValue = sphere;
             e1.FindPropertyRelative("displayName").stringValue = "Sphere";
             serialized.FindProperty("generalObject").objectReferenceValue = capsule;
-            serialized.FindProperty("configurationMode").enumValueIndex = (int)MultiDimension.MultiDimensionMode.SplitPlayers;
-            serialized.FindProperty("indexPlayerA").intValue = 0;
-            serialized.FindProperty("indexPlayerB").intValue = 1;
-            serialized.FindProperty("exclusivePlayer").enumValueIndex = (int)AllowedPlayerTag.Player_A;
-            serialized.FindProperty("exclusiveSubjectIndex").intValue = 0;
-            serialized.FindProperty("sharedSubjectIndex").intValue = 0;
+            serialized.FindProperty("visibleToPlayer").enumValueIndex = (int)AllowedPlayerTag.Player_A;
+            serialized.FindProperty("activeSubjectIndex").intValue = 0;
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
             Selection.activeGameObject = root;
             EditorSceneManager.MarkSceneDirty(root.scene);
 
-            Debug.Log($"[{nameof(MultiDimensionExampleMenu)}] Created '{root.name}'. Default mode: CASE 1 (Box index 0 → Player A view, Sphere index 1 → Player B view). General capsule stays on Default for all players.");
+            Debug.Log($"[{nameof(MultiDimensionExampleMenu)}] Created '{root.name}'. Default mode: single selection (Box index 0 visible to Player A). General capsule stays on Default for all players.");
         }
     }
 }

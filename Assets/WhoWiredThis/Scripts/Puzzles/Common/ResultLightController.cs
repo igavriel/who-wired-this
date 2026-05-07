@@ -8,6 +8,8 @@ namespace WhoWiredThis.Puzzles.Common
     public class ResultLightController : MonoBehaviour
     {
         [Header("References")]
+        [Tooltip("Reference must implement IPuzzleManager.")]
+        [RequireInterface(typeof(IPuzzleManager))]
         [SerializeField] private MonoBehaviour puzzleManager;
         [SerializeField] private Renderer lightRenderer;
         [SerializeField] private Light indicatorLight;

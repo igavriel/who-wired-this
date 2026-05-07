@@ -5,6 +5,7 @@ using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Interfaces;
 using WhoWiredThis.Player;
+using WhoWiredThis.Util;
 
 namespace WhoWiredThis.Visibility
 {
@@ -21,20 +22,13 @@ namespace WhoWiredThis.Visibility
     /// <summary>
     /// Checks a set of MultiDimension objects against per-element target indices.
     /// Case 2 and Case 3 are evaluated; Case 1 is intentionally ignored.
-    /// When solved, this component no longer responds to interaction and can disable linked interactables.
+    /// Interaction is expected to be routed via an external IInteractable bridge.
     /// </summary>
-    public class MultiDimensionPuzzelManager : MonoBehaviour, IInteractable
+    public class MultiDimensionPuzzelManager : MonoBehaviour
     {
         [Header("Combination")]
         [SerializeField]
         private MultiDimensionPuzzleElement[] puzzleElements;
-
-        [Header("Interaction")]
-        [SerializeField]
-        private string interactPrompt = "$INTERACT$ Check combination";
-
-        [SerializeField]
-        private string solvedPrompt = "Combination solved.";
 
         [Header("Solve State")]
         [SerializeField]
@@ -51,6 +45,11 @@ namespace WhoWiredThis.Visibility
         private Material solvedMaterial;
 
         [Header("Optional Disable On Solve")]
+        [Tooltip("Primary solve button interactable (typically a MultiDimensionPuzzleInteractableBridge on the button object).")]
+        [RequireInterface(typeof(IInteractable))]
+        [SerializeField]
+        private MonoBehaviour solveButtonInteractable;
+
         [Tooltip("Any interactable scripts here will be disabled once solved.")]
         [SerializeField]
         private MonoBehaviour[] interactionsToDisable;
@@ -95,16 +94,12 @@ namespace WhoWiredThis.Visibility
             }
         }
 
-        public string GetPromptText()
-        {
-            return solved ? solvedPrompt : interactPrompt;
-        }
-
-        public void Interact(GameObject interactor)
+        public bool TryCheckSolutionFromInteractor(GameObject interactor)
         {
             if (solved)
             {
-                return;
+                Debug.Log($"[MultiDimensionPuzzelManager] '{name}' ignored solve request because puzzle is already solved.", this);
+                return true;
             }
 
             AllowedPlayerTag actor = AllowedPlayerTag.Any_Player;
@@ -116,7 +111,11 @@ namespace WhoWiredThis.Visibility
                 }
             }
 
-            TryCheckSolutionWithActor(actor);
+            Debug.Log(
+                $"[MultiDimensionPuzzelManager] '{name}' TryCheckSolutionFromInteractor called. " +
+                $"interactor={(interactor != null ? interactor.name : "null")}, actor={actor}.",
+                this);
+            return TryCheckSolutionWithActor(actor);
         }
 
         /// <summary>Clears <see cref="RetryStrings"/> and resets <see cref="FailedCheckCount"/> (e.g. new session).</summary>
@@ -148,11 +147,6 @@ namespace WhoWiredThis.Visibility
                 }
 
                 MultiDimension target = entry.Element;
-                if (target.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
-                {
-                    continue;
-                }
-
                 if (any)
                 {
                     sb.Append("; ");
@@ -186,7 +180,7 @@ namespace WhoWiredThis.Visibility
 
         /// <summary>
         /// Validates current MultiDimension indices against configured entries.
-        /// Returns true when solved. Uses <see cref="AllowedPlayerTag.Any_Player"/> for <see cref="OnAttemptSubmitted"/> actor when not called from <see cref="Interact"/>.
+        /// Returns true when solved. Uses <see cref="AllowedPlayerTag.Any_Player"/> for <see cref="OnAttemptSubmitted"/> actor when not called from <see cref="TryCheckSolutionFromInteractor"/>.
         /// </summary>
         public bool TryCheckSolution()
         {
@@ -197,11 +191,13 @@ namespace WhoWiredThis.Visibility
         {
             if (solved)
             {
+                Debug.Log($"[MultiDimensionPuzzelManager] '{name}' TryCheckSolutionWithActor early return: already solved.", this);
                 return true;
             }
 
             if (puzzleElements == null || puzzleElements.Length == 0)
             {
+                Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has no puzzleElements configured.", this);
                 RaiseAttemptSubmitted(actor, Array.Empty<int>(), false);
                 return false;
             }
@@ -214,6 +210,7 @@ namespace WhoWiredThis.Visibility
                 MultiDimensionPuzzleElement entry = puzzleElements[i];
                 if (entry == null || entry.Element == null)
                 {
+                    Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has null puzzle element at index {i}.", this);
                     RaiseAttemptSubmitted(actor, submittedIndices, false);
                     return false;
                 }
@@ -226,15 +223,14 @@ namespace WhoWiredThis.Visibility
             {
                 MultiDimensionPuzzleElement entry = puzzleElements[i];
                 MultiDimension target = entry.Element;
-                if (target.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
-                {
-                    continue;
-                }
-
                 foundParticipatingTarget = true;
                 int currentIndex = submittedIndices[i];
                 if (currentIndex < 0 || currentIndex != entry.CorrectIndex)
                 {
+                    Debug.Log(
+                        $"[MultiDimensionPuzzelManager] '{name}' solve failed at index {i}. " +
+                        $"current={currentIndex}, expected={entry.CorrectIndex}.",
+                        this);
                     ApplyFeedbackMaterial(failMaterial);
                     RecordFailedCheckIfEnabled();
                     RaiseAttemptSubmitted(actor, submittedIndices, false);
@@ -244,6 +240,7 @@ namespace WhoWiredThis.Visibility
 
             if (!foundParticipatingTarget)
             {
+                Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has no participating targets (all split-player or invalid).", this);
                 ApplyFeedbackMaterial(failMaterial);
                 RecordFailedCheckIfEnabled();
                 RaiseAttemptSubmitted(actor, submittedIndices, false);
@@ -251,6 +248,7 @@ namespace WhoWiredThis.Visibility
             }
 
             solved = true;
+            Debug.Log($"[MultiDimensionPuzzelManager] '{name}' solve success.", this);
             LockTargetMultiDimensions();
             ApplyFeedbackMaterial(solvedMaterial);
             DisableInteractionsAfterSolve();
@@ -309,6 +307,8 @@ namespace WhoWiredThis.Visibility
 
         private void DisableInteractionsAfterSolve()
         {
+            DisableInteractableBehaviour(solveButtonInteractable);
+
             if (interactionsToDisable == null)
             {
                 return;
@@ -322,10 +322,20 @@ namespace WhoWiredThis.Visibility
                     continue;
                 }
 
-                if (behaviour is IInteractable)
-                {
-                    behaviour.enabled = false;
-                }
+                DisableInteractableBehaviour(behaviour);
+            }
+        }
+
+        private static void DisableInteractableBehaviour(MonoBehaviour behaviour)
+        {
+            if (behaviour == null)
+            {
+                return;
+            }
+
+            if (behaviour is IInteractable)
+            {
+                behaviour.enabled = false;
             }
         }
 
@@ -380,11 +390,6 @@ namespace WhoWiredThis.Visibility
                 }
 
                 MultiDimension target = entry.Element;
-                if (target.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
-                {
-                    continue;
-                }
-
                 totalCount++;
                 int currentIndex = target.GetCurrentIndexForSolutionCheck();
                 int expectedIndex = entry.CorrectIndex;

@@ -90,11 +90,6 @@ namespace WhoWiredThis.Puzzles.Common
                     continue;
                 }
 
-                if (md.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers)
-                {
-                    continue;
-                }
-
                 int idx = result.SubmittedIndices[i];
                 string label = idx >= 0 ? md.GetSubjectDisplayName(idx) : string.Empty;
                 if (string.IsNullOrEmpty(label))

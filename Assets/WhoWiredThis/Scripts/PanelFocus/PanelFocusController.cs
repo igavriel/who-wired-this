@@ -3,6 +3,7 @@ using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Interfaces;
 using WhoWiredThis.Player;
+using WhoWiredThis.Util;
 
 namespace WhoWiredThis.PanelFocus
 {
@@ -11,6 +12,8 @@ namespace WhoWiredThis.PanelFocus
     {
         [SerializeField] private string label = "Button";
         [SerializeField] private Transform highlightAnchor;
+        [Tooltip("Reference must implement IInteractable.")]
+        [RequireInterface(typeof(IInteractable))]
         [SerializeField] private MonoBehaviour interactableReference;
 
         public string Label => label;
@@ -39,6 +42,8 @@ namespace WhoWiredThis.PanelFocus
         [Header("Buttons")]
         [Tooltip("All non-exit buttons in visual left-to-right order.")]
         [SerializeField] private PanelFocusButton[] interactableButtons;
+        [Tooltip("Always-present Solve button.")]
+        [SerializeField] private PanelFocusButton solveButton;
         [Tooltip("Always-present Exit button.")]
         [SerializeField] private PanelFocusButton exitButton;
 
@@ -54,17 +59,27 @@ namespace WhoWiredThis.PanelFocus
 
         public AllowedPlayerTag AllowedPlayerId => allowedPlayerId;
         private int ButtonCount => interactableButtons != null ? interactableButtons.Length : 0;
-        private int TotalCount => ButtonCount + 1; // + dedicated exit button
-        private bool IsExitSelected => selectedIndex == ButtonCount;
+        private int SolveIndex => ButtonCount;
+        private int ExitIndex => ButtonCount + 1;
+        private int TotalCount => ButtonCount + 2; // + dedicated solve and exit buttons
+        private bool IsSolveSelected => selectedIndex == SolveIndex;
+        private bool IsExitSelected => selectedIndex == ExitIndex;
 
         public string GetPromptText() => promptText;
 
         private void Awake()
         {
+            if (solveButton == null || solveButton.HighlightAnchor == null)
+            {
+                Debug.LogWarning($"[PanelFocusController] Solve button / HighlightAnchor is missing on {name}.", this);
+            }
+
             if (exitButton == null || exitButton.HighlightAnchor == null)
             {
                 Debug.LogWarning($"[PanelFocusController] Exit button / HighlightAnchor is missing on {name}.", this);
             }
+
+            ValidateButtonWiring();
         }
 
         public void GetCameraSnapPose(Camera playerCamera, out Vector3 worldPos, out Quaternion worldRot)
@@ -166,13 +181,43 @@ namespace WhoWiredThis.PanelFocus
         {
             if (activeController == null)
             {
+                Debug.LogWarning($"[PanelFocusController] ActivateSelected ignored on '{name}' because no active controller is set.", this);
                 return;
             }
+
+            Debug.Log(
+                $"[PanelFocusController] ActivateSelected on '{name}' by {activeController.PlayerId}. " +
+                $"selectedIndex={selectedIndex}, buttonCount={ButtonCount}, isSolve={IsSolveSelected}, isExit={IsExitSelected}.",
+                this);
 
             if (IsExitSelected)
             {
                 Debug.Log($"Player {activeController.PlayerId} pressed ExitButton.");
                 activeController.ExitFocus();
+                return;
+            }
+
+            if (IsSolveSelected)
+            {
+                if (solveButton == null)
+                {
+                    Debug.LogWarning($"[PanelFocusController] Solve selection on '{name}' but solveButton is null.", this);
+                    return;
+                }
+
+                Debug.Log($"Player {activeController.PlayerId} activated '{solveButton.Label}'.");
+                IInteractable solveInteractable = solveButton.Interactable;
+                if (solveInteractable == null)
+                {
+                    Debug.LogWarning($"[PanelFocusController] Solve button on '{name}' has no IInteractable assigned.", this);
+                    return;
+                }
+
+                Debug.Log(
+                    $"[PanelFocusController] Forwarding solve interact from '{name}' to '{(solveInteractable as Component)?.name ?? solveInteractable.GetType().Name}' " +
+                    $"({solveInteractable.GetType().Name}).",
+                    this);
+                solveInteractable.Interact(interactor);
                 return;
             }
 
@@ -188,7 +233,41 @@ namespace WhoWiredThis.PanelFocus
             }
 
             Debug.Log($"Player {activeController.PlayerId} activated '{entry.Label}'.");
-            entry.Interactable?.Interact(interactor);
+            IInteractable interactable = entry.Interactable;
+            if (interactable == null)
+            {
+                Debug.LogWarning($"[PanelFocusController] Button '{entry.Label}' on '{name}' has no IInteractable assigned.", this);
+                return;
+            }
+            interactable.Interact(interactor);
+        }
+
+        private void ValidateButtonWiring()
+        {
+            if (interactableButtons == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < interactableButtons.Length; i++)
+            {
+                PanelFocusButton entry = interactableButtons[i];
+                if (entry == null)
+                {
+                    Debug.LogWarning($"[PanelFocusController] interactableButtons[{i}] is null on '{name}'.", this);
+                    continue;
+                }
+
+                if (entry.HighlightAnchor == null)
+                {
+                    Debug.LogWarning($"[PanelFocusController] Button '{entry.Label}' is missing HighlightAnchor on '{name}'.", this);
+                }
+
+                if (entry.Interactable == null)
+                {
+                    Debug.LogWarning($"[PanelFocusController] Button '{entry.Label}' is missing IInteractable on '{name}'.", this);
+                }
+            }
         }
 
         private void RefreshSelectionFrame()
@@ -200,9 +279,11 @@ namespace WhoWiredThis.PanelFocus
 
             PanelFocusButton current = IsExitSelected
                 ? exitButton
-                : (interactableButtons != null && selectedIndex >= 0 && selectedIndex < interactableButtons.Length
-                    ? interactableButtons[selectedIndex]
-                    : null);
+                : IsSolveSelected
+                    ? solveButton
+                    : (interactableButtons != null && selectedIndex >= 0 && selectedIndex < interactableButtons.Length
+                        ? interactableButtons[selectedIndex]
+                        : null);
             Transform anchor = current?.HighlightAnchor;
             if (anchor == null)
             {

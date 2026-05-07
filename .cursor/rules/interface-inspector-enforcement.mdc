@@ -1,0 +1,23 @@
+---
+description: Enforce interface-safe Inspector references in Unity
+alwaysApply: true
+---
+
+# Interface-Safe Inspector References
+
+When a serialized field should reference a behavior contract (interface), do not rely on a raw `MonoBehaviour` assignment alone.
+
+- Use a dedicated attribute + property drawer pattern to enforce interface compatibility in Inspector.
+- Keep the serialized field as `MonoBehaviour` for Unity serialization, but constrain it with:
+  - `RequireInterfaceAttribute` in runtime scripts
+  - `RequireInterfaceDrawer` in an `Editor` folder
+- For panel focus button bindings, `interactableReference` must implement `IInteractable`.
+- Keep runtime safety checks (`as IInteractable`, null guard + warning) even with Inspector enforcement.
+- Reject or clear invalid assignments instead of silently accepting them.
+
+Example:
+
+```csharp
+[RequireInterface(typeof(IInteractable))]
+[SerializeField] private MonoBehaviour interactableReference;
+```

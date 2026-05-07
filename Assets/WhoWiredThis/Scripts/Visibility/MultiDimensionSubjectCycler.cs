@@ -8,7 +8,7 @@ namespace WhoWiredThis.Visibility
     /// <summary>
     /// Interactable that cycles <see cref="MultiDimension"/> subject indices when the interacting player
     /// matches this volume's dimension layer (DimensionA / DimensionB / Default). Default-layer colliders
-    /// pass the dimension gate for both players; Case 2 still restricts who may advance via
+    /// pass the dimension gate for both players; selection visibility still restricts who may advance via
     /// <see cref="MultiDimension.AdvanceIndexForPlayer"/>.
     /// </summary>
     public class MultiDimensionSubjectCycler : MonoBehaviour, IInteractable
@@ -41,9 +41,7 @@ namespace WhoWiredThis.Visibility
                 return promptText;
             }
 
-            int idx = multiDimension.CurrentMode == MultiDimension.MultiDimensionMode.SplitPlayers
-                ? -1
-                : multiDimension.GetCurrentIndexForSolutionCheck();
+            int idx = multiDimension.GetCurrentIndexForSolutionCheck();
             if (idx < 0)
             {
                 return promptText;

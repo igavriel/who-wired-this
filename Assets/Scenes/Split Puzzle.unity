@@ -866,6 +866,7 @@ GameObject:
   - component: {fileID: 368351127}
   - component: {fileID: 368351126}
   - component: {fileID: 368351125}
+  - component: {fileID: 368351129}
   m_Layer: 7
   m_Name: PuzzleManager_Puzzle
   m_TagString: Untagged
@@ -905,12 +906,11 @@ MonoBehaviour:
     correctIndex: 1
   - element: {fileID: 1876993892}
     correctIndex: 2
-  interactPrompt: $INTERACT$ Check knob solution
-  solvedPrompt: Solved
   solved: 0
   feedbackRenderer: {fileID: 368351127}
   failMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
   solvedMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
+  solveButtonInteractable: {fileID: 0}
   interactionsToDisable:
   - {fileID: 1444394086207076402}
   - {fileID: 930906440}
@@ -995,6 +995,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368351123}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &368351129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368351123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e33ce6f2bc574486909cc58f8f92a85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleInteractableBridge
+  puzzleTargetReference: {fileID: 368351125}
+  interactPrompt: $INTERACT$ Check knob solution
+  solvedPrompt: Solved
 --- !u!21 &480896130
 Material:
   serializedVersion: 8

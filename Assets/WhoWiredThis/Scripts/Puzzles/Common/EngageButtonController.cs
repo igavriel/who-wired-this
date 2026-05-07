@@ -9,6 +9,8 @@ namespace WhoWiredThis.Puzzles.Common
     public class EngageButtonController : MonoBehaviour, IInteractable
     {
         [Header("Puzzle")]
+        [Tooltip("Reference must implement IPuzzleManager.")]
+        [RequireInterface(typeof(IPuzzleManager))]
         [SerializeField] private MonoBehaviour puzzleManager;
 
         [Header("Message Bank")]

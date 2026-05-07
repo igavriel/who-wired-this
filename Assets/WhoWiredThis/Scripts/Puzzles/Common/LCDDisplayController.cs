@@ -9,6 +9,8 @@ namespace WhoWiredThis.Puzzles.Common
     public class LCDDisplayController : MonoBehaviour
     {
         [Header("References")]
+        [Tooltip("Reference must implement IPuzzleManager.")]
+        [RequireInterface(typeof(IPuzzleManager))]
         [SerializeField] private MonoBehaviour puzzleManager;
         [SerializeField] private TextMeshPro displayText;
 
