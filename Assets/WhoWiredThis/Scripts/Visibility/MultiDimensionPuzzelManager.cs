@@ -30,9 +30,23 @@ namespace WhoWiredThis.Visibility
         [SerializeField]
         private MultiDimensionPuzzleElement[] puzzleElements;
 
+        [Tooltip("Primary solve button interactable (typically a MultiDimensionPuzzleInteractableBridge on the button object).")]
+        [RequireInterface(typeof(IInteractable))]
+        [SerializeField]
+        private MonoBehaviour solveButtonInteractable;
+
         [Header("Solve State")]
         [SerializeField]
         private bool solved;
+
+        [Tooltip("Optional Disable On Solve: Any interactable scripts here will be disabled once solved.")]
+        [SerializeField]
+        private MonoBehaviour[] interactionsToDisable;
+
+        [Header("Retry log (history trackers)")]
+        [Tooltip("When enabled, each failed check appends a line to RetryStrings and updates LastRetryString.")]
+        [SerializeField]
+        private bool captureRetryStrings;
 
         [Header("Visual Feedback")]
         [SerializeField]
@@ -43,21 +57,6 @@ namespace WhoWiredThis.Visibility
 
         [SerializeField]
         private Material solvedMaterial;
-
-        [Header("Optional Disable On Solve")]
-        [Tooltip("Primary solve button interactable (typically a MultiDimensionPuzzleInteractableBridge on the button object).")]
-        [RequireInterface(typeof(IInteractable))]
-        [SerializeField]
-        private MonoBehaviour solveButtonInteractable;
-
-        [Tooltip("Any interactable scripts here will be disabled once solved.")]
-        [SerializeField]
-        private MonoBehaviour[] interactionsToDisable;
-
-        [Header("Retry log (history trackers)")]
-        [Tooltip("When enabled, each failed check appends a line to RetryStrings and updates LastRetryString.")]
-        [SerializeField]
-        private bool captureRetryStrings;
 
         private readonly List<string> retryStrings = new List<string>();
         private int failedCheckCount;

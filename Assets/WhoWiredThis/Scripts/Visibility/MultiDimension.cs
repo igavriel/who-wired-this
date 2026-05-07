@@ -7,14 +7,15 @@ namespace WhoWiredThis.Visibility
     [Serializable]
     public class MultiDimensionSubject
     {
-        [Tooltip("Root GameObject for this subject index (visibility and layers apply here).")]
-        [SerializeField]
-        private GameObject subject;
-
         [Tooltip("Player-facing label (HUD, prompts). Falls back to the subject's GameObject name when empty.")]
         [SerializeField]
         private string displayName;
 
+        [Tooltip("Root GameObject for this subject index (visibility and layers apply here).")]
+        [SerializeField]
+        private GameObject subject;
+
+        public string Label => displayName;
         public GameObject Subject => subject;
         public string DisplayName => displayName;
     }
