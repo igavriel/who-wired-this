@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8906536763077642569}
   - component: {fileID: 3566884253688347135}
   - component: {fileID: 669892471574922950}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LCD_Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,8 +133,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.17533003, z: 0, w: 0.18031769}
+  m_margin: {x: 0.14124894, y: 0.17533003, z: 0, w: 0.18031769}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 7082498722753989327}
   - component: {fileID: 5768452256885206071}
   m_Layer: 0
-  m_Name: MultiDimension_ButtonPolarity
+  m_Name: MultiDimension_Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,19 +232,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
   subjects:
-  - subject: {fileID: 7615889193377596309}
-    displayName: +5v
-  - subject: {fileID: 7254525570539341114}
-    displayName: 0v
-  - subject: {fileID: 1711399651684521772}
-    displayName: -5v
+  - displayName: +5v
+    subject: {fileID: 7615889193377596309}
+  - displayName: 0v
+    subject: {fileID: 7254525570539341114}
+  - displayName: -5v
+    subject: {fileID: 1711399651684521772}
   generalObject: {fileID: 5066387787022192700}
-  configurationMode: 1
-  indexPlayerA: 0
-  indexPlayerB: 1
-  exclusivePlayer: 1
-  exclusiveSubjectIndex: 0
-  sharedSubjectIndex: 0
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
   interactionLocked: 0
 --- !u!114 &5768452256885206071
 MonoBehaviour:
@@ -289,8 +285,8 @@ Transform:
   m_GameObject: {fileID: 1702773755247110384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 0.9, z: -0.8}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 1}
+  m_LocalPosition: {x: -0.42, y: 0.9, z: -0.4}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7375341553714464504}
@@ -385,7 +381,7 @@ GameObject:
   - component: {fileID: 6701336240631269898}
   - component: {fileID: 598234500241914500}
   - component: {fileID: 2053466874446704545}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: CylinderMinus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,8 +513,8 @@ Transform:
   m_GameObject: {fileID: 1818113245970928257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: -0.9, z: -0.8}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 1}
+  m_LocalPosition: {x: -0.42, y: -0.9, z: -0.4}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7375341553714464504}
@@ -765,8 +761,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -804,7 +800,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.17533003, z: 0, w: 0.18031769}
+  m_margin: {x: 0.14310288, y: 0.17533003, z: 0, w: 0.18031769}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -959,8 +955,8 @@ Transform:
   m_GameObject: {fileID: 5823206786797101803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 0, z: -0.8}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 1}
+  m_LocalPosition: {x: -0.42, y: 0, z: -0.4}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7375341553714464504}
@@ -1071,8 +1067,8 @@ Transform:
   m_GameObject: {fileID: 5962107743377523739}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.421, y: 0, z: -0.8}
-  m_LocalScale: {x: 0.01, y: 2, z: 1}
+  m_LocalPosition: {x: -0.421, y: 0, z: -0.4}
+  m_LocalScale: {x: 0.05, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7375341553714464504}
@@ -1168,7 +1164,7 @@ GameObject:
   - component: {fileID: 5131130988802514361}
   - component: {fileID: 7178425748361565443}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1183,8 +1179,8 @@ Transform:
   m_GameObject: {fileID: 6089740028865321252}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37800002, y: 0, z: -0.4000002}
-  m_LocalScale: {x: 0.089999996, y: 0.018, z: 0.5}
+  m_LocalPosition: {x: -0.37800002, y: 0, z: -0.5}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3106564504103014630}
@@ -1280,7 +1276,7 @@ GameObject:
   - component: {fileID: 6684500463668788363}
   - component: {fileID: 6139637277669817201}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1295,8 +1291,8 @@ Transform:
   m_GameObject: {fileID: 6333252656173965278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37800002, y: -0.80999994, z: -0.4000002}
-  m_LocalScale: {x: 0.089999996, y: 0.018, z: 0.5}
+  m_LocalPosition: {x: -0.37800002, y: -0.80999994, z: -0.5}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3090520283334811393}
@@ -1334,7 +1330,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
+  - {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1391,7 +1387,7 @@ GameObject:
   - component: {fileID: 307002214080639172}
   - component: {fileID: 6162370508571786213}
   - component: {fileID: 6924223501834717824}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: CylinderZero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1507,7 +1503,7 @@ GameObject:
   - component: {fileID: 7562370270415574929}
   - component: {fileID: 7075515245492457902}
   - component: {fileID: 3819228639610461656}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: CylinderPlus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1623,8 +1619,8 @@ GameObject:
   - component: {fileID: 6571578983882550905}
   - component: {fileID: 5466033296152607064}
   - component: {fileID: 6872013337540737036}
-  m_Layer: 7
-  m_Name: Cube (1)
+  m_Layer: 0
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1639,8 +1635,8 @@ Transform:
   m_GameObject: {fileID: 7905239411537918633}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37800002, y: 0.80999994, z: -0.4000002}
-  m_LocalScale: {x: 0.089999996, y: 0.018, z: 0.49999997}
+  m_LocalPosition: {x: -0.37800002, y: 0.80999994, z: -0.5}
+  m_LocalScale: {x: 0.2, y: 0.1, z: 0.49999997}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6482056890593586107}
@@ -1678,7 +1674,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
+  - {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1856,8 +1852,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1895,7 +1891,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.17533003, z: 0, w: 0.18031769}
+  m_margin: {x: 0.21349168, y: 0.17533003, z: 0, w: 0.18031769}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0

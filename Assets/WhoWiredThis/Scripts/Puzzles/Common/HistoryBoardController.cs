@@ -69,6 +69,13 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void Awake()
         {
+            if (bodyText != null)
+            {
+                // Keep each history entry on a single rendered row.
+                bodyText.textWrappingMode = TextWrappingModes.NoWrap;
+                bodyText.overflowMode = TextOverflowModes.Overflow;
+            }
+
             Render();
         }
 
