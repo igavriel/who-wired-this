@@ -3566,17 +3566,6 @@ MonoBehaviour:
   lampSuccessMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   lampErrorMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
   lampClearMaterial: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
-  enableDebugInput: 0
-  debugMetric1Label: RECOGNIZED
-  debugMetric1Value: 2
-  debugMetric1Max: 2
-  debugMetric2Label: ALIGNED
-  debugMetric2Value: 0
-  debugMetric2Max: 2
-  debugMessage: 'CORRECT SIGNALS,
-
-    WRONG ORDER.'
-  debugSuccessMessage: A-SIDE CALIBRATED
 --- !u!23 &1374667454
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4416,10 +4405,6 @@ MonoBehaviour:
   maxVisibleRows: 11
   minActorColumnWidth: 5
   minInputColumnWidth: 5
-  enableDebugInput: 0
-  debugSampleActor: P1
-  debugSampleInput: R G
-  debugSampleStatus: SIGNAL UNSTABLE
 --- !u!23 &1641544980
 MeshRenderer:
   m_ObjectHideFlags: 0

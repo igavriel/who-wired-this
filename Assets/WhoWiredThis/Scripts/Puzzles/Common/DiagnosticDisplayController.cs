@@ -33,8 +33,6 @@ namespace WhoWiredThis.Puzzles.Common
         [Header("Content")]
         [SerializeField] private string title = "DIAGNOSTIC";
 
-        [SerializeField] private string separatorLine = "----------------";
-
         [SerializeField] [TextArea(2, 4)] private string waitingText = "WAITING FOR\nNEXT ATTEMPT...";
 
         [SerializeField] private string clearText = "NO DATA";
@@ -52,22 +50,6 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private Material lampErrorMaterial;
         [SerializeField] private Material lampClearMaterial;
 
-        [Header("Debug")]
-        [Tooltip("If true, polls keyboard: D = sample result, Shift+D = sample success, C = clear.")]
-        [SerializeField] private bool enableDebugInput;
-
-        [SerializeField] private string debugMetric1Label = "RECOGNIZED";
-        [SerializeField] private int debugMetric1Value = 2;
-        [SerializeField] private int debugMetric1Max = 2;
-
-        [SerializeField] private string debugMetric2Label = "ALIGNED";
-        [SerializeField] private int debugMetric2Value;
-        [SerializeField] private int debugMetric2Max = 2;
-
-        [SerializeField] [TextArea(1, 3)] private string debugMessage = "CORRECT SIGNALS,\nWRONG ORDER.";
-
-        [SerializeField] private string debugSuccessMessage = "A-SIDE CALIBRATED";
-
         private DisplayState currentState = DisplayState.Waiting;
 
         public DisplayState CurrentState => currentState;
@@ -80,34 +62,6 @@ namespace WhoWiredThis.Puzzles.Common
             }
 
             SetWaiting();
-        }
-
-        private void Update()
-        {
-            if (!enableDebugInput)
-            {
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                {
-                    SetSuccess(debugSuccessMessage);
-                }
-                else
-                {
-                    SetDiagnosticResult(
-                        debugMetric1Label, debugMetric1Value, debugMetric1Max,
-                        debugMetric2Label, debugMetric2Value, debugMetric2Max,
-                        debugMessage);
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Clear();
-            }
         }
 
         public void Clear()
@@ -170,23 +124,6 @@ namespace WhoWiredThis.Puzzles.Common
             SetWaiting();
         }
 
-        [ContextMenu("Show Sample Result")]
-        private void ShowSampleResultFromInspector()
-        {
-            EnsureTitle();
-            SetDiagnosticResult(
-                debugMetric1Label, debugMetric1Value, debugMetric1Max,
-                debugMetric2Label, debugMetric2Value, debugMetric2Max,
-                debugMessage);
-        }
-
-        [ContextMenu("Show Sample Success")]
-        private void ShowSampleSuccessFromInspector()
-        {
-            EnsureTitle();
-            SetSuccess(debugSuccessMessage);
-        }
-
         [ContextMenu("Clear")]
         private void ClearFromInspector()
         {
@@ -210,11 +147,6 @@ namespace WhoWiredThis.Puzzles.Common
             }
 
             StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(separatorLine))
-            {
-                sb.AppendLine(separatorLine);
-            }
-
             sb.Append(contentBlock ?? string.Empty);
             bodyText.text = sb.ToString();
         }

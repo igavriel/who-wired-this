@@ -1,64 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &336035039892022566
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6603242123972432285}
-  - component: {fileID: 2852664524229530244}
-  m_Layer: 0
-  m_Name: DiagnosticAdapter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6603242123972432285
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 336035039892022566}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8365680074205480399}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2852664524229530244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 336035039892022566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8e035bcfceec4198a7cb2789518b86d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.MultiDimensionDiagnosticAdapter
-  puzzleManager: {fileID: 0}
-  diagnosticDisplay: {fileID: 553826040521772839}
-  metric1Label: RECOGNIZED
-  metric2Label: ALIGNED
-  solvedMessage: A-SIDE CALIBRATED
-  perfectButMisalignedMessage: 'CORRECT SIGNALS,
-
-    WRONG ORDER.'
-  noMatchMessage: 'NO MATCHING SIGNALS.
-
-    TRY AGAIN.'
-  partialMessage: 'PARTIAL MATCH.
-
-    KEEP ADJUSTING.'
-  updateContinuously: 1
 --- !u!1 &1009140951610544445
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,9 +222,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8365680074205480399}
-  - component: {fileID: 458905926231678559}
-  - component: {fileID: 2025444855919986604}
-  - component: {fileID: 652528034484332306}
   - component: {fileID: 553826040521772839}
   m_Layer: 0
   m_Name: DiagnosticPanel
@@ -301,31 +239,91 @@ Transform:
   m_GameObject: {fileID: 3467264449368021054}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.76, y: -0.325, z: -0.04}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2, y: 1, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6603242123972432285}
+  - {fileID: 1248124787410290992}
   - {fileID: 6887498353965972806}
   - {fileID: 1037564223110396989}
   - {fileID: 2575288947498956067}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &458905926231678559
+--- !u!114 &553826040521772839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467264449368021054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a083b83ea8cf4f2997fe591aa19e230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
+  titleText: {fileID: 2452446023171465211}
+  bodyText: {fileID: 6590241200266695463}
+  statusLampRenderer: {fileID: 4666046874431597336}
+  title: DIAGNOSTIC
+  waitingText: 'WAITING FOR
+
+    NEXT ATTEMPT...'
+  clearText: NO DATA
+  metricLabelMinWidth: 10
+  lampWaitingMaterial: {fileID: 2100000, guid: 2fb7a24a4642848f4b1e0fa4c7e7544f, type: 2}
+  lampResultMaterial: {fileID: 2100000, guid: a5120172d803445e083574ddfbe255fc, type: 2}
+  lampSuccessMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
+  lampErrorMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
+  lampClearMaterial: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
+--- !u!1 &4517476862835143885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1248124787410290992}
+  - component: {fileID: 2890436362352778908}
+  - component: {fileID: 3453553593902238390}
+  - component: {fileID: 7360750439317605856}
+  m_Layer: 0
+  m_Name: BackgroundPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1248124787410290992
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4517476862835143885}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8365680074205480399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2890436362352778908
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467264449368021054}
+  m_GameObject: {fileID: 4517476862835143885}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2025444855919986604
+--- !u!65 &3453553593902238390
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467264449368021054}
+  m_GameObject: {fileID: 4517476862835143885}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -340,13 +338,13 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &652528034484332306
+--- !u!23 &7360750439317605856
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467264449368021054}
+  m_GameObject: {fileID: 4517476862835143885}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -389,44 +387,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &553826040521772839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3467264449368021054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a083b83ea8cf4f2997fe591aa19e230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
-  titleText: {fileID: 2452446023171465211}
-  bodyText: {fileID: 6590241200266695463}
-  statusLampRenderer: {fileID: 4666046874431597336}
-  title: DIAGNOSTIC
-  separatorLine: ----------------
-  waitingText: 'WAITING FOR
-
-    NEXT ATTEMPT...'
-  clearText: NO DATA
-  metricLabelMinWidth: 10
-  lampWaitingMaterial: {fileID: 2100000, guid: 2fb7a24a4642848f4b1e0fa4c7e7544f, type: 2}
-  lampResultMaterial: {fileID: 2100000, guid: a5120172d803445e083574ddfbe255fc, type: 2}
-  lampSuccessMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
-  lampErrorMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
-  lampClearMaterial: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
-  enableDebugInput: 0
-  debugMetric1Label: RECOGNIZED
-  debugMetric1Value: 2
-  debugMetric1Max: 2
-  debugMetric2Label: ALIGNED
-  debugMetric2Value: 0
-  debugMetric2Max: 2
-  debugMessage: 'CORRECT SIGNALS,
-
-    WRONG ORDER.'
-  debugSuccessMessage: A-SIDE CALIBRATED
 --- !u!1 &5755528162734991029
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +493,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DIAGNOSTIC A
+  m_text: 'DIAGNOSTIC '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_sharedMaterial: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
@@ -714,7 +674,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '----------------WAITING FOR
+  m_text: 'WAITING FOR
 
     NEXT ATTEMPT...'
   m_isRightToLeft: 0

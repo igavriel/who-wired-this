@@ -102,6 +102,7 @@ namespace WhoWiredThis.Puzzles.Common
                 return string.Empty;
             }
 
+            string separator = string.IsNullOrWhiteSpace(inputSeparator) ? " " : inputSeparator;
             int n = Mathf.Min(inputOrder.Length, result.SubmittedIndices.Length);
             StringBuilder sb = new StringBuilder();
             bool any = false;
@@ -123,7 +124,7 @@ namespace WhoWiredThis.Puzzles.Common
 
                 if (any)
                 {
-                    sb.Append(inputSeparator);
+                    sb.Append(separator);
                 }
 
                 any = true;
