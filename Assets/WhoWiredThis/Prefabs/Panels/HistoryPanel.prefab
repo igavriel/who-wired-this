@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.MultiDimensionHistoryAdapter
   puzzleManager: {fileID: 0}
+  historySource: {fileID: 11400000, guid: ccf7cc6449094e8db19f498f5b0a7c9c, type: 2}
   historyBoard: {fileID: 3314305688534659244}
   inputOrder:
   - {fileID: 0}
@@ -237,7 +238,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -314,7 +315,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_fontSharedMaterials:
   - {fileID: 0}
   m_fontMaterial: {fileID: 0}
@@ -450,7 +451,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -497,7 +498,7 @@ MonoBehaviour:
   m_text: HEADER OF SCREEN
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_fontSharedMaterials:
   - {fileID: 0}
   m_fontMaterial: {fileID: 0}
@@ -701,13 +702,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.HistoryBoardController
   titleText: {fileID: 8442126794759666916}
   bodyText: {fileID: 5086878380919951015}
+  historySource: {fileID: 11400000, guid: ccf7cc6449094e8db19f498f5b0a7c9c, type: 2}
   title: SHARED HISTORY
-  headerLine: '# | ACTOR | INPUT  | STATUS'
-  separatorLine: ----------------------------
-  maxVisibleRows: 11
-  minActorColumnWidth: 5
-  minInputColumnWidth: 5
-  enableDebugInput: 0
-  debugSampleActor: P1
-  debugSampleInput: R G
-  debugSampleStatus: SIGNAL UNSTABLE
+  headerLine: ' # |ACTOR| INPUT   | STATUS'
+  separatorLine: ===+=====+=========+==========
+  maxVisibleRows: 10

@@ -6,18 +6,9 @@ using UnityEngine;
 
 namespace WhoWiredThis.Puzzles.Common
 {
-    [Serializable]
-    public class HistoryEntry
-    {
-        public int attemptNumber;
-        public string actor;
-        public string inputText;
-        public string publicStatus;
-    }
-
     /// <summary>
-    /// World-space TextMeshPro history board. Render-only; reusable across puzzles.
-    /// Owns its own attempt counter and view offset; does not know about validators or solutions.
+    /// World-space TextMeshPro history board display. Reusable across puzzles.
+    /// Reads entries from a shared history source and keeps only local view state (scroll offset).
     /// Auto-scrolls to the latest entry unless the user has scrolled away from the tail.
     /// </summary>
     public class HistoryBoardController : MonoBehaviour
@@ -29,43 +20,32 @@ namespace WhoWiredThis.Puzzles.Common
         [Tooltip("World-space TMP component for the table body. Recommended: assign a monospace SDF font asset for clean column alignment.")]
         [SerializeField] private TMP_Text bodyText;
 
+        [Tooltip("Shared history source. Multiple board displays can point to the same source.")]
+        [SerializeField] private SharedHistorySO historySource;
+
         [Header("Content")]
         [SerializeField] private string title = "SHARED HISTORY";
-
         [Tooltip("Header line above the rows.")]
-        [SerializeField] private string headerLine = "# | ACTOR | INPUT | STATUS";
-
-        [SerializeField] private string separatorLine = "----------------------------";
+        [SerializeField] private string headerLine = " # |ACTOR| INPUT   | STATUS";
+        [SerializeField] private string separatorLine = "===+=====+=========+==========";
 
         [Header("Layout")]
         [Tooltip("Maximum visible rows; older rows scroll out of view.")]
         [Min(1)]
-        [SerializeField] private int maxVisibleRows = 6;
+        [SerializeField] private int maxVisibleRows = 10;
 
-        [Tooltip("Minimum padded width for the actor column. Set to header label length for clean alignment.")]
-        [Min(1)]
-        [SerializeField] private int minActorColumnWidth = 5;
-
-        [Tooltip("Minimum padded width for the input column.")]
-        [Min(1)]
-        [SerializeField] private int minInputColumnWidth = 5;
-
-        [Header("Debug")]
-        [Tooltip("If true, polls keyboard for the debug shortcuts: H = sample row, Shift+H = clear, PageUp / PageDown = scroll.")]
-        [SerializeField] private bool enableDebugInput;
-
-        [SerializeField] private string debugSampleActor = "P1";
-        [SerializeField] private string debugSampleInput = "R G";
-        [SerializeField] private string debugSampleStatus = "SIGNAL UNSTABLE";
-
-        private readonly List<HistoryEntry> entries = new List<HistoryEntry>();
-        private int nextAttemptNumber = 1;
         // 0 = anchored to latest. Increases as the user scrolls toward older rows.
         private int viewOffset;
         private bool userScrolled;
 
-        public IReadOnlyList<HistoryEntry> Entries => entries;
+        public IReadOnlyList<HistoryEntry> Entries => historySource != null ? historySource.Entries : EmptyEntries;
         public int MaxVisibleRows => maxVisibleRows;
+        public SharedHistorySO HistorySource => historySource;
+
+        private static readonly IReadOnlyList<HistoryEntry> EmptyEntries = new List<HistoryEntry>();
+        private const int RetryColumnWidth = 2;
+        private const int ActorColumnWidth = 3;
+        private const int InputTokenWidth = 3;
 
         private void Awake()
         {
@@ -76,82 +56,34 @@ namespace WhoWiredThis.Puzzles.Common
                 bodyText.overflowMode = TextOverflowModes.Overflow;
             }
 
+            SubscribeToSource();
             Render();
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            if (!enableDebugInput)
-            {
-                return;
-            }
+            SubscribeToSource();
+            Render();
+        }
 
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                {
-                    Clear();
-                }
-                else
-                {
-                    AddEntry(debugSampleActor, debugSampleInput, debugSampleStatus);
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.PageUp))
-            {
-                ScrollUp();
-            }
-
-            if (Input.GetKeyDown(KeyCode.PageDown))
-            {
-                ScrollDown();
-            }
+        private void OnDisable()
+        {
+            UnsubscribeFromSource();
         }
 
         public void Clear()
         {
-            entries.Clear();
-            nextAttemptNumber = 1;
-            viewOffset = 0;
-            userScrolled = false;
-            Render();
+            historySource?.Clear();
         }
 
         public int AddEntry(string actor, string inputText, string publicStatus)
         {
-            HistoryEntry entry = new HistoryEntry
-            {
-                attemptNumber = nextAttemptNumber++,
-                actor = actor ?? string.Empty,
-                inputText = inputText ?? string.Empty,
-                publicStatus = publicStatus ?? string.Empty
-            };
-
-            entries.Add(entry);
-            FinalizeAddedEntry();
-            return entry.attemptNumber;
+            return historySource != null ? historySource.AddEntry(actor, inputText, publicStatus) : 0;
         }
 
         public int AddEntry(HistoryEntry entry)
         {
-            if (entry == null)
-            {
-                return 0;
-            }
-
-            if (entry.attemptNumber <= 0)
-            {
-                entry.attemptNumber = nextAttemptNumber++;
-            }
-            else
-            {
-                nextAttemptNumber = Mathf.Max(nextAttemptNumber, entry.attemptNumber + 1);
-            }
-
-            entries.Add(entry);
-            FinalizeAddedEntry();
-            return entry.attemptNumber;
+            return historySource != null ? historySource.AddEntry(entry) : 0;
         }
 
         public void SetMaxVisibleRows(int count)
@@ -163,7 +95,7 @@ namespace WhoWiredThis.Puzzles.Common
 
         public void ScrollUp()
         {
-            int maxOffset = Mathf.Max(0, entries.Count - maxVisibleRows);
+            int maxOffset = Mathf.Max(0, Entries.Count - maxVisibleRows);
             if (viewOffset >= maxOffset)
             {
                 return;
@@ -212,10 +144,6 @@ namespace WhoWiredThis.Puzzles.Common
 
             ClampViewOffset();
 
-            int columnNumWidth = ComputeColumnWidth(e => e.attemptNumber.ToString(), 1);
-            int columnActorWidth = ComputeColumnWidth(e => e.actor, minActorColumnWidth);
-            int columnInputWidth = ComputeColumnWidth(e => e.inputText, minInputColumnWidth);
-
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(headerLine))
             {
@@ -227,6 +155,7 @@ namespace WhoWiredThis.Puzzles.Common
                 sb.AppendLine(separatorLine);
             }
 
+            IReadOnlyList<HistoryEntry> entries = Entries;
             int total = entries.Count;
             int visible = Mathf.Min(maxVisibleRows, total);
             int startIndex = Mathf.Max(0, total - viewOffset - visible);
@@ -235,11 +164,11 @@ namespace WhoWiredThis.Puzzles.Common
             for (int i = startIndex; i < endIndex; i++)
             {
                 HistoryEntry entry = entries[i];
-                sb.Append(PadRight(entry.attemptNumber.ToString(), columnNumWidth));
+                sb.Append(FormatRetryCell(entry.attemptNumber.ToString()));
                 sb.Append(" | ");
-                sb.Append(PadRight(entry.actor ?? string.Empty, columnActorWidth));
+                sb.Append(FormatActorCell(entry.actor));
                 sb.Append(" | ");
-                sb.Append(PadRight(entry.inputText ?? string.Empty, columnInputWidth));
+                sb.Append(FormatInputCell(entry.inputText));
                 sb.Append(" | ");
                 sb.Append(entry.publicStatus ?? string.Empty);
                 if (i < endIndex - 1)
@@ -251,33 +180,98 @@ namespace WhoWiredThis.Puzzles.Common
             bodyText.text = sb.ToString();
         }
 
-        [ContextMenu("Add Sample Entry")]
-        private void AddSampleEntryFromInspector()
-        {
-            AddEntry(debugSampleActor, debugSampleInput, debugSampleStatus);
-        }
-
         [ContextMenu("Clear History")]
         private void ClearFromInspector()
         {
             Clear();
         }
 
-        private void FinalizeAddedEntry()
+        private void SubscribeToSource()
+        {
+            if (historySource != null)
+            {
+                historySource.OnChanged -= HandleHistoryChanged;
+                historySource.OnChanged += HandleHistoryChanged;
+            }
+        }
+
+        private void UnsubscribeFromSource()
+        {
+            if (historySource != null)
+            {
+                historySource.OnChanged -= HandleHistoryChanged;
+            }
+        }
+
+        private void HandleHistoryChanged()
         {
             if (userScrolled)
             {
                 Render();
+                return;
             }
-            else
+
+            ScrollToLatest();
+        }
+
+        private static string FormatRetryCell(string value)
+        {
+            string text = value?.Trim() ?? string.Empty;
+            if (text.Length > RetryColumnWidth)
             {
-                ScrollToLatest();
+                text = text.Substring(text.Length - RetryColumnWidth, RetryColumnWidth);
             }
+
+            return text.PadLeft(RetryColumnWidth);
+        }
+
+        private static string FormatActorCell(string value)
+        {
+            string text = value?.Trim() ?? string.Empty;
+            if (text.Length > ActorColumnWidth)
+            {
+                text = text.Substring(0, ActorColumnWidth);
+            }
+
+            return text.PadRight(ActorColumnWidth);
+        }
+
+        private static string FormatInputCell(string value)
+        {
+            string raw = value?.Trim() ?? string.Empty;
+            if (raw.Length == 0)
+            {
+                return new string(' ', InputTokenWidth);
+            }
+
+            string[] tokens = raw.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var sb = new StringBuilder();
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string token = tokens[i];
+                if (token.Length > InputTokenWidth)
+                {
+                    token = token.Substring(0, InputTokenWidth);
+                }
+                else if (token.Length < InputTokenWidth)
+                {
+                    token = token.PadRight(InputTokenWidth);
+                }
+
+                if (i > 0)
+                {
+                    sb.Append(' ');
+                }
+
+                sb.Append(token);
+            }
+
+            return sb.ToString();
         }
 
         private void ClampViewOffset()
         {
-            int maxOffset = Mathf.Max(0, entries.Count - maxVisibleRows);
+            int maxOffset = Mathf.Max(0, Entries.Count - maxVisibleRows);
             if (viewOffset > maxOffset)
             {
                 viewOffset = maxOffset;
@@ -294,34 +288,5 @@ namespace WhoWiredThis.Puzzles.Common
             }
         }
 
-        private int ComputeColumnWidth(Func<HistoryEntry, string> selector, int minWidth)
-        {
-            int width = Mathf.Max(1, minWidth);
-            for (int i = 0; i < entries.Count; i++)
-            {
-                string value = selector(entries[i]) ?? string.Empty;
-                if (value.Length > width)
-                {
-                    width = value.Length;
-                }
-            }
-
-            return width;
-        }
-
-        private static string PadRight(string value, int width)
-        {
-            if (value == null)
-            {
-                value = string.Empty;
-            }
-
-            if (value.Length >= width)
-            {
-                return value;
-            }
-
-            return value + new string(' ', width - value.Length);
-        }
     }
 }

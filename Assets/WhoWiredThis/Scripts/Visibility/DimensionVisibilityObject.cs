@@ -10,7 +10,7 @@ namespace WhoWiredThis.Visibility
     public class DimensionVisibilityObject : MonoBehaviour
     {
         [Header("Dimension Data")]
-        [SerializeField] private DimensionVisibilityMode mode = DimensionVisibilityMode.Player_A_Visibility;
+        [SerializeField] private AllowedPlayerTag mode = AllowedPlayerTag.Player_A;
 
         [Header("Optional Switch Control")]
         [SerializeField] private PolaritySwitchController controlledPolaritySwitch;
@@ -40,8 +40,8 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            int objectLayer = mode == DimensionVisibilityMode.Player_A_Visibility ? dimensionALayerIndex : dimensionBLayerIndex;
-            int placeholderLayer = mode == DimensionVisibilityMode.Player_A_Visibility ? dimensionBLayerIndex : dimensionALayerIndex;
+            int objectLayer = mode == AllowedPlayerTag.Player_A ? dimensionALayerIndex : dimensionBLayerIndex;
+            int placeholderLayer = mode == AllowedPlayerTag.Player_A ? dimensionBLayerIndex : dimensionALayerIndex;
 
             SetTargetsLayer(objectRenderers, objectColliders, objectLayer);
             SetTargetsLayer(placeholderRenderers, Array.Empty<Collider>(), placeholderLayer);
@@ -57,7 +57,7 @@ namespace WhoWiredThis.Visibility
             }
 
             AllowedPlayerTag allowedTag =
-                mode == DimensionVisibilityMode.Player_A_Visibility
+                mode == AllowedPlayerTag.Player_A
                     ? AllowedPlayerTag.Player_A
                     : AllowedPlayerTag.Player_B;
 

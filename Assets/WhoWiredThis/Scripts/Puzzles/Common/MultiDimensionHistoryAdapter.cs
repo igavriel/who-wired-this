@@ -14,6 +14,9 @@ namespace WhoWiredThis.Puzzles.Common
         [Header("References")]
         [SerializeField] private MultiDimensionPuzzelManager puzzleManager;
 
+        [SerializeField] private SharedHistorySO historySource;
+
+        [Tooltip("Legacy fallback during migration. Prefer writing to SharedHistorySO.")]
         [SerializeField] private HistoryBoardController historyBoard;
 
         [Tooltip("Same order and length as the manager's puzzle elements. Used only for label lookup.")]
@@ -46,14 +49,35 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void HandleAttemptSubmitted(MultiDimensionAttemptResult result)
         {
-            if (historyBoard == null || result == null)
+            if (result == null)
             {
                 return;
             }
 
             string inputText = BuildInputText(result);
             string status = ResolvePublicStatus(result);
-            historyBoard.AddEntry(result.ActorLabel, inputText, status);
+
+            SharedHistorySO targetSource = ResolveHistorySource();
+            if (targetSource != null)
+            {
+                targetSource.AddEntry(result.ActorLabel, inputText, status);
+                return;
+            }
+
+            if (historyBoard != null)
+            {
+                historyBoard.AddEntry(result.ActorLabel, inputText, status);
+            }
+        }
+
+        private SharedHistorySO ResolveHistorySource()
+        {
+            if (historySource != null)
+            {
+                return historySource;
+            }
+
+            return historyBoard != null ? historyBoard.HistorySource : null;
         }
 
         private string ResolvePublicStatus(MultiDimensionAttemptResult result)
