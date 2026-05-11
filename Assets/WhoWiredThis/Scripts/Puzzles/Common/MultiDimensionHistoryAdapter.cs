@@ -23,8 +23,6 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private MultiDimension[] inputOrder;
 
         [Header("Display")]
-        [SerializeField] private string inputSeparator = " ";
-
         [Tooltip("If set, replaces result.PublicStatus when the attempt succeeds (e.g. A-SIDE CALIBRATED).")]
         [SerializeField] private string solvedStatus;
 
@@ -102,7 +100,6 @@ namespace WhoWiredThis.Puzzles.Common
                 return string.Empty;
             }
 
-            string separator = string.IsNullOrWhiteSpace(inputSeparator) ? " " : inputSeparator;
             int n = Mathf.Min(inputOrder.Length, result.SubmittedIndices.Length);
             StringBuilder sb = new StringBuilder();
             bool any = false;
@@ -124,7 +121,7 @@ namespace WhoWiredThis.Puzzles.Common
 
                 if (any)
                 {
-                    sb.Append(separator);
+                    sb.Append(" ");
                 }
 
                 any = true;

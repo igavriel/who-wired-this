@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5042318014838766606}
   - component: {fileID: 8862772507237445281}
   - component: {fileID: 6972451502378183593}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4, y: -1, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.08, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1569884677891545077}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 9052560690396901695}
   - component: {fileID: 8131763786430075750}
   m_Layer: 0
-  m_Name: LOW
+  m_Name: MID
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LOW
+  m_text: MID
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -245,8 +245,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.6606002, y: 0.61001587, z: 0.09660959, w: 0.29525757}
+  m_margin: {x: 0.5082756, y: 0.61001587, z: 0.03168094, w: 0.1212006}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 714266070395395633}
   - component: {fileID: 4142557081475261460}
   m_Layer: 0
-  m_Name: OFF
+  m_Name: LOW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,7 +399,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OFF
+  m_text: LOW
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -426,8 +426,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.32140684, y: -0.8756602, z: 0.3148868, w: 1.7104864}
+  m_margin: {x: 0.036578532, y: -0.94011414, z: 0.025283933, w: 1.7104864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 7243893980020030544}
   - component: {fileID: 3019074332153980795}
   - component: {fileID: 2380175942536519845}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.6532815, y: -0.27059805, z: -0.27059805, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: -0.05}
-  m_LocalScale: {x: 0.5, y: 0.05, z: 0.07}
+  m_LocalScale: {x: 0.5, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2498866328566213220}
@@ -826,13 +826,13 @@ GameObject:
   - component: {fileID: 8273381549039269976}
   - component: {fileID: 2168921470263185628}
   - component: {fileID: 90555121826450543}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Knob-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1569884677891545077
 Transform:
   m_ObjectHideFlags: 0
@@ -843,7 +843,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: -0.05}
-  m_LocalScale: {x: 0.5, y: 0.05, z: 0.07}
+  m_LocalScale: {x: 0.5, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7889764689082111834}
@@ -1056,7 +1056,7 @@ GameObject:
   - component: {fileID: 4627475672141788569}
   - component: {fileID: 1385092569898446192}
   - component: {fileID: 1272340635072992640}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1073,7 +1073,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4, y: -1, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.08, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3480387053514999859}
@@ -1185,7 +1185,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4, y: -1, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.08, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7039493924148174390}
@@ -1311,13 +1311,13 @@ GameObject:
   - component: {fileID: 4149811618324688182}
   - component: {fileID: 8475370684453859051}
   - component: {fileID: 3101562281289912252}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Knob-240
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3480387053514999859
 Transform:
   m_ObjectHideFlags: 0
@@ -1328,7 +1328,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.27059805, y: 0.6532815, z: 0.6532815, w: -0.27059805}
   m_LocalPosition: {x: 0, y: 0, z: -0.05}
-  m_LocalScale: {x: 0.5, y: 0.05, z: 0.07}
+  m_LocalScale: {x: 0.5, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1380246276986242970}
@@ -1427,7 +1427,7 @@ GameObject:
   - component: {fileID: 2302790178614885090}
   - component: {fileID: 6297532938715012321}
   - component: {fileID: 4293721154430775070}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1578,19 +1578,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
   subjects:
-  - subject: {fileID: 6171954273933666322}
-    displayName: HIG
-  - subject: {fileID: 3707134518276372574}
-    displayName: LOW
-  - subject: {fileID: 4479129253390321869}
-    displayName: OFF
+  - displayName: LOW
+    subject: {fileID: 4479129253390321869}
+  - displayName: MID
+    subject: {fileID: 3707134518276372574}
+  - displayName: HIG
+    subject: {fileID: 6171954273933666322}
   generalObject: {fileID: 8309987833610207863}
-  configurationMode: 1
-  indexPlayerA: 0
-  indexPlayerB: 1
-  exclusivePlayer: 1
-  exclusiveSubjectIndex: 0
-  sharedSubjectIndex: 0
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
   interactionLocked: 0
 --- !u!114 &6389429286803046729
 MonoBehaviour:
@@ -2170,7 +2166,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HIGH
+  m_text: HIG
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2197,8 +2193,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2236,7 +2232,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.12659597, y: 0.61001587, z: 0.58927774, w: 0.29525757}
+  m_margin: {x: 0.01697423, y: 0.61001587, z: 0.54755753, w: 0.13722958}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
