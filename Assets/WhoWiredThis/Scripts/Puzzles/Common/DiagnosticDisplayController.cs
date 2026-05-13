@@ -9,6 +9,7 @@ namespace WhoWiredThis.Puzzles.Common
     /// Receives already-calculated metric values and messages; never reads buttons or computes correctness.
     /// Optional status lamp swaps materials per state when assigned.
     /// </summary>
+    [DefaultExecutionOrder(-50)]
     public class DiagnosticDisplayController : MonoBehaviour
     {
         public enum DisplayState
@@ -26,6 +27,11 @@ namespace WhoWiredThis.Puzzles.Common
 
         [Tooltip("World-space TMP component for the body block. Recommended: monospace SDF font for clean column alignment.")]
         [SerializeField] private TMP_Text bodyText;
+
+        [Header("Machine feedback (optional)")]
+        [Tooltip("Prefab-local Activate processing copy; when unset, uses GetComponent on this GameObject.")]
+        [SerializeField]
+        private MachineFeedbackTextController machineFeedbackText;
 
         [Tooltip("Optional renderer that swaps materials per state. Leave unset to disable lamp behavior.")]
         [SerializeField] private Renderer statusLampRenderer;
@@ -52,10 +58,52 @@ namespace WhoWiredThis.Puzzles.Common
 
         private DisplayState currentState = DisplayState.Waiting;
 
+        /// <summary>When positive, public display APIs skip updating body text so processing feedback can own it.</summary>
+        private int bodyWriteSuppressDepth;
+
         public DisplayState CurrentState => currentState;
+
+        /// <summary>
+        /// Optional <see cref="MachineFeedbackTextController"/> on this diagnostic panel (same prefab instance that receives final results).
+        /// </summary>
+        public MachineFeedbackTextController GetMachineFeedbackText()
+        {
+            return machineFeedbackText != null ? machineFeedbackText : GetComponent<MachineFeedbackTextController>();
+        }
+
+        /// <summary>Suppresses external body writes from public display APIs until <see cref="EndBodyWriteSuppress"/>.</summary>
+        public void BeginBodyWriteSuppress()
+        {
+            bodyWriteSuppressDepth++;
+        }
+
+        public void EndBodyWriteSuppress()
+        {
+            if (bodyWriteSuppressDepth > 0)
+            {
+                bodyWriteSuppressDepth--;
+            }
+        }
+
+        /// <summary>Sets body text even while suppress is active (for processing lines only).</summary>
+        public void SetProcessingBodyText(string text)
+        {
+            if (bodyText == null)
+            {
+                return;
+            }
+
+            bodyText.text = text ?? string.Empty;
+            bodyText.ForceMeshUpdate(true);
+        }
 
         private void Awake()
         {
+            if (machineFeedbackText == null)
+            {
+                machineFeedbackText = GetComponent<MachineFeedbackTextController>();
+            }
+
             if (titleText != null)
             {
                 titleText.text = title ?? string.Empty;
@@ -81,7 +129,8 @@ namespace WhoWiredThis.Puzzles.Common
         public void SetDiagnosticResult(
             string metric1Label, int metric1Value, int metric1Max,
             string metric2Label, int metric2Value, int metric2Max,
-            string message)
+            string message,
+            string flavorBetweenMetricsAndClue = null)
         {
             currentState = DisplayState.Result;
 
@@ -91,6 +140,13 @@ namespace WhoWiredThis.Puzzles.Common
             AppendMetricLine(sb, metric1Label, metric1Value, metric1Max, width);
             sb.AppendLine();
             AppendMetricLine(sb, metric2Label, metric2Value, metric2Max, width);
+
+            if (!string.IsNullOrWhiteSpace(flavorBetweenMetricsAndClue))
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.Append(flavorBetweenMetricsAndClue);
+            }
 
             if (!string.IsNullOrEmpty(message))
             {
@@ -141,7 +197,7 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void WriteBody(string contentBlock)
         {
-            if (bodyText == null)
+            if (bodyText == null || bodyWriteSuppressDepth > 0)
             {
                 return;
             }

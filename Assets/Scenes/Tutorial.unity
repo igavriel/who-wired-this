@@ -1224,6 +1224,8 @@ GameObject:
   - component: {fileID: 371321564}
   - component: {fileID: 371321563}
   - component: {fileID: 371321568}
+  - component: {fileID: 371321569}
+  - component: {fileID: 371321570}
   m_Layer: 0
   m_Name: MultiDimension_PuzzleManager
   m_TagString: Untagged
@@ -1362,8 +1364,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleInteractableBridge
   puzzleTargetReference: {fileID: 371321563}
+  pressFeedback: {fileID: 371321570}
+  processingFeedback: {fileID: 371321569}
   interactPrompt: $INTERACT$ Check knob solution
   solvedPrompt: Solved
+--- !u!114 &371321569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371321562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2e4b1c8d0f4a3e9b7c6d5e4f3a2018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ProcessingFeedbackController
+  diagnosticDisplay: {fileID: 1374667453}
+  processingMessages:
+  - READING SIGNAL...
+  - CHECKING SETTINGS...
+  - UPDATING HISTORY...
+  timePerMessage: 0.45
+  delayAfterLastLine: 0
+  activateInteractable: {fileID: 371321568}
+--- !u!114 &371321570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371321562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a8f91e2b3d4059a6e7c0d1f2a3b4c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.ActivateButtonFeedbackController
+  visualRoot: {fileID: 371321567}
+  uiButton: {fileID: 0}
+  highlightGraphic: {fileID: 0}
+  highlightObject: {fileID: 0}
+  clickAudio: {fileID: 0}
+  clickClip: {fileID: 0}
+  pressedScale: 0.92
+  pressDuration: 0.08
+  releaseDuration: 0.1
+  highlightFlashDuration: 0.15
+  disableButtonWhileAnimating: 1
+  useAnchoredPositionOffset: 0
+  pressedAnchoredOffset: {x: 0, y: 0}
 --- !u!1001 &449053915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3518,7 +3567,7 @@ MonoBehaviour:
   partialMessage: 'PARTIAL MATCH.
 
     KEEP ADJUSTING.'
-  updateContinuously: 1
+  updateContinuously: 0
 --- !u!1 &1374667452
 GameObject:
   m_ObjectHideFlags: 0

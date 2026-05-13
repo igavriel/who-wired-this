@@ -24,6 +24,7 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private string partialMessage = "PARTIAL MATCH.\nKEEP ADJUSTING.";
 
         [Header("Behavior")]
+        [Tooltip("When false, diagnostic stays on waiting until a solve attempt; updates only from OnAttemptSubmitted (no live preview while adjusting).")]
         [SerializeField] private bool updateContinuously = true;
 
         private int lastRecognized = -1;
@@ -38,7 +39,30 @@ namespace WhoWiredThis.Puzzles.Common
                 puzzleManager.OnAttemptSubmitted += HandleAttemptSubmitted;
             }
 
-            RefreshDisplay(force: true);
+            if (updateContinuously)
+            {
+                RefreshDisplay(force: true);
+                return;
+            }
+
+            // Commit-only: show waiting until the player submits a solve; solved state still shows on load.
+            if (diagnosticDisplay == null)
+            {
+                return;
+            }
+
+            if (puzzleManager != null && puzzleManager.Solved)
+            {
+                RefreshDisplay(force: true);
+            }
+            else
+            {
+                lastRecognized = -1;
+                lastAligned = -1;
+                lastTotal = -1;
+                lastSolved = false;
+                diagnosticDisplay.SetWaiting();
+            }
         }
 
         private void OnDisable()
@@ -47,6 +71,20 @@ namespace WhoWiredThis.Puzzles.Common
             {
                 puzzleManager.OnAttemptSubmitted -= HandleAttemptSubmitted;
             }
+        }
+
+        private void Start()
+        {
+            if (updateContinuously || diagnosticDisplay == null || puzzleManager == null || puzzleManager.Solved)
+            {
+                return;
+            }
+
+            lastRecognized = -1;
+            lastAligned = -1;
+            lastTotal = -1;
+            lastSolved = false;
+            diagnosticDisplay.SetWaiting();
         }
 
         private void Update()
@@ -61,10 +99,10 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void HandleAttemptSubmitted(MultiDimensionAttemptResult _)
         {
-            RefreshDisplay(force: true);
+            RefreshDisplay(force: true, appendUnsolvedFlavorFooter: true);
         }
 
-        private void RefreshDisplay(bool force)
+        private void RefreshDisplay(bool force, bool appendUnsolvedFlavorFooter = false)
         {
             if (puzzleManager == null || diagnosticDisplay == null)
             {
@@ -98,10 +136,22 @@ namespace WhoWiredThis.Puzzles.Common
                 return;
             }
 
+            string clue = BuildMessage(recognized, aligned, total);
+            string flavor = null;
+            if (appendUnsolvedFlavorFooter)
+            {
+                MachineFeedbackTextController machine = diagnosticDisplay.GetMachineFeedbackText();
+                if (machine != null)
+                {
+                    flavor = machine.GetRandomFlavorLine();
+                }
+            }
+
             diagnosticDisplay.SetDiagnosticResult(
                 metric1Label, recognized, total,
                 metric2Label, aligned, total,
-                BuildMessage(recognized, aligned, total));
+                clue,
+                flavor);
         }
 
         private string BuildMessage(int recognized, int aligned, int total)

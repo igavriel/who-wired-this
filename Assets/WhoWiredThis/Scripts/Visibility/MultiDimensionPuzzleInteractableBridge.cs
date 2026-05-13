@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Util;
 
 namespace WhoWiredThis.Visibility
@@ -14,9 +16,18 @@ namespace WhoWiredThis.Visibility
         [RequireInterface(typeof(MultiDimensionPuzzelManager))]
         [SerializeField] private MonoBehaviour puzzleTargetReference;
 
+        [Header("Optional feedback")]
+        [Tooltip("When set, plays press animation before processing (if any) and TryCheckSolutionFromInteractor.")]
+        [SerializeField] private ActivateButtonFeedbackController pressFeedback;
+
+        [Tooltip("When set, runs processing lines on the diagnostic body before TryCheckSolutionFromInteractor.")]
+        [SerializeField] private ProcessingFeedbackController processingFeedback;
+
         [Header("Prompt")]
         [SerializeField] private string interactPrompt = "$INTERACT$ Check combination";
         [SerializeField] private string solvedPrompt = "Combination solved.";
+
+        private bool activateFlowRunning;
 
         private MultiDimensionPuzzelManager PuzzleTarget => puzzleTargetReference as MultiDimensionPuzzelManager;
 
@@ -28,6 +39,14 @@ namespace WhoWiredThis.Visibility
 
         public void Interact(GameObject interactor)
         {
+            if (activateFlowRunning)
+            {
+                Debug.LogWarning(
+                    $"[MultiDimensionPuzzleInteractableBridge] '{name}' ignored Interact while activate flow is running.",
+                    this);
+                return;
+            }
+
             MultiDimensionPuzzelManager target = PuzzleTarget;
             if (target == null)
             {
@@ -36,10 +55,63 @@ namespace WhoWiredThis.Visibility
             }
 
             Debug.Log(
-                $"[MultiDimensionPuzzleInteractableBridge] '{name}' forwarding Interact to manager '{target.name}'. " +
+                $"[MultiDimensionPuzzleInteractableBridge] '{name}' starting activate flow for manager '{target.name}'. " +
                 $"interactor={(interactor != null ? interactor.name : "null")}.",
                 this);
-            target.TryCheckSolutionFromInteractor(interactor);
+            // Run on the puzzle manager when possible so disabling *this* bridge for Activate does not stop the coroutine.
+            // Fallback: ProcessingFeedbackController, then this bridge.
+            MonoBehaviour coroutineHost = PuzzleTarget != null ? PuzzleTarget :
+                (processingFeedback != null ? processingFeedback : (MonoBehaviour)this);
+            coroutineHost.StartCoroutine(RunActivateFlow(interactor));
+        }
+
+        private IEnumerator RunActivateFlow(GameObject interactor)
+        {
+            activateFlowRunning = true;
+            try
+            {
+                if (pressFeedback != null)
+                {
+                    yield return pressFeedback.PlayPressFeedbackRoutine();
+                }
+
+                if (processingFeedback != null)
+                {
+                    yield return processingFeedback.PlayProcessingRoutine();
+                }
+
+                MultiDimensionPuzzelManager target = PuzzleTarget;
+                if (target == null)
+                {
+                    Debug.LogWarning(
+                        $"[MultiDimensionPuzzleInteractableBridge] '{name}' puzzle target missing after processing; skipping check.",
+                        this);
+                    yield break;
+                }
+
+                target.TryCheckSolutionFromInteractor(interactor);
+            }
+            finally
+            {
+                RestoreActivateIfNeeded();
+                activateFlowRunning = false;
+            }
+        }
+
+        private void RestoreActivateIfNeeded()
+        {
+            if (processingFeedback == null || processingFeedback.ActivateInteractable == null)
+            {
+                return;
+            }
+
+            MultiDimensionPuzzelManager target = PuzzleTarget;
+            if (target != null && target.Solved)
+            {
+                return;
+            }
+
+            processingFeedback.ActivateInteractable.enabled = true;
         }
     }
 }

@@ -223,6 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8365680074205480399}
   - component: {fileID: 553826040521772839}
+  - component: {fileID: 8844221100667443355}
   m_Layer: 0
   m_Name: DiagnosticPanel
   m_TagString: Untagged
@@ -263,6 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
   titleText: {fileID: 2452446023171465211}
   bodyText: {fileID: 6590241200266695463}
+  machineFeedbackText: {fileID: 8844221100667443355}
   statusLampRenderer: {fileID: 4666046874431597336}
   title: DIAGNOSTIC
   waitingText: 'WAITING FOR
@@ -275,6 +277,34 @@ MonoBehaviour:
   lampSuccessMaterial: {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   lampErrorMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
   lampClearMaterial: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
+--- !u!114 &8844221100667443355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467264449368021054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e6d8f0a2b4436587a9c0d1e2f3a4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.MachineFeedbackTextController
+  bodyText: {fileID: 6590241200266695463}
+  processingStatusPrefix: 'STATUS: '
+  processingSteps:
+  - READING SIGNAL...
+  - CHECKING SETTINGS...
+  - UPDATING HISTORY...
+  flavorMessages:
+  - THE MACHINE HUMS CONFIDENTLY.
+  - SOMETHING CLICKS INSIDE.
+  - A RELAY COUGHS.
+  - THE PANEL PRETENDS THIS IS NORMAL.
+  - SIGNAL ACCEPTED. PROBABLY.
+  - A TINY LIGHT BLINKS FOR NO REASON.
+  - THE MACHINE CONSIDERS YOUR LIFE CHOICES.
+  - INTERNAL GEARS MAKE AN UNHELPFUL NOISE.
+  stepDuration: 0.35
 --- !u!1 &4517476862835143885
 GameObject:
   m_ObjectHideFlags: 0

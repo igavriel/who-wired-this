@@ -30,7 +30,7 @@ namespace WhoWiredThis.Visibility
         [SerializeField]
         private MultiDimensionPuzzleElement[] puzzleElements;
 
-        [Tooltip("Primary solve button interactable (typically a MultiDimensionPuzzleInteractableBridge on the button object).")]
+        [Tooltip("Primary solve button interactable (typically SolveInteractProxy on the Solve mesh, forwarding to MultiDimensionPuzzleInteractableBridge on PuzzleManager).")]
         [RequireInterface(typeof(IInteractable))]
         [SerializeField]
         private MonoBehaviour solveButtonInteractable;

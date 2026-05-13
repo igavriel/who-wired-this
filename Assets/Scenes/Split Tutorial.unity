@@ -137,22 +137,6 @@ PrefabInstance:
 
         NEXT ATTEMPT...'
       objectReference: {fileID: 0}
-    - target: {fileID: 1450833229332337622, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: puzzleManager
-      value: 
-      objectReference: {fileID: 2097925730}
-    - target: {fileID: 2025444855919986604, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 1091839507}
-    - target: {fileID: 2852664524229530244, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: puzzleManager
-      value: 
-      objectReference: {fileID: 1340959902}
-    - target: {fileID: 2852664524229530244, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: solvedMessage
-      value: B-SIDE CALIBRATED
-      objectReference: {fileID: 0}
     - target: {fileID: 3467264449368021054, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_Name
       value: DiagnosticPanel
@@ -1215,6 +1199,7 @@ GameObject:
   - component: {fileID: 596226953}
   - component: {fileID: 596226955}
   - component: {fileID: 596226954}
+  - component: {fileID: 990011004}
   m_Layer: 0
   m_Name: Player1_Panel
   m_TagString: Untagged
@@ -1282,7 +1267,7 @@ MonoBehaviour:
   perfectButMisalignedMessage: CORRECT SETTINGS,\nWRONG ORDER.
   noMatchMessage: NO MATCHING SETTINGS.\nTRY DIFFERENT SETTINGS.
   partialMessage: PARTIAL MATCH.\nKEEP ONE. CHANGE ONE.
-  updateContinuously: 1
+  updateContinuously: 0
 --- !u!1 &597552690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,7 +1569,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8716756151544247228, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 654811933}
+      addedObject: {fileID: 654811935}
   m_SourcePrefab: {fileID: 100100000, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
 --- !u!4 &654811929 stripped
 Transform:
@@ -1612,15 +1597,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 654811932}
+  m_GameObject: {fileID: 1340959901}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e33ce6f2bc574486909cc58f8f92a85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleInteractableBridge
   puzzleTargetReference: {fileID: 1340959902}
+  pressFeedback: {fileID: 654811934}
+  processingFeedback: {fileID: 990012004}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
+--- !u!114 &654811935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654811932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a2c1d09e4b472a81f0c3d5e6b7a920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
+  bridgeReference: {fileID: 654811933}
 --- !u!1 &677608031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,6 +1632,7 @@ GameObject:
   - component: {fileID: 677608034}
   - component: {fileID: 677608033}
   - component: {fileID: 677608032}
+  - component: {fileID: 990012004}
   m_Layer: 0
   m_Name: Player2_Panel
   m_TagString: Untagged
@@ -1679,7 +1680,7 @@ MonoBehaviour:
   perfectButMisalignedMessage: CORRECT SETTINGS,\nWRONG ORDER.
   noMatchMessage: NO MATCHING SETTINGS.\nTRY DIFFERENT SETTINGS.
   partialMessage: PARTIAL MATCH.\nKEEP ONE. CHANGE ONE.
-  updateContinuously: 1
+  updateContinuously: 0
 --- !u!4 &677608034
 Transform:
   m_ObjectHideFlags: 0
@@ -1775,7 +1776,7 @@ MonoBehaviour:
   solveButton:
     label: Solve
     highlightAnchor: {fileID: 654811930}
-    interactableReference: {fileID: 654811933}
+    interactableReference: {fileID: 654811935}
   exitButton:
     label: Exit
     highlightAnchor: {fileID: 1965309141}
@@ -2178,7 +2179,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8716756151544247228, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 713330657}
+      addedObject: {fileID: 713330671}
   m_SourcePrefab: {fileID: 100100000, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
 --- !u!1 &713330654 stripped
 GameObject:
@@ -2201,15 +2202,55 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 713330654}
+  m_GameObject: {fileID: 2097925728}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e33ce6f2bc574486909cc58f8f92a85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleInteractableBridge
   puzzleTargetReference: {fileID: 2097925730}
+  pressFeedback: {fileID: 713330670}
+  processingFeedback: {fileID: 990011004}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
+--- !u!114 &713330670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097925728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a8f91e2b3d4059a6e7c0d1f2a3b4c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.ActivateButtonFeedbackController
+  visualRoot: {fileID: 713330656}
+  uiButton: {fileID: 0}
+  highlightGraphic: {fileID: 0}
+  highlightObject: {fileID: 0}
+  clickAudio: {fileID: 0}
+  clickClip: {fileID: 0}
+  pressedScale: 0.92
+  pressDuration: 0.08
+  releaseDuration: 0.1
+  highlightFlashDuration: 0.15
+  disableButtonWhileAnimating: 1
+  useAnchoredPositionOffset: 0
+  pressedAnchoredOffset: {x: 0, y: 0}
+--- !u!114 &713330671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713330654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a2c1d09e4b472a81f0c3d5e6b7a920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
+  bridgeReference: {fileID: 713330657}
 --- !u!4 &713330658 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7946769920472741719, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
@@ -2698,6 +2739,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8113491064860821040, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
   m_PrefabInstance: {fileID: 981611154}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &990011004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596226952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2e4b1c8d0f4a3e9b7c6d5e4f3a2018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ProcessingFeedbackController
+  diagnosticDisplay: {fileID: 45800108}
+  processingMessages:
+  - READING SIGNAL...
+  - CHECKING SETTINGS...
+  - UPDATING HISTORY...
+  timePerMessage: 0.45
+  delayAfterLastLine: 0
+  activateInteractable: {fileID: 713330671}
+--- !u!114 &990012004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677608031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2e4b1c8d0f4a3e9b7c6d5e4f3a2018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ProcessingFeedbackController
+  diagnosticDisplay: {fileID: 1975054485}
+  processingMessages:
+  - READING SIGNAL...
+  - CHECKING SETTINGS...
+  - UPDATING HISTORY...
+  timePerMessage: 0.45
+  delayAfterLastLine: 0
+  activateInteractable: {fileID: 654811935}
+--- !u!114 &654811934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340959901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a8f91e2b3d4059a6e7c0d1f2a3b4c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.ActivateButtonFeedbackController
+  visualRoot: {fileID: 654811929}
+  uiButton: {fileID: 0}
+  highlightGraphic: {fileID: 0}
+  highlightObject: {fileID: 0}
+  clickAudio: {fileID: 0}
+  clickClip: {fileID: 0}
+  pressedScale: 0.92
+  pressDuration: 0.08
+  releaseDuration: 0.1
+  highlightFlashDuration: 0.15
+  disableButtonWhileAnimating: 1
+  useAnchoredPositionOffset: 0
+  pressedAnchoredOffset: {x: 0, y: 0}
 --- !u!1001 &1009292064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3321,6 +3427,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExitButton
       objectReference: {fileID: 0}
+    - target: {fileID: 8716756151544247228, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3376,6 +3486,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1340959903}
   - component: {fileID: 1340959902}
+  - component: {fileID: 654811933}
+  - component: {fileID: 654811934}
   m_Layer: 0
   m_Name: PuzzleManager
   m_TagString: Untagged
@@ -3400,12 +3512,12 @@ MonoBehaviour:
     correctIndex: 1
   - element: {fileID: 1833108462}
     correctIndex: 2
-  solveButtonInteractable: {fileID: 654811933}
+  solveButtonInteractable: {fileID: 654811935}
   solved: 0
   interactionsToDisable:
   - {fileID: 2062539944}
   - {fileID: 1833108462}
-  - {fileID: 654811933}
+  - {fileID: 654811935}
   captureRetryStrings: 0
   feedbackRenderer: {fileID: 654811931}
   failMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
@@ -3824,6 +3936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExitButton
       objectReference: {fileID: 0}
+    - target: {fileID: 8716756151544247228, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4185,6 +4301,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2097925729}
   - component: {fileID: 2097925730}
+  - component: {fileID: 713330657}
+  - component: {fileID: 713330670}
   m_Layer: 0
   m_Name: PuzzleManager
   m_TagString: Untagged
@@ -4224,12 +4342,12 @@ MonoBehaviour:
     correctIndex: 1
   - element: {fileID: 981611156}
     correctIndex: 2
-  solveButtonInteractable: {fileID: 713330657}
+  solveButtonInteractable: {fileID: 713330671}
   solved: 0
   interactionsToDisable:
   - {fileID: 1009292065}
   - {fileID: 981611155}
-  - {fileID: 713330657}
+  - {fileID: 713330671}
   captureRetryStrings: 0
   feedbackRenderer: {fileID: 713330655}
   failMaterial: {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
@@ -4296,7 +4414,7 @@ MonoBehaviour:
   solveButton:
     label: Solve
     highlightAnchor: {fileID: 713330658}
-    interactableReference: {fileID: 713330657}
+    interactableReference: {fileID: 713330671}
   exitButton:
     label: Exit
     highlightAnchor: {fileID: 1278314708}
@@ -4399,22 +4517,6 @@ PrefabInstance:
 
         NEXT ATTEMPT...'
       objectReference: {fileID: 0}
-    - target: {fileID: 1450833229332337622, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: puzzleManager
-      value: 
-      objectReference: {fileID: 1340959902}
-    - target: {fileID: 1450833229332337622, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: solvedMessage
-      value: B-SIDE CALIBRATED
-      objectReference: {fileID: 0}
-    - target: {fileID: 2025444855919986604, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 1091839507}
-    - target: {fileID: 2852664524229530244, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: puzzleManager
-      value: 
-      objectReference: {fileID: 2097925730}
     - target: {fileID: 3467264449368021054, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_Name
       value: DiagnosticPanel
