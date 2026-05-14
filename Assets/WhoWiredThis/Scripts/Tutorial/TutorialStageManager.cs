@@ -1,12 +1,21 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using WhoWiredThis.PanelFocus;
+using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Tutorial
 {
+    public enum TutorialSessionStage
+    {
+        PlayerAOperator = 0,
+        PlayerBOperator = 1,
+        Complete = 2
+    }
+
     /// <summary>
     /// Action-area lock only: input / Send colliders plus glass hint. Panel focus and board entry stay driven
     /// by <see cref="WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap"/> and <see cref="WhoWiredThis.PanelFocus.PlayerPanelFocusController"/>; do not exit or disable focus here.
@@ -112,13 +121,6 @@ namespace WhoWiredThis.Tutorial
     {
         private const string LogPrefix = "[TutorialStageManager]";
 
-        private enum TutorialStage
-        {
-            PlayerAOperator = 0,
-            PlayerBOperator = 1,
-            Complete = 2
-        }
-
         [Header("Blue / Red = UI labels only — maps to Player A / B")]
         [SerializeField]
         private MultiDimensionPuzzelManager playerAPuzzleManager;
@@ -132,12 +134,53 @@ namespace WhoWiredThis.Tutorial
         [SerializeField]
         private TutorialPanelLockBundle playerBPanelLock;
 
+        [Header("Diagnostic Body_TMP (tutorial copy only at stage boundaries)")]
+        [SerializeField]
+        private DiagnosticDisplayController playerADiagnosticDisplay;
+
+        [SerializeField]
+        private DiagnosticDisplayController playerBDiagnosticDisplay;
+
+        [SerializeField]
+        [TextArea(3, 8)]
+        private string playerAIntroBody =
+            "SET TWO CONTROLS.\n" +
+            "PRESS SEND.\n" +
+            "YOUR PARTNER READS THE MACHINE.";
+
+        [SerializeField]
+        [TextArea(3, 8)]
+        private string playerBIntroBody =
+            "READ THIS PANEL.\n" +
+            "EXPLAIN WHAT THE MACHINE UNDERSTOOD.\n" +
+            "USE THE HISTORY.";
+
+        [SerializeField]
+        [TextArea(2, 6)]
+        private string playerABodyAfterPlayerASolved =
+            "BLUE SIDE CALIBRATED.\n" +
+            "NOW READ THE DIAGNOSTIC.";
+
+        [SerializeField]
+        [TextArea(2, 6)]
+        private string playerBBodyAfterPlayerASolved =
+            "YOUR TURN.\n" +
+            "SET TWO CONTROLS.\n" +
+            "PRESS SEND.";
+
         [Header("Completion hook (no UI in this task)")]
         [SerializeField]
         private UnityEvent onTutorialCompletedUnity;
 
-        private TutorialStage stage = TutorialStage.PlayerAOperator;
+        private TutorialSessionStage stage = TutorialSessionStage.PlayerAOperator;
         private bool completionRaised;
+
+        public TutorialSessionStage CurrentStage => stage;
+
+        /// <summary>Raised once after initial <see cref="TutorialSessionStage.PlayerAOperator"/> locks are applied and input is allowed for the operator.</summary>
+        public event Action OnTutorialStarted;
+
+        public event Action<TutorialSessionStage> OnStageChanged;
 
         /// <summary>Raised once when both panels are solved and the tutorial locks both sides.</summary>
         public event Action OnTutorialCompleted;
@@ -179,6 +222,50 @@ namespace WhoWiredThis.Tutorial
         private void Start()
         {
             ApplyStageVisualAndLocks();
+            OnTutorialStarted?.Invoke();
+            NotifyStageChanged();
+            StartCoroutine(BootstrapTutorialDiagnosticCopy());
+        }
+
+        private void NotifyStageChanged()
+        {
+            OnStageChanged?.Invoke(stage);
+        }
+
+        private IEnumerator BootstrapTutorialDiagnosticCopy()
+        {
+            yield return null;
+            ApplyIntroDiagnosticBodies();
+        }
+
+        private void ApplyIntroDiagnosticBodies()
+        {
+            TrySetInstructionBody(playerADiagnosticDisplay, playerAIntroBody, "playerADiagnosticDisplay is not assigned; skipping intro body copy.");
+            TrySetInstructionBody(playerBDiagnosticDisplay, playerBIntroBody, "playerBDiagnosticDisplay is not assigned; skipping intro body copy.");
+        }
+
+        private IEnumerator ApplyRoleSwitchBodiesAfterDelay()
+        {
+            yield return null;
+            TrySetInstructionBody(
+                playerADiagnosticDisplay,
+                playerABodyAfterPlayerASolved,
+                "playerADiagnosticDisplay is not assigned; skipping post-solve body copy.");
+            TrySetInstructionBody(
+                playerBDiagnosticDisplay,
+                playerBBodyAfterPlayerASolved,
+                "playerBDiagnosticDisplay is not assigned; skipping post-solve body copy.");
+        }
+
+        private void TrySetInstructionBody(DiagnosticDisplayController display, string body, string nullWarningDetail)
+        {
+            if (display == null)
+            {
+                Debug.LogWarning($"{LogPrefix} {nullWarningDetail}", this);
+                return;
+            }
+
+            display.SetInstructionBody(body ?? string.Empty);
         }
 
         private void HandlePlayerAAttempt(MultiDimensionAttemptResult result)
@@ -188,13 +275,15 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
-            if (stage != TutorialStage.PlayerAOperator)
+            if (stage != TutorialSessionStage.PlayerAOperator)
             {
                 return;
             }
 
-            stage = TutorialStage.PlayerBOperator;
+            stage = TutorialSessionStage.PlayerBOperator;
             ApplyStageVisualAndLocks();
+            NotifyStageChanged();
+            StartCoroutine(ApplyRoleSwitchBodiesAfterDelay());
         }
 
         private void HandlePlayerBAttempt(MultiDimensionAttemptResult result)
@@ -204,13 +293,14 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
-            if (stage != TutorialStage.PlayerBOperator)
+            if (stage != TutorialSessionStage.PlayerBOperator)
             {
                 return;
             }
 
-            stage = TutorialStage.Complete;
+            stage = TutorialSessionStage.Complete;
             ApplyStageVisualAndLocks();
+            NotifyStageChanged();
             RaiseCompletionOnce();
         }
 
@@ -236,15 +326,15 @@ namespace WhoWiredThis.Tutorial
 
             switch (stage)
             {
-                case TutorialStage.PlayerAOperator:
+                case TutorialSessionStage.PlayerAOperator:
                     playerAPanelLock.ApplyOperatorState();
                     playerBPanelLock.ApplyWaitingState();
                     break;
-                case TutorialStage.PlayerBOperator:
+                case TutorialSessionStage.PlayerBOperator:
                     playerAPanelLock.ApplyWaitingState();
                     playerBPanelLock.ApplyOperatorState();
                     break;
-                case TutorialStage.Complete:
+                case TutorialSessionStage.Complete:
                     playerAPanelLock.ApplyCompleteLock();
                     playerBPanelLock.ApplyCompleteLock();
                     break;

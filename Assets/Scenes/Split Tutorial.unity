@@ -296,6 +296,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightKnob
       objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[0].displayName
+      value: LOW
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[1].displayName
+      value: MID
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[2].displayName
+      value: HIG
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142557081475261460, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: LOW
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131763786430075750, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: MID
+      objectReference: {fileID: 0}
+    - target: {fileID: 5783659413463873283, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: HIG
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1529,7 +1553,7 @@ MonoBehaviour:
   diagnosticDisplay: {fileID: 45800108}
   metric1Label: SETTINGS OK
   metric2Label: PLACES OK
-  solvedMessage: B-SIDE CALIBRATED
+  solvedMessage: A-SIDE CALIBRATED
   perfectButMisalignedMessage: CORRECT SETTINGS,\nWRONG ORDER.
   noMatchMessage: NO MATCHING SETTINGS.\nTRY DIFFERENT SETTINGS.
   partialMessage: PARTIAL MATCH.\nKEEP ONE. CHANGE ONE.
@@ -2013,7 +2037,7 @@ MonoBehaviour:
   diagnosticDisplay: {fileID: 1975054485}
   metric1Label: SETTINGS OK
   metric2Label: PLACES OK
-  solvedMessage: A-SIDE CALIBRATED
+  solvedMessage: B-SIDE CALIBRATED
   perfectButMisalignedMessage: CORRECT SETTINGS,\nWRONG ORDER.
   noMatchMessage: NO MATCHING SETTINGS.\nTRY DIFFERENT SETTINGS.
   partialMessage: PARTIAL MATCH.\nKEEP ONE. CHANGE ONE.
@@ -2855,6 +2879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 950581922}
   - component: {fileID: 950581923}
+  - component: {fileID: 950581924}
   m_Layer: 0
   m_Name: TutorialStageManager
   m_TagString: Untagged
@@ -2917,9 +2942,35 @@ MonoBehaviour:
     panelActionLock: {fileID: 599990002}
     glassOverlayRoot: {fileID: 298447316}
     overlayInstructionText: {fileID: 1668217037}
+  playerADiagnosticDisplay: {fileID: 1975054485}
+  playerBDiagnosticDisplay: {fileID: 45800108}
   onTutorialCompletedUnity:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &950581924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950581921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8f0a2d6b8437193c5e7a9b1d3f5a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Tutorial.TutorialMetricsTracker
+  tutorialStageManager: {fileID: 950581923}
+  playerAPuzzleManager: {fileID: 2097925730}
+  playerBPuzzleManager: {fileID: 1340959902}
+  totalAttempts: 0
+  playerAAttempts: 0
+  playerBAttempts: 0
+  totalElapsedSeconds: 0
+  playerAElapsedSeconds: 0
+  playerBElapsedSeconds: 0
+  playerASolved: 0
+  playerBSolved: 0
+  tutorialComplete: 0
 --- !u!1 &965360416
 GameObject:
   m_ObjectHideFlags: 0
@@ -3190,6 +3241,30 @@ PrefabInstance:
     - target: {fileID: 7144468438270539455, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_Name
       value: LeftKnob
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[0].displayName
+      value: OFF
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[1].displayName
+      value: DIM
+      objectReference: {fileID: 0}
+    - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: subjects.Array.data[2].displayName
+      value: BRT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142557081475261460, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: OFF
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131763786430075750, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: DIM
+      objectReference: {fileID: 0}
+    - target: {fileID: 5783659413463873283, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+      propertyPath: m_text
+      value: BRT
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3793,9 +3868,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzelManager
   puzzleElements:
   - element: {fileID: 2062539944}
-    correctIndex: 1
-  - element: {fileID: 38173453}
     correctIndex: 2
+  - element: {fileID: 38173453}
+    correctIndex: 1
   solveButtonInteractable: {fileID: 654811935}
   solved: 0
   interactionsToDisable:
@@ -4150,6 +4225,30 @@ PrefabInstance:
     - target: {fileID: 7905239411537918633, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[0].displayName
+      value: LOW
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[1].displayName
+      value: MID
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[2].displayName
+      value: HIG
+      objectReference: {fileID: 0}
+    - target: {fileID: 669892471574922950, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: LOW
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310129904972887267, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: MID
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839993127965243060, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: HIG
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4523,6 +4622,30 @@ PrefabInstance:
     - target: {fileID: 7905239411537918633, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[0].displayName
+      value: CLS
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[1].displayName
+      value: HLF
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: subjects.Array.data[2].displayName
+      value: OPN
+      objectReference: {fileID: 0}
+    - target: {fileID: 669892471574922950, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: CLS
+      objectReference: {fileID: 0}
+    - target: {fileID: 2310129904972887267, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: HLF
+      objectReference: {fileID: 0}
+    - target: {fileID: 8839993127965243060, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+      propertyPath: m_text
+      value: OPN
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

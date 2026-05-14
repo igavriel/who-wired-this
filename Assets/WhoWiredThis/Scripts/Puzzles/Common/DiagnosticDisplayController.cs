@@ -173,6 +173,15 @@ namespace WhoWiredThis.Puzzles.Common
             ApplyLampMaterial(lampErrorMaterial);
         }
 
+        /// <summary>
+        /// Body text only; uses the same <see cref="WriteBody"/> path as other display updates (respects suppress depth).
+        /// Does not change lamp or <see cref="currentState"/> — use only when timing is owned outside this component (e.g. tutorial stage boundaries).
+        /// </summary>
+        public void SetInstructionBody(string body)
+        {
+            WriteBody(body);
+        }
+
         [ContextMenu("Set Waiting")]
         private void SetWaitingFromInspector()
         {

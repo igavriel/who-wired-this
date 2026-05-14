@@ -45,6 +45,9 @@ The table below is ordered **bottom-up for this POC**: third-person / first-pers
 | 31 | [a17_polarity_panel_c5b54005.plan.md](a17_polarity_panel_c5b54005.plan.md) | A17 polarity panel scene; `IInteractable`, material swap, points scoring. |
 | 32 | [coop_calibration_tutorial_plan_89be5bca.plan.md](coop_calibration_tutorial_plan_89be5bca.plan.md) | Two-phase local co-op tutorial machine; duplicate Starter FP scene as base. |
 | 33 | [firstperson_tutorial_room_plan_bbd75af7.plan.md](firstperson_tutorial_room_plan_bbd75af7.plan.md) | Minimal asymmetric co-op tutorial room reusing FP + interaction + visibility. |
+| 34 | [split_tutorial_input_configuration_approved.plan.md](split_tutorial_input_configuration_approved.plan.md) | Approved Split Tutorial inputs: scene-only TMP + displayName sync, vocab, correctIndex, history order, diagnostic solved copy. |
+| 35 | [tutorial_diagnostic_body_tmp_b9a6931a.plan.md](tutorial_diagnostic_body_tmp_b9a6931a.plan.md) | Tutorial Body_TMP copy at stage boundaries only; thin `SetInstructionBody` on diagnostic display; `TutorialStageManager` owns refs and strings. |
+| 36 | [tutorial_metrics_tracker_267eef4c.plan.md](tutorial_metrics_tracker_267eef4c.plan.md) | Split Tutorial: `TutorialMetricsTracker` + `TutorialStageManager` lifecycle/stage events; `Time.realtimeSinceStartup`; snapshot API; no scoring/UI/Body_TMP. |
 
 ## Refresh plans from Cursor cache
 
