@@ -47,6 +47,11 @@ namespace WhoWiredThis.PanelFocus
         [Tooltip("Always-present Exit button.")]
         [SerializeField] private PanelFocusButton exitButton;
 
+        [Header("Optional action gate")]
+        [Tooltip("When locked, keyboard Activate ignores every slot except Exit. Leave empty to resolve a PanelActionLock on a parent (e.g. panel root).")]
+        [SerializeField]
+        private PanelActionLock panelActionLock;
+
         [Header("Selection Frame")]
         [Tooltip("Border-image object re-parented under selected HighlightAnchor.")]
         [SerializeField] private GameObject selectionFrame;
@@ -194,6 +199,12 @@ namespace WhoWiredThis.PanelFocus
             {
                 Debug.Log($"Player {activeController.PlayerId} pressed ExitButton.");
                 activeController.ExitFocus();
+                return;
+            }
+
+            PanelActionLock actionLock = PanelActionLock.Resolve(this, panelActionLock);
+            if (actionLock != null && actionLock.IsLocked)
+            {
                 return;
             }
 

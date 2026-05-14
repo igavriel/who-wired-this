@@ -1,0 +1,84 @@
+---
+description: Unity two-player POC workflow — planning, Unity MCP, adapters, scenes/prefabs, validation, and post-change reporting
+alwaysApply: true
+---
+
+# Unity POC Workflow (Who Wired This)
+
+This rule applies to Unity C# scripts, scenes, prefabs, serialized assets, Editor scripts, and any work that changes wiring or state through the Unity MCP. Follow it together with the other project rules in `.cursor/rules/` (for example `unity-csharp.mdc`, `who-wired-this-architecture.mdc`, `who-wired-this-safety-validation.mdc`, `interface-inspector-enforcement.mdc`).
+
+## 1. Planning first
+
+- Before implementing a requested feature, inspect the existing project structure.
+- Identify relevant scripts, prefabs, scene objects, and established patterns.
+- Produce a short implementation plan (scope, files likely touched, risks, test idea).
+- Do not implement until the user approves the plan, unless they explicitly say **implement now** (or equivalent clear go-ahead).
+- For **Cursor CreatePlan** markdown: follow the project skill **`plan-archive`** (`.cursor/skills/plan-archive/SKILL.md`) — keep copies under **`.cursor/plan/`** and update the table in **`.cursor/plan/README.md`** when plans are added or materially revised.
+
+## 2. Use Unity MCP
+
+- Prefer the Unity MCP tools to inspect scenes, prefabs, GameObjects, components, and serialized fields whenever they can answer the question.
+- Do not guess object names, paths, or hierarchy when MCP can verify them.
+- Use MCP to apply scene and prefab wiring when that is appropriate and reliable.
+- If a manual Inspector assignment is safer or MCP cannot express the change cleanly, state exactly what to assign (source object/field → target reference).
+
+## 3. Preserve existing systems
+
+- Do not rewrite the existing puzzle system.
+- Do not replace existing combination checking, diagnostic flow, shared history, input module behavior, or activate/send flow unless the user explicitly requests that change.
+- Prefer small adapter or controller scripts over large rewrites.
+- New optional serialized references must keep prior behavior when left unassigned (no new hard dependency without a guarded path).
+
+## 4. Unity architecture rules
+
+- Use `[SerializeField]` and Inspector wiring for references and configuration; avoid magic coupling.
+- Do not create gameplay or UI objects dynamically at runtime unless the user explicitly asks for runtime instantiation.
+- Do not rely on hardcoded scene object names as the primary integration mechanism.
+- Avoid `FindObjectOfType` / global searches unless the codebase already uses that pattern for the same concern and there is no safer option.
+- Do not break existing prefabs; prefer additive, backward-compatible changes.
+- If a UI element is backed by a prefab, update the prefab once instead of duplicating logic per scene instance.
+- Keep scripts small and single-purpose; prefer reusable components over monoliths.
+
+## 5. Scene and prefab rules
+
+- Add new scene objects only when needed; match existing hierarchy and naming conventions in the scenes you touch.
+- Prefab changes must remain safe for all existing prefab instances (serialization compatibility, sensible defaults).
+- When both Blue and Red players need the same feature, prefer one reusable prefab or component with per-instance Inspector configuration over duplicated assets unless duplication is already the project norm for that case.
+- Do not add ad hoc floating UI text for diagnostic-style messages. Use the existing Diagnostic prefab and its **Body_TMP** text object when the message belongs in the diagnostic surface.
+
+## 6. Coding style
+
+- Match C# conventions already used in this repository (see `unity-csharp.mdc` and nearby scripts in the same area).
+- Use `[SerializeField]` for Inspector-driven references.
+- Add null checks where a missing reference could break flow; use `Debug.LogWarning` for missing optional references rather than failing silently or crashing.
+- Keep public API minimal and intentional; prefer `private`/`internal` unless wider access is required.
+- Use coroutines for simple UI timing or animation unless the surrounding code in that feature area already standardizes on `async`/`await`.
+
+## 7. Compilation and validation
+
+- After implementation, verify Unity C# compilation when possible (for example Unity MCP `read_console`, `editor_state`, or other available project tooling).
+- Fix any compiler errors introduced by the change.
+- Do not leave the project in a broken compile state.
+- If something cannot be validated automatically, describe the minimal manual test steps.
+
+## 8. Response format after each implementation
+
+After completing an implementation task, report clearly:
+
+- What was added.
+- What was changed.
+- Which scripts were modified (paths).
+- Which prefabs or scene objects were modified (paths or MCP-identified objects when relevant).
+- Which Inspector fields still need assignment, if any (exact names and expected references).
+- How to test the change.
+- Whether compilation was checked and the outcome.
+
+## 9. Project context (POC)
+
+- This is a **Unity UI-focused cooperative puzzle proof of concept** for **two players**.
+- There are **Blue** and **Red** player panels.
+- Each panel includes input modules, an Activate/Send control, a **Diagnostic** display, and a **Shared History** display.
+- The Diagnostic display is a **shared prefab pattern** for both players and includes a **Body_TMP** text object for body copy.
+- Input modules are generic visual/state modules configured through the Inspector.
+- The build should support **two players on one machine** using **two screens and two keyboards** where applicable.
+- Design goals include **partial information**, **communication**, **shared history**, and **Productive Failure**-style puzzle solving.

@@ -1,5 +1,6 @@
 using UnityEngine;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Util;
 
 namespace WhoWiredThis.Visibility
@@ -15,6 +16,10 @@ namespace WhoWiredThis.Visibility
         [SerializeField]
         private MonoBehaviour bridgeReference;
 
+        [Tooltip("When locked, Interact is ignored. Leave empty to use a PanelActionLock on a panel ancestor.")]
+        [SerializeField]
+        private PanelActionLock panelActionLock;
+
         private IInteractable Bridge => bridgeReference as IInteractable;
 
         public string GetPromptText()
@@ -27,6 +32,12 @@ namespace WhoWiredThis.Visibility
             if (Bridge == null)
             {
                 Debug.LogWarning($"[SolveInteractProxy] '{name}' has no valid bridgeReference.", this);
+                return;
+            }
+
+            PanelActionLock gate = PanelActionLock.Resolve(this, panelActionLock);
+            if (gate != null && gate.IsLocked)
+            {
                 return;
             }
 

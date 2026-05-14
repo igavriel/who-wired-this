@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Util;
 
@@ -23,6 +24,9 @@ namespace WhoWiredThis.Visibility
         [Tooltip("When set, runs processing lines on the diagnostic body before TryCheckSolutionFromInteractor.")]
         [SerializeField] private ProcessingFeedbackController processingFeedback;
 
+        [Tooltip("When locked, Interact is ignored. Leave empty to use a PanelActionLock on a panel ancestor.")]
+        [SerializeField] private PanelActionLock panelActionLock;
+
         [Header("Prompt")]
         [SerializeField] private string interactPrompt = "$INTERACT$ Check combination";
         [SerializeField] private string solvedPrompt = "Combination solved.";
@@ -44,6 +48,12 @@ namespace WhoWiredThis.Visibility
                 Debug.LogWarning(
                     $"[MultiDimensionPuzzleInteractableBridge] '{name}' ignored Interact while activate flow is running.",
                     this);
+                return;
+            }
+
+            PanelActionLock gate = PanelActionLock.Resolve(this, panelActionLock);
+            if (gate != null && gate.IsLocked)
+            {
                 return;
             }
 

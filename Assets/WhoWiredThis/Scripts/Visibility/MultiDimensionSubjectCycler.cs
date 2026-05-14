@@ -1,6 +1,7 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Player;
 
 namespace WhoWiredThis.Visibility
@@ -25,6 +26,11 @@ namespace WhoWiredThis.Visibility
         [Header("Prompt")]
         [SerializeField]
         private string promptText = "$INTERACT$ Cycle subject";
+
+        [Header("Optional action gate")]
+        [Tooltip("When locked, Interact is ignored. Leave empty to use a PanelActionLock on a panel ancestor.")]
+        [SerializeField]
+        private PanelActionLock panelActionLock;
 
         private void Awake()
         {
@@ -54,6 +60,12 @@ namespace WhoWiredThis.Visibility
         public void Interact(GameObject interactor)
         {
             if (multiDimension == null || interactor == null)
+            {
+                return;
+            }
+
+            PanelActionLock gate = PanelActionLock.Resolve(this, panelActionLock);
+            if (gate != null && gate.IsLocked)
             {
                 return;
             }
