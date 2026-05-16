@@ -51,15 +51,15 @@ namespace WhoWiredThis.Interactables
 
             if (aOk && bOk)
             {
-                OnSuccess();
+                OnSuccess(interactor);
             }
             else
             {
-                OnFail();
+                OnFail(interactor);
             }
         }
 
-        void OnSuccess()
+        void OnSuccess(GameObject interactor)
         {
             ScoreManager.Instance?.AddScore(2);
             GameManager.Instance?.SolvePuzzle();
@@ -69,16 +69,17 @@ namespace WhoWiredThis.Interactables
                 buttonRenderer.material = successMaterial;
             }
 
-            MessagePanel.Instance?.Show(
+            PlayerHudPopupRouter.Show(
+                interactor,
                 "<b>★ SUCCESS ★</b>\n\nCorrect flow established. The relay hums to life.\n" +
                 "The lights stabilize. Something, somewhere, finally works.");
         }
 
-        void OnFail()
+        void OnFail(GameObject interactor)
         {
             string msg = FailMessages[failCount % FailMessages.Length];
             failCount++;
-            MessagePanel.Instance?.Show(msg);
+            PlayerHudPopupRouter.Show(interactor, msg);
         }
     }
 }

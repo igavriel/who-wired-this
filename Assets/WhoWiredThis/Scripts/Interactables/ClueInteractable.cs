@@ -17,7 +17,7 @@ namespace WhoWiredThis.Interactables
 
         public void Interact(GameObject interactor)
         {
-            MessagePanel.Instance?.Show($"<i>\"{clueText}\"</i>");
+            PlayerHudPopupRouter.Show(interactor, $"<i>\"{clueText}\"</i>");
 
             if (!hasBeenRead)
             {

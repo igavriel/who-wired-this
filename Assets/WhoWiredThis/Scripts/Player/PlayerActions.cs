@@ -32,6 +32,9 @@ namespace WhoWiredThis.Player
         [Tooltip("Per-player HUD for interact prompts. When unset, uses HUDController.Instance (legacy scenes).")]
         [SerializeField] private PlayerHudView playerHudView;
 
+        /// <summary>Per-player HUD when assigned; null in legacy single-HUD scenes.</summary>
+        public PlayerHudView PlayerHud => playerHudView;
+
         private IInteractable currentInteractable;
 
         void Awake()

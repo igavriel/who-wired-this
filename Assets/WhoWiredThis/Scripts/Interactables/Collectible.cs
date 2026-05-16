@@ -24,12 +24,12 @@ namespace WhoWiredThis.Interactables
             if (InventoryManager.Instance.TryAddItem(itemData))
             {
                 ScoreManager.Instance?.AddScore(scoreValue);
-                MessagePanel.Instance?.Show($"Picked up: <b>{itemData.itemName}</b>\n{itemData.description}");
+                PlayerHudPopupRouter.Show(interactor, $"Picked up: <b>{itemData.itemName}</b>\n{itemData.description}");
                 gameObject.SetActive(false);
             }
             else
             {
-                MessagePanel.Instance?.Show("Bag is full. Drop something or use an item first.");
+                PlayerHudPopupRouter.Show(interactor, "Bag is full. Drop something or use an item first.");
             }
         }
     }

@@ -95,6 +95,8 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [ui_canvas_dual_hud_054ae6fb.plan.md](ui_canvas_dual_hud_054ae6fb.plan.md) | Dual-display adventure HUD refactor: prototype prefab + Split Tutorial_UIRefactor (phases 0–1 shell). |
 | [ui-canvas-dual-hud-phase-3-interact-prompts.md](ui-canvas-dual-hud-phase-3-interact-prompts.md) | Phase 3: per-player interact prompts via PlayerHudView + PlayerActions; prototype + UIRefactor scene only. |
 | [ui-canvas-dual-hud-phase-4a-popup-foundation.md](ui-canvas-dual-hud-phase-4a-popup-foundation.md) | Phase 4A: per-player MessagePanel foundation (PerPlayer prefab variant, PlayerHudView popup API, interact dismiss, F9/F10 test harness); dual prototype only. |
+| [ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md](ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md) | Phase 4B: route Clue/Collectible/PuzzleSocket/TestButton popups via PlayerHudPopupRouter to per-player PlayerHudView; legacy Instance fallback. |
+| [ui-canvas-dual-hud-promote-to-production.md](ui-canvas-dual-hud-promote-to-production.md) | Promote dual HUD to UI_Canvas.prefab; pilot Split Tutorial first; user approval before remaining scenes. |
 
 ---
 

@@ -42,11 +42,11 @@ namespace WhoWiredThis.Interactables
                 if (inv.TryAddItem(itemToReturn))
                 {
                     SetPlacedItem(null);
-                    MessagePanel.Instance?.Show($"Removed <b>{itemToReturn.itemName}</b> from {socketLabel}.");
+                    PlayerHudPopupRouter.Show(interactor, $"Removed <b>{itemToReturn.itemName}</b> from {socketLabel}.");
                 }
                 else
                 {
-                    MessagePanel.Instance?.Show("Bag is full — can't retrieve item.");
+                    PlayerHudPopupRouter.Show(interactor, "Bag is full — can't retrieve item.");
                 }
             }
             else
@@ -55,13 +55,13 @@ namespace WhoWiredThis.Interactables
 
                 if (selected == null)
                 {
-                    MessagePanel.Instance?.Show("Select an item first (keys 1, 2, or 3).");
+                    PlayerHudPopupRouter.Show(interactor, "Select an item first (keys 1, 2, or 3).");
                     return;
                 }
 
                 inv.TryRemoveItem(selected);
                 SetPlacedItem(selected);
-                MessagePanel.Instance?.Show($"Placed <b>{selected.itemName}</b> in {socketLabel}.");
+                PlayerHudPopupRouter.Show(interactor, $"Placed <b>{selected.itemName}</b> in {socketLabel}.");
             }
         }
 
