@@ -27,7 +27,7 @@ namespace WhoWiredThis.Tutorial
         [SerializeField]
         [TextArea(2, 5)]
         private string waitingOverlayText =
-            "WAITING FOR YOUR TURN\nREAD DIAGNOSTIC\nTALK TO YOUR PARTNER";
+            "WAITING FOR YOUR TURN...\nREAD THE DIAGNOSTIC\nTALK TO YOUR PARTNER";
 
         [Header("Action area only (knob/slider/send, etc.)")]
         [SerializeField]
