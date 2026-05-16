@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4935711618533088660}
   - component: {fileID: 6151463977448403461}
   - component: {fileID: 5566198571770203838}
+  - component: {fileID: 4857823788025606068}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8c09e804095149e68d52a9e2ff3e370, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.GameManager
   currentZoneName: Relay Room
 --- !u!114 &4394424921049586927
@@ -61,7 +62,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52bce75e5e43346a681a0a35200d7885, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.ScoreManager
 --- !u!114 &4935711618533088660
 MonoBehaviour:
@@ -73,7 +74,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbac492f0531f4ae2b00cb276414519b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.TimerManager
 --- !u!114 &6151463977448403461
 MonoBehaviour:
@@ -85,7 +86,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24c82dda3f81b485aac056fdbd49cc82, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.InventoryManager
 --- !u!114 &5566198571770203838
 MonoBehaviour:
@@ -97,9 +98,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7f56cf3380c04bb2bf5ed15c12f265e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateDisplays
   setMinimumSharedResolution: 0
+--- !u!114 &4857823788025606068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249580574213425681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b71d14125474f85aabe9b899111878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.PlayerZoneTracker
+  defaultZoneName: Relay Room
 --- !u!1 &8092386713241059653
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +156,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64b8cdfbce5804a549249420daf58455, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.DualSingleViewportSwitcher
   firstCameraApplier: {fileID: 0}
   secondCameraApplier: {fileID: 0}
@@ -194,7 +208,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 654907cef530648cf97e00c9f4e6895a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.SceneHotkeySwitcher
   bindings:
   - sceneName: LocalDuel Mini

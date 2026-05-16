@@ -9,6 +9,10 @@ namespace WhoWiredThis.UI
     {
         public static MessagePanel Instance { get; private set; }
 
+        [Header("Mode")]
+        [Tooltip("When true, registers as the global singleton (legacy UI_Canvas). When false, this is a per-player HUD instance.")]
+        [SerializeField] private bool registerAsSingleton = true;
+
         [Header("References")]
         public GameObject panelRoot;
         public TMP_Text messageText;
@@ -21,19 +25,36 @@ namespace WhoWiredThis.UI
 
         void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (registerAsSingleton)
             {
-                Destroy(gameObject);
-                return;
+                if (Instance != null && Instance != this)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+
+                Instance = this;
             }
 
-            Instance = this;
             closeButton?.onClick.AddListener(OnClosePressed);
             panelRoot?.SetActive(false);
         }
 
+        void OnDestroy()
+        {
+            if (registerAsSingleton && Instance == this)
+            {
+                Instance = null;
+            }
+        }
+
         void Update()
         {
+            if (!registerAsSingleton)
+            {
+                return;
+            }
+
             if (panelRoot == null || !panelRoot.activeSelf)
             {
                 return;

@@ -1,30 +1,36 @@
 ---
 name: plan-archive
 description: >-
-  Keeps Cursor CreatePlan markdown under `.cursor/plan/` and updates the ordered
-  table in `.cursor/plan/README.md` (link, short description, optional date).
-  Use when creating or revising plans, when the user mentions `.cursor/plan`,
-  plan README, archiving CreatePlan output, or syncing plans from
-  `~/.cursor/plans/`.
+  Mandatory for this repo: every plan is saved under `.cursor/plan/` and indexed
+  in `.cursor/plan/README.md`. Use when creating, revising, or finishing any plan
+  (CreatePlan, chat-only plan, or sync from `~/.cursor/plans/`).
 disable-model-invocation: true
 ---
 
 # Plan archive (`.cursor/plan/`)
 
+## Project policy (required)
+
+**Every plan for this repo** must be kept in the local plan folder and listed in the README index. Do not leave plans only in `~/.cursor/plans/` or only in chat.
+
+This skill is **mandatory** whenever you produce or materially revise a plan for Who Wired This, including after **CreatePlan**, plan-only tasks, and before marking planning work complete.
+
 ## Goal
 
-- **Store** project-relevant plan files in **`.cursor/plan/`** (repo root), same basename as Cursor’s global cache (`~/.cursor/plans/*.plan.md`) when applicable.
-- **Maintain** **[`.cursor/plan/README.md`](../plan/README.md)** as the index: ordered table with **markdown link** and **short description**, matching whatever columns the README currently uses (if a **Date** column exists, fill `YYYY-MM-DD` when known, else `—`).
+- **Store** every project plan as **`.cursor/plan/<name>.plan.md`** (repo root). Use the same basename as Cursor’s global cache (`~/.cursor/plans/*.plan.md`) when applicable.
+- **Maintain** **[`.cursor/plan/README.md`](../plan/README.md)** as the index: add or update a table row with **markdown link** and **short description** (from YAML `overview:`), in the category section that fits the plan.
 
 Path note: this skill file lives at `.cursor/skills/plan-archive/SKILL.md`; the README is at `.cursor/plan/README.md` (sibling of `skills/`, not inside it).
 
 ## When to run
 
-After **any** of:
+Run **immediately** after **any** of:
 
 - A **CreatePlan** is produced or revised for this repo.
+- You write or finalize an implementation plan in chat (even without CreatePlan).
 - The user asks to **save**, **archive**, **sync**, or **copy** a plan into the project.
 - Plan content was edited in `~/.cursor/plans/` and should be mirrored locally.
+- A planning task is complete but `.cursor/plan/` or the README row is missing — fix before closing the task.
 
 ## Steps
 
@@ -65,9 +71,10 @@ Broaden only if the user asks to archive more plans.
 ## Checklist
 
 ```text
-Plan archive progress:
-- [ ] Plan file present as .cursor/plan/<name>.plan.md
-- [ ] README.md table updated (link, description; date column if used)
-- [ ] # column order matches user intent
+Plan archive progress (required for every plan):
+- [ ] Plan file present as .cursor/plan/<name>.plan.md (not only ~/.cursor/plans/ or chat)
+- [ ] README.md table row added or updated (link + short description from overview)
+- [ ] Row placed in the correct category section
+- [ ] # column order matches user intent (if the README uses #)
 - [ ] docs/cursor-plans-index.md still points at README if present
 ```

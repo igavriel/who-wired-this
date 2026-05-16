@@ -1,5 +1,5 @@
 ---
-description: Unity two-player POC workflow — planning, Unity MCP, adapters, scenes/prefabs, validation, and post-change reporting
+description: Unity two-player POC workflow — planning, Unity MCP, adapters, scenes/prefabs, validation, post-change reporting, Git-safe workflow for risky changes
 alwaysApply: true
 ---
 
@@ -13,7 +13,76 @@ This rule applies to Unity C# scripts, scenes, prefabs, serialized assets, Edito
 - Identify relevant scripts, prefabs, scene objects, and established patterns.
 - Produce a short implementation plan (scope, files likely touched, risks, test idea).
 - Do not implement until the user approves the plan, unless they explicitly say **implement now** (or equivalent clear go-ahead).
-- For **Cursor CreatePlan** markdown: follow the project skill **`plan-archive`** (`.cursor/skills/plan-archive/SKILL.md`) — keep copies under **`.cursor/plan/`** and update the table in **`.cursor/plan/README.md`** when plans are added or materially revised.
+- **Plan archive is mandatory** — see **Plan Archive Requirement** below and the project skill **`plan-archive`** (`.cursor/skills/plan-archive/SKILL.md`). Do not leave plans only in `~/.cursor/plans/` or chat.
+
+## Plan Archive Requirement
+
+**Mandatory, not optional.** Every approved implementation plan must be archived **before or during** implementation (not after the fact unless the user explicitly defers archiving).
+
+### 1. Archive location and filename
+
+- Save the approved plan under **`.cursor/plan/`**.
+- Use a clear **kebab-case** filename that describes the task, for example:
+  - `ui-canvas-dual-hud-phase-3-player-prompts.md`
+  - `tutorial-metrics-tracker.md`
+  - `shared-topbar-presenter.md`
+- Cursor-style names with a hash suffix (e.g. `shared-topbar-presenter_abc123.plan.md`) are acceptable when matching an existing CreatePlan artifact; prefer descriptive kebab-case either way.
+
+### 2. Required plan contents
+
+Every archived plan must include:
+
+- **Task name**
+- **Date**
+- **Scope**
+- **Out of scope**
+- **Approved implementation steps**
+- **Testing checklist**
+- **Rollback notes** (if relevant)
+
+Use YAML frontmatter where helpful; the body must still contain the sections above.
+
+### 3. README index (required)
+
+Update **[`.cursor/plan/README.md`](.cursor/plan/README.md)** for every archived plan. Add or update a row with:
+
+| Column | Content |
+|--------|---------|
+| Plan filename | Link to the plan file under `.cursor/plan/` |
+| Feature / task name | Short title of the work |
+| Status | `planned` / `implemented` / `validated` |
+| Related scene or prefab | Primary assets touched (or `—`) |
+| Short description | One-line summary |
+
+Follow the table structure already used in `README.md`; extend columns if the README already defines them. Do not paste the full plan body into the README.
+
+### 4. When archiving is required
+
+This requirement applies to work including (not limited to):
+
+- Risky Unity work
+- Scene changes
+- Prefab changes
+- UI refactors
+- Scoring systems
+- Menu systems
+- Input routing
+- Save/load or PlayerPrefs
+- Systems shared by both players
+
+Section **10 (Safe Development Workflow with Git)** still applies in addition to this section for risky work.
+
+### 5. Implementation response must include
+
+After implementation (or when closing a planning + implementation task), report:
+
+- The **archived plan file path** (under `.cursor/plan/`)
+- The **README row** that was added or updated (filename, task name, status, related assets, description)
+- **Confirmation** that `.cursor/plan/README.md` was updated
+
+### 6. User override
+
+If the user explicitly says **not** to archive a plan, follow the user instruction. Otherwise, plan archive is **mandatory**.
 
 ## 2. Use Unity MCP
 
@@ -65,6 +134,7 @@ This rule applies to Unity C# scripts, scenes, prefabs, serialized assets, Edito
 
 After completing an implementation task, report clearly:
 
+- **Plan archive:** archived plan file path; README row added or updated; confirmation that `.cursor/plan/README.md` was updated (see **Plan Archive Requirement**).
 - What was added.
 - What was changed.
 - Which scripts were modified (paths).
@@ -82,3 +152,70 @@ After completing an implementation task, report clearly:
 - Input modules are generic visual/state modules configured through the Inspector.
 - The build should support **two players on one machine** using **two screens and two keyboards** where applicable.
 - Design goals include **partial information**, **communication**, **shared history**, and **Productive Failure**-style puzzle solving.
+
+## 10. Safe Development Workflow with Git
+
+For **risky** Unity work, Cursor must follow this process in addition to sections 1–9 above. Apply this section when the task involves any of:
+
+- Scene architecture
+- Prefab architecture
+- UI canvas refactors
+- Cameras or displays
+- Input routing
+- Scoring systems
+- Menus
+- Save/load or PlayerPrefs
+- Systems shared by both players
+
+### Plan first
+
+- Inspect the project and relevant assets using Unity MCP where possible.
+- Ask clarifying questions if ownership, routing, prefab usage, display setup, or expected behavior is ambiguous.
+- Return an implementation plan only.
+- Do not implement until the user approves.
+- **Archive the approved plan** under `.cursor/plan/` and update `.cursor/plan/README.md` per **Plan Archive Requirement** before or during implementation.
+
+### Git safety
+
+- Before risky implementation, remind the user to commit or confirm the current working state is safe.
+- Do not create manual backup prefabs or backup scenes by default just for rollback.
+- Git is the primary rollback mechanism.
+- If the working tree appears dirty and the task is risky, warn the user before implementation.
+- Do not run destructive Git commands.
+- Do not reset, checkout, clean, revert, or delete user changes unless explicitly instructed.
+
+### Preserve working scenes during risky refactors
+
+- Do not directly modify a known-working scene for risky refactors unless explicitly approved.
+- Prefer duplicating the working scene into a dedicated development scene for experiments.
+- Use clear names such as:
+  - Split Tutorial_UIRefactor
+  - Split Tutorial_Score
+  - Split Tutorial_Menu
+- Once validated, changes can be merged back into the main working scene only with explicit approval.
+
+### Preserve working prefabs
+
+- Do not directly modify working prefabs for risky refactors unless explicitly approved.
+- Prefer prefab variants or duplicated prototype prefabs only when the change is experimental or reusable.
+- If modifying an existing prefab is necessary, state exactly which prefab will change and why.
+- Avoid creating “backup” prefabs like Old/Backup/Copy unless explicitly requested.
+
+### Small steps
+
+- Break large refactors into small implementation steps.
+- Each step must compile and be testable.
+- Do not combine unrelated changes in one implementation.
+
+### Verification
+
+- After implementation, check Unity compile / console errors.
+- Report exactly what changed.
+- Report which scenes changed.
+- Report which prefabs changed.
+- Report how to test.
+- Report rollback notes, preferably in Git terms, if something breaks.
+
+### User approval
+
+- If the plan requires modifying a working scene or working prefab, explicitly ask for approval before implementation.

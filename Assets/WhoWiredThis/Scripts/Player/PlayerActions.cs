@@ -28,6 +28,10 @@ namespace WhoWiredThis.Player
         [Tooltip("Reference to the FirstPerson.FirstPersonController component for reading player states.")]
         [SerializeField] private FirstPersonController firstPersonController = null;
 
+        [Header("HUD (optional)")]
+        [Tooltip("Per-player HUD for interact prompts. When unset, uses HUDController.Instance (legacy scenes).")]
+        [SerializeField] private PlayerHudView playerHudView;
+
         private IInteractable currentInteractable;
 
         void Awake()
@@ -48,6 +52,11 @@ namespace WhoWiredThis.Player
             HandleInventoryHotkeys();
             HandleInteraction();
             HandleUIHotkeys();
+        }
+
+        void OnDisable()
+        {
+            ClearInteractPrompt();
         }
 
         void OnApplicationFocus(bool hasFocus)
@@ -82,6 +91,17 @@ namespace WhoWiredThis.Player
 
         private void HandleInteraction()
         {
+            bool activateFromInput =
+                playerController != null ? playerController.InteractPressedThisFrame
+                : firstPersonController != null ? firstPersonController.InteractPressedThisFrame
+                : inputBridge.InteractPressedThisFrame;
+
+            if (activateFromInput && playerHudView != null && playerHudView.IsPopupOpen)
+            {
+                playerHudView.HidePopup();
+                return;
+            }
+
             Vector3 origin = GetOriginPosition();
             Collider[] nearbyColliders = Physics.OverlapSphere(origin, interactRange, detectionMask);
             IInteractable nearest = null;
@@ -114,18 +134,36 @@ namespace WhoWiredThis.Player
             if (nearest != currentInteractable)
             {
                 currentInteractable = nearest;
-                HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(nearest?.GetPromptText()));
+                SetInteractPromptForHud(FormatPromptForPlayer(nearest?.GetPromptText()));
             }
 
-            bool activateFromInput =
-                playerController != null ? playerController.InteractPressedThisFrame
-                : firstPersonController != null ? firstPersonController.InteractPressedThisFrame
-                : inputBridge.InteractPressedThisFrame;
             if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
-                HUDController.Instance?.SetInteractPrompt(FormatPromptForPlayer(currentInteractable.GetPromptText()));
+                SetInteractPromptForHud(FormatPromptForPlayer(currentInteractable.GetPromptText()));
             }
+        }
+
+        private void SetInteractPromptForHud(string text)
+        {
+            if (playerHudView != null)
+            {
+                playerHudView.SetInteractPrompt(text);
+                return;
+            }
+
+            HUDController.Instance?.SetInteractPrompt(text);
+        }
+
+        private void ClearInteractPrompt()
+        {
+            if (playerHudView != null)
+            {
+                playerHudView.ClearInteractPrompt();
+                return;
+            }
+
+            HUDController.Instance?.SetInteractPrompt(null);
         }
 
         private string FormatPromptForPlayer(string prompt)
