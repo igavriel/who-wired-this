@@ -26,8 +26,8 @@ namespace WhoWiredThis.Puzzles.Common
         [Header("Content")]
         [SerializeField] private string title = "SHARED HISTORY";
         [Tooltip("Header line above the rows.")]
-        [SerializeField] private string headerLine = " # |ACTOR| INPUT   | STATUS";
-        [SerializeField] private string separatorLine = "===+=====+=========+==========";
+        [SerializeField] private string headerLine = " # | SIDE | INPUT       | STATUS";
+        [SerializeField] private string separatorLine = "===+======+=============+==========";
 
         [Header("Layout")]
         [Tooltip("Maximum visible rows; older rows scroll out of view.")]
@@ -44,8 +44,8 @@ namespace WhoWiredThis.Puzzles.Common
 
         private static readonly IReadOnlyList<HistoryEntry> EmptyEntries = new List<HistoryEntry>();
         private const int RetryColumnWidth = 2;
-        private const int ActorColumnWidth = 3;
-        private const int InputTokenWidth = 3;
+        private const int ActorColumnWidth = 4;
+        private const int InputTokenWidth = 5;
 
         private void Awake()
         {

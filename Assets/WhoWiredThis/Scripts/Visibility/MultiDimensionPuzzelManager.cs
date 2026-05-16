@@ -277,9 +277,9 @@ namespace WhoWiredThis.Visibility
             switch (actor)
             {
                 case AllowedPlayerTag.Player_A:
-                    return "BLU";   // "P1";
+                    return "BLUE";
                 case AllowedPlayerTag.Player_B:
-                    return "RED";   // "P2";
+                    return "RED";
                 default:
                     return "?";
             }

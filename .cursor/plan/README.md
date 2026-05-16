@@ -90,12 +90,14 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [split_tutorial_startup_focus_6d619ef5.plan.md](split_tutorial_startup_focus_6d619ef5.plan.md) | `InitialPanelFocusBootstrap`: optional both players in panel focus on play. |
 | [tutorial_stage_manager_4d8fbac0.plan.md](tutorial_stage_manager_4d8fbac0.plan.md) | Tutorial stages from `OnAttemptSubmitted`; locks + glass; `DefaultExecutionOrder`. |
 | [split_tutorial_input_configuration_approved.plan.md](split_tutorial_input_configuration_approved.plan.md) | Approved Split Tutorial inputs: scene-only TMP + displayName sync, vocab, correctIndex, history order, diagnostic solved copy. |
+| [puzzle-input-labels-5char.md](puzzle-input-labels-5char.md) | Widen state labels to max 5 chars (all tutorial scenes + Knob/Slider prefabs) + Shared History token width 5. |
 | [tutorial_diagnostic_body_tmp_b9a6931a.plan.md](tutorial_diagnostic_body_tmp_b9a6931a.plan.md) | Tutorial Body_TMP copy at stage boundaries only; thin `SetInstructionBody` on diagnostic display; `TutorialStageManager` owns refs and strings. |
 | [tutorial_metrics_tracker_267eef4c.plan.md](tutorial_metrics_tracker_267eef4c.plan.md) | `TutorialMetricsTracker` + `TutorialStageManager` lifecycle/stage events; `Time.realtimeSinceStartup`; snapshot API; no scoring/UI/Body_TMP. |
 | [ui_canvas_dual_hud_054ae6fb.plan.md](ui_canvas_dual_hud_054ae6fb.plan.md) | Dual-display adventure HUD refactor: prototype prefab + Split Tutorial_UIRefactor (phases 0–1 shell). |
 | [ui-canvas-dual-hud-phase-3-interact-prompts.md](ui-canvas-dual-hud-phase-3-interact-prompts.md) | Phase 3: per-player interact prompts via PlayerHudView + PlayerActions; prototype + UIRefactor scene only. |
 | [ui-canvas-dual-hud-phase-4a-popup-foundation.md](ui-canvas-dual-hud-phase-4a-popup-foundation.md) | Phase 4A: per-player MessagePanel foundation (PerPlayer prefab variant, PlayerHudView popup API, interact dismiss, F9/F10 test harness); dual prototype only. |
 | [ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md](ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md) | Phase 4B: route Clue/Collectible/PuzzleSocket/TestButton popups via PlayerHudPopupRouter to per-player PlayerHudView; legacy Instance fallback. |
+| [tutorial-summary-popup.md](tutorial-summary-popup.md) | Tutorial completion: `TutorialSummaryPopupPresenter` shows team metrics summary on both HUDs from `GetSnapshot()`; `Tutorial.unity` only. |
 | [ui-canvas-dual-hud-promote-to-production.md](ui-canvas-dual-hud-promote-to-production.md) | Promote dual HUD to UI_Canvas.prefab; pilot Split Tutorial first; user approval before remaining scenes. |
 
 ---

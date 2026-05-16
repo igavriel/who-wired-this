@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: subjects.Array.data[2].displayName
-      value: HIG
+      value: HIGH
       objectReference: {fileID: 0}
     - target: {fileID: 4479129253390321869, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_Layer
@@ -302,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783659413463873283, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_text
-      value: HIG
+      value: HIGH
       objectReference: {fileID: 0}
     - target: {fileID: 6171954273933666322, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_Layer
@@ -2609,6 +2609,7 @@ GameObject:
   - component: {fileID: 950581922}
   - component: {fileID: 950581923}
   - component: {fileID: 950581924}
+  - component: {fileID: 950581925}
   m_Layer: 0
   m_Name: TutorialStageManager
   m_TagString: Untagged
@@ -2744,6 +2745,30 @@ MonoBehaviour:
   playerASolved: 0
   playerBSolved: 0
   tutorialComplete: 0
+--- !u!114 &950581925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950581921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f3c2e91b4d4f6a9e2d7c5b1a0e8f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Tutorial.TutorialSummaryPopupPresenter
+  tutorialStageManager: {fileID: 950581923}
+  tutorialMetricsTracker: {fileID: 950581924}
+  playerHudViewA: {fileID: 1418667857}
+  playerHudViewB: {fileID: 1418667858}
+  headerLine: CALIBRATION COMPLETE
+  teamAttemptsLabel: TEAM ATTEMPTS
+  teamTimeLabel: TEAM TIME
+  playerALabel: PLAYER A
+  playerBLabel: PLAYER B
+  attemptsSuffix: ATTEMPTS
+  flavorLine: THE MACHINE SURVIVED.
+  includeFlavorLine: 1
 --- !u!1 &965360416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,7 +2982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4390439028396744484, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: subjects.Array.data[2].displayName
-      value: BRT
+      value: BRITE
       objectReference: {fileID: 0}
     - target: {fileID: 4479129253390321869, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_Layer
@@ -3021,7 +3046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5783659413463873283, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_text
-      value: BRT
+      value: BRITE
       objectReference: {fileID: 0}
     - target: {fileID: 6171954273933666322, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
       propertyPath: m_Layer
@@ -4394,7 +4419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: subjects.Array.data[2].displayName
-      value: HIG
+      value: HIGH
       objectReference: {fileID: 0}
     - target: {fileID: 7615889193377596309, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_Layer
@@ -4406,7 +4431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8839993127965243060, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_text
-      value: HIG
+      value: HIGH
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4959,7 +4984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 669892471574922950, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_text
-      value: CLS
+      value: CLOSE
       objectReference: {fileID: 0}
     - target: {fileID: 1225646355106314956, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_Name
@@ -4967,7 +4992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2310129904972887267, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_text
-      value: HLF
+      value: HALF
       objectReference: {fileID: 0}
     - target: {fileID: 3662892579327658332, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_LocalScale.x
@@ -5031,15 +5056,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: subjects.Array.data[0].displayName
-      value: CLS
+      value: CLOSE
       objectReference: {fileID: 0}
     - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: subjects.Array.data[1].displayName
-      value: HLF
+      value: HALF
       objectReference: {fileID: 0}
     - target: {fileID: 7082498722753989327, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: subjects.Array.data[2].displayName
-      value: OPN
+      value: OPEN
       objectReference: {fileID: 0}
     - target: {fileID: 7615889193377596309, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_Layer
@@ -5051,7 +5076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8839993127965243060, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
       propertyPath: m_text
-      value: OPN
+      value: OPEN
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
