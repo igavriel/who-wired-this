@@ -166,6 +166,14 @@ namespace WhoWiredThis.Puzzles.Common
             ApplyLampMaterial(lampSuccessMaterial);
         }
 
+        /// <summary>Body-only failed-attempt readout (no metric rows). Uses result lamp styling.</summary>
+        public void SetDiagnosticBody(string message)
+        {
+            currentState = DisplayState.Result;
+            WriteBody(message ?? string.Empty);
+            ApplyLampMaterial(lampResultMaterial);
+        }
+
         public void SetError(string message)
         {
             currentState = DisplayState.Error;

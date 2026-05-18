@@ -489,6 +489,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 3, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &112155817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 874061873776501116, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+  m_PrefabInstance: {fileID: 1119109205}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &217447780
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,6 +909,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596226953}
     m_Modifications:
+    - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: headerLine
+      value: ' # | SIDE | INPUT             | STATUS'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: separatorLine
+      value: ===+======+=================+==========
+      objectReference: {fileID: 0}
     - target: {fileID: 3561202279528570942, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -975,6 +988,11 @@ PrefabInstance:
     - target: {fileID: 4803013851825994829, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086878380919951015, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_text
+      value: " # | SIDE | INPUT             | STATUS\n===+======+=================+==========\n
+        1 | BLUE | HALF  MID   RGHT  | UNSTABLE"
       objectReference: {fileID: 0}
     - target: {fileID: 7648358613066156202, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Name
@@ -1205,6 +1223,14 @@ PrefabInstance:
       propertyPath: 'inputOrder.Array.data[1]'
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: headerLine
+      value: ' # | SIDE | INPUT             | STATUS'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: separatorLine
+      value: ===+======+=================+==========
+      objectReference: {fileID: 0}
     - target: {fileID: 3561202279528570942, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1280,6 +1306,11 @@ PrefabInstance:
     - target: {fileID: 4803013851825994829, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086878380919951015, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_text
+      value: " # | SIDE | INPUT             | STATUS\n===+======+=================+==========\n
+        1 | BLUE | HALF  MID   RGHT  | UNSTABLE"
       objectReference: {fileID: 0}
     - target: {fileID: 7648358613066156202, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Name
@@ -1480,6 +1511,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+--- !u!4 &573578378 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8113491064860821040, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+  m_PrefabInstance: {fileID: 1610854063}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &596226952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1493,6 +1529,7 @@ GameObject:
   - component: {fileID: 596226954}
   - component: {fileID: 990011004}
   - component: {fileID: 599990001}
+  - component: {fileID: 990011005}
   m_Layer: 0
   m_Name: Player1_Panel
   m_TagString: Untagged
@@ -1549,7 +1586,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596226952}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8e035bcfceec4198a7cb2789518b86d, type: 3}
   m_Name: 
@@ -1860,6 +1897,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
   bridgeReference: {fileID: 654811933}
   panelActionLock: {fileID: 0}
+--- !u!4 &659193952 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3521122158723201802, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
+  m_PrefabInstance: {fileID: 1866243372}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &677608031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,6 +1915,7 @@ GameObject:
   - component: {fileID: 677608032}
   - component: {fileID: 990012004}
   - component: {fileID: 599990002}
+  - component: {fileID: 990012005}
   m_Layer: 0
   m_Name: Player2_Panel
   m_TagString: Untagged
@@ -1908,7 +1951,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677608031}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8e035bcfceec4198a7cb2789518b86d, type: 3}
   m_Name: 
@@ -2010,13 +2053,13 @@ MonoBehaviour:
   extraDistance: 0.02
   interactableButtons:
   - label: GATE
-    highlightAnchor: {fileID: 1778961033}
+    highlightAnchor: {fileID: 1922016947}
     interactableReference: {fileID: 1778961031}
   - label: PUMP
-    highlightAnchor: {fileID: 1119109208}
+    highlightAnchor: {fileID: 112155817}
     interactableReference: {fileID: 1119109206}
   - label: ROUTE
-    highlightAnchor: {fileID: 1903414968}
+    highlightAnchor: {fileID: 1906270180}
     interactableReference: {fileID: 1903414966}
   solveButton:
     label: Solve
@@ -2852,6 +2895,47 @@ MonoBehaviour:
   timePerMessage: 0.45
   delayAfterLastLine: 0
   activateInteractable: {fileID: 713330671}
+--- !u!114 &990011005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596226952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f4a2b19c3d4e6f8a0b1c2d3e4f5a6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
+  puzzleManager: {fileID: 2097925730}
+  diagnosticDisplay: {fileID: 45800108}
+  components:
+  - input: {fileID: 1610854067}
+    diagnosticType: 0
+    correctText: VALVE LOOKS STABLE.
+    tooLowText: VALVE IS TOO CLOSED.
+    tooHighText: VALVE IS TOO OPEN.
+    mismatchText: 
+    eligibleForHints: 1
+  - input: {fileID: 5627932}
+    diagnosticType: 0
+    correctText: PRESSURE LOOKS STABLE.
+    tooLowText: PRESSURE IS TOO LOW.
+    tooHighText: PRESSURE IS TOO HIGH.
+    mismatchText: 
+    eligibleForHints: 1
+  - input: {fileID: 1866243376}
+    diagnosticType: 1
+    correctText: FLOW ROUTE LOOKS STABLE.
+    tooLowText: 
+    tooHighText: 
+    mismatchText: FLOW ROUTE DOES NOT MATCH.
+    eligibleForHints: 1
+  solvedMessage: PIPE LINE CALIBRATED.
+  systemNoneCorrect: PIPE RESPONSE IS UNSTABLE.
+  systemOneCorrect: ONE PIPE SECTION RESPONDS.
+  systemTwoCorrect: PIPE RESPONSE IS CLOSE.
+  partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
 --- !u!114 &990012004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2872,6 +2956,47 @@ MonoBehaviour:
   timePerMessage: 0.45
   delayAfterLastLine: 0
   activateInteractable: {fileID: 654811935}
+--- !u!114 &990012005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677608031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f4a2b19c3d4e6f8a0b1c2d3e4f5a6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
+  puzzleManager: {fileID: 1340959902}
+  diagnosticDisplay: {fileID: 1975054485}
+  components:
+  - input: {fileID: 1778961034}
+    diagnosticType: 0
+    correctText: GATE LOOKS STABLE.
+    tooLowText: GATE IS TOO CLOSED.
+    tooHighText: GATE IS TOO OPEN.
+    mismatchText: 
+    eligibleForHints: 1
+  - input: {fileID: 1119109209}
+    diagnosticType: 0
+    correctText: PUMP LOOKS STABLE.
+    tooLowText: PUMP IS TOO LOW.
+    tooHighText: PUMP IS TOO HIGH.
+    mismatchText: 
+    eligibleForHints: 1
+  - input: {fileID: 1903414969}
+    diagnosticType: 1
+    correctText: ROUTE LOOKS STABLE.
+    tooLowText: 
+    tooHighText: 
+    mismatchText: ROUTE DOES NOT MATCH.
+    eligibleForHints: 1
+  solvedMessage: PIPE LINE CALIBRATED.
+  systemNoneCorrect: PIPE RESPONSE IS UNSTABLE.
+  systemOneCorrect: ONE PIPE SECTION RESPONDS.
+  systemTwoCorrect: PIPE RESPONSE IS CLOSE.
+  partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
 --- !u!1 &1018243872
 GameObject:
   m_ObjectHideFlags: 0
@@ -4654,15 +4779,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9206171040793294185, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 8627930334738925641, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 8247852353258411953, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1923016349606430451, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
 --- !u!4 &1866243373 stripped
 Transform:
@@ -4696,6 +4812,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!4 &1881053455 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 874061873776501116, guid: d2014c8f562fc47e3bfb85781c975968, type: 3}
+  m_PrefabInstance: {fileID: 5627928}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1903414965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4803,9 +4924,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9206171040793294185, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 8247852353258411953, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
 --- !u!114 &1903414966 stripped
 MonoBehaviour:
@@ -4839,6 +4957,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!4 &1906270180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3521122158723201802, guid: 48be333ef06024ed29b7f95495d38ac9, type: 3}
+  m_PrefabInstance: {fileID: 1903414965}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1922016947 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8113491064860821040, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
+  m_PrefabInstance: {fileID: 1778961030}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1950337035
 GameObject:
   m_ObjectHideFlags: 0
@@ -5565,13 +5693,13 @@ MonoBehaviour:
   extraDistance: 0.02
   interactableButtons:
   - label: VALVE
-    highlightAnchor: {fileID: 1610854064}
+    highlightAnchor: {fileID: 573578378}
     interactableReference: {fileID: 1610854066}
   - label: PRESS
-    highlightAnchor: {fileID: 5627929}
+    highlightAnchor: {fileID: 1881053455}
     interactableReference: {fileID: 5627931}
   - label: FLOW
-    highlightAnchor: {fileID: 1866243373}
+    highlightAnchor: {fileID: 659193952}
     interactableReference: {fileID: 1866243375}
   solveButton:
     label: Solve

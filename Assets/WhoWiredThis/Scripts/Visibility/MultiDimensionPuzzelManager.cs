@@ -69,6 +69,33 @@ namespace WhoWiredThis.Visibility
 
         public bool Solved => solved;
 
+        /// <summary>Number of configured puzzle elements (0 when unset).</summary>
+        public int PuzzleElementCount => puzzleElements != null ? puzzleElements.Length : 0;
+
+        /// <summary>
+        /// Read-only access to a puzzle slot for diagnostics (submitted index comes from attempt result).
+        /// </summary>
+        public bool TryGetPuzzleElement(int index, out MultiDimension element, out int correctIndex)
+        {
+            element = null;
+            correctIndex = -1;
+
+            if (puzzleElements == null || index < 0 || index >= puzzleElements.Length)
+            {
+                return false;
+            }
+
+            MultiDimensionPuzzleElement entry = puzzleElements[index];
+            if (entry?.Element == null)
+            {
+                return false;
+            }
+
+            element = entry.Element;
+            correctIndex = entry.CorrectIndex;
+            return true;
+        }
+
         /// <summary>Inspector option: record lines on each wrong combination check.</summary>
         public bool CaptureRetryStrings
         {

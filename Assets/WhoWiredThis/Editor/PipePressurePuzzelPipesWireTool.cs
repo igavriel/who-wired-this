@@ -17,6 +17,136 @@ namespace WhoWiredThis.Editor
     public static class PipePressurePuzzelPipesWireTool
     {
         private const string MenuPath = "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Scene";
+        private const string HistoryHeadersMenuPath = "Who Wired This/Pipe Pressure/Apply Puzzel Pipes History Headers (Phase 2)";
+        private const string ComponentDiagnosticMenuPath =
+            "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Component Diagnostic (Phase 3)";
+
+        /// <summary>INPUT column width for three 5-char tokens plus two spaces (17).</summary>
+        public const string PuzzelPipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
+
+        public const string PuzzelPipesHistorySeparatorLine = "===+======+=================+==========";
+
+        [MenuItem(HistoryHeadersMenuPath)]
+        public static void ApplyPuzzelPipesHistoryHeaders()
+        {
+            ApplyHistoryHeaders("Player1_Panel/HistoryPanel");
+            ApplyHistoryHeaders("Player2_Panel/HistoryPanel");
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log(
+                "[PipePressurePuzzelPipesWireTool] Applied Phase 2 history header/separator to both Puzzel Pipes HistoryPanels.");
+        }
+
+        private static void ApplyHistoryHeaders(string historyPanelPath)
+        {
+            HistoryBoardController board = GameObject.Find(historyPanelPath)?.GetComponent<HistoryBoardController>();
+            if (board == null)
+            {
+                Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing HistoryBoardController at '{historyPanelPath}'.");
+                return;
+            }
+
+            SerializedObject so = new SerializedObject(board);
+            so.FindProperty("headerLine").stringValue = PuzzelPipesHistoryHeaderLine;
+            so.FindProperty("separatorLine").stringValue = PuzzelPipesHistorySeparatorLine;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            board.Render();
+        }
+
+        [MenuItem(ComponentDiagnosticMenuPath)]
+        public static void WireComponentDiagnostic()
+        {
+            WireComponentDiagnosticPanel(
+                "Player1_Panel",
+                new[] { "VALVE", "PRESS", "FLOW" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "VALVE LOOKS STABLE.", "VALVE IS TOO CLOSED.", "VALVE IS TOO OPEN.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "PRESSURE LOOKS STABLE.", "PRESSURE IS TOO LOW.", "PRESSURE IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "FLOW ROUTE LOOKS STABLE.", string.Empty, string.Empty, "FLOW ROUTE DOES NOT MATCH.")
+                });
+
+            WireComponentDiagnosticPanel(
+                "Player2_Panel",
+                new[] { "GATE", "PUMP", "ROUTE" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "GATE LOOKS STABLE.", "GATE IS TOO CLOSED.", "GATE IS TOO OPEN.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "PUMP LOOKS STABLE.", "PUMP IS TOO LOW.", "PUMP IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "ROUTE LOOKS STABLE.", string.Empty, string.Empty, "ROUTE DOES NOT MATCH.")
+                });
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired Phase 3 component diagnostic on Puzzel Pipes.");
+        }
+
+        private static void WireComponentDiagnosticPanel(
+            string panelName,
+            string[] inputNames,
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs)
+        {
+            GameObject panel = GameObject.Find(panelName);
+            if (panel == null)
+            {
+                Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing '{panelName}'.");
+                return;
+            }
+
+            MultiDimensionDiagnosticAdapter legacy = panel.GetComponent<MultiDimensionDiagnosticAdapter>();
+            DiagnosticDisplayController display = legacy != null ? GetLegacyDiagnosticDisplay(legacy) : null;
+            if (legacy != null)
+            {
+                legacy.enabled = false;
+            }
+
+            ComponentDiagnosticAdapter adapter = panel.GetComponent<ComponentDiagnosticAdapter>();
+            if (adapter == null)
+            {
+                adapter = panel.AddComponent<ComponentDiagnosticAdapter>();
+            }
+
+            MultiDimensionPuzzelManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzelManager>();
+
+            if (puzzleManager == null || display == null)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzelPipesWireTool] Missing puzzleManager or diagnosticDisplay for '{panelName}'.");
+                return;
+            }
+
+            var dimensions = new MultiDimension[inputNames.Length];
+            for (int i = 0; i < inputNames.Length; i++)
+            {
+                dimensions[i] = GameObject.Find($"{panelName}/Buttons/{inputNames[i]}")
+                    ?.GetComponent<MultiDimension>();
+            }
+
+            SerializedObject adapterSo = new SerializedObject(adapter);
+            adapterSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
+            adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue = display;
+
+            SerializedProperty componentsProp = adapterSo.FindProperty("components");
+            componentsProp.arraySize = defs.Length;
+            for (int i = 0; i < defs.Length; i++)
+            {
+                SerializedProperty entry = componentsProp.GetArrayElementAtIndex(i);
+                entry.FindPropertyRelative("input").objectReferenceValue = dimensions[i];
+                entry.FindPropertyRelative("diagnosticType").enumValueIndex = (int)defs[i].type;
+                entry.FindPropertyRelative("correctText").stringValue = defs[i].correct;
+                entry.FindPropertyRelative("tooLowText").stringValue = defs[i].tooLow;
+                entry.FindPropertyRelative("tooHighText").stringValue = defs[i].tooHigh;
+                entry.FindPropertyRelative("mismatchText").stringValue = defs[i].mismatch;
+                entry.FindPropertyRelative("eligibleForHints").boolValue = true;
+            }
+
+            adapterSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static DiagnosticDisplayController GetLegacyDiagnosticDisplay(MultiDimensionDiagnosticAdapter legacy)
+        {
+            SerializedObject so = new SerializedObject(legacy);
+            return so.FindProperty("diagnosticDisplay").objectReferenceValue as DiagnosticDisplayController;
+        }
 
         [MenuItem(MenuPath)]
         public static void WireScene()
