@@ -106,7 +106,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 
 | Plan | Short description |
 |------|---------------------|
-| [pipe-pressure-puzzle-puzzel-pipes.md](pipe-pressure-puzzle-puzzel-pipes.md) | Puzzel Pipes Pipe Pressure: Phases 1–3 implemented (component diagnostic); Phases 4–6 planned. |
+| [pipe-pressure-puzzle-puzzel-pipes.md](pipe-pressure-puzzle-puzzel-pipes.md) | Puzzel Pipes Pipe Pressure: Phases 1–3 **validated** (component diagnostic); Phase 4+ planned. |
 | [floor_matrix_puzzle_b341240f.plan.md](floor_matrix_puzzle_b341240f.plan.md) | Floor-color matrix puzzle mirroring A17 engage/score; shared helper. |
 | [a17_polarity_panel_c5b54005.plan.md](a17_polarity_panel_c5b54005.plan.md) | A17 polarity panel scene; `IInteractable`, material swap, points scoring. |
 | [coop_calibration_tutorial_plan_89be5bca.plan.md](coop_calibration_tutorial_plan_89be5bca.plan.md) | Two-phase local co-op tutorial machine; duplicate Starter FP scene as base. |

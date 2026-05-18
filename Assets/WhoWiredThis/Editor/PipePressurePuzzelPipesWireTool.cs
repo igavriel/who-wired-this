@@ -24,7 +24,7 @@ namespace WhoWiredThis.Editor
         /// <summary>INPUT column width for three 5-char tokens plus two spaces (17).</summary>
         public const string PuzzelPipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
 
-        public const string PuzzelPipesHistorySeparatorLine = "===+======+=================+==========";
+        public const string PuzzelPipesHistorySeparatorLine = "===+======+===================+========";
 
         [MenuItem(HistoryHeadersMenuPath)]
         public static void ApplyPuzzelPipesHistoryHeaders()

@@ -4,7 +4,7 @@ date: 2026-05-17
 status: in_progress
 phase_1: implemented
 phase_2: implemented
-phase_3: implemented
+phase_3: validated
 related_assets: Assets/Scenes/Puzzel Pipes.unity, MultiDimension_Knob_4State, MultiDimension_Slider_4State, MultiDimension_ButtonText_4State, PipePressurePuzzelPipesWireTool.cs, PipePressurePhase1ValidationTool.cs, MultiDimensionDiagnosticAdapter.cs, DiagnosticDisplayController.cs
 ---
 
@@ -32,6 +32,7 @@ related_assets: Assets/Scenes/Puzzel Pipes.unity, MultiDimension_Knob_4State, Mu
 | 2026-05-17 | Validation: history checks scoped to both panel HistoryPanels; `ResetPuzzelPipesSolveStateForValidation()` after play-mode solves. |
 | 2026-05-17 | **Phase 3 planned** — component-based diagnostic adapter; plan only (no code/scene changes yet). |
 | 2026-05-17 | **Phase 3 implemented** — `ComponentDiagnosticAdapter`, manager API, `SetDiagnosticBody`, Puzzel Pipes wired; legacy diagnostic disabled on scene only. |
+| 2026-05-17 | **Phase 3 validated** — full checklist (history, diagnostics, turn lock, completion, Tutorial isolation); Play Mode MCP + scene inspection. |
 
 ---
 
@@ -41,7 +42,7 @@ related_assets: Assets/Scenes/Puzzel Pipes.unity, MultiDimension_Knob_4State, Mu
 |-------|--------|-------|
 | 1 — 3×4 inputs + wiring | **implemented** | See [Phase 1 validation](#phase-1-validation-2026-05-17) |
 | 2 — History 3×5 columns | **implemented** | Scene-only header/separator on both panel HistoryPanels; see [Phase 2](#phase-2--shared-history-3-inputs--5-char-tokens) |
-| 3 — Component diagnostic | **implemented** | See [Phase 3 plan](#phase-3-plan--component-diagnostic) |
+| 3 — Component diagnostic | **validated** | See [Phase 3 plan](#phase-3-plan--component-diagnostic) |
 | 4 — Result visualizer | planned | |
 | 5 — Randomized solution | planned | |
 | 6 — Balance / hints | planned | |
@@ -122,7 +123,7 @@ sequenceDiagram
 
 ```
  # | SIDE | INPUT             | STATUS
-===+======+=================+==========
+===+======+===================+========
 ```
 
 **Formatting:** `HistoryBoardController` uses `InputTokenWidth = 5` and `PadRight(5)` per token in `FormatInputCell`. Verified:
@@ -196,7 +197,7 @@ Applied on **both** `Player1_Panel/HistoryPanel` and `Player2_Panel/HistoryPanel
 **Constants** (in `PipePressurePuzzelPipesWireTool`):
 
 - `headerLine`: ` # | SIDE | INPUT             | STATUS` (INPUT segment = 17 chars)
-- `separatorLine`: `===+======+=================+==========`
+- `separatorLine`: `===+======+===================+========`
 
 ---
 
@@ -466,7 +467,28 @@ Add `SetDiagnosticBody(string message)` — sets `DisplayState.Result`, writes b
 
 **Menu:** `Who Wired This → Pipe Pressure → Wire Puzzel Pipes Component Diagnostic (Phase 3)`
 
-### Phase 3 test results (Play Mode / MCP)
+### Phase 3 validation (2026-05-17)
+
+**Method:** Fresh Play Mode on `Puzzel Pipes.unity` (MCP `execute_code` sequence) + edit-mode scene YAML inspection. No code or scene changes during validation.
+
+| # | Check | Result |
+|---|--------|--------|
+| 1 | Blue SEND → 3 history tokens | **PASS** — e.g. raw `SHUT LOW LEFT` |
+| 2 | Red SEND → 3 history tokens | **PASS** — e.g. raw `SHUT LOW LEFT` (Red indices) |
+| 3 | History readable (3 tokens, padded render) | **PASS** — body contains `SHUT` after render |
+| 4 | Blue wrong / partial / solve diagnostics | **PASS** — pipe copy; partial: VALVE STABLE + PRESSURE TOO LOW; solve: `PIPE LINE CALIBRATED.` |
+| 5 | Red wrong / partial / solve diagnostics | **PASS** — GATE TOO CLOSED; partial: GATE STABLE; solve: `PIPE LINE CALIBRATED.` |
+| 6 | No SETTINGS / PLACES on Puzzel Pipes | **PASS** |
+| 7 | Waiting player (Red at start) blocked on 3 inputs | **PASS** — `PanelActionLock` + GATE/PUMP/ROUTE colliders disabled |
+| 8 | Turn switch after Blue solves | **PASS** — `CurrentStage` → PlayerBOperator; Blue locked |
+| 9 | Red operates after Blue solves | **PASS** — Red unlocked; GATE collider enabled |
+| 10 | Completion after Red solves | **PASS** — `CurrentStage` → Complete (2) |
+| 11 | Tutorial still SETTINGS / PLACES | **PASS** — `Tutorial.unity`: legacy adapter **enabled**, no `ComponentDiagnosticAdapter` |
+| 12 | Console errors | **PASS** — 0 errors during validation |
+
+**Note:** Checklist item 10 `completionRaised` confirmed via `CurrentStage == Complete` after Red solve. Manual UI pass (glass overlay, live SEND) still listed under Phase 1 checklist.
+
+### Phase 3 test results (implementation smoke — Play Mode / MCP)
 
 | Test | Result |
 |------|--------|
