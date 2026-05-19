@@ -45,6 +45,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [dimension_visibility_clean_plan_df01cb00.plan.md](dimension_visibility_clean_plan_df01cb00.plan.md) | Layer-based dimension visibility in LocalCoOp; remove ghost/replacement artifacts. |
 | [dimension_visibility_reset_f1e7ff24.plan.md](dimension_visibility_reset_f1e7ff24.plan.md) | Per-object dimension visibility; hidden = no render/collision for non-owner. |
 | [switchable_subject_prefab_3dd51d63.plan.md](switchable_subject_prefab_3dd51d63.plan.md) | `MultiDimension` inspector component: subject array, modes, layers (new files only). |
+| [multi-dimension-puzzle-elements-inspector.md](multi-dimension-puzzle-elements-inspector.md) | Compact `ReorderableList` for `puzzleElements` and `MultiDimension.subjects` (reusable editor pattern; Unity 6 compile validated). |
 
 ---
 
@@ -106,7 +107,8 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 
 | Plan | Short description |
 |------|---------------------|
-| [pipe-pressure-puzzle-puzzel-pipes.md](pipe-pressure-puzzle-puzzel-pipes.md) | Puzzel Pipes Pipe Pressure: Phases 1–3 **validated** (component diagnostic); Phase 4+ planned. |
+| [pipe-pressure-puzzle-puzzel-pipes.md](pipe-pressure-puzzle-puzzel-pipes.md) | Puzzel Pipes Pipe Pressure: Phases 1–4 validated (result visualizer on partner diagnostic panels); Phases 5–6 planned. |
+| [puzzel-pipes-result-visual-polish.md](puzzel-pipes-result-visual-polish.md) | Industrial pipe-machine polish for Phase 4 result visualizer rigs (scene-only, shared PipeVisualizer materials). |
 | [floor_matrix_puzzle_b341240f.plan.md](floor_matrix_puzzle_b341240f.plan.md) | Floor-color matrix puzzle mirroring A17 engage/score; shared helper. |
 | [a17_polarity_panel_c5b54005.plan.md](a17_polarity_panel_c5b54005.plan.md) | A17 polarity panel scene; `IInteractable`, material swap, points scoring. |
 | [coop_calibration_tutorial_plan_89be5bca.plan.md](coop_calibration_tutorial_plan_89be5bca.plan.md) | Two-phase local co-op tutorial machine; duplicate Starter FP scene as base. |

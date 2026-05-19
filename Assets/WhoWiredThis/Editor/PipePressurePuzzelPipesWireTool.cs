@@ -20,6 +20,10 @@ namespace WhoWiredThis.Editor
         private const string HistoryHeadersMenuPath = "Who Wired This/Pipe Pressure/Apply Puzzel Pipes History Headers (Phase 2)";
         private const string ComponentDiagnosticMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Component Diagnostic (Phase 3)";
+        private const string ResultVisualizerMenuPath =
+            "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Result Visualizer (Phase 4)";
+
+        private static readonly Color NeutralVisualColor = new Color(0.55f, 0.58f, 0.62f, 1f);
 
         /// <summary>INPUT column width for three 5-char tokens plus two spaces (17).</summary>
         public const string PuzzelPipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
@@ -146,6 +150,238 @@ namespace WhoWiredThis.Editor
         {
             SerializedObject so = new SerializedObject(legacy);
             return so.FindProperty("diagnosticDisplay").objectReferenceValue as DiagnosticDisplayController;
+        }
+
+        [MenuItem(ResultVisualizerMenuPath)]
+        public static void WireResultVisualizer()
+        {
+            WireResultVisualizerSide(
+                "Player1_Panel",
+                "Player2_Panel",
+                new[] { "VALVE", "PRESS", "FLOW" },
+                new[] { "ValveGroup", "PressureGroup", "FlowGroup" },
+                VisualRigLayout.Blue);
+
+            WireResultVisualizerSide(
+                "Player2_Panel",
+                "Player1_Panel",
+                new[] { "GATE", "PUMP", "ROUTE" },
+                new[] { "GateGroup", "PumpGroup", "RouteGroup" },
+                VisualRigLayout.Red);
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired Phase 4 result visualizer on Puzzel Pipes.");
+        }
+
+        private enum VisualRigLayout
+        {
+            Blue,
+            Red
+        }
+
+        private static void WireResultVisualizerSide(
+            string operatorPanelName,
+            string partnerPanelName,
+            string[] inputNames,
+            string[] groupNames,
+            VisualRigLayout layout)
+        {
+            GameObject operatorPanel = GameObject.Find(operatorPanelName);
+            GameObject partnerPanel = GameObject.Find(partnerPanelName);
+            if (operatorPanel == null || partnerPanel == null)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzelPipesWireTool] Missing panel '{operatorPanelName}' or '{partnerPanelName}'.");
+                return;
+            }
+
+            DiagnosticDisplayController partnerDisplay =
+                partnerPanel.GetComponentInChildren<DiagnosticDisplayController>(true);
+            if (partnerDisplay == null)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzelPipesWireTool] No DiagnosticDisplayController under '{partnerPanelName}'.");
+                return;
+            }
+
+            Transform rigRoot = EnsureResultVisualRig(partnerDisplay.transform);
+            var dimensions = new MultiDimension[inputNames.Length];
+            var stateVisualArrays = new GameObject[inputNames.Length][];
+
+            for (int i = 0; i < inputNames.Length; i++)
+            {
+                dimensions[i] = GameObject.Find($"{operatorPanelName}/Buttons/{inputNames[i]}")
+                    ?.GetComponent<MultiDimension>();
+                Transform groupRoot = EnsureChild(rigRoot, groupNames[i]);
+                stateVisualArrays[i] = BuildStateVisuals(groupRoot, layout, i);
+            }
+
+            SubmittedCombinationVisualizer visualizer = operatorPanel.GetComponent<SubmittedCombinationVisualizer>();
+            if (visualizer == null)
+            {
+                visualizer = operatorPanel.AddComponent<SubmittedCombinationVisualizer>();
+            }
+
+            MultiDimensionPuzzelManager puzzleManager = GameObject.Find($"{operatorPanelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzelManager>();
+
+            SerializedObject vizSo = new SerializedObject(visualizer);
+            vizSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
+            vizSo.FindProperty("visualRoot").objectReferenceValue = rigRoot;
+
+            SerializedProperty slotsProp = vizSo.FindProperty("slots");
+            slotsProp.arraySize = inputNames.Length;
+            for (int i = 0; i < inputNames.Length; i++)
+            {
+                SerializedProperty slot = slotsProp.GetArrayElementAtIndex(i);
+                slot.FindPropertyRelative("sourceInput").objectReferenceValue = dimensions[i];
+                slot.FindPropertyRelative("label").stringValue = inputNames[i];
+
+                SerializedProperty visuals = slot.FindPropertyRelative("stateVisuals");
+                GameObject[] states = stateVisualArrays[i];
+                visuals.arraySize = states.Length;
+                for (int v = 0; v < states.Length; v++)
+                {
+                    visuals.GetArrayElementAtIndex(v).objectReferenceValue = states[v];
+                }
+            }
+
+            vizSo.ApplyModifiedPropertiesWithoutUndo();
+
+            for (int i = 0; i < inputNames.Length; i++)
+            {
+                SetSlotActive(stateVisualArrays[i], 0);
+            }
+        }
+
+        private static Transform EnsureResultVisualRig(Transform diagnosticRoot)
+        {
+            Transform existing = diagnosticRoot.Find("ResultVisual_Root");
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var rootGo = new GameObject("ResultVisual_Root");
+            Undo.RegisterCreatedObjectUndo(rootGo, "Create ResultVisual_Root");
+            Transform root = rootGo.transform;
+            root.SetParent(diagnosticRoot, false);
+            root.localPosition = new Vector3(0f, 0.35f, -0.15f);
+            root.localRotation = Quaternion.identity;
+            root.localScale = Vector3.one;
+            return root;
+        }
+
+        private static Transform EnsureChild(Transform parent, string childName)
+        {
+            Transform child = parent.Find(childName);
+            if (child != null)
+            {
+                return child;
+            }
+
+            var go = new GameObject(childName);
+            Undo.RegisterCreatedObjectUndo(go, "Create visual group");
+            child = go.transform;
+            child.SetParent(parent, false);
+            child.localRotation = Quaternion.identity;
+            child.localScale = Vector3.one;
+            return child;
+        }
+
+        private static GameObject[] BuildStateVisuals(Transform groupRoot, VisualRigLayout layout, int groupIndex)
+        {
+            var states = new GameObject[4];
+            for (int s = 0; s < 4; s++)
+            {
+                states[s] = CreateNeutralPrimitive(groupRoot, $"State{s}", layout, groupIndex, s);
+            }
+
+            return states;
+        }
+
+        private static GameObject CreateNeutralPrimitive(
+            Transform parent,
+            string name,
+            VisualRigLayout layout,
+            int groupIndex,
+            int stateIndex)
+        {
+            PrimitiveType primitive = layout == VisualRigLayout.Blue && groupIndex == 2
+                ? PrimitiveType.Cylinder
+                : PrimitiveType.Cube;
+
+            GameObject go = GameObject.CreatePrimitive(primitive);
+            Undo.RegisterCreatedObjectUndo(go, "Create visual state");
+            go.name = name;
+            Transform t = go.transform;
+            t.SetParent(parent, false);
+
+            Collider col = go.GetComponent<Collider>();
+            if (col != null)
+            {
+                Undo.DestroyObjectImmediate(col);
+            }
+
+            MeshRenderer renderer = go.GetComponent<MeshRenderer>();
+            if (renderer != null)
+            {
+                Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                mat.color = NeutralVisualColor;
+                renderer.sharedMaterial = mat;
+            }
+
+            ApplyVisualLayout(t, layout, groupIndex, stateIndex);
+            go.SetActive(false);
+            return go;
+        }
+
+        private static void ApplyVisualLayout(Transform t, VisualRigLayout layout, int groupIndex, int stateIndex)
+        {
+            float xOffset = groupIndex * 0.45f - 0.45f;
+
+            if (groupIndex == 0)
+            {
+                float open = 0.15f + stateIndex * 0.28f;
+                t.localPosition = new Vector3(xOffset, 0f, 0f);
+                t.localScale = new Vector3(open, 0.35f, 0.35f);
+                return;
+            }
+
+            if (groupIndex == 1)
+            {
+                float height = 0.2f + stateIndex * 0.25f;
+                t.localPosition = new Vector3(xOffset, height * 0.5f, 0f);
+                t.localScale = new Vector3(0.25f, height, 0.25f);
+                return;
+            }
+
+            float routeX = (stateIndex - 1.5f) * 0.22f;
+            t.localPosition = new Vector3(xOffset + routeX, 0.1f, 0f);
+            if (stateIndex == 3)
+            {
+                t.localScale = new Vector3(0.35f, 0.08f, 0.35f);
+            }
+            else
+            {
+                t.localScale = new Vector3(0.12f, 0.35f, 0.35f);
+            }
+        }
+
+        private static void SetSlotActive(GameObject[] stateVisuals, int activeIndex)
+        {
+            if (stateVisuals == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < stateVisuals.Length; i++)
+            {
+                if (stateVisuals[i] != null)
+                {
+                    stateVisuals[i].SetActive(i == activeIndex);
+                }
+            }
         }
 
         [MenuItem(MenuPath)]

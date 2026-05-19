@@ -62,6 +62,9 @@ namespace WhoWiredThis.Editor
         }
 
         /// <summary>Clears solve lock left by Play Mode or TryCheckSolution so cycle/TMP checks are reliable.</summary>
+        public static void ResetPuzzelPipesSolveStateForValidationPublic() =>
+            ResetPuzzelPipesSolveStateForValidation();
+
         private static void ResetPuzzelPipesSolveStateForValidation()
         {
             string[] panelNames = { "Player1_Panel", "Player2_Panel" };
