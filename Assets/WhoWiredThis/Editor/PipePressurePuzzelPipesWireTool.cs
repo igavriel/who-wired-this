@@ -22,6 +22,8 @@ namespace WhoWiredThis.Editor
             "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Component Diagnostic (Phase 3)";
         private const string ResultVisualizerMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Result Visualizer (Phase 4)";
+        private const string RandomSolutionMenuPath =
+            "Who Wired This/Pipe Pressure/Wire Random Solution Assigner (Phase 5)";
 
         private static readonly Color NeutralVisualColor = new Color(0.55f, 0.58f, 0.62f, 1f);
 
@@ -549,6 +551,38 @@ namespace WhoWiredThis.Editor
 
             SerializedObject so = new SerializedObject(cycler);
             return so.FindProperty("dimensionProbe").objectReferenceValue as Collider;
+        }
+
+        [MenuItem(RandomSolutionMenuPath)]
+        public static void WireRandomSolutionAssigner()
+        {
+            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            if (stageManager == null)
+            {
+                Debug.LogError("[PipePressurePuzzelPipesWireTool] TutorialStageManager not found in scene.");
+                return;
+            }
+
+            RandomPuzzleSolutionAssigner assigner = stageManager.GetComponent<RandomPuzzleSolutionAssigner>();
+            if (assigner == null)
+            {
+                assigner = Undo.AddComponent<RandomPuzzleSolutionAssigner>(stageManager.gameObject);
+            }
+
+            SerializedObject so = new SerializedObject(assigner);
+            SerializedObject tsmSo = new SerializedObject(stageManager);
+            so.FindProperty("playerAPuzzleManager").objectReferenceValue =
+                tsmSo.FindProperty("playerAPuzzleManager").objectReferenceValue;
+            so.FindProperty("playerBPuzzleManager").objectReferenceValue =
+                tsmSo.FindProperty("playerBPuzzleManager").objectReferenceValue;
+            so.FindProperty("enableRandomization").boolValue = true;
+            so.FindProperty("useSeed").boolValue = false;
+            so.FindProperty("seed").intValue = 0;
+            so.FindProperty("logToConsole").boolValue = false;
+            so.ApplyModifiedProperties();
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired RandomPuzzleSolutionAssigner (Phase 5).");
         }
     }
 }

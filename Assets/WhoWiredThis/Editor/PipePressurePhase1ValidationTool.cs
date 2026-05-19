@@ -78,19 +78,7 @@ namespace WhoWiredThis.Editor
             {
                 MultiDimensionPuzzelManager pm = GameObject.Find($"{panelNames[p]}/PuzzleManager")
                     ?.GetComponent<MultiDimensionPuzzelManager>();
-                if (pm != null)
-                {
-                    SerializedObject pmSo = new SerializedObject(pm);
-                    pmSo.FindProperty("solved").boolValue = false;
-                    pmSo.ApplyModifiedPropertiesWithoutUndo();
-                }
-
-                for (int i = 0; i < inputs[p].Length; i++)
-                {
-                    MultiDimension md = GameObject.Find($"{panelNames[p]}/Buttons/{inputs[p][i]}")
-                        ?.GetComponent<MultiDimension>();
-                    md?.SetSolved(false);
-                }
+                pm?.ResetSessionForNewRun();
             }
         }
 

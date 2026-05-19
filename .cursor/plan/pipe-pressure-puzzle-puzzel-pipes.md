@@ -730,7 +730,7 @@ All objects **authored in scene**, disabled by default except one per group afte
 
 ## Later phases (summary)
 
-- **Phase 5:** `RandomPuzzleSolutionAssigner`
+- **Phase 5:** `RandomPuzzleSolutionAssigner` — **implemented / validated** (see [puzzel-pipes-randomized-solution-phase5.md](puzzel-pipes-randomized-solution-phase5.md))
 - **Phase 6:** Hint cooldown / balance
 
 ---

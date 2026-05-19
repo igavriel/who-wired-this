@@ -17,6 +17,11 @@ namespace WhoWiredThis.Visibility
 
         public MultiDimension Element => element;
         public int CorrectIndex => correctIndex;
+
+        internal void SetCorrectIndex(int value)
+        {
+            correctIndex = value;
+        }
     }
 
     /// <summary>
@@ -96,6 +101,74 @@ namespace WhoWiredThis.Visibility
             return true;
         }
 
+        /// <summary>Read-only correct index for a puzzle slot (after optional runtime randomization).</summary>
+        public bool TryGetCorrectIndex(int elementIndex, out int correctIndex)
+        {
+            correctIndex = -1;
+            if (puzzleElements == null || elementIndex < 0 || elementIndex >= puzzleElements.Length)
+            {
+                return false;
+            }
+
+            MultiDimensionPuzzleElement entry = puzzleElements[elementIndex];
+            if (entry == null)
+            {
+                return false;
+            }
+
+            correctIndex = entry.CorrectIndex;
+            return true;
+        }
+
+        /// <summary>State count for a slot (from linked <see cref="MultiDimension.SubjectCount"/>).</summary>
+        public bool TryGetElementStateCount(int elementIndex, out int stateCount)
+        {
+            stateCount = 0;
+            if (!TryGetPuzzleElement(elementIndex, out MultiDimension element, out _))
+            {
+                return false;
+            }
+
+            stateCount = element.SubjectCount;
+            return stateCount > 0;
+        }
+
+        /// <summary>
+        /// Applies runtime correct indices. Does not change <see cref="MultiDimension"/> active states.
+        /// </summary>
+        public bool TryApplyCorrectIndices(IReadOnlyList<int> indices)
+        {
+            if (indices == null || puzzleElements == null || indices.Count != puzzleElements.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < puzzleElements.Length; i++)
+            {
+                MultiDimensionPuzzleElement entry = puzzleElements[i];
+                if (entry?.Element == null)
+                {
+                    return false;
+                }
+
+                int stateCount = entry.Element.SubjectCount;
+                if (stateCount <= 0)
+                {
+                    return false;
+                }
+
+                int index = indices[i];
+                if (index < 0 || index >= stateCount)
+                {
+                    return false;
+                }
+
+                entry.SetCorrectIndex(index);
+            }
+
+            return true;
+        }
+
         /// <summary>Inspector option: record lines on each wrong combination check.</summary>
         public bool CaptureRetryStrings
         {
@@ -149,6 +222,33 @@ namespace WhoWiredThis.Visibility
         {
             retryStrings.Clear();
             failedCheckCount = 0;
+        }
+
+        /// <summary>
+        /// Clears solved lock and re-enables interactions for a new play session.
+        /// Call before runtime randomization or when recovering from editor validation / saved solved state.
+        /// </summary>
+        public void ResetSessionForNewRun()
+        {
+            solved = false;
+            ResetRetryHistory();
+
+            if (puzzleElements != null)
+            {
+                for (int i = 0; i < puzzleElements.Length; i++)
+                {
+                    puzzleElements[i]?.Element?.SetSolved(false);
+                }
+            }
+
+            EnableInteractableBehaviour(solveButtonInteractable);
+            if (interactionsToDisable != null)
+            {
+                for (int i = 0; i < interactionsToDisable.Length; i++)
+                {
+                    EnableInteractableBehaviour(interactionsToDisable[i]);
+                }
+            }
         }
 
         /// <summary>
@@ -362,6 +462,19 @@ namespace WhoWiredThis.Visibility
             if (behaviour is IInteractable)
             {
                 behaviour.enabled = false;
+            }
+        }
+
+        private static void EnableInteractableBehaviour(MonoBehaviour behaviour)
+        {
+            if (behaviour == null)
+            {
+                return;
+            }
+
+            if (behaviour is IInteractable)
+            {
+                behaviour.enabled = true;
             }
         }
 
