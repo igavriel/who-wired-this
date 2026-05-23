@@ -3,7 +3,7 @@ using System;
 namespace WhoWiredThis.Puzzles.Common
 {
     /// <summary>
-    /// Simple v1 generator for three-slot pipe puzzle solutions (Puzzel Pipes).
+    /// Simple v1 generator for three-slot pipe puzzle solutions (Puzzles Pipes).
     /// </summary>
     public static class PuzzleSolutionGenerator
     {

@@ -25,7 +25,7 @@ namespace WhoWiredThis.Editor
             "Assets/Scenes/Puzzles/RelayPuzzle.unity",
             "Assets/Scenes/Puzzles/Floor_Puzzle.unity",
             "Assets/Scenes/Puzzles/A17_PolarityPanel.unity",
-            "Assets/Scenes/Puzzles/CombinedPuzzels.unity",
+            "Assets/Scenes/Puzzles/CombinedPuzzles.unity",
             "Assets/Scenes/Duel/LocalDuel ThirdPerson.unity",
         };
 

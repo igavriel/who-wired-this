@@ -31,7 +31,7 @@ namespace WhoWiredThis.Editor
 
         public static int RunValidation(out string report)
         {
-            PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
+            PipePressurePhase1ValidationTool.ResetPuzzlePipesSolveStateForValidationPublic();
 
             var sb = new StringBuilder();
             int issues = 0;
@@ -101,8 +101,8 @@ namespace WhoWiredThis.Editor
             int issues = 0;
             sb.AppendLine($"--- {panelName} randomized (seed {deterministicSeed}) ---");
 
-            MultiDimensionPuzzelManager pm = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager pm = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             if (pm == null)
             {
                 sb.AppendLine($"FAIL: Missing PuzzleManager on {panelName}");
@@ -189,7 +189,7 @@ namespace WhoWiredThis.Editor
         private static int ValidateDiagnosticReadsSolution(
             StringBuilder sb,
             string panelName,
-            MultiDimensionPuzzelManager pm,
+            MultiDimensionPuzzleManager pm,
             int[] generated,
             string[] inputNames)
         {
@@ -247,7 +247,7 @@ namespace WhoWiredThis.Editor
 
         private static int SimulateSolve(
             StringBuilder sb,
-            MultiDimensionPuzzelManager pm,
+            MultiDimensionPuzzleManager pm,
             MultiDimension[] dimensions,
             int[] correctIndices,
             string panelName)
@@ -307,12 +307,12 @@ namespace WhoWiredThis.Editor
         /// <summary>Restores authored scene baseline so editor validation does not leave solved state or wrong correctIndex.</summary>
         private static void RestoreFixedSceneState()
         {
-            PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
+            PipePressurePhase1ValidationTool.ResetPuzzlePipesSolveStateForValidationPublic();
 
-            MultiDimensionPuzzelManager blue = GameObject.Find("Player1_Panel/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
-            MultiDimensionPuzzelManager red = GameObject.Find("Player2_Panel/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager blue = GameObject.Find("Player1_Panel/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
+            MultiDimensionPuzzleManager red = GameObject.Find("Player2_Panel/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             blue?.TryApplyCorrectIndices(new[] { 2, 1, 2 });
             red?.TryApplyCorrectIndices(new[] { 3, 2, 3 });
         }

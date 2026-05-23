@@ -11,8 +11,8 @@ namespace WhoWiredThis.Editor
     {
         private const string ValidationMenuRoot = "Who Wired This/Pipe Pressure/Validation/";
         private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
-        private const string MenuPath = ValidationMenuRoot + "1. Phase 4 (Puzzel Pipes)";
-        private const string McpMenuPath = McpMenuRoot + "1. Phase 4 (Puzzel Pipes)";
+        private const string MenuPath = ValidationMenuRoot + "1. Phase 4 (Puzzle Pipes)";
+        private const string McpMenuPath = McpMenuRoot + "1. Phase 4 (Puzzle Pipes)";
 
         [MenuItem(MenuPath)]
         public static void Validate()
@@ -30,7 +30,7 @@ namespace WhoWiredThis.Editor
 
         public static int RunValidation(out string report)
         {
-            PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
+            PipePressurePhase1ValidationTool.ResetPuzzlePipesSolveStateForValidationPublic();
 
             var sb = new StringBuilder();
             int issues = 0;
@@ -82,8 +82,8 @@ namespace WhoWiredThis.Editor
 
             SerializedObject vizSo = new SerializedObject(visualizer);
             Transform visualRoot = vizSo.FindProperty("visualRoot").objectReferenceValue as Transform;
-            MultiDimensionPuzzelManager manager = vizSo.FindProperty("puzzleManager").objectReferenceValue
-                as MultiDimensionPuzzelManager;
+            MultiDimensionPuzzleManager manager = vizSo.FindProperty("puzzleManager").objectReferenceValue
+                as MultiDimensionPuzzleManager;
 
             if (manager == null)
             {

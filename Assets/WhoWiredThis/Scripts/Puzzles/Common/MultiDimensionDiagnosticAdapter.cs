@@ -10,7 +10,7 @@ namespace WhoWiredThis.Puzzles.Common
     public class MultiDimensionDiagnosticAdapter : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private MultiDimensionPuzzelManager puzzleManager;
+        [SerializeField] private MultiDimensionPuzzleManager puzzleManager;
         [SerializeField] private DiagnosticDisplayController diagnosticDisplay;
 
         [Header("Labels")]

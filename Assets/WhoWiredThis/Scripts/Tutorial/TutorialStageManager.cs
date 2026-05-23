@@ -113,7 +113,7 @@ namespace WhoWiredThis.Tutorial
     }
 
     /// <summary>
-    /// Staged tutorial flow on top of two MultiDimensionPuzzelManager instances. Does not change puzzle logic.
+    /// Staged tutorial flow on top of two MultiDimensionPuzzleManager instances. Does not change puzzle logic.
     /// Runs after InitialPanelFocusBootstrap via DefaultExecutionOrder.
     /// </summary>
     [DefaultExecutionOrder(100)]
@@ -123,10 +123,10 @@ namespace WhoWiredThis.Tutorial
 
         [Header("Blue / Red = UI labels only — maps to Player A / B")]
         [SerializeField]
-        private MultiDimensionPuzzelManager playerAPuzzleManager;
+        private MultiDimensionPuzzleManager playerAPuzzleManager;
 
         [SerializeField]
-        private MultiDimensionPuzzelManager playerBPuzzleManager;
+        private MultiDimensionPuzzleManager playerBPuzzleManager;
 
         [SerializeField]
         private TutorialPanelLockBundle playerAPanelLock;

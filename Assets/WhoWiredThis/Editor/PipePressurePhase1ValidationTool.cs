@@ -15,8 +15,8 @@ namespace WhoWiredThis.Editor
     {
         private const string ValidationMenuRoot = "Who Wired This/Pipe Pressure/Validation/";
         private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
-        private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzel Pipes)";
-        private const string McpMenuPath = McpMenuRoot + "0. Phase 1 (Puzzel Pipes)";
+        private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzle Pipes)";
+        private const string McpMenuPath = McpMenuRoot + "0. Phase 1 (Puzzle Pipes)";
 
         [MenuItem(MenuPath)]
         public static void Validate()
@@ -34,7 +34,7 @@ namespace WhoWiredThis.Editor
 
         public static int RunValidation(out string report)
         {
-            ResetPuzzelPipesSolveStateForValidation();
+            ResetPuzzlePipesSolveStateForValidation();
 
             var sb = new StringBuilder();
             int issues = 0;
@@ -75,10 +75,10 @@ namespace WhoWiredThis.Editor
         }
 
         /// <summary>Clears solve lock left by Play Mode or TryCheckSolution so cycle/TMP checks are reliable.</summary>
-        public static void ResetPuzzelPipesSolveStateForValidationPublic() =>
-            ResetPuzzelPipesSolveStateForValidation();
+        public static void ResetPuzzlePipesSolveStateForValidationPublic() =>
+            ResetPuzzlePipesSolveStateForValidation();
 
-        private static void ResetPuzzelPipesSolveStateForValidation()
+        private static void ResetPuzzlePipesSolveStateForValidation()
         {
             string[] panelNames = { "Player1_Panel", "Player2_Panel" };
             string[][] inputs =
@@ -89,8 +89,8 @@ namespace WhoWiredThis.Editor
 
             for (int p = 0; p < panelNames.Length; p++)
             {
-                MultiDimensionPuzzelManager pm = GameObject.Find($"{panelNames[p]}/PuzzleManager")
-                    ?.GetComponent<MultiDimensionPuzzelManager>();
+                MultiDimensionPuzzleManager pm = GameObject.Find($"{panelNames[p]}/PuzzleManager")
+                    ?.GetComponent<MultiDimensionPuzzleManager>();
                 pm?.ResetSessionForNewRun();
             }
         }
@@ -158,8 +158,8 @@ namespace WhoWiredThis.Editor
                 issues += ValidateAdvanceCycle(sb, dimensions[i], path, player);
             }
 
-            MultiDimensionPuzzelManager pm = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager pm = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             if (pm == null)
             {
                 sb.AppendLine($"FAIL: Missing PuzzleManager on {panelName}");
@@ -343,7 +343,7 @@ namespace WhoWiredThis.Editor
 
         private static int SimulateSolve(
             StringBuilder sb,
-            MultiDimensionPuzzelManager pm,
+            MultiDimensionPuzzleManager pm,
             MultiDimension[] dimensions,
             int[] correctIndices,
             string panelName)
