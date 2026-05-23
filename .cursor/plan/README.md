@@ -12,6 +12,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 |------|---------------------|
 | [project_rules_and_skills_9e4a8bb3.plan.md](project_rules_and_skills_9e4a8bb3.plan.md) | Cursor rules + scene-setup skill for Unity, local multiplayer, and SO safety. |
 | [safe_git_workflow_rule_08ba612c.plan.md](safe_git_workflow_rule_08ba612c.plan.md) | Add Git-safe workflow section to unity-poc-workflow for risky Unity changes. |
+| [editor-validation-console-output.md](editor-validation-console-output.md) | Replace validation `DisplayDialog` with structured console output for Unity MCP; optional `With Dialog` menus. |
 
 ---
 

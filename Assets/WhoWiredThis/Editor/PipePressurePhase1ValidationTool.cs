@@ -13,10 +13,26 @@ namespace WhoWiredThis.Editor
 {
     public static class PipePressurePhase1ValidationTool
     {
-        private const string MenuPath = "Who Wired This/Pipe Pressure/Validate Phase 1 (Puzzel Pipes)";
+        private const string ValidationMenuRoot = "Who Wired This/Pipe Pressure/Validation/";
+        private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
+        private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzel Pipes)";
+        private const string McpMenuPath = McpMenuRoot + "0. Phase 1 (Puzzel Pipes)";
 
         [MenuItem(MenuPath)]
         public static void Validate()
+        {
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 1", issues, report, showDialog: true);
+        }
+
+        [MenuItem(McpMenuPath)]
+        public static void ValidateForMcp()
+        {
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 1", issues, report);
+        }
+
+        public static int RunValidation(out string report)
         {
             ResetPuzzelPipesSolveStateForValidation();
 
@@ -54,11 +70,8 @@ namespace WhoWiredThis.Editor
                 ? "=== Phase 1 validation: ALL CHECKS PASSED (edit-mode structural) ==="
                 : $"=== Phase 1 validation: {issues} issue(s) ===");
 
-            Debug.Log(sb.ToString());
-            EditorUtility.DisplayDialog(
-                issues == 0 ? "Phase 1 OK" : "Phase 1 Issues",
-                sb.ToString(),
-                "OK");
+            report = sb.ToString();
+            return issues;
         }
 
         /// <summary>Clears solve lock left by Play Mode or TryCheckSolution so cycle/TMP checks are reliable.</summary>
