@@ -20,9 +20,9 @@ User confirmed **proceed with current dirty tree** as rollback point (HEAD `82a7
 
 ## Testing checklist
 
-- [x] Validate Phase 4 (editor menu) — **ALL CHECKS PASSED** (2026-05-19).
-- [ ] Play Mode: all 4 states per group on both displays after SEND (manual recommended).
-- [ ] Diagnostic / history / turn lock unchanged (manual recommended).
+- ✅ Validate Phase 4 (editor menu) — **ALL CHECKS PASSED** (2026-05-19).
+- ⬜ Play Mode: all 4 states per group on both displays after SEND (manual recommended).
+- ⬜ Diagnostic / history / turn lock unchanged (manual recommended).
 
 ## Rollback
 

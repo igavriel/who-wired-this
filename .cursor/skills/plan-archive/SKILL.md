@@ -22,6 +22,27 @@ This skill is **mandatory** whenever you produce or materially revise a plan for
 
 Path note: this skill file lives at `.cursor/skills/plan-archive/SKILL.md`; the README is at `.cursor/plan/README.md` (sibling of `skills/`, not inside it).
 
+## Checklist emoji convention
+
+Use **emojis** for plan progress and testing checklists (not markdown `[x]` / `[ ]`):
+
+| Icon | Meaning | Use when |
+|------|---------|----------|
+| ✅ | Done / validated | Step complete, test passed, user approved |
+| ⬜ | Todo / not started | Default for open checklist items |
+| 🚧 | In progress | Work started but not validated |
+| ⚠️ | Optional / manual | Nice-to-have or needs human Play Mode sign-off |
+| ❌ | Blocked / cancelled | Out of scope or explicitly dropped |
+
+Example:
+
+```markdown
+- ✅ Unity compiles with zero errors
+- ⬜ Manual Play Mode sign-off on both displays
+- 🚧 Phase 2 wiring in progress
+- ⚠️ Optional dialog menu still shows popup (manual OK)
+```
+
 ## When to run
 
 Run **immediately** after **any** of:
@@ -72,9 +93,9 @@ Broaden only if the user asks to archive more plans.
 
 ```text
 Plan archive progress (required for every plan):
-- [ ] Plan file present as .cursor/plan/<name>.plan.md (not only ~/.cursor/plans/ or chat)
-- [ ] README.md table row added or updated (link + short description from overview)
-- [ ] Row placed in the correct category section
-- [ ] # column order matches user intent (if the README uses #)
-- [ ] docs/cursor-plans-index.md still points at README if present
+- ⬜ Plan file present as .cursor/plan/<name>.plan.md (not only ~/.cursor/plans/ or chat)
+- ⬜ README.md table row added or updated (link + short description from overview)
+- ⬜ Row placed in the correct category section
+- ⬜ # column order matches user intent (if the README uses #)
+- ⬜ docs/cursor-plans-index.md still points at README if present
 ```

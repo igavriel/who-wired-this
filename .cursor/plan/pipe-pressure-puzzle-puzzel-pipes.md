@@ -737,15 +737,15 @@ All objects **authored in scene**, disabled by default except one per group afte
 
 ## Phase 1 implementation checklist
 
-- [x] Six inputs from 4-state prefabs
-- [x] `displayName` order correct on all inputs
-- [x] `correctIndex` Blue 2/1/2, Red 3/2/3
-- [x] Managers, history order, panel focus, turn locks
-- [x] Wire + validate editor tools
-- [x] FLOW/ROUTE symbolic TMP allowed; history uses `displayName`
-- [x] Phase 2 history headers (both panel HistoryPanels)
-- [x] Phase 3 component diagnostic (Puzzel Pipes only)
-- [ ] Full Play Mode sign-off (focus, glass, live SEND via UI)
+- ✅ Six inputs from 4-state prefabs
+- ✅ `displayName` order correct on all inputs
+- ✅ `correctIndex` Blue 2/1/2, Red 3/2/3
+- ✅ Managers, history order, panel focus, turn locks
+- ✅ Wire + validate editor tools
+- ✅ FLOW/ROUTE symbolic TMP allowed; history uses `displayName`
+- ✅ Phase 2 history headers (both panel HistoryPanels)
+- ✅ Phase 3 component diagnostic (Puzzel Pipes only)
+- ⬜ Full Play Mode sign-off (focus, glass, live SEND via UI)
 
 ## Rollback
 

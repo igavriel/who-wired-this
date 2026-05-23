@@ -62,11 +62,11 @@ Validated via Unity MCP `refresh_unity` (compile request) + `read_console` (erro
 
 ## Testing checklist
 
-- [x] Unity compiles with zero errors after `UnityEditor.Editor` fix (MCP `read_console`, errors only).
-- [ ] Inspector shows one line per puzzle element (index | MultiDimension).
-- [ ] Add / remove / reorder works; YAML keys unchanged (`element`, `correctIndex`).
-- [ ] Other manager fields still draw (headers, RequireInterface on solve button).
-- [ ] Play Mode solve/diagnostics unchanged.
+- ✅ Unity compiles with zero errors after `UnityEditor.Editor` fix (MCP `read_console`, errors only).
+- ⬜ Inspector shows one line per puzzle element (index | MultiDimension).
+- ⬜ Add / remove / reorder works; YAML keys unchanged (`element`, `correctIndex`).
+- ⬜ Other manager fields still draw (headers, RequireInterface on solve button).
+- ⬜ Play Mode solve/diagnostics unchanged.
 
 ## Rollback
 

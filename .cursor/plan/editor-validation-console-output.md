@@ -37,10 +37,10 @@ New shared helper:
 
 ## Testing checklist
 
-- [x] Run each validation menu via Unity MCP — no popup on default path (Phase 1 verified)
-- [x] Console shows summary + full report
-- [x] MCP `read_console` can read results
-- [ ] Optional `With Dialog` menus still show popup (manual OK)
+- ✅ Run each validation menu via Unity MCP — no popup on default path (Phase 1 verified)
+- ✅ Console shows summary + full report
+- ✅ MCP `read_console` can read results
+- ⬜ Optional `With Dialog` menus still show popup (manual OK)
 
 ## Rollback
 

@@ -174,37 +174,37 @@ Each iteration is a **Play Mode pass** or **one Inspector confirmation**. Implem
 
 ### Iteration 0 — Compile gate
 
-- [ ] Project compiles with zero errors; no missing script icons on package prefabs.
+- ⬜ Project compiles with zero errors; no missing script icons on package prefabs.
 
 ### Iteration 1 — Single scene smoke (`ThirdPersonMixamo_Single`)
 
-- [ ] Press **Play**: player spawns on ground, not inside geometry.
-- [ ] **Player A** keys: move, sprint, **jump**; camera follows; no console spam.
-- [ ] Jump gym: can land on each box layout; **no fall-through** (if fail, adjust box collider / CC step offset / positions—implementer iterates without asking unless ambiguous).
+- ⬜ Press **Play**: player spawns on ground, not inside geometry.
+- ⬜ **Player A** keys: move, sprint, **jump**; camera follows; no console spam.
+- ⬜ Jump gym: can land on each box layout; **no fall-through** (if fail, adjust box collider / CC step offset / positions—implementer iterates without asking unless ambiguous).
 
 ### Iteration 2 — Single scene A/V
 
-- [ ] Footstep / land / jump SFX audible (mute check).
-- [ ] Animator: idle / move / air states plausible (pink mesh = fail).
+- ⬜ Footstep / land / jump SFX audible (mute check).
+- ⬜ Animator: idle / move / air states plausible (pink mesh = fail).
 
 ### Iteration 3 — Two-player scene spawn (`ThirdPersonMixamo_LocalDuel`)
 
-- [ ] **Play**: two characters visible in **split** regions.
-- [ ] **Player A** controls only left (or designated) player; **Player B** only the other—no cross-control.
-- [ ] Both **PlayerCameraRig** targets correct transform; no black half-screen (rect + depth clear).
+- ⬜ **Play**: two characters visible in **split** regions.
+- ⬜ **Player A** controls only left (or designated) player; **Player B** only the other—no cross-control.
+- ⬜ Both **PlayerCameraRig** targets correct transform; no black half-screen (rect + depth clear).
 
 ### Iteration 4 — Two-player stress
 
-- [ ] Both players jump/move simultaneously 30s; no duplicate **AudioListener** warning.
-- [ ] No key ghosting (if overlap, reassign B keys in `PlayerControlBindings_PlayerB`).
+- ⬜ Both players jump/move simultaneously 30s; no duplicate **AudioListener** warning.
+- ⬜ No key ghosting (if overlap, reassign B keys in `PlayerControlBindings_PlayerB`).
 
 ### Iteration 5 — Dependency audit
 
-- [ ] Select package prefab + both scenes: **no** `WhoWiredThis.Player` scripts; **no** `StarterAssetsThirdPerson.controller` on shipped Animator; audio paths under `ThirdPersonMixamo/Audio` only.
+- ⬜ Select package prefab + both scenes: **no** `WhoWiredThis.Player` scripts; **no** `StarterAssetsThirdPerson.controller` on shipped Animator; audio paths under `ThirdPersonMixamo/Audio` only.
 
 ### Iteration 6 — Documentation gate
 
-- [ ] **`Doc/README.md`** exists under `Assets/ThirdPersonMixamo/Doc/`, covers sections in **P9**, and file paths match the repo (scene names, prefab names as implemented).
+- ⬜ **`Doc/README.md`** exists under `Assets/ThirdPersonMixamo/Doc/`, covers sections in **P9**, and file paths match the repo (scene names, prefab names as implemented).
 
 **Your role:** run Iterations 0–6 checklists; report only if a checkbox fails. Implementer fixes prefabs/scenes first, code second.
 
