@@ -35,15 +35,15 @@ Dual HUD refactor — route real interactable popup messages to the correct play
 
 ## Testing checklist
 
-- [x] Player A clue → Display 0 only
-- [x] Player B clue → Display 1 only
-- [x] Collectible per player
-- [x] PuzzleSocket per player
-- [x] TestButton success/fail per player
-- [x] Independent popups; dismiss one does not close other
-- [x] Phase 3 prompts + Phase 2 shared top bar
-- [x] Manual Play Mode validation (user confirmed 2026-05-16)
-- [x] Console compile clean
+- ✅ Player A clue → Display 0 only
+- ✅ Player B clue → Display 1 only
+- ✅ Collectible per player
+- ✅ PuzzleSocket per player
+- ✅ TestButton success/fail per player
+- ✅ Independent popups; dismiss one does not close other
+- ✅ Phase 3 prompts + Phase 2 shared top bar
+- ✅ Manual Play Mode validation (user confirmed 2026-05-16)
+- ✅ Console compile clean
 
 ## Rollback notes
 

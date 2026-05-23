@@ -134,13 +134,13 @@ Repoint or archive `Split Tutorial_UIRefactor`; retire prototype prefab
 
 ## 4. Pilot testing checklist (Split Tutorial — you run this)
 
-- [ ] Display 0: Player A top bar, interact prompt, popups (clue, collectible, socket, relay test)
-- [ ] Display 1: Player B same, independent of A
-- [ ] Both popups open; closing one does not close the other
-- [ ] Panel focus + diagnostic/history unchanged
-- [ ] Inventory opens on Display 0 (if merged in M1)
-- [ ] Console: no new errors
-- [ ] Known OK if broken: Help/About/Restart (Phase 5)
+- ⬜ Display 0: Player A top bar, interact prompt, popups (clue, collectible, socket, relay test)
+- ⬜ Display 1: Player B same, independent of A
+- ⬜ Both popups open; closing one does not close the other
+- ⬜ Panel focus + diagnostic/history unchanged
+- ⬜ Inventory opens on Display 0 (if merged in M1)
+- ⬜ Console: no new errors
+- ⬜ Known OK if broken: Help/About/Restart (Phase 5)
 
 **Optional compare:** Run same tests on UIRefactor before/after to confirm parity.
 

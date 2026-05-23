@@ -39,15 +39,15 @@ Dual HUD refactor — per-player popup foundation (Phase 4A).
 
 ## Testing checklist
 
-- [ ] F9 → Player A popup on Display 0 only
-- [ ] F10 → Player B popup on Display 1 only
-- [ ] Both open simultaneously; independent content
-- [ ] Player A interact (Keypad Enter) closes A only
-- [ ] Player B interact (Keypad .) closes B only
-- [ ] Phase 3 interact prompts still per-player
-- [ ] Phase 2 shared top bar still works
-- [ ] `UI_Canvas.prefab` and `Split Tutorial.unity` unchanged by this phase
-- [ ] Console compile clean
+- ⬜ F9 → Player A popup on Display 0 only
+- ⬜ F10 → Player B popup on Display 1 only
+- ⬜ Both open simultaneously; independent content
+- ⬜ Player A interact (Keypad Enter) closes A only
+- ⬜ Player B interact (Keypad .) closes B only
+- ⬜ Phase 3 interact prompts still per-player
+- ⬜ Phase 2 shared top bar still works
+- ⬜ `UI_Canvas.prefab` and `Split Tutorial.unity` unchanged by this phase
+- ⬜ Console compile clean
 
 ## Rollback notes
 

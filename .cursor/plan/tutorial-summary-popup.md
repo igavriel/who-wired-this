@@ -37,13 +37,13 @@ Tutorial Summary Popup — team metrics summary on dual HUD at tutorial completi
 
 ## Testing checklist
 
-- [ ] Complete tutorial — both players get same summary popup
-- [ ] Values match `TutorialMetricsTracker` debug fields
-- [ ] Close A only — B stays open; reverse
-- [ ] Per-player interact prompt still works after dismiss
-- [ ] Shared TopBar still works
-- [ ] No scoring / high score behavior
-- [ ] Console compile clean
+- ⬜ Complete tutorial — both players get same summary popup
+- ⬜ Values match `TutorialMetricsTracker` debug fields
+- ⬜ Close A only — B stays open; reverse
+- ⬜ Per-player interact prompt still works after dismiss
+- ⬜ Shared TopBar still works
+- ⬜ No scoring / high score behavior
+- ⬜ Console compile clean
 
 ## Rollback notes
 

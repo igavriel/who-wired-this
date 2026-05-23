@@ -54,15 +54,15 @@ related_assets: Assets/Scenes/Tutorial.unity, HistoryBoardController.cs, MultiDi
 
 ## Testing checklist
 
-- [ ] Submit attempts with 3-char-equivalent labels (LOW, MID, OFF) after rename to 3–4 char names — history aligns.
-- [ ] Submit with 4-char labels (OPEN, HIGH) — history aligns.
-- [ ] Submit with 5-char labels (BRITE, CLOSE) — history aligns; no clip in INPUT column.
-- [ ] Visual button/knob/slider labels match history **semantic** labels (history shows padded tokens; controls do not show trailing spaces).
-- [ ] Player A and Player B puzzles still solve at intended `correctIndex` values.
-- [ ] Diagnostics unchanged (metrics/messages).
-- [ ] Interact prompts show unpadded `GetSubjectDisplayName` (e.g. `Cycle subject — OPEN`).
-- [ ] No extra spaces in non-history UI.
-- [ ] Unity console: no new errors; note any truncate warnings.
+- ⬜ Submit attempts with 3-char-equivalent labels (LOW, MID, OFF) after rename to 3–4 char names — history aligns.
+- ⬜ Submit with 4-char labels (OPEN, HIGH) — history aligns.
+- ⬜ Submit with 5-char labels (BRITE, CLOSE) — history aligns; no clip in INPUT column.
+- ⬜ Visual button/knob/slider labels match history **semantic** labels (history shows padded tokens; controls do not show trailing spaces).
+- ⬜ Player A and Player B puzzles still solve at intended `correctIndex` values.
+- ⬜ Diagnostics unchanged (metrics/messages).
+- ⬜ Interact prompts show unpadded `GetSubjectDisplayName` (e.g. `Cycle subject — OPEN`).
+- ⬜ No extra spaces in non-history UI.
+- ⬜ Unity console: no new errors; note any truncate warnings.
 
 ## Rollback notes
 

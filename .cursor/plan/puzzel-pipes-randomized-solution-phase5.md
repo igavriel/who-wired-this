@@ -52,14 +52,14 @@ scene: Assets/Scenes/Puzzel Pipes.unity
 
 ## Testing checklist
 
-- [x] Phase 1 validation with fixed scene values passes.
-- [x] Phase 5 validation (generator, apply, solve, diagnostic read) passes.
-- [x] Scene YAML still authored `2,1,2` / `3,2,3` after validation (restore step).
-- [x] `Tutorial.unity` has no `RandomPuzzleSolutionAssigner`.
-- [x] Unity compiles with zero errors.
-- [ ] Manual: Play Mode variance with `useSeed=false` (multiple enters).
-- [ ] Manual: Play Mode repeatability with `useSeed=true`.
-- [ ] Manual: Solve using `debugBlueSolution` / `debugRedSolution` indices.
+- ✅ Phase 1 validation with fixed scene values passes.
+- ✅ Phase 5 validation (generator, apply, solve, diagnostic read) passes.
+- ✅ Scene YAML still authored `2,1,2` / `3,2,3` after validation (restore step).
+- ✅ `Tutorial.unity` has no `RandomPuzzleSolutionAssigner`.
+- ✅ Unity compiles with zero errors.
+- ⬜ Manual: Play Mode variance with `useSeed=false` (multiple enters).
+- ⬜ Manual: Play Mode repeatability with `useSeed=true`.
+- ⬜ Manual: Solve using `debugBlueSolution` / `debugRedSolution` indices.
 
 ## Post-implementation fix (solved state)
 

@@ -34,13 +34,13 @@ Popup/MessagePanel, interactable refactors, scoring, menus, diagnostic/history, 
 
 ## Testing checklist
 
-- [ ] Player A near interactable, B away → Display 0 prompt only
-- [ ] Player B near interactable, A away → Display 1 prompt only
-- [ ] Both near different interactables → each display shows own prompt
-- [ ] Both away → both hidden
-- [ ] Panel focus disables `PlayerActions` → that player's prompt clears
-- [ ] `Split Tutorial` + `UI_Canvas.prefab` unchanged
-- [ ] Popup/MessagePanel unchanged
+- ⬜ Player A near interactable, B away → Display 0 prompt only
+- ⬜ Player B near interactable, A away → Display 1 prompt only
+- ⬜ Both near different interactables → each display shows own prompt
+- ⬜ Both away → both hidden
+- ⬜ Panel focus disables `PlayerActions` → that player's prompt clears
+- ⬜ `Split Tutorial` + `UI_Canvas.prefab` unchanged
+- ⬜ Popup/MessagePanel unchanged
 
 ## Rollback notes
 
