@@ -9,10 +9,26 @@ namespace WhoWiredThis.Editor
 {
     public static class PipePressurePhase4ValidationTool
     {
-        private const string MenuPath = "Who Wired This/Pipe Pressure/Validate Phase 4 (Puzzel Pipes)";
+        private const string ValidationMenuRoot = "Who Wired This/Pipe Pressure/Validation/";
+        private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
+        private const string MenuPath = ValidationMenuRoot + "1. Phase 4 (Puzzel Pipes)";
+        private const string McpMenuPath = McpMenuRoot + "1. Phase 4 (Puzzel Pipes)";
 
         [MenuItem(MenuPath)]
         public static void Validate()
+        {
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 4", issues, report, showDialog: true);
+        }
+
+        [MenuItem(McpMenuPath)]
+        public static void ValidateForMcp()
+        {
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 4", issues, report);
+        }
+
+        public static int RunValidation(out string report)
         {
             PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
 
@@ -23,13 +39,13 @@ namespace WhoWiredThis.Editor
                 sb,
                 "Player1_Panel",
                 "Player2_Panel/DiagnosticPanel",
-                new[] { "ValveGroup", "PressureGroup", "FlowGroup" });
+                new[] { "VALVE", "PRESS", "FLOW" });
 
             issues += ValidateVisualizerSide(
                 sb,
                 "Player2_Panel",
                 "Player1_Panel/DiagnosticPanel",
-                new[] { "GateGroup", "PumpGroup", "RouteGroup" });
+                new[] { "GATE", "PUMP", "ROUTE" });
 
             issues += ValidateTutorialSceneHasNoVisualizer(sb);
 
@@ -37,18 +53,15 @@ namespace WhoWiredThis.Editor
                 ? "=== Phase 4 validation: ALL CHECKS PASSED ==="
                 : $"=== Phase 4 validation: {issues} issue(s) ===");
 
-            Debug.Log(sb.ToString());
-            EditorUtility.DisplayDialog(
-                issues == 0 ? "Phase 4 OK" : "Phase 4 Issues",
-                sb.ToString(),
-                "OK");
+            report = sb.ToString();
+            return issues;
         }
 
         private static int ValidateVisualizerSide(
             StringBuilder sb,
             string operatorPanelName,
             string partnerDiagnosticPath,
-            string[] groupNames)
+            string[] expectedInputLabels)
         {
             int issues = 0;
             sb.AppendLine($"--- {operatorPanelName} → {partnerDiagnosticPath} ---");
@@ -91,82 +104,169 @@ namespace WhoWiredThis.Editor
             }
             else
             {
-                sb.AppendLine("PASS: visualRoot on partner DiagnosticPanel");
+                sb.AppendLine($"PASS: visualRoot '{visualRoot.name}' on partner DiagnosticPanel");
             }
 
             SerializedProperty slots = vizSo.FindProperty("slots");
-            if (slots.arraySize != 3)
+            if (slots.arraySize != expectedInputLabels.Length)
             {
-                sb.AppendLine($"FAIL: slots count {slots.arraySize} expected 3");
+                sb.AppendLine($"FAIL: slots count {slots.arraySize} expected {expectedInputLabels.Length}");
                 issues++;
             }
 
-            for (int s = 0; s < slots.arraySize; s++)
-            {
-                SerializedProperty slot = slots.GetArrayElementAtIndex(s);
-                SerializedProperty visuals = slot.FindPropertyRelative("stateVisuals");
-                if (visuals.arraySize != 4)
-                {
-                    sb.AppendLine($"FAIL: slot {s} stateVisuals={visuals.arraySize} expected 4");
-                    issues++;
-                }
-            }
-
-            if (visualRoot == null || manager == null)
+            if (visualRoot == null || manager == null || slots.arraySize != expectedInputLabels.Length)
             {
                 return issues;
             }
 
-            for (int g = 0; g < groupNames.Length; g++)
+            for (int slotIndex = 0; slotIndex < expectedInputLabels.Length; slotIndex++)
             {
-                Transform group = visualRoot.Find(groupNames[g]);
-                if (group == null)
+                string expectedLabel = expectedInputLabels[slotIndex];
+                if (slotIndex >= slots.arraySize)
                 {
-                    sb.AppendLine($"FAIL: Missing group '{groupNames[g]}' under visual root");
+                    sb.AppendLine($"FAIL: missing slot for '{expectedLabel}'");
                     issues++;
                     continue;
                 }
 
-                for (int state = 0; state < 4; state++)
-                {
-                    int[] indices = { 0, 0, 0 };
-                    indices[g] = state;
-                    visualizer.ApplySubmittedIndices(indices);
+                SerializedProperty slot = slots.GetArrayElementAtIndex(slotIndex);
+                string label = slot.FindPropertyRelative("label").stringValue;
+                MultiDimension sourceInput = slot.FindPropertyRelative("sourceInput").objectReferenceValue
+                    as MultiDimension;
+                SerializedProperty visuals = slot.FindPropertyRelative("stateVisuals");
 
-                    int activeInGroup = CountActiveChildren(group);
-                    if (activeInGroup != 1)
+                if (sourceInput == null)
+                {
+                    sb.AppendLine($"FAIL: slot '{expectedLabel}' sourceInput not assigned");
+                    issues++;
+                    continue;
+                }
+
+                string sourceName = sourceInput.name;
+                if (label != expectedLabel && sourceName != expectedLabel)
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot {slotIndex} label='{label}' source='{sourceName}' expected '{expectedLabel}'");
+                    issues++;
+                }
+                else
+                {
+                    sb.AppendLine($"PASS: slot {slotIndex} '{expectedLabel}' wired to {sourceName}");
+                }
+
+                int expectedStates = sourceInput.SubjectCount;
+                if (visuals.arraySize != expectedStates)
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot '{expectedLabel}' stateVisuals={visuals.arraySize} expected {expectedStates}");
+                    issues++;
+                    continue;
+                }
+
+                for (int v = 0; v < visuals.arraySize; v++)
+                {
+                    if (visuals.GetArrayElementAtIndex(v).objectReferenceValue == null)
                     {
-                        sb.AppendLine(
-                            $"FAIL: {groupNames[g]} state {state} has {activeInGroup} active children (expected 1)");
+                        sb.AppendLine($"FAIL: slot '{expectedLabel}' stateVisuals[{v}] is null");
                         issues++;
-                    }
-                    else
-                    {
-                        Transform activeChild = FindActiveChild(group);
-                        if (activeChild == null || activeChild.name != $"State{state}")
-                        {
-                            sb.AppendLine(
-                                $"FAIL: {groupNames[g]} state {state} active child '{activeChild?.name}'");
-                            issues++;
-                        }
                     }
                 }
 
-                sb.AppendLine($"PASS: {groupNames[g]} states 0–3 map correctly");
+                int slotIssues = ValidateSlotStateMapping(
+                    sb, visualizer, slotIndex, expectedLabel, visuals, expectedInputLabels.Length);
+                if (slotIssues == 0)
+                {
+                    sb.AppendLine($"PASS: slot '{expectedLabel}' states 0–{expectedStates - 1} map correctly");
+                }
+
+                issues += slotIssues;
             }
 
-            int activeStateMeshes = CountActiveStateVisuals(visualRoot);
-            if (activeStateMeshes != 3)
+            int[] defaultIndices = new int[expectedInputLabels.Length];
+            visualizer.ApplySubmittedIndices(defaultIndices);
+            int activeStateMeshes = CountActiveAssignedStateVisuals(slots);
+            if (activeStateMeshes != expectedInputLabels.Length)
             {
-                sb.AppendLine($"FAIL: visual root has {activeStateMeshes} active state meshes (expected 3)");
+                sb.AppendLine(
+                    $"FAIL: visual root has {activeStateMeshes} active state visuals (expected {expectedInputLabels.Length})");
                 issues++;
             }
             else
             {
-                sb.AppendLine("PASS: exactly one active state mesh per group after ApplySubmittedIndices");
+                sb.AppendLine("PASS: exactly one active state visual per slot after ApplySubmittedIndices");
             }
 
             return issues;
+        }
+
+        private static int ValidateSlotStateMapping(
+            StringBuilder sb,
+            SubmittedCombinationVisualizer visualizer,
+            int slotIndex,
+            string slotLabel,
+            SerializedProperty visuals,
+            int slotCount)
+        {
+            int issues = 0;
+            int stateCount = visuals.arraySize;
+
+            for (int state = 0; state < stateCount; state++)
+            {
+                int[] indices = new int[slotCount];
+                indices[slotIndex] = state;
+                visualizer.ApplySubmittedIndices(indices);
+
+                int activeCount = 0;
+                int activeIndex = -1;
+                for (int v = 0; v < stateCount; v++)
+                {
+                    GameObject visual = visuals.GetArrayElementAtIndex(v).objectReferenceValue as GameObject;
+                    if (visual != null && visual.activeSelf)
+                    {
+                        activeCount++;
+                        activeIndex = v;
+                    }
+                }
+
+                if (activeCount != 1)
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot '{slotLabel}' state {state} has {activeCount} active visuals (expected 1)");
+                    issues++;
+                    continue;
+                }
+
+                if (activeIndex != state)
+                {
+                    GameObject activeVisual = visuals.GetArrayElementAtIndex(activeIndex).objectReferenceValue as GameObject;
+                    GameObject expectedVisual = visuals.GetArrayElementAtIndex(state).objectReferenceValue as GameObject;
+                    sb.AppendLine(
+                        $"FAIL: slot '{slotLabel}' state {state} active visual '{activeVisual?.name}' " +
+                        $"(expected '{expectedVisual?.name}')");
+                    issues++;
+                }
+            }
+
+            return issues;
+        }
+
+        private static int CountActiveAssignedStateVisuals(SerializedProperty slots)
+        {
+            int count = 0;
+            for (int s = 0; s < slots.arraySize; s++)
+            {
+                SerializedProperty visuals = slots.GetArrayElementAtIndex(s).FindPropertyRelative("stateVisuals");
+                for (int v = 0; v < visuals.arraySize; v++)
+                {
+                    GameObject visual = visuals.GetArrayElementAtIndex(v).objectReferenceValue as GameObject;
+                    if (visual != null && visual.activeSelf)
+                    {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
         }
 
         private static int ValidateTutorialSceneHasNoVisualizer(StringBuilder sb)
@@ -181,53 +281,6 @@ namespace WhoWiredThis.Editor
 
             sb.AppendLine("PASS: Tutorial.unity has no SubmittedCombinationVisualizer");
             return 0;
-        }
-
-        private static int CountActiveChildren(Transform parent)
-        {
-            int count = 0;
-            for (int i = 0; i < parent.childCount; i++)
-            {
-                if (parent.GetChild(i).gameObject.activeSelf)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
-
-        private static Transform FindActiveChild(Transform parent)
-        {
-            for (int i = 0; i < parent.childCount; i++)
-            {
-                Transform child = parent.GetChild(i);
-                if (child.gameObject.activeSelf)
-                {
-                    return child;
-                }
-            }
-
-            return null;
-        }
-
-        private static int CountActiveStateVisuals(Transform root)
-        {
-            int count = 0;
-            foreach (Transform t in root.GetComponentsInChildren<Transform>(true))
-            {
-                if (t == root || t.parent == root)
-                {
-                    continue;
-                }
-
-                if (t.gameObject.activeSelf && t.name.StartsWith("State"))
-                {
-                    count++;
-                }
-            }
-
-            return count;
         }
     }
 }
