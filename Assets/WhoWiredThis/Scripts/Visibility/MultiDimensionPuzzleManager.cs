@@ -29,7 +29,7 @@ namespace WhoWiredThis.Visibility
     /// Case 2 and Case 3 are evaluated; Case 1 is intentionally ignored.
     /// Interaction is expected to be routed via an external IInteractable bridge.
     /// </summary>
-    public class MultiDimensionPuzzelManager : MonoBehaviour
+    public class MultiDimensionPuzzleManager : MonoBehaviour
     {
         [Header("Combination")]
         [SerializeField]
@@ -197,7 +197,7 @@ namespace WhoWiredThis.Visibility
         {
             if (solved)
             {
-                Debug.Log($"[MultiDimensionPuzzelManager] '{name}' ignored solve request because puzzle is already solved.", this);
+                Debug.Log($"[MultiDimensionPuzzleManager] '{name}' ignored solve request because puzzle is already solved.", this);
                 return true;
             }
 
@@ -211,7 +211,7 @@ namespace WhoWiredThis.Visibility
             }
 
             Debug.Log(
-                $"[MultiDimensionPuzzelManager] '{name}' TryCheckSolutionFromInteractor called. " +
+                $"[MultiDimensionPuzzleManager] '{name}' TryCheckSolutionFromInteractor called. " +
                 $"interactor={(interactor != null ? interactor.name : "null")}, actor={actor}.",
                 this);
             return TryCheckSolutionWithActor(actor);
@@ -317,13 +317,13 @@ namespace WhoWiredThis.Visibility
         {
             if (solved)
             {
-                Debug.Log($"[MultiDimensionPuzzelManager] '{name}' TryCheckSolutionWithActor early return: already solved.", this);
+                Debug.Log($"[MultiDimensionPuzzleManager] '{name}' TryCheckSolutionWithActor early return: already solved.", this);
                 return true;
             }
 
             if (puzzleElements == null || puzzleElements.Length == 0)
             {
-                Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has no puzzleElements configured.", this);
+                Debug.LogWarning($"[MultiDimensionPuzzleManager] '{name}' has no puzzleElements configured.", this);
                 RaiseAttemptSubmitted(actor, Array.Empty<int>(), false);
                 return false;
             }
@@ -336,7 +336,7 @@ namespace WhoWiredThis.Visibility
                 MultiDimensionPuzzleElement entry = puzzleElements[i];
                 if (entry == null || entry.Element == null)
                 {
-                    Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has null puzzle element at index {i}.", this);
+                    Debug.LogWarning($"[MultiDimensionPuzzleManager] '{name}' has null puzzle element at index {i}.", this);
                     RaiseAttemptSubmitted(actor, submittedIndices, false);
                     return false;
                 }
@@ -354,7 +354,7 @@ namespace WhoWiredThis.Visibility
                 if (currentIndex < 0 || currentIndex != entry.CorrectIndex)
                 {
                     Debug.Log(
-                        $"[MultiDimensionPuzzelManager] '{name}' solve failed at index {i}. " +
+                        $"[MultiDimensionPuzzleManager] '{name}' solve failed at index {i}. " +
                         $"current={currentIndex}, expected={entry.CorrectIndex}.",
                         this);
                     ApplyFeedbackMaterial(failMaterial);
@@ -366,7 +366,7 @@ namespace WhoWiredThis.Visibility
 
             if (!foundParticipatingTarget)
             {
-                Debug.LogWarning($"[MultiDimensionPuzzelManager] '{name}' has no participating targets (all split-player or invalid).", this);
+                Debug.LogWarning($"[MultiDimensionPuzzleManager] '{name}' has no participating targets (all split-player or invalid).", this);
                 ApplyFeedbackMaterial(failMaterial);
                 RecordFailedCheckIfEnabled();
                 RaiseAttemptSubmitted(actor, submittedIndices, false);
@@ -374,7 +374,7 @@ namespace WhoWiredThis.Visibility
             }
 
             solved = true;
-            Debug.Log($"[MultiDimensionPuzzelManager] '{name}' solve success.", this);
+            Debug.Log($"[MultiDimensionPuzzleManager] '{name}' solve success.", this);
             LockTargetMultiDimensions();
             ApplyFeedbackMaterial(solvedMaterial);
             DisableInteractionsAfterSolve();

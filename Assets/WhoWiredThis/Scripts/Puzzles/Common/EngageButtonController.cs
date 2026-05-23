@@ -1,6 +1,6 @@
 using UnityEngine;
 using WhoWiredThis.Interfaces;
-using WhoWiredThis.Data.Puzzels;
+using WhoWiredThis.Data.Puzzles;
 using WhoWiredThis.UI;
 using WhoWiredThis.Util;
 

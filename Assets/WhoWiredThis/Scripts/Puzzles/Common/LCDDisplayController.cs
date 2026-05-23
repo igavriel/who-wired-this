@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using WhoWiredThis.Interfaces;
-using WhoWiredThis.Data.Puzzels;
+using WhoWiredThis.Data.Puzzles;
 using WhoWiredThis.Util;
 
 namespace WhoWiredThis.Puzzles.Common

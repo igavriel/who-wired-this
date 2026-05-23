@@ -11,35 +11,35 @@ using WhoWiredThis.Visibility;
 namespace WhoWiredThis.Editor
 {
     /// <summary>
-    /// One-shot wiring for Puzzel Pipes: 3×4-state inputs, puzzle managers, history, panel focus, turn locks.
-    /// Menu: Who Wired This / Pipe Pressure / Wire Puzzel Pipes Scene
+    /// One-shot wiring for Puzzle Pipes: 3×4-state inputs, puzzle managers, history, panel focus, turn locks.
+    /// Menu: Who Wired This / Pipe Pressure / Wire Puzzle Pipes Scene
     /// </summary>
-    public static class PipePressurePuzzelPipesWireTool
+    public static class PipePressurePuzzlePipesWireTool
     {
-        private const string MenuPath = "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Scene";
-        private const string HistoryHeadersMenuPath = "Who Wired This/Pipe Pressure/Apply Puzzel Pipes History Headers (Phase 2)";
+        private const string MenuPath = "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Scene";
+        private const string HistoryHeadersMenuPath = "Who Wired This/Pipe Pressure/Apply Puzzle Pipes History Headers (Phase 2)";
         private const string ComponentDiagnosticMenuPath =
-            "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Component Diagnostic (Phase 3)";
+            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Component Diagnostic (Phase 3)";
         private const string ResultVisualizerMenuPath =
-            "Who Wired This/Pipe Pressure/Wire Puzzel Pipes Result Visualizer (Phase 4)";
+            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Result Visualizer (Phase 4)";
         private const string RandomSolutionMenuPath =
             "Who Wired This/Pipe Pressure/Wire Random Solution Assigner (Phase 5)";
 
         private static readonly Color NeutralVisualColor = new Color(0.55f, 0.58f, 0.62f, 1f);
 
         /// <summary>INPUT column width for three 5-char tokens plus two spaces (17).</summary>
-        public const string PuzzelPipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
+        public const string PuzzlePipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
 
-        public const string PuzzelPipesHistorySeparatorLine = "===+======+===================+========";
+        public const string PuzzlePipesHistorySeparatorLine = "===+======+===================+========";
 
         [MenuItem(HistoryHeadersMenuPath)]
-        public static void ApplyPuzzelPipesHistoryHeaders()
+        public static void ApplyPuzzlePipesHistoryHeaders()
         {
             ApplyHistoryHeaders("Player1_Panel/HistoryPanel");
             ApplyHistoryHeaders("Player2_Panel/HistoryPanel");
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log(
-                "[PipePressurePuzzelPipesWireTool] Applied Phase 2 history header/separator to both Puzzel Pipes HistoryPanels.");
+                "[PipePressurePuzzlePipesWireTool] Applied Phase 2 history header/separator to both Puzzle Pipes HistoryPanels.");
         }
 
         private static void ApplyHistoryHeaders(string historyPanelPath)
@@ -47,13 +47,13 @@ namespace WhoWiredThis.Editor
             HistoryBoardController board = GameObject.Find(historyPanelPath)?.GetComponent<HistoryBoardController>();
             if (board == null)
             {
-                Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing HistoryBoardController at '{historyPanelPath}'.");
+                Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing HistoryBoardController at '{historyPanelPath}'.");
                 return;
             }
 
             SerializedObject so = new SerializedObject(board);
-            so.FindProperty("headerLine").stringValue = PuzzelPipesHistoryHeaderLine;
-            so.FindProperty("separatorLine").stringValue = PuzzelPipesHistorySeparatorLine;
+            so.FindProperty("headerLine").stringValue = PuzzlePipesHistoryHeaderLine;
+            so.FindProperty("separatorLine").stringValue = PuzzlePipesHistorySeparatorLine;
             so.ApplyModifiedPropertiesWithoutUndo();
             board.Render();
         }
@@ -82,7 +82,7 @@ namespace WhoWiredThis.Editor
                 });
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired Phase 3 component diagnostic on Puzzel Pipes.");
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 3 component diagnostic on Puzzle Pipes.");
         }
 
         private static void WireComponentDiagnosticPanel(
@@ -93,7 +93,7 @@ namespace WhoWiredThis.Editor
             GameObject panel = GameObject.Find(panelName);
             if (panel == null)
             {
-                Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing '{panelName}'.");
+                Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing '{panelName}'.");
                 return;
             }
 
@@ -110,13 +110,13 @@ namespace WhoWiredThis.Editor
                 adapter = panel.AddComponent<ComponentDiagnosticAdapter>();
             }
 
-            MultiDimensionPuzzelManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
 
             if (puzzleManager == null || display == null)
             {
                 Debug.LogError(
-                    $"[PipePressurePuzzelPipesWireTool] Missing puzzleManager or diagnosticDisplay for '{panelName}'.");
+                    $"[PipePressurePuzzlePipesWireTool] Missing puzzleManager or diagnosticDisplay for '{panelName}'.");
                 return;
             }
 
@@ -172,7 +172,7 @@ namespace WhoWiredThis.Editor
                 VisualRigLayout.Red);
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired Phase 4 result visualizer on Puzzel Pipes.");
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 4 result visualizer on Puzzle Pipes.");
         }
 
         private enum VisualRigLayout
@@ -193,7 +193,7 @@ namespace WhoWiredThis.Editor
             if (operatorPanel == null || partnerPanel == null)
             {
                 Debug.LogError(
-                    $"[PipePressurePuzzelPipesWireTool] Missing panel '{operatorPanelName}' or '{partnerPanelName}'.");
+                    $"[PipePressurePuzzlePipesWireTool] Missing panel '{operatorPanelName}' or '{partnerPanelName}'.");
                 return;
             }
 
@@ -202,7 +202,7 @@ namespace WhoWiredThis.Editor
             if (partnerDisplay == null)
             {
                 Debug.LogError(
-                    $"[PipePressurePuzzelPipesWireTool] No DiagnosticDisplayController under '{partnerPanelName}'.");
+                    $"[PipePressurePuzzlePipesWireTool] No DiagnosticDisplayController under '{partnerPanelName}'.");
                 return;
             }
 
@@ -224,8 +224,8 @@ namespace WhoWiredThis.Editor
                 visualizer = operatorPanel.AddComponent<SubmittedCombinationVisualizer>();
             }
 
-            MultiDimensionPuzzelManager puzzleManager = GameObject.Find($"{operatorPanelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager puzzleManager = GameObject.Find($"{operatorPanelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
 
             SerializedObject vizSo = new SerializedObject(visualizer);
             vizSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
@@ -402,14 +402,14 @@ namespace WhoWiredThis.Editor
             WireTurnLocks();
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired Player1_Panel and Player2_Panel (3 inputs each).");
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Player1_Panel and Player2_Panel (3 inputs each).");
         }
 
         private static void WirePanel(string panelName, string[] inputNames, int[] correctIndices)
         {
             if (inputNames.Length != correctIndices.Length)
             {
-                Debug.LogError("[PipePressurePuzzelPipesWireTool] inputNames and correctIndices length mismatch.");
+                Debug.LogError("[PipePressurePuzzlePipesWireTool] inputNames and correctIndices length mismatch.");
                 return;
             }
 
@@ -422,7 +422,7 @@ namespace WhoWiredThis.Editor
                 GameObject inputGo = GameObject.Find(path);
                 if (inputGo == null)
                 {
-                    Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing GameObject at '{path}'.");
+                    Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing GameObject at '{path}'.");
                     return;
                 }
 
@@ -430,16 +430,16 @@ namespace WhoWiredThis.Editor
                 cyclers[i] = inputGo.GetComponent<MultiDimensionSubjectCycler>();
                 if (dimensions[i] == null || cyclers[i] == null)
                 {
-                    Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing MultiDimension/cycler on '{path}'.");
+                    Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing MultiDimension/cycler on '{path}'.");
                     return;
                 }
             }
 
-            MultiDimensionPuzzelManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             if (puzzleManager == null)
             {
-                Debug.LogError($"[PipePressurePuzzelPipesWireTool] Missing PuzzleManager on '{panelName}'.");
+                Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing PuzzleManager on '{panelName}'.");
                 return;
             }
 
@@ -509,7 +509,7 @@ namespace WhoWiredThis.Editor
             TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[PipePressurePuzzelPipesWireTool] TutorialStageManager not found; skipped turn-lock colliders.");
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] TutorialStageManager not found; skipped turn-lock colliders.");
                 return;
             }
 
@@ -559,7 +559,7 @@ namespace WhoWiredThis.Editor
             TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
             if (stageManager == null)
             {
-                Debug.LogError("[PipePressurePuzzelPipesWireTool] TutorialStageManager not found in scene.");
+                Debug.LogError("[PipePressurePuzzlePipesWireTool] TutorialStageManager not found in scene.");
                 return;
             }
 
@@ -582,7 +582,7 @@ namespace WhoWiredThis.Editor
             so.ApplyModifiedProperties();
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("[PipePressurePuzzelPipesWireTool] Wired RandomPuzzleSolutionAssigner (Phase 5).");
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired RandomPuzzleSolutionAssigner (Phase 5).");
         }
     }
 }

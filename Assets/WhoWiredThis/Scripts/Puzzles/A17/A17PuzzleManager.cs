@@ -3,7 +3,7 @@ using UnityEngine;
 using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
 using WhoWiredThis.Puzzles.Common;
-using WhoWiredThis.Data.Puzzels;
+using WhoWiredThis.Data.Puzzles;
 
 namespace WhoWiredThis.Puzzles.A17
 {

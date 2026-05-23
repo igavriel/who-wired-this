@@ -6,7 +6,7 @@ namespace WhoWiredThis.Tutorial
 {
     /// <summary>
     /// Tutorial-only metrics: times and attempt counts from stage events and
-    /// <see cref="MultiDimensionPuzzelManager.OnAttemptSubmitted"/>. No scoring or UI.
+    /// <see cref="MultiDimensionPuzzleManager.OnAttemptSubmitted"/>. No scoring or UI.
     /// </summary>
     public class TutorialMetricsTracker : MonoBehaviour
     {
@@ -17,10 +17,10 @@ namespace WhoWiredThis.Tutorial
         private TutorialStageManager tutorialStageManager;
 
         [SerializeField]
-        private MultiDimensionPuzzelManager playerAPuzzleManager;
+        private MultiDimensionPuzzleManager playerAPuzzleManager;
 
         [SerializeField]
-        private MultiDimensionPuzzelManager playerBPuzzleManager;
+        private MultiDimensionPuzzleManager playerBPuzzleManager;
 
         [Header("Runtime (debug, Play Mode)")]
         [SerializeField]

@@ -1,7 +1,7 @@
 using UnityEngine;
 using WhoWiredThis.Enums;
 
-namespace WhoWiredThis.Data.Puzzels
+namespace WhoWiredThis.Data.Puzzles
 {
     [CreateAssetMenu(menuName = "WhoWiredThis/Array Puzzle Config", fileName = "Array_PuzzleConfig")]
     public class Array_PuzzleConfigSO : ScriptableObject

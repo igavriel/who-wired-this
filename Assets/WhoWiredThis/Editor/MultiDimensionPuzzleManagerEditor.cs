@@ -5,8 +5,8 @@ using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Editor
 {
-    [CustomEditor(typeof(MultiDimensionPuzzelManager))]
-    public class MultiDimensionPuzzelManagerEditor : UnityEditor.Editor
+    [CustomEditor(typeof(MultiDimensionPuzzleManager))]
+    public class MultiDimensionPuzzleManagerEditor : UnityEditor.Editor
     {
         private const string PuzzleElementsPropertyName = "puzzleElements";
 
@@ -18,7 +18,7 @@ namespace WhoWiredThis.Editor
             if (puzzleElementsProperty == null)
             {
                 Debug.LogWarning(
-                    $"[MultiDimensionPuzzelManagerEditor] Serialized property '{PuzzleElementsPropertyName}' was not found.",
+                    $"[MultiDimensionPuzzleManagerEditor] Serialized property '{PuzzleElementsPropertyName}' was not found.",
                     target);
                 return;
             }

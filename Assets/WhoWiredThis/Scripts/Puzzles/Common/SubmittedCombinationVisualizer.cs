@@ -26,7 +26,7 @@ namespace WhoWiredThis.Puzzles.Common
     public class SubmittedCombinationVisualizer : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private MultiDimensionPuzzelManager puzzleManager;
+        [SerializeField] private MultiDimensionPuzzleManager puzzleManager;
 
         [SerializeField] private Transform visualRoot;
 

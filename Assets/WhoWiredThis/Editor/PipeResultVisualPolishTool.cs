@@ -12,7 +12,7 @@ namespace WhoWiredThis.EditorTools
     /// </summary>
     public static class PipeResultVisualPolishTool
     {
-        private const string MenuPath = "Who Wired This/Pipe Pressure/Apply Result Visual Polish (Puzzel Pipes)";
+        private const string MenuPath = "Who Wired This/Pipe Pressure/Apply Result Visual Polish (Puzzle Pipes)";
 
         private const string MaterialsFolder = "Assets/WhoWiredThis/Materials/PipeVisualizer";
 
@@ -23,18 +23,18 @@ namespace WhoWiredThis.EditorTools
         public static void ApplyPolish()
         {
             if (!Application.isPlaying &&
-                EditorSceneManager.GetActiveScene().path != "Assets/Scenes/Puzzel Pipes.unity")
+                EditorSceneManager.GetActiveScene().path != "Assets/Scenes/Puzzle Pipes.unity")
             {
                 if (!EditorUtility.DisplayDialog(
                         "Apply Result Visual Polish",
-                        "Open Puzzel Pipes.unity first. Open it now?",
+                        "Open Puzzle Pipes.unity first. Open it now?",
                         "Open scene",
                         "Cancel"))
                 {
                     return;
                 }
 
-                EditorSceneManager.OpenScene("Assets/Scenes/Puzzel Pipes.unity");
+                EditorSceneManager.OpenScene("Assets/Scenes/Puzzle Pipes.unity");
             }
 
             if (!TryLoadMaterials(out Material body, out Material steel, out Material pressure, out Material flow))
@@ -55,7 +55,7 @@ namespace WhoWiredThis.EditorTools
                 EditorSceneManager.SaveScene(activeScene);
             }
 
-            Debug.Log($"[PipeResultVisualPolishTool] Polished {polished} state roots on Puzzel Pipes (scene saved).");
+            Debug.Log($"[PipeResultVisualPolishTool] Polished {polished} state roots on Puzzle Pipes (scene saved).");
         }
 
         private static bool TryLoadMaterials(
