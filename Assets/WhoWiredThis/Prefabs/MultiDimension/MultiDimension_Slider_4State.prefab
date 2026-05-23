@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 764520975076145479}
   - component: {fileID: 3903869331428671148}
   m_Layer: 0
-  m_Name: CylinderLow
+  m_Name: Cylinder-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,12 +143,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6235332666418746994}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: -0.9, z: -0.4}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.42000005, y: -0.9, z: -0.39999962}
   m_LocalScale: {x: 0.2, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7375341553714464504}
+  m_Father: {fileID: 6922282729519176869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4820181032818213876
 MeshFilter:
@@ -256,7 +256,7 @@ Transform:
   m_GameObject: {fileID: 6856404226015423661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.37800002, y: -0.80999994, z: -0.5}
+  m_LocalPosition: {x: -0.37800002, y: 0.8, z: -0.5}
   m_LocalScale: {x: 0.2, y: 0.1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LOW
+  m_text: MAX
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -533,9 +533,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 79059894506379947, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.27
+      objectReference: {fileID: 0}
     - target: {fileID: 284725968911799591, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.3
+      value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1469335674646549191, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -579,27 +583,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3457352472116206941, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_text
-      value: MAX
-      objectReference: {fileID: 0}
-    - target: {fileID: 3562638178911423671, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
-      propertyPath: m_Name
-      value: CylinderMid
+      value: HIGH
       objectReference: {fileID: 0}
     - target: {fileID: 3562638178911423671, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3638482362249520749, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_text
-      value: HIGH
+      value: MID
       objectReference: {fileID: 0}
     - target: {fileID: 4013633864206229847, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_Name
       value: MultiDimension_Slider_4State
-      objectReference: {fileID: 0}
-    - target: {fileID: 4763775928970829473, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
-      propertyPath: m_Name
-      value: CylinderHigh
       objectReference: {fileID: 0}
     - target: {fileID: 4763775928970829473, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_IsActive
@@ -607,11 +603,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4879735494117187048, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: -0.27
       objectReference: {fileID: 0}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: activeSubjectIndex
-      value: 23
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.size
@@ -620,19 +616,19 @@ PrefabInstance:
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.data[0].subject
       value: 
-      objectReference: {fileID: 6075087777668644132}
+      objectReference: {fileID: 1711399651684521772}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.data[1].subject
       value: 
-      objectReference: {fileID: 1711399651684521772}
+      objectReference: {fileID: 7254525570539341114}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.data[2].subject
       value: 
-      objectReference: {fileID: 7254525570539341114}
+      objectReference: {fileID: 7615889193377596309}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.data[3].subject
       value: 
-      objectReference: {fileID: 7615889193377596309}
+      objectReference: {fileID: 6075087777668644132}
     - target: {fileID: 4970570421050560852, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: subjects.Array.data[0].displayName
       value: LOW
@@ -650,12 +646,8 @@ PrefabInstance:
       value: MAX
       objectReference: {fileID: 0}
     - target: {fileID: 5692557319999756302, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
-      propertyPath: m_Name
-      value: CylinderMax
-      objectReference: {fileID: 0}
-    - target: {fileID: 5692557319999756302, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7026851359789024802, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -667,7 +659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8532563200366007182, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: m_text
-      value: MID
+      value: LOW
       objectReference: {fileID: 0}
     - target: {fileID: 8823969659038066448, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -677,9 +669,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1469335674646549191, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
-      insertIndex: 3
+      insertIndex: 4
       addedObject: {fileID: 3681711914814830714}
-    - targetCorrespondingSourceObject: {fileID: 4677954095879069027, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 5089620707532293950, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4997006502581010853}
     m_AddedComponents: []
@@ -694,14 +686,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1469335674646549191, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
   m_PrefabInstance: {fileID: 2788032073680591771}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6922282729519176869 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5089620707532293950, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
+  m_PrefabInstance: {fileID: 2788032073680591771}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7254525570539341114 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4763775928970829473, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
-  m_PrefabInstance: {fileID: 2788032073680591771}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7375341553714464504 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4677954095879069027, guid: 801858844e77f4d658e87a44bb15d01d, type: 3}
   m_PrefabInstance: {fileID: 2788032073680591771}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7615889193377596309 stripped
