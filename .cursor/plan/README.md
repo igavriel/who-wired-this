@@ -49,7 +49,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [dimension_visibility_reset_f1e7ff24.plan.md](dimension_visibility_reset_f1e7ff24.plan.md) | Per-object dimension visibility; hidden = no render/collision for non-owner. |
 | [switchable_subject_prefab_3dd51d63.plan.md](switchable_subject_prefab_3dd51d63.plan.md) | `MultiDimension` inspector component: subject array, modes, layers (new files only). |
 | [multi-dimension-puzzle-elements-inspector.md](multi-dimension-puzzle-elements-inspector.md) | Compact `ReorderableList` for `puzzleElements` and `MultiDimension.subjects` (reusable editor pattern; Unity 6 compile validated). |
-| [multidimension-5state-prefab-variant-chain.md](multidimension-5state-prefab-variant-chain.md) | MultiDimension 4-state chain validated (Puzzle Pipes, Tutorial); `*_5State` prefabs (Phases 1c–3c) pending. |
+| [multidimension-5state-prefab-variant-chain.md](multidimension-5state-prefab-variant-chain.md) | MultiDimension 5-state prefab chain validated; `_5State_Test` in Test Multi Dimensions approved (2026-05-23). Production scenes remain 4-state. |
 
 ---
 

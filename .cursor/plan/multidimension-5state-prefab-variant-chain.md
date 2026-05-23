@@ -1,12 +1,15 @@
 ---
 task: MultiDimension 5-state prefab variant chain (parents → variants)
 date: 2026-05-23
-status: in_progress
+status: validated
 phase_0: approved
 phase_0_5: approved
 phase_1_4state: validated
-phase_1c_5state: pending
-overview: 4-state variant chain (3→4) and Phase 0.5 visuals are done; Puzzle Pipes + Tutorial validated in Play Mode. Next — create 5-state prefabs (4→5) one family at a time without replaying commit d41674b mistakes.
+phase_1c_5state: approved
+phase_2c_5state: approved
+phase_3c_5state: approved
+phase_4: approved
+overview: 5-state prefab chain complete; `_5State_Test` validated in Test Multi Dimensions (2026-05-23).
 related_assets: Assets/WhoWiredThis/Prefabs/MultiDimension/, Assets/Scenes/Puzzle Pipes.unity, Assets/Scenes/Tutorial.unity
 reference_commit: d41674b8f4b6a4dfa39c8d46be4094be592ab53c
 ---
@@ -107,7 +110,9 @@ Run with Unity Editor open on this project. If multiple instances are connected,
 
 | Item | Status |
 |------|--------|
-| `*_5State.prefab` in repo | **None** (old `d41674b` 5-state assets removed; do not restore from that commit) |
+| `MultiDimension_Knob_5State` | **Created** — variant of `Knob_4State`; GUID `ae0664d4f962345f6acef303f597adfc` |
+| `MultiDimension_Slider_5State` | **Created** — variant of `Slider_4State`; GUID `4526842b435964b46a0be6dc92ea962f` |
+| `MultiDimension_ButtonText_5State` | **Created** — variant of `ButtonText_4State`; GUID `58b4f1ac784fb4b02ab77583e3d0cc79` |
 | 4-state trio | `Knob_4State`, `Slider_4State`, `ButtonText_4State` — variants of respective 3-state bases |
 | Variant parent GUIDs | Knob_4 → `35a5599d…` (Knob_3); Slider_4 → `80185884…` (Slider_3); ButtonText_4 → `f3ccf076…` (ButtonText_3) |
 | `Knob_4State.meta` GUID | `7516c9f35182548e18e591d5484dbc79` — stable, only on Knob_4 |
@@ -123,10 +128,13 @@ Run with Unity Editor open on this project. If multiple instances are connected,
 |--------|------|------|
 | `MultiDimension_Knob_3State` | `35a5599da05c343d38d430586d16dff3` | Base (3 subjects) |
 | `MultiDimension_Knob_4State` | `7516c9f35182548e18e591d5484dbc79` | Variant of Knob_3 |
+| `MultiDimension_Knob_5State` | `ae0664d4f962345f6acef303f597adfc` | Variant of Knob_4 |
 | `MultiDimension_Slider_3State` | `801858844e77f4d658e87a44bb15d01d` | Base |
 | `MultiDimension_Slider_4State` | `d2014c8f562fc47e3bfb85781c975968` | Variant of Slider_3 |
+| `MultiDimension_Slider_5State` | `4526842b435964b46a0be6dc92ea962f` | Variant of Slider_4 |
 | `MultiDimension_ButtonText_3State` | `f3ccf0763e84049748c040402a347187` | Base |
 | `MultiDimension_ButtonText_4State` | `48be333ef06024ed29b7f95495d38ac9` | Variant of ButtonText_3 |
+| `MultiDimension_ButtonText_5State` | `58b4f1ac784fb4b02ab77583e3d0cc79` | Variant of ButtonText_4 |
 | `MultiDimension_ButtonColor_1State` | `4cbef0a04b4d547b28adecb3fcf26e33` | Standalone 1-state |
 | `MultiDimension_ButtonColor_3State` | `293e85848328c46e3b9c854a7bda39cd` | Base |
 | `MultiDimension_SwitchColor_3State` | `1f00a5615fcec406b890d4553c7f77e4` | Unchanged in 0.5 |
@@ -267,19 +275,24 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### Phase 1c — `MultiDimension_Knob_5State` (new variant)
 
-**Per your instructions for labels, layout, TMP, and 5th subject object.**
+**Implemented 2026-05-23** via Unity Editor `execute_code` (instantiate `Knob_4State` → add 5th subject → save variant).
 
-- ⬜ Create prefab variant; parent = **choice from Phase 0** (default: `Knob_4State`)
-- ⬜ Add **only** 5th subject + positioning (do not duplicate 4State work if parenting 4State)
-- ⬜ Set `displayName` values per approved vocab (commit reference: MIN, LOW, MID, HIGH, MAX)
-- ⬜ New `.meta` with **new GUID**
-- ⬜ Prefab name: `MultiDimension_Knob_5State`
+- ✅ Create prefab variant; parent = **`Knob_4State`** (`7516c9f…`)
+- ✅ Add **only** 5th subject: `Knob-4`, `Mark-4`, `Sphere-4`, `Text-4` (duplicated from Knob-3 / Mark-3 pattern)
+- ✅ Set `displayName`: **MIN, LOW, MID, HIGH, MAX**; TMP labels updated on Text-0…Text-4
+- ✅ New `.meta` GUID: **`ae0664d4f962345f6acef303f597adfc`**
+- ✅ Removed stray `HALF (1)` duplicate label from inherited 4State hierarchy
 
-#### MCP / validation
+#### MCP / validation (2026-05-23)
 
-- ⬜ V3–V4: asset exists; correct parent guid
-- ⬜ Manual: `subjects.Array.size` == 5; cycle interact in prefab test instance
-- ⬜ V5: Puzzel Pipes Phase 1 still PASS (4-state scenes untouched)
+- ✅ V3–V4: asset exists; `prefabType: Variant`; parent = `Knob_4State.prefab`
+- ✅ Manual: `subjects` count == 5; display names `MIN,LOW,MID,HIGH,MAX`
+- ✅ V5: Phase 1 Puzzle Pipes — **ALL CHECKS PASSED** (4-state scene untouched)
+- ✅ `Knob_4State.meta` GUID still **only** on Knob_4 (no GUID reuse)
+
+#### Play Mode (manual — recommended before approval)
+
+- ⬜ Prefab-mode or test-scene instance: cycle interact through all 5 states; verify knob mesh + label alignment for MAX position
 
 ### User approval gate (4-state)
 
@@ -287,7 +300,7 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### User approval gate (5-state)
 
-- ⬜ **Ilan approves Phase 1c** — `Knob_5State` created; proceed to Phase 2c track
+- ✅ **Ilan approves Phase 1c** — 2026-05-23; proceed to Phase 2c track
 
 ---
 
@@ -314,15 +327,22 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### Phase 2c — `MultiDimension_Slider_5State` (new variant)
 
-- ⬜ Create variant per Phase 0 parent choice (default: `Slider_4State`)
-- ⬜ 5th subject + layout per your instructions
-- ⬜ Labels per approved vocab (commit reference: MIN … MAX)
-- ⬜ New GUID in `.meta`
+**Implemented 2026-05-23** (variant of `Slider_4State`).
 
-#### MCP / validation
+- ✅ Create variant; parent = **`Slider_4State`** (`d2014c8f…`)
+- ✅ 5th subject: `Cylinder-4` + `Slide-4` (duplicated from Cylinder-3 / Slide-3)
+- ✅ Labels: **MIN, LOW, MID, HIGH, MAX** (`displayName` + `LCD_Screen` TMP)
+- ✅ New `.meta` GUID: **`4526842b435964b46a0be6dc92ea962f`**
 
-- ⬜ V3–V4 + manual 5-subject check
-- ⬜ V5: Puzzle Pipes Phase 1 PASS (after 2c only)
+#### MCP / validation (2026-05-23)
+
+- ✅ V3–V4: variant of `Slider_4State`; 5 subjects MIN…MAX
+- ✅ V5: Phase 1 Puzzle Pipes — **ALL CHECKS PASSED**
+- ✅ `Slider_4State.meta` GUID stable (only on Slider_4)
+
+#### Play Mode (manual)
+
+- ⬜ Spot-check 5-state slider cycle + MAX position
 
 ### User approval gate (4-state)
 
@@ -330,7 +350,7 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### User approval gate (5-state)
 
-- ⬜ **Ilan approves Phase 2c** — `Slider_5State` created; proceed to Phase 3c track
+- ✅ **Ilan approves Phase 2c** — 2026-05-23; proceed to Phase 3c track
 
 ---
 
@@ -357,15 +377,22 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### Phase 3c — `MultiDimension_ButtonText_5State` (new variant)
 
-- ⬜ Create variant per Phase 0 parent choice (default: `ButtonText_4State`)
-- ⬜ 5th subject + TMP per your instructions
-- ⬜ Labels per approved vocab (commit reference: FLAT, SINE, PULS, TRNG, NOIS)
-- ⬜ New GUID in `.meta`
+**Implemented 2026-05-23** (variant of `ButtonText_4State`).
 
-#### MCP / validation
+- ✅ Create variant; parent = **`ButtonText_4State`** (`48be333e…`)
+- ✅ 5th subject: `Cylinder-4` (duplicated from `Cylinder-3`)
+- ✅ `displayName` + `LCD_Screen` TMP: **FLAT, SINE, PULS, TRNG, NOIS** (literal LCD text per reference commit)
+- ✅ New `.meta` GUID: **`58b4f1ac784fb4b02ab77583e3d0cc79`**
 
-- ⬜ V3–V4 + manual 5-subject + symbolic TMP check if applicable
-- ⬜ V5: Puzzle Pipes Phase 1 PASS (after 3c only)
+#### MCP / validation (2026-05-23)
+
+- ✅ V3–V4: variant of `ButtonText_4State`; 5 subjects FLAT…NOIS
+- ✅ V5: Phase 1 Puzzle Pipes — **ALL CHECKS PASSED**
+- ✅ `ButtonText_4State.meta` GUID stable (only on ButtonText_4)
+
+#### Play Mode (manual)
+
+- ⬜ Spot-check 5-state button cycle; LCD glyphs readable
 
 ### User approval gate (4-state)
 
@@ -373,30 +400,31 @@ Documented from authored hierarchy (extend index for 5th state):
 
 ### User approval gate (5-state)
 
-- ⬜ **Ilan approves Phase 3c** — all three `*_5State` prefabs exist; proceed to Phase 4
+- ✅ **Ilan approves Phase 3c** — 2026-05-23; proceed to Phase 4
 
 ---
 
 ## Phase 4 — Scene wiring & integration (optional)
 
-**Only after Phases 1c–3c approved and you specify target scene(s).**
+**Implemented 2026-05-23** in `Assets/Scenes/Test/Test Multi Dimensions.unity` (production scenes unchanged).
 
-**Note:** Puzzle Pipes + Tutorial are already wired for **4-state** and validated — Phase 4 here means **5-state** scene integration (or a dedicated test scene), not redoing current production wiring.
+**Note:** Puzzle Pipes + Tutorial remain on **4-state** prefabs.
 
-- ⬜ Create or use test scene (e.g. `Assets/Scenes/Test/Test Multi Dimensions.unity`) — prefer **not** mutating Puzzle Pipes unless approved
-- ⬜ Place prefab instances; wire `MultiDimensionPuzzelManager.puzzleElements` if needed
-- ⬜ Play Mode: two-player cycle + SEND + history tokens (width 5 per [puzzle-input-labels-5char.md](puzzle-input-labels-5char.md))
-- ⬜ Run relevant scene validation tools if wired
+- ✅ Test scene: `_5State_Test` root at world `(2, 1.3, 1)` — separate from existing 4-state cluster at `(-3.94, 1.3, 1)`
+- ✅ Instances: `Knob_5State`, `Slider_5State`, `ButtonText_5State` (correct prefab GUIDs)
+- ✅ `MultiDimension_PuzzleManager_5State` — 3 `puzzleElements`, `correctIndex: 2` (MID) each, `captureRetryStrings: true`, cyclers in `interactionsToDisable`
+- ✅ Play Mode: `_5State_Test` cycle approved (2026-05-23; after FirstPerson single-interact fix)
+- ⬜ Optional follow-up: history board hookup for 5-char tokens ([puzzle-input-labels-5char.md](puzzle-input-labels-5char.md))
 
-### MCP / validation
+### MCP / validation (2026-05-23)
 
-- ⬜ V1–V2 after scene save
-- ⬜ `manage_scene` get_hierarchy — instances reference correct prefab guids
-- ⬜ V5 on Puzzle Pipes if scene touched (must still PASS for 4-state inputs)
+- ✅ Scene saved; compile OK
+- ✅ Scene YAML: `ae0664d4…`, `4526842b…`, `58b4f1ac…` prefab instances present
+- ✅ V5 Puzzle Pipes Phase 1 — **PASS** (scene not modified)
 
 ### User approval gate
 
-- ⬜ **Ilan approves Phase 4** — mark plan **implemented** / **validated**
+- ✅ **Ilan approves Phase 4** — `_5State_Test` validated; plan **validated** (2026-05-23)
 
 ---
 
@@ -421,10 +449,10 @@ Documented from authored hierarchy (extend index for 5th state):
 | 2026-05-23 | 0 | **approved** | Baseline verified; MCP Phase 1 Puzzle Pipes PASS; decisions locked (5State parents 4State) |
 | 2026-05-23 | 0.5 | **approved + validated** | Visual + naming on 8 prefabs; `Common` on Knob_3; Puzzle Pipes + Tutorial Play Mode OK |
 | 2026-05-23 | 1a–1b, 2a–2b, 3a–3b | **validated** | Full 4-state chain; no `*_5State` prefabs; scene renames (Puzzle Pipes, Tutorial); Knob_4 GUID stable |
-| | 1c | **pending** | Create `MultiDimension_Knob_5State` variant of `Knob_4State` (parent `7516c9f…`) |
-| | 2c | pending | Create `MultiDimension_Slider_5State` variant of `Slider_4State` |
-| | 3c | pending | Create `MultiDimension_ButtonText_5State` variant of `ButtonText_4State` |
-| | 4 | pending | 5-state scene wiring (test scene first); production scenes stay 4-state unless approved |
+| 2026-05-23 | 1c | **approved** | `Knob_5State` variant of `Knob_4State`; guid `ae0664d4…`; 5 subjects MIN…MAX |
+| 2026-05-23 | 2c | **approved** | `Slider_5State` variant of `Slider_4State`; guid `4526842b…` |
+| 2026-05-23 | 3c | **approved** | `ButtonText_5State` variant of `ButtonText_4State`; guid `58b4f1ac…` |
+| 2026-05-23 | 4 | **approved** | `_5State_Test` Play Mode OK; plan validated; production scenes stay 4-state |
 
 ---
 
@@ -432,15 +460,10 @@ Documented from authored hierarchy (extend index for 5th state):
 
 1. **Commit 4-state + visual work** — Prefab/scene changes are validated; commit separately from any future `*_5State` assets (per Phase 0.5 checklist).
 2. **Optional hygiene** — Open `Tutorial.unity` in Unity, select ButtonColor instances with missing prefab warnings (if any), re-assign `ButtonColor_1State`, save to drop stale `64fd3ce` YAML.
-3. **Phase 1c — `Knob_5State`** (when ready):
-   - In Editor: **Create prefab variant** from `MultiDimension_Knob_4State`.
-   - Add **only** 5th subject + hierarchy (`Text-4`, etc. per naming convention).
-   - Set `displayName`: MIN, LOW, MID, HIGH, MAX (confirm before authoring).
-   - New `.meta` GUID; never reuse `7516c9f…`.
-   - Run **Validate Phase 1 (Puzzle Pipes)** — must still PASS (4-state scene untouched).
-   - Prefab-mode test: cycle 5 states; then user approval for Phase 2c.
-4. **Phase 2c → 3c** — Same pattern for Slider, then ButtonText (symbolic TMP rule for ButtonText).
-5. **Phase 4** — Wire 5-state into `Assets/Scenes/Test/Test Multi Dimensions.unity` (or scene you name); keep Puzzle Pipes on 4-state unless you explicitly approve a puzzle redesign.
+3. ~~**Phase 1c — `Knob_5State`**~~ — **approved** (2026-05-23).
+4. ~~**Phase 2c — `Slider_5State`**~~ — **approved** (2026-05-23).
+5. ~~**Phase 3c — `ButtonText_5State`**~~ — **done** (2026-05-23). All three 5-state prefabs exist; awaiting Phase 3c approval + optional Play Mode checks.
+6. ~~**Phase 4**~~ — **approved** (2026-05-23). Optional: history adapter for 5-char tokens; production 5-state in Puzzle Pipes (new plan if desired).
 
 ---
 
