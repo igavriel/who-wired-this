@@ -4,6 +4,8 @@ Local copies of Cursor **CreatePlan** markdown for this repo (same filenames as 
 
 Plans are grouped by **category** below. Within each table, rows are ordered roughly in the sequence they were run for this POC (earlier → later). Adjust order in Git if your history differed.
 
+**Checklist icons in plan bodies:** ✅ done · ⬜ todo · 🚧 in progress · ⚠️ optional/manual · ❌ blocked/cancelled (see [`plan-archive`](../skills/plan-archive/SKILL.md) skill).
+
 ---
 
 ## Project & Cursor tooling
@@ -12,6 +14,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 |------|---------------------|
 | [project_rules_and_skills_9e4a8bb3.plan.md](project_rules_and_skills_9e4a8bb3.plan.md) | Cursor rules + scene-setup skill for Unity, local multiplayer, and SO safety. |
 | [safe_git_workflow_rule_08ba612c.plan.md](safe_git_workflow_rule_08ba612c.plan.md) | Add Git-safe workflow section to unity-poc-workflow for risky Unity changes. |
+| [editor-validation-console-output.md](editor-validation-console-output.md) | Replace validation `DisplayDialog` with structured console output for Unity MCP; optional `With Dialog` menus. |
 
 ---
 
@@ -46,6 +49,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [dimension_visibility_reset_f1e7ff24.plan.md](dimension_visibility_reset_f1e7ff24.plan.md) | Per-object dimension visibility; hidden = no render/collision for non-owner. |
 | [switchable_subject_prefab_3dd51d63.plan.md](switchable_subject_prefab_3dd51d63.plan.md) | `MultiDimension` inspector component: subject array, modes, layers (new files only). |
 | [multi-dimension-puzzle-elements-inspector.md](multi-dimension-puzzle-elements-inspector.md) | Compact `ReorderableList` for `puzzleElements` and `MultiDimension.subjects` (reusable editor pattern; Unity 6 compile validated). |
+| [multidimension-5state-prefab-variant-chain.md](multidimension-5state-prefab-variant-chain.md) | MultiDimension 5-state prefab chain validated; `_5State_Test` in Test Multi Dimensions approved (2026-05-23). Production scenes remain 4-state. |
 
 ---
 

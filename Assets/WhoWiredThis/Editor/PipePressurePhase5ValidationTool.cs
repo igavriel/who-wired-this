@@ -10,12 +10,28 @@ namespace WhoWiredThis.Editor
 {
     public static class PipePressurePhase5ValidationTool
     {
-        private const string MenuPath = "Who Wired This/Pipe Pressure/Validate Phase 5 (Randomized Solution)";
+        private const string ValidationMenuRoot = "Who Wired This/Pipe Pressure/Validation/";
+        private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
+        private const string MenuPath = ValidationMenuRoot + "2. Phase 5 (Randomized Solution)";
+        private const string McpMenuPath = McpMenuRoot + "2. Phase 5 (Randomized Solution)";
 
         [MenuItem(MenuPath)]
         public static void Validate()
         {
-            PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 5", issues, report, showDialog: true);
+        }
+
+        [MenuItem(McpMenuPath)]
+        public static void ValidateForMcp()
+        {
+            int issues = RunValidation(out string report);
+            EditorValidationConsoleReporter.Report("Phase 5", issues, report);
+        }
+
+        public static int RunValidation(out string report)
+        {
+            PipePressurePhase1ValidationTool.ResetPuzzlePipesSolveStateForValidationPublic();
 
             var sb = new StringBuilder();
             int issues = 0;
@@ -39,11 +55,8 @@ namespace WhoWiredThis.Editor
                 ? "=== Phase 5 validation: ALL CHECKS PASSED ==="
                 : $"=== Phase 5 validation: {issues} issue(s) ===");
 
-            Debug.Log(sb.ToString());
-            EditorUtility.DisplayDialog(
-                issues == 0 ? "Phase 5 OK" : "Phase 5 Issues",
-                sb.ToString(),
-                "OK");
+            report = sb.ToString();
+            return issues;
         }
 
         private static int ValidateTutorialSceneUnchanged(StringBuilder sb)
@@ -88,8 +101,8 @@ namespace WhoWiredThis.Editor
             int issues = 0;
             sb.AppendLine($"--- {panelName} randomized (seed {deterministicSeed}) ---");
 
-            MultiDimensionPuzzelManager pm = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager pm = GameObject.Find($"{panelName}/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             if (pm == null)
             {
                 sb.AppendLine($"FAIL: Missing PuzzleManager on {panelName}");
@@ -176,7 +189,7 @@ namespace WhoWiredThis.Editor
         private static int ValidateDiagnosticReadsSolution(
             StringBuilder sb,
             string panelName,
-            MultiDimensionPuzzelManager pm,
+            MultiDimensionPuzzleManager pm,
             int[] generated,
             string[] inputNames)
         {
@@ -234,7 +247,7 @@ namespace WhoWiredThis.Editor
 
         private static int SimulateSolve(
             StringBuilder sb,
-            MultiDimensionPuzzelManager pm,
+            MultiDimensionPuzzleManager pm,
             MultiDimension[] dimensions,
             int[] correctIndices,
             string panelName)
@@ -294,12 +307,12 @@ namespace WhoWiredThis.Editor
         /// <summary>Restores authored scene baseline so editor validation does not leave solved state or wrong correctIndex.</summary>
         private static void RestoreFixedSceneState()
         {
-            PipePressurePhase1ValidationTool.ResetPuzzelPipesSolveStateForValidationPublic();
+            PipePressurePhase1ValidationTool.ResetPuzzlePipesSolveStateForValidationPublic();
 
-            MultiDimensionPuzzelManager blue = GameObject.Find("Player1_Panel/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
-            MultiDimensionPuzzelManager red = GameObject.Find("Player2_Panel/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzelManager>();
+            MultiDimensionPuzzleManager blue = GameObject.Find("Player1_Panel/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
+            MultiDimensionPuzzleManager red = GameObject.Find("Player2_Panel/PuzzleManager")
+                ?.GetComponent<MultiDimensionPuzzleManager>();
             blue?.TryApplyCorrectIndices(new[] { 2, 1, 2 });
             red?.TryApplyCorrectIndices(new[] { 3, 2, 3 });
         }

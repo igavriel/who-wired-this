@@ -5,7 +5,7 @@ using WhoWiredThis.Visibility;
 namespace WhoWiredThis.Puzzles.Common
 {
     /// <summary>
-    /// Randomizes <see cref="MultiDimensionPuzzelManager"/> correctIndex values at runtime for Puzzel Pipes.
+    /// Randomizes <see cref="MultiDimensionPuzzleManager"/> correctIndex values at runtime for Puzzles Pipes.
     /// Must run before <see cref="Tutorial.TutorialStageManager"/> enables player input (execution order).
     /// </summary>
     [DefaultExecutionOrder(-50)]
@@ -13,10 +13,10 @@ namespace WhoWiredThis.Puzzles.Common
     {
         [Header("Managers")]
         [SerializeField]
-        private MultiDimensionPuzzelManager playerAPuzzleManager;
+        private MultiDimensionPuzzleManager playerAPuzzleManager;
 
         [SerializeField]
-        private MultiDimensionPuzzelManager playerBPuzzleManager;
+        private MultiDimensionPuzzleManager playerBPuzzleManager;
 
         [Header("Randomization")]
         [SerializeField]
@@ -86,7 +86,7 @@ namespace WhoWiredThis.Puzzles.Common
         }
 
         private static bool TryAssignManager(
-            MultiDimensionPuzzelManager manager,
+            MultiDimensionPuzzleManager manager,
             int? deterministicSeed,
             out int[] appliedSolution)
         {
@@ -131,7 +131,7 @@ namespace WhoWiredThis.Puzzles.Common
             return true;
         }
 
-        private static string FormatSolutionReadout(MultiDimensionPuzzelManager manager)
+        private static string FormatSolutionReadout(MultiDimensionPuzzleManager manager)
         {
             if (manager == null)
             {

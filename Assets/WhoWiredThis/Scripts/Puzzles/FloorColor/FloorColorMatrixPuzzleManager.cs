@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WhoWiredThis.Interfaces;
 using WhoWiredThis.Core;
-using WhoWiredThis.Data.Puzzels;
+using WhoWiredThis.Data.Puzzles;
 using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.Puzzles.FloorColor

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using WhoWiredThis.Enums;
 
-namespace WhoWiredThis.Data.Puzzels
+namespace WhoWiredThis.Data.Puzzles
 {
     [CreateAssetMenu(menuName = "WhoWiredThis/Matrix Puzzle Config", fileName = "Matrix_PuzzleConfig")]
     public class Matrix_PuzzleConfigSO : ScriptableObject

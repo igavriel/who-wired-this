@@ -30,15 +30,15 @@ Copy and track this checklist:
 
 ```text
 Scene Setup Progress:
-- [ ] Step 0: Risky-change gate — plan approved; dev scene/variant strategy confirmed
-- [ ] Step 1: Confirm scope and target scene
-- [ ] Step 2: Inspect existing architecture and required prefabs/data
-- [ ] Step 3: Ensure Camera + Directional Light baseline
-- [ ] Step 4: Place/wire gameplay objects and player slots
-- [ ] Step 5: Validate local multiplayer parity and viewport behavior
-- [ ] Step 6: Validate ScriptableObject references and asset placement
-- [ ] Step 7: Run compile + console checks, fix issues
-- [ ] Step 8: Save scene/assets, report changes + rollback notes
+- ⬜ Step 0: Risky-change gate — plan approved; dev scene/variant strategy confirmed
+- ⬜ Step 1: Confirm scope and target scene
+- ⬜ Step 2: Inspect existing architecture and required prefabs/data
+- ⬜ Step 3: Ensure Camera + Directional Light baseline
+- ⬜ Step 4: Place/wire gameplay objects and player slots
+- ⬜ Step 5: Validate local multiplayer parity and viewport behavior
+- ⬜ Step 6: Validate ScriptableObject references and asset placement
+- ⬜ Step 7: Run compile + console checks, fix issues
+- ⬜ Step 8: Save scene/assets, report changes + rollback notes
 ```
 
 ## Step-by-Step Workflow

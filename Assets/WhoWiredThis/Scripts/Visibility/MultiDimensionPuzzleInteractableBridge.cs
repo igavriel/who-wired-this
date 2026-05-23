@@ -13,8 +13,8 @@ namespace WhoWiredThis.Visibility
     public class MultiDimensionPuzzleInteractableBridge : MonoBehaviour, IInteractable
     {
         [Header("Target")]
-        [Tooltip("Reference must be a MultiDimensionPuzzelManager.")]
-        [RequireInterface(typeof(MultiDimensionPuzzelManager))]
+        [Tooltip("Reference must be a MultiDimensionPuzzleManager.")]
+        [RequireInterface(typeof(MultiDimensionPuzzleManager))]
         [SerializeField] private MonoBehaviour puzzleTargetReference;
 
         [Header("Optional feedback")]
@@ -33,11 +33,11 @@ namespace WhoWiredThis.Visibility
 
         private bool activateFlowRunning;
 
-        private MultiDimensionPuzzelManager PuzzleTarget => puzzleTargetReference as MultiDimensionPuzzelManager;
+        private MultiDimensionPuzzleManager PuzzleTarget => puzzleTargetReference as MultiDimensionPuzzleManager;
 
         public string GetPromptText()
         {
-            MultiDimensionPuzzelManager target = PuzzleTarget;
+            MultiDimensionPuzzleManager target = PuzzleTarget;
             return target != null && target.Solved ? solvedPrompt : interactPrompt;
         }
 
@@ -57,7 +57,7 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            MultiDimensionPuzzelManager target = PuzzleTarget;
+            MultiDimensionPuzzleManager target = PuzzleTarget;
             if (target == null)
             {
                 Debug.LogWarning($"[MultiDimensionPuzzleInteractableBridge] Missing puzzle target on '{name}'.", this);
@@ -90,7 +90,7 @@ namespace WhoWiredThis.Visibility
                     yield return processingFeedback.PlayProcessingRoutine();
                 }
 
-                MultiDimensionPuzzelManager target = PuzzleTarget;
+                MultiDimensionPuzzleManager target = PuzzleTarget;
                 if (target == null)
                 {
                     Debug.LogWarning(
@@ -115,7 +115,7 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
-            MultiDimensionPuzzelManager target = PuzzleTarget;
+            MultiDimensionPuzzleManager target = PuzzleTarget;
             if (target != null && target.Solved)
             {
                 return;

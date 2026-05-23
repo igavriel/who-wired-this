@@ -5,14 +5,14 @@ using WhoWiredThis.Visibility;
 namespace WhoWiredThis.Puzzles.Common
 {
     /// <summary>
-    /// Subscribes to <see cref="MultiDimensionPuzzelManager.OnAttemptSubmitted"/> and appends a public row to
+    /// Subscribes to <see cref="MultiDimensionPuzzleManager.OnAttemptSubmitted"/> and appends a public row to
     /// <see cref="HistoryBoardController"/>. Holds redundant <see cref="inputOrder"/> (same sequence as puzzle elements)
     /// so display labels use <see cref="MultiDimension.GetSubjectDisplayName"/> without the board knowing the manager.
     /// </summary>
     public class MultiDimensionHistoryAdapter : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private MultiDimensionPuzzelManager puzzleManager;
+        [SerializeField] private MultiDimensionPuzzleManager puzzleManager;
 
         [SerializeField] private SharedHistorySO historySource;
 

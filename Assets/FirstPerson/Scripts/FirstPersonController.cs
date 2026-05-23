@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 using WhoWiredThis.Interfaces;
+using WhoWiredThis.Player;
 using System;
 
 namespace FirstPerson
@@ -24,6 +25,7 @@ namespace FirstPerson
         [SerializeField] private LayerMask interactMask = ~0;
 
         private CharacterController _characterController;
+        private PlayerActions _playerActions;
         private float _verticalVelocity;
 
         private bool _inputInteract;
@@ -39,6 +41,7 @@ namespace FirstPerson
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _playerActions = GetComponent<PlayerActions>();
             Assert.IsNotNull(_characterController, "[FirstPerson] CharacterController is required.");
             Assert.IsNotNull(inputBindings, "[FirstPerson] Input bindings are required.");
             Assert.IsNotNull(playerCamera, "[FirstPerson] Player camera reference is required.");
@@ -77,6 +80,12 @@ namespace FirstPerson
             _characterController.Move(worldMove * Time.deltaTime);
 
             if (!Input.GetKeyDown(InteractKey))
+            {
+                return;
+            }
+
+            // PlayerActions on the same object already performs overlap-based Interact on this key.
+            if (_playerActions != null)
             {
                 return;
             }
