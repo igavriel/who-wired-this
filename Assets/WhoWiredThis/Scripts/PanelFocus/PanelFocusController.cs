@@ -47,6 +47,12 @@ namespace WhoWiredThis.PanelFocus
         [Tooltip("Always-present Exit button.")]
         [SerializeField] private PanelFocusButton exitButton;
 
+        [Header("Exit")]
+        [Tooltip("Second Activate on Exit within this interval (seconds) exits panel focus.")]
+        [SerializeField]
+        [Min(0.05f)]
+        private float exitDoubleClickMaxIntervalSeconds = 0.5f;
+
         [Header("Optional action gate")]
         [Tooltip("When locked, keyboard Activate ignores every slot except Exit. Leave empty to resolve a PanelActionLock on a parent (e.g. panel root).")]
         [SerializeField]
@@ -59,8 +65,11 @@ namespace WhoWiredThis.PanelFocus
         [Header("Prompt")]
         [SerializeField] private string promptText = "$INTERACT$ Open Panel";
 
+        private const float NoPendingExitClick = -1f;
+
         private int selectedIndex;
         private PlayerPanelFocusController activeController;
+        private float lastExitActivateUnscaledTime = NoPendingExitClick;
 
         public AllowedPlayerTag AllowedPlayerId => allowedPlayerId;
         private int ButtonCount => interactableButtons != null ? interactableButtons.Length : 0;
@@ -156,6 +165,7 @@ namespace WhoWiredThis.PanelFocus
         public void OnFocusExited()
         {
             activeController = null;
+            lastExitActivateUnscaledTime = NoPendingExitClick;
             if (selectionFrame != null)
             {
                 selectionFrame.SetActive(false);
@@ -197,10 +207,15 @@ namespace WhoWiredThis.PanelFocus
 
             if (IsExitSelected)
             {
-                Debug.Log($"Player {activeController.PlayerId} pressed ExitButton.");
-                activeController.ExitFocus();
+                if (TryConfirmExitDoubleClick())
+                {
+                    activeController.ExitFocus();
+                }
+
                 return;
             }
+
+            lastExitActivateUnscaledTime = NoPendingExitClick;
 
             PanelActionLock actionLock = PanelActionLock.Resolve(this, panelActionLock);
             if (actionLock != null && actionLock.IsLocked)
@@ -251,6 +266,24 @@ namespace WhoWiredThis.PanelFocus
                 return;
             }
             interactable.Interact(interactor);
+        }
+
+        private bool TryConfirmExitDoubleClick()
+        {
+            float now = Time.unscaledTime;
+            if (lastExitActivateUnscaledTime >= 0f &&
+                now - lastExitActivateUnscaledTime <= exitDoubleClickMaxIntervalSeconds)
+            {
+                lastExitActivateUnscaledTime = NoPendingExitClick;
+                Debug.Log($"Player {activeController.PlayerId} confirmed Exit (double-click).", this);
+                return true;
+            }
+
+            lastExitActivateUnscaledTime = now;
+            Debug.Log(
+                $"Player {activeController.PlayerId} pressed ExitButton — press again within {exitDoubleClickMaxIntervalSeconds:F2}s to quit.",
+                this);
+            return false;
         }
 
         private void ValidateButtonWiring()
