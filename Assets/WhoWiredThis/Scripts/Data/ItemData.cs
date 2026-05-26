@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace WhoWiredThis.Data
 {
-    [CreateAssetMenu(fileName = "NewItem", menuName = "WhoWiredThis/Item Data")]
+    [CreateAssetMenu(fileName = "NewItem", menuName = "Who Wired This/Item Data")]
     public class ItemData : ScriptableObject
     {
         public string itemName;

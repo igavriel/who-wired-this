@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace WhoWiredThis.Data.Puzzles
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/LCD Message Bank", fileName = "LcdMessageBank")]
+    [CreateAssetMenu(menuName = "Who Wired This/LCD Message Bank", fileName = "LcdMessageBank")]
     public class LcdMessageBankSO : ScriptableObject
     {
         [Header("Prompt Messages")]

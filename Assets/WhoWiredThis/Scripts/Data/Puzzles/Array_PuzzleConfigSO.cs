@@ -3,7 +3,7 @@ using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Data.Puzzles
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/Array Puzzle Config", fileName = "Array_PuzzleConfig")]
+    [CreateAssetMenu(menuName = "Who Wired This/Array Puzzle Config", fileName = "Array_PuzzleConfig")]
     public class Array_PuzzleConfigSO : ScriptableObject
     {
         [Header("Solution")]

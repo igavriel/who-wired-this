@@ -12,7 +12,7 @@ namespace WhoWiredThis.EditorTools
     /// </summary>
     public static class MultiDimensionExampleMenu
     {
-        private const string MenuPath = "WhoWiredThis/Visibility/Create MultiDimension Example In Scene";
+        private const string MenuPath = "Who Wired This/Visibility/Create MultiDimension Example In Scene";
 
         [MenuItem(MenuPath, priority = 100)]
         private static void CreateExampleInScene()

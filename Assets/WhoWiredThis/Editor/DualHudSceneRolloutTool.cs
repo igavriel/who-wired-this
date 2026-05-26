@@ -29,7 +29,7 @@ namespace WhoWiredThis.Editor
             "Assets/Scenes/Duel/LocalDuel ThirdPerson.unity",
         };
 
-        [MenuItem("WhoWiredThis/Dual HUD/Rollout Tier A (wire playerHudView)")]
+        [MenuItem("Who Wired This/Dual HUD/Rollout Tier A (wire playerHudView)")]
         public static void RolloutTierA()
         {
             foreach (string scenePath in TierAScenes)
@@ -40,7 +40,7 @@ namespace WhoWiredThis.Editor
             Debug.Log("[DualHudSceneRollout] Tier A rollout complete.");
         }
 
-        [MenuItem("WhoWiredThis/Dual HUD/Rollout Tier B (disable PlayerHud_B)")]
+        [MenuItem("Who Wired This/Dual HUD/Rollout Tier B (disable PlayerHud_B)")]
         public static void RolloutTierB()
         {
             foreach (string scenePath in TierBScenes)
@@ -51,7 +51,7 @@ namespace WhoWiredThis.Editor
             Debug.Log("[DualHudSceneRollout] Tier B rollout complete.");
         }
 
-        [MenuItem("WhoWiredThis/Dual HUD/Rollout All (Tier A + B)")]
+        [MenuItem("Who Wired This/Dual HUD/Rollout All (Tier A + B)")]
         public static void RolloutAll()
         {
             RolloutTierA();

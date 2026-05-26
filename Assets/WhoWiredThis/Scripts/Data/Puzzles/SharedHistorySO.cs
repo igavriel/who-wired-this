@@ -6,7 +6,7 @@ namespace WhoWiredThis.Puzzles.Common
 {
     [CreateAssetMenu(
         fileName = "SharedHistory",
-        menuName = "WhoWiredThis/Puzzles/Shared History",
+        menuName = "Who Wired This/Puzzles/Shared History",
         order = 1000)]
     public class SharedHistorySO : ScriptableObject
     {

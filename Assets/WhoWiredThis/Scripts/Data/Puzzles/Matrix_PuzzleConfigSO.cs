@@ -4,7 +4,7 @@ using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.Data.Puzzles
 {
-    [CreateAssetMenu(menuName = "WhoWiredThis/Matrix Puzzle Config", fileName = "Matrix_PuzzleConfig")]
+    [CreateAssetMenu(menuName = "Who Wired This/Matrix Puzzle Config", fileName = "Matrix_PuzzleConfig")]
     public class Matrix_PuzzleConfigSO : ScriptableObject
     {
         [Serializable]
