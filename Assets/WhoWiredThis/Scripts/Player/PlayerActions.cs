@@ -94,6 +94,11 @@ namespace WhoWiredThis.Player
 
         private void HandleInteraction()
         {
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
+
             bool activateFromInput =
                 playerController != null ? playerController.InteractPressedThisFrame
                 : firstPersonController != null ? firstPersonController.InteractPressedThisFrame
@@ -143,7 +148,12 @@ namespace WhoWiredThis.Player
             if (activateFromInput && currentInteractable != null)
             {
                 currentInteractable.Interact(GetInteractorObject());
-                SetInteractPromptForHud(FormatPromptForPlayer(currentInteractable.GetPromptText()));
+
+                // Panel focus can disable PlayerActions inside Interact; do not re-show the HUD prompt.
+                if (isActiveAndEnabled)
+                {
+                    SetInteractPromptForHud(FormatPromptForPlayer(currentInteractable.GetPromptText()));
+                }
             }
         }
 
@@ -158,7 +168,7 @@ namespace WhoWiredThis.Player
             HUDController.Instance?.SetInteractPrompt(text);
         }
 
-        private void ClearInteractPrompt()
+        public void ClearInteractPrompt()
         {
             if (playerHudView != null)
             {

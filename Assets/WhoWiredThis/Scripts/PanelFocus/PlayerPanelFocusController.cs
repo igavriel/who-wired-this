@@ -71,8 +71,10 @@ namespace WhoWiredThis.PanelFocus
             {
                 firstPersonController.enabled = false;
             }
+
             if (playerActions != null)
             {
+                playerActions.ClearInteractPrompt();
                 playerActions.enabled = false;
             }
 

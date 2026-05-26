@@ -170,7 +170,17 @@ namespace WhoWiredThis.Tutorial
 
         [Header("Completion hook (no UI in this task)")]
         [SerializeField]
-        private UnityEvent onTutorialCompletedUnity;
+        private GameObject[] objectsToDisableOnComplete;
+
+        [SerializeField]
+        private Collider[] exitDoorBlockersToDisableOnComplete;
+
+        [SerializeField]
+        [TextArea(5, 12)]
+        private string completionMessage =
+            "Synchronization confirmed.\n" +
+            "The exit door is now unlocked.\n\n" +
+            "Double-click the Exit button to close this panel and return to the game.";
 
         private TutorialSessionStage stage = TutorialSessionStage.PlayerAOperator;
         private bool completionRaised;
@@ -312,8 +322,65 @@ namespace WhoWiredThis.Tutorial
             }
 
             completionRaised = true;
+            DisableConfiguredObjectsOnComplete();
+            DisableExitDoorBlockersOnComplete();
+            ShowCompletionMessageOnDiagnostics();
             OnTutorialCompleted?.Invoke();
-            onTutorialCompletedUnity?.Invoke();
+        }
+
+        private void DisableConfiguredObjectsOnComplete()
+        {
+            if (objectsToDisableOnComplete == null || objectsToDisableOnComplete.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < objectsToDisableOnComplete.Length; i++)
+            {
+                GameObject target = objectsToDisableOnComplete[i];
+                if (target == null)
+                {
+                    continue;
+                }
+
+                target.SetActive(false);
+            }
+        }
+
+        private void DisableExitDoorBlockersOnComplete()
+        {
+            if (exitDoorBlockersToDisableOnComplete == null || exitDoorBlockersToDisableOnComplete.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < exitDoorBlockersToDisableOnComplete.Length; i++)
+            {
+                Collider blocker = exitDoorBlockersToDisableOnComplete[i];
+                if (blocker == null)
+                {
+                    continue;
+                }
+
+                blocker.enabled = false;
+            }
+        }
+
+        private void ShowCompletionMessageOnDiagnostics()
+        {
+            TrySetCompletionMessage(playerADiagnosticDisplay, "playerADiagnosticDisplay is not assigned; skipping completion copy.");
+            TrySetCompletionMessage(playerBDiagnosticDisplay, "playerBDiagnosticDisplay is not assigned; skipping completion copy.");
+        }
+
+        private void TrySetCompletionMessage(DiagnosticDisplayController display, string nullWarningDetail)
+        {
+            if (display == null)
+            {
+                Debug.LogWarning($"{LogPrefix} {nullWarningDetail}", this);
+                return;
+            }
+
+            display.SetSuccess(completionMessage ?? string.Empty);
         }
 
         private void ApplyStageVisualAndLocks()

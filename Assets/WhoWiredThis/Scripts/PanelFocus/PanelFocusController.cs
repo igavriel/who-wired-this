@@ -65,11 +65,16 @@ namespace WhoWiredThis.PanelFocus
         [Header("Prompt")]
         [SerializeField] private string promptText = "$INTERACT$ Open Panel";
 
+        [Header("Focus Visibility")]
+        [Tooltip("Objects hidden while this panel is in focus, restored on exit.")]
+        [SerializeField] private GameObject[] hideOnFocusObjects;
+
         private const float NoPendingExitClick = -1f;
 
         private int selectedIndex;
         private PlayerPanelFocusController activeController;
         private float lastExitActivateUnscaledTime = NoPendingExitClick;
+        private bool[] hideOnFocusPreviousStates;
 
         public AllowedPlayerTag AllowedPlayerId => allowedPlayerId;
         private int ButtonCount => interactableButtons != null ? interactableButtons.Length : 0;
@@ -155,6 +160,7 @@ namespace WhoWiredThis.PanelFocus
         {
             activeController = focus;
             selectedIndex = 0;
+            ApplyHideOnFocusState(true);
             if (selectionFrame != null)
             {
                 selectionFrame.SetActive(true);
@@ -166,6 +172,7 @@ namespace WhoWiredThis.PanelFocus
         {
             activeController = null;
             lastExitActivateUnscaledTime = NoPendingExitClick;
+            ApplyHideOnFocusState(false);
             if (selectionFrame != null)
             {
                 selectionFrame.SetActive(false);
@@ -284,6 +291,46 @@ namespace WhoWiredThis.PanelFocus
                 $"Player {activeController.PlayerId} pressed ExitButton — press again within {exitDoubleClickMaxIntervalSeconds:F2}s to quit.",
                 this);
             return false;
+        }
+
+        private void ApplyHideOnFocusState(bool enteringFocus)
+        {
+            if (hideOnFocusObjects == null || hideOnFocusObjects.Length == 0)
+            {
+                return;
+            }
+
+            if (enteringFocus)
+            {
+                hideOnFocusPreviousStates = new bool[hideOnFocusObjects.Length];
+                for (int i = 0; i < hideOnFocusObjects.Length; i++)
+                {
+                    GameObject target = hideOnFocusObjects[i];
+                    if (target == null)
+                    {
+                        continue;
+                    }
+
+                    hideOnFocusPreviousStates[i] = target.activeSelf;
+                    target.SetActive(false);
+                }
+
+                return;
+            }
+
+            for (int i = 0; i < hideOnFocusObjects.Length; i++)
+            {
+                GameObject target = hideOnFocusObjects[i];
+                if (target == null)
+                {
+                    continue;
+                }
+
+                bool wasActive = hideOnFocusPreviousStates != null && i < hideOnFocusPreviousStates.Length && hideOnFocusPreviousStates[i];
+                target.SetActive(wasActive);
+            }
+
+            hideOnFocusPreviousStates = null;
         }
 
         private void ValidateButtonWiring()
