@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WhoWiredThis.Core;
 using WhoWiredThis.Player;
 
 namespace WhoWiredThis.Environment
@@ -158,9 +159,21 @@ namespace WhoWiredThis.Environment
                 return;
             }
 
+            if (ShouldCountSceneForPlaytestTotal(activeSceneName))
+            {
+                PlaytestRunTotal.CompleteCurrentScene(activeSceneName);
+            }
+
             hasTriggered = true;
             Debug.Log($"[SceneTransitionTrigger] Loading scene '{targetSceneName}'.");
             SceneManager.LoadScene(targetSceneName, LoadSceneMode.Single);
+        }
+
+        private static bool ShouldCountSceneForPlaytestTotal(string sceneName)
+        {
+            return string.Equals(sceneName, "Tutorial", StringComparison.Ordinal) ||
+                   string.Equals(sceneName, "Puzzle Pipes", StringComparison.Ordinal) ||
+                   string.Equals(sceneName, "Puzzle Signal", StringComparison.Ordinal);
         }
     }
 

@@ -106,6 +106,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md](ui-canvas-dual-hud-phase-4b-interactable-popup-routing.md) | Phase 4B: route Clue/Collectible/PuzzleSocket/TestButton popups via PlayerHudPopupRouter to per-player PlayerHudView; legacy Instance fallback. |
 | [tutorial-summary-popup.md](tutorial-summary-popup.md) | Tutorial completion: `TutorialSummaryPopupPresenter` shows team metrics summary on both HUDs from `GetSnapshot()`; `Tutorial.unity` only. |
 | [ui-canvas-dual-hud-promote-to-production.md](ui-canvas-dual-hud-promote-to-production.md) | Promote dual HUD to UI_Canvas.prefab; pilot Split Tutorial first; user approval before remaining scenes. |
+| [playtest-flow-start-gameover-total-time.md](playtest-flow-start-gameover-total-time.md) | Implemented quick playtest flow: `StartScene -> Tutorial -> Puzzle Pipes -> Puzzle Signal -> GameOverScene` with summed scene-time total and best-time persistence. |
 
 ---
 
