@@ -1501,21 +1501,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 217447781}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!115 &489721173
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: SceneTransitionTriggerRelay
-  m_Namespace: WhoWiredThis.Environment
-  m_AssemblyName: Assembly-CSharp
 --- !u!1001 &491408169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2559,11 +2544,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
   bridgeReference: {fileID: 713330657}
   panelActionLock: {fileID: 0}
---- !u!1 &762180533 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-  m_PrefabInstance: {fileID: 1754719012}
-  m_PrefabAsset: {fileID: 0}
 --- !u!134 &890584350
 PhysicsMaterial:
   m_ObjectHideFlags: 0
@@ -3579,21 +3559,6 @@ PhysicsMaterial:
   m_Bounciness: 0
   m_FrictionCombine: 0
   m_BounceCombine: 0
---- !u!115 &1350867873
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: SceneTransitionTriggerRelay
-  m_Namespace: WhoWiredThis.Environment
-  m_AssemblyName: Assembly-CSharp
 --- !u!1 &1393415999
 GameObject:
   m_ObjectHideFlags: 0
@@ -4503,13 +4468,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1754719016}
-    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1754719021}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
 --- !u!1 &1754719014 stripped
 GameObject:
@@ -4521,32 +4480,6 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
   m_PrefabInstance: {fileID: 1754719012}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1754719016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762180533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1350867873}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
-  owner: {fileID: 468017492}
---- !u!114 &1754719021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762180533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 489721173}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
-  owner: {fileID: 468017492}
 --- !u!1 &1763321738
 GameObject:
   m_ObjectHideFlags: 0

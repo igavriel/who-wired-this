@@ -558,21 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
---- !u!115 &97169626
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: SceneTransitionTriggerRelay
-  m_Namespace: WhoWiredThis.Environment
-  m_AssemblyName: Assembly-CSharp
 --- !u!1 &217447780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,40 +1544,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
---- !u!1 &518627907 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-  m_PrefabInstance: {fileID: 1398466214}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &518627909 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
   m_PrefabInstance: {fileID: 1398466214}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &518627912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518627907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 2044447820}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
---- !u!114 &518627913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518627907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 97169626}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
 --- !u!1 &596226952
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,13 +3233,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 518627912}
-    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 518627913}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
 --- !u!1 &1400280656
 GameObject:
@@ -4500,6 +4450,8 @@ MonoBehaviour:
   ignoreWhenAlreadyInTargetScene: 1
   loadOnce: 1
   triggerCollider: {fileID: 518627909}
+  useBoundsPollingFallback: 1
+  pollingIntervalSeconds: 0.1
 --- !u!4 &1921549930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 424882819884905029, guid: 5331db6b76086427bb7f6957cfa9b552, type: 3}
@@ -4943,21 +4895,6 @@ MonoBehaviour:
   playerAPanel: {fileID: 2129372216}
   playerBFocus: {fileID: 7069613721803897088}
   playerBPanel: {fileID: 685025536}
---- !u!115 &2044447820
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: SceneTransitionTriggerRelay
-  m_Namespace: WhoWiredThis.Environment
-  m_AssemblyName: Assembly-CSharp
 --- !u!1 &2097821588
 GameObject:
   m_ObjectHideFlags: 0

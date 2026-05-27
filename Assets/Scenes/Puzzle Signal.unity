@@ -1435,21 +1435,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4803013851825994829, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
   m_PrefabInstance: {fileID: 406828503}
   m_PrefabAsset: {fileID: 0}
---- !u!115 &442379658
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 7
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_Type: 0
-  m_ExecutionOrder: 0
-  m_ClassName: SceneTransitionTriggerRelay
-  m_Namespace: WhoWiredThis.Environment
-  m_AssemblyName: Assembly-CSharp
 --- !u!1 &458659913
 GameObject:
   m_ObjectHideFlags: 0
@@ -3911,16 +3896,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1385774101}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
---- !u!1 &1385774098 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-  m_PrefabInstance: {fileID: 1385774097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1385774099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7449099549273558031, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
@@ -3931,19 +3908,6 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
   m_PrefabInstance: {fileID: 1385774097}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1385774101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1385774098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 442379658}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
-  owner: {fileID: 39441545}
 --- !u!1 &1393415999
 GameObject:
   m_ObjectHideFlags: 0

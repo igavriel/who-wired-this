@@ -19,6 +19,12 @@ namespace WhoWiredThis.UI
         [SerializeField] private KeyCode bossResetKey = KeyCode.Alpha1;
 
         private bool hasStarted;
+        private float inputReadyTime;
+
+        private void OnEnable()
+        {
+            inputReadyTime = Time.unscaledTime + 0.35f;
+        }
 
         private void Start()
         {
@@ -40,7 +46,7 @@ namespace WhoWiredThis.UI
                 ResetBestTime();
             }
 
-            if (hasStarted)
+            if (hasStarted || Time.unscaledTime < inputReadyTime)
             {
                 return;
             }
@@ -61,10 +67,16 @@ namespace WhoWiredThis.UI
 
             hasStarted = true;
             Debug.Log("[StartSceneController] Start button clicked.");
+
             PlaytestRunTotal.BeginRun();
             Debug.Log("[StartSceneController] Total-time run tracking started.");
-            Debug.Log($"[StartSceneController] Loading scene '{tutorialSceneName}'.");
-            SceneManager.LoadScene(tutorialSceneName, LoadSceneMode.Single);
+
+            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(tutorialSceneName, out string loadError))
+            {
+                Debug.LogError($"[StartSceneController] Failed to load '{tutorialSceneName}': {loadError}");
+                PlaytestRunTotal.ResetRun();
+                hasStarted = false;
+            }
         }
 
         private bool IsBossResetPressed()
