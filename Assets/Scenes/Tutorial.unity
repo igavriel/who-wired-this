@@ -558,6 +558,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!115 &97169626
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneTransitionTriggerRelay
+  m_Namespace: WhoWiredThis.Environment
+  m_AssemblyName: Assembly-CSharp
 --- !u!1 &217447780
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,6 +605,9 @@ Transform:
   - {fileID: 3073909790674315967}
   - {fileID: 7069613721803897082}
   - {fileID: 2027759288}
+  - {fileID: 1728330347}
+  - {fileID: 1066807591}
+  - {fileID: 1810980300}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &263071761
@@ -1541,6 +1559,40 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+--- !u!1 &518627907 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+  m_PrefabInstance: {fileID: 1398466214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &518627909 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+  m_PrefabInstance: {fileID: 1398466214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &518627912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518627907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2044447820}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
+--- !u!114 &518627913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518627907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 97169626}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
 --- !u!1 &596226952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,8 +1632,6 @@ Transform:
   - {fileID: 1975054486}
   - {fileID: 1297143430}
   - {fileID: 30422013}
-  - {fileID: 1728330347}
-  - {fileID: 1066807591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &596226954
@@ -2790,12 +2840,12 @@ Transform:
   m_GameObject: {fileID: 1066807590}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 5.5, y: 0.29999995, z: -5.5}
-  m_LocalScale: {x: 0.11000001, y: 0.11000001, z: 0.110000014}
+  m_LocalPosition: {x: 4.5, y: 1.7999998, z: 1.5}
+  m_LocalScale: {x: 0.110000014, y: 0.11000001, z: 0.110000014}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1523667503}
-  m_Father: {fileID: 596226953}
+  m_Father: {fileID: 217447781}
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!64 &1066807592
 MeshCollider:
@@ -3180,18 +3230,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 236780793193393250, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 494320829650494304, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 571016331805794547, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1160666750850175115, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
       propertyPath: m_Name
       value: Room5x5
@@ -3236,26 +3274,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3845797936892600989, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4406877492829720158, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6400744104011490412, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7449099549273558031, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 518627912}
+    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 518627913}
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
 --- !u!1 &1400280656
 GameObject:
@@ -4065,12 +4093,12 @@ Transform:
   m_GameObject: {fileID: 1728330346}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 4.5, y: 0.29999995, z: -5.5}
-  m_LocalScale: {x: 0.11000001, y: 0.11000001, z: 0.110000014}
+  m_LocalPosition: {x: -3.5, y: 1.7999998, z: 1.5}
+  m_LocalScale: {x: 0.110000014, y: 0.11000001, z: 0.110000014}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1029057273}
-  m_Father: {fileID: 596226953}
+  m_Father: {fileID: 217447781}
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!64 &1728330348
 MeshCollider:
@@ -4424,6 +4452,54 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 3, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1810980299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1810980300}
+  - component: {fileID: 1810980301}
+  m_Layer: 0
+  m_Name: NextLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1810980300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810980299}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.96857, y: 0.1, z: 0.81154}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 217447781}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1810980301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810980299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81f84998efa584edcaf6e9687e750f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTrigger
+  targetSceneName: Puzzle Pipes
+  ignoreWhenAlreadyInTargetScene: 1
+  loadOnce: 1
+  triggerCollider: {fileID: 518627909}
 --- !u!4 &1921549930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 424882819884905029, guid: 5331db6b76086427bb7f6957cfa9b552, type: 3}
@@ -4867,6 +4943,21 @@ MonoBehaviour:
   playerAPanel: {fileID: 2129372216}
   playerBFocus: {fileID: 7069613721803897088}
   playerBPanel: {fileID: 685025536}
+--- !u!115 &2044447820
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneTransitionTriggerRelay
+  m_Namespace: WhoWiredThis.Environment
+  m_AssemblyName: Assembly-CSharp
 --- !u!1 &2097821588
 GameObject:
   m_ObjectHideFlags: 0
@@ -5354,7 +5445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5479,7 +5570,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalPosition.y
