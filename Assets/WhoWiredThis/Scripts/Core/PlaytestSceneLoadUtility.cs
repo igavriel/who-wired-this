@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.Core
 {
@@ -45,6 +46,11 @@ namespace WhoWiredThis.Core
                    Application.CanStreamedLevelBeLoaded(sceneName);
         }
 
+        public static void PrepareForSceneLoad()
+        {
+            SharedHistorySO.ClearAllLoaded();
+        }
+
         public static bool TryLoadSingleScene(string sceneName, out string error)
         {
             if (!TryGetBuildIndex(sceneName, out int buildIndex, out error))
@@ -58,6 +64,7 @@ namespace WhoWiredThis.Core
                 return false;
             }
 
+            PrepareForSceneLoad();
             Debug.Log($"[PlaytestSceneLoadUtility] Loading scene '{sceneName}' (build index {buildIndex}).");
             SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
             return true;

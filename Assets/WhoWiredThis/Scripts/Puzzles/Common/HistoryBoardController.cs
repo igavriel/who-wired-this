@@ -51,9 +51,10 @@ namespace WhoWiredThis.Puzzles.Common
         {
             if (bodyText != null)
             {
-                // Keep each history entry on a single rendered row.
+                // Keep each history entry on a single rendered row; anchor text to bottom so newest rows stay visible.
                 bodyText.textWrappingMode = TextWrappingModes.NoWrap;
                 bodyText.overflowMode = TextOverflowModes.Overflow;
+                bodyText.verticalAlignment = VerticalAlignmentOptions.Bottom;
             }
 
             SubscribeToSource();

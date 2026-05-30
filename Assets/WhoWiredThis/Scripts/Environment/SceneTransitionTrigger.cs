@@ -165,6 +165,7 @@ namespace WhoWiredThis.Environment
             }
 
             hasTriggered = true;
+            PlaytestSceneLoadUtility.PrepareForSceneLoad();
             Debug.Log($"[SceneTransitionTrigger] Loading scene '{targetSceneName}'.");
             SceneManager.LoadScene(targetSceneName, LoadSceneMode.Single);
         }

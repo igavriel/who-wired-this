@@ -18,6 +18,10 @@ namespace WhoWiredThis.Puzzles.Common
         [Tooltip("The next attempt number to use for new entries.")]
         [SerializeField] private int nextAttemptNumber = 1;
 
+        [Tooltip("Maximum entries kept in one puzzle; oldest rows are removed without renumbering.")]
+        [Min(1)]
+        [SerializeField] private int maxRetainedEntries = 20;
+
         public event Action OnChanged;
 
         public IReadOnlyList<HistoryEntry> Entries => entries;
@@ -34,6 +38,23 @@ namespace WhoWiredThis.Puzzles.Common
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void ResetAllAtPlayStart()
+        {
+            ClearAllLoadedWithoutNotify();
+        }
+
+        /// <summary>Clears all loaded history sources and resets attempt counters (e.g. new scene or abort to menu).</summary>
+        public static void ClearAllLoaded()
+        {
+            foreach (SharedHistorySO instance in LoadedInstances)
+            {
+                if (instance != null)
+                {
+                    instance.Clear();
+                }
+            }
+        }
+
+        private static void ClearAllLoadedWithoutNotify()
         {
             foreach (SharedHistorySO instance in LoadedInstances)
             {
@@ -79,6 +100,7 @@ namespace WhoWiredThis.Puzzles.Common
             }
 
             entries.Add(entry);
+            TrimToMaxRetainedEntries();
             OnChanged?.Invoke();
             return entry.attemptNumber;
         }
@@ -93,6 +115,14 @@ namespace WhoWiredThis.Puzzles.Common
         {
             entries.Clear();
             nextAttemptNumber = 1;
+        }
+
+        private void TrimToMaxRetainedEntries()
+        {
+            while (entries.Count > maxRetainedEntries)
+            {
+                entries.RemoveAt(0);
+            }
         }
     }
 }

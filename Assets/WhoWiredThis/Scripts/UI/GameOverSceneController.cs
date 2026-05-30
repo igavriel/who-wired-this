@@ -170,11 +170,8 @@ namespace WhoWiredThis.UI
             hasRestarted = true;
             Debug.Log("[GameOverSceneController] Restart clicked.");
 
-            PlaytestRunTotal.ResetRun();
-
-            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(startSceneName, out string loadError))
+            if (!PlaytestFlowUtility.TryReturnToMainMenu(startSceneName, out string loadError))
             {
-                Debug.LogError($"[GameOverSceneController] Failed to load '{startSceneName}': {loadError}");
                 hasRestarted = false;
             }
         }

@@ -296,6 +296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7233763659722128408}
   - component: {fileID: 3595275264623516354}
+  - component: {fileID: 8123456789012345678}
   m_Layer: 0
   m_Name: UI_Canvas
   m_TagString: Untagged
@@ -338,6 +339,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.SharedHudPresenter
   playerHudViewA: {fileID: 7957042779587175977}
   playerHudViewB: {fileID: 1514736408199476677}
+--- !u!114 &8123456789012345678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5931379601915469640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3b8d1c9e2746a0b2d4f8e7c6a59103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.PlaytestEscapeHandler
+  menuKey: 27
 --- !u!1 &8239280067900627779
 GameObject:
   m_ObjectHideFlags: 0
