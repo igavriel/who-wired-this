@@ -10,6 +10,9 @@ namespace WhoWiredThis.UI
         [SerializeField] private PlayerHudView playerHudViewA;
         [SerializeField] private PlayerHudView playerHudViewB;
 
+        public PlayerHudView PlayerHudViewA => playerHudViewA;
+        public PlayerHudView PlayerHudViewB => playerHudViewB;
+
         private string currentRoomNameA = string.Empty;
         private string currentRoomNameB = string.Empty;
         private string currentScoreLine = string.Empty;

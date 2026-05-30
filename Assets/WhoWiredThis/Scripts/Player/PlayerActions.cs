@@ -106,6 +106,11 @@ namespace WhoWiredThis.Player
 
             if (activateFromInput && playerHudView != null && playerHudView.IsPopupOpen)
             {
+                if (PlaytestEscapeHandler.TryCancelExitConfirmationFromAction())
+                {
+                    return;
+                }
+
                 playerHudView.HidePopup();
                 return;
             }
