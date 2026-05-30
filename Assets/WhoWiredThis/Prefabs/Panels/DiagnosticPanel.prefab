@@ -646,8 +646,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.25, y: 0.1}
-  m_SizeDelta: {x: 0.7, y: 0.8}
+  m_AnchoredPosition: {x: -0.2289, y: 0}
+  m_SizeDelta: {x: 0.7302, y: 0.9096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8544290292021937415
 MeshRenderer:
@@ -718,9 +718,24 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'WAITING FOR
+  m_text: '1. WAITING FOR
 
-    NEXT ATTEMPT...'
+    2. NEXT ATTEMPT...
+
+    3. This is a very long line
+    and shold
+
+    4. LINE
+
+    5. LINE
+
+    6. LINE
+
+    7. LINE
+
+    8. LINE
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_sharedMaterial: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
@@ -747,8 +762,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.8
-  m_fontSizeBase: 0.8
+  m_fontSize: 0.7
+  m_fontSizeBase: 0.7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

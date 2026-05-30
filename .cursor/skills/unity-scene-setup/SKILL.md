@@ -10,6 +10,10 @@ disable-model-invocation: true
 
 Use this skill to create or update scenes in `who-wired-this` with a safety-first workflow and predictable wiring.
 
+## Unity MCP preflight
+
+Before scene/prefab work that would use MCP, run **`unity-mcp-preflight`** (`.cursor/skills/unity-mcp-preflight/SKILL.md`). If MCP is down, ask whether to continue without MCP or stop to fix the connection.
+
 ## Risky change gate
 
 **Apply this section before any implementation** when the task touches **scenes**, **prefabs**, **UI architecture**, **cameras**, **input routing**, **save/load**, **scoring**, or **menu flow** — even if the change looks small.

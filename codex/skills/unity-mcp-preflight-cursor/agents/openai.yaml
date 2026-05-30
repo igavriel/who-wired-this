@@ -1,0 +1,7 @@
+interface:
+  display_name: "Unity MCP Preflight"
+  short_description: "Checks Unity MCP before live edits"
+  default_prompt: "Use $unity-mcp-preflight-cursor before inspecting or editing Unity state through MCP."
+
+policy:
+  allow_implicit_invocation: true

@@ -86,6 +86,7 @@ If the user explicitly says **not** to archive a plan, follow the user instructi
 
 ## 2. Use Unity MCP
 
+- **Before the first Unity MCP use in a task**, run **`unity-mcp-preflight`** (`.cursor/skills/unity-mcp-preflight/SKILL.md`). If preflight fails, ask the user whether to continue without MCP or stop and fix the connection; do not silently guess hierarchy or wiring.
 - Prefer the Unity MCP tools to inspect scenes, prefabs, GameObjects, components, and serialized fields whenever they can answer the question.
 - Do not guess object names, paths, or hierarchy when MCP can verify them.
 - Use MCP to apply scene and prefab wiring when that is appropriate and reliable.

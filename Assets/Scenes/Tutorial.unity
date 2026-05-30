@@ -2142,6 +2142,7 @@ MonoBehaviour:
   allowedPlayerId: 2
   frameFillPercent: 54
   boardRenderer: {fileID: 685025537}
+  framingTransform: {fileID: 0}
   extraDistance: 0.02
   interactableButtons:
   - label: Left Knob
@@ -4944,7 +4945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a89a53d646140439bad42506722a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap
-  enterFocusOnStartup: 0
+  enterFocusOnStartup: 1
   playerAFocus: {fileID: 3073909790674315973}
   playerAPanel: {fileID: 2129372216}
   playerBFocus: {fileID: 7069613721803897088}
@@ -5206,6 +5207,7 @@ MonoBehaviour:
   allowedPlayerId: 1
   frameFillPercent: 54
   boardRenderer: {fileID: 2129372217}
+  framingTransform: {fileID: 0}
   extraDistance: 0.02
   interactableButtons:
   - label: Left Knob

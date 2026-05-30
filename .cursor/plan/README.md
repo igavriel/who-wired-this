@@ -82,6 +82,8 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 
 | Plan | Short description |
 |------|---------------------|
+| [panel-focus-camera-framing-config.md](panel-focus-camera-framing-config.md) | **Implemented:** `PanelFocusController` uses board-renderer transform for snap orientation; optional Framing Transform; fixes Tutorial - Visual floor camera. |
+| [tutorial-visual-panel-focus.md](tutorial-visual-panel-focus.md) | Scene-local `boardRenderer` → `Plane-Transparent` on Tutorial - Visual; pairs with framing config fix. |
 | [rebuild_panel_one_scene_9ea2a622.plan.md](rebuild_panel_one_scene_9ea2a622.plan.md) | New scene from Split Puzzle with full Player A panel (knobs, solve, diagnostic, history). |
 | [panel_focus_mode_test_99d2c9e2.plan.md](panel_focus_mode_test_99d2c9e2.plan.md) | Panel focus test scene: two panels, camera snap, movement off until exit. |
 | [simplify_panel_focus_fix_45250b08.plan.md](simplify_panel_focus_fix_45250b08.plan.md) | Collapse panel-focus stack; variable buttons + Exit; border selection frame. |
