@@ -53,6 +53,11 @@ namespace WhoWiredThis.Core
 
         public static bool TryLoadSingleScene(string sceneName, out string error)
         {
+            return TryLoadSingleScene(sceneName, out error, clearSharedHistory: true);
+        }
+
+        public static bool TryLoadSingleScene(string sceneName, out string error, bool clearSharedHistory)
+        {
             if (!TryGetBuildIndex(sceneName, out int buildIndex, out error))
             {
                 return false;
@@ -64,7 +69,11 @@ namespace WhoWiredThis.Core
                 return false;
             }
 
-            PrepareForSceneLoad();
+            if (clearSharedHistory)
+            {
+                PrepareForSceneLoad();
+            }
+
             Debug.Log($"[PlaytestSceneLoadUtility] Loading scene '{sceneName}' (build index {buildIndex}).");
             SceneManager.LoadScene(buildIndex, LoadSceneMode.Single);
             return true;

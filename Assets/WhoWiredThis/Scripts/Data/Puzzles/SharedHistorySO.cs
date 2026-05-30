@@ -124,5 +124,28 @@ namespace WhoWiredThis.Puzzles.Common
                 entries.RemoveAt(0);
             }
         }
+
+        public static int GetMaxAttemptNumber()
+        {
+            int maxAttempt = 0;
+
+            foreach (SharedHistorySO instance in LoadedInstances)
+            {
+                if (instance == null)
+                {
+                    continue;
+                }
+
+                IReadOnlyList<HistoryEntry> entries = instance.Entries;
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    maxAttempt = Mathf.Max(maxAttempt, entries[i].attemptNumber);
+                }
+
+                return maxAttempt;
+            }
+
+            return maxAttempt;
+        }
     }
 }

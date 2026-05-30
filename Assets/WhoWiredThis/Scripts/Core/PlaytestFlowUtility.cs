@@ -5,13 +5,14 @@ using WhoWiredThis.PanelFocus;
 namespace WhoWiredThis.Core
 {
     /// <summary>
-    /// Shared playtest flow helpers for returning to the main menu and resetting cross-scene state.
+    /// Shared playtest flow helpers for ending a run, loading GameOverScene, and returning to the main menu.
     /// </summary>
     public static class PlaytestFlowUtility
     {
-        private const string DefaultStartSceneName = "StartScene";
+        public const string DefaultStartSceneName = "StartScene";
+        public const string GameOverSceneName = "GameOverScene";
 
-        private static bool isReturningToMenu;
+        private static bool isFlowTransitionActive;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void RegisterSceneLoadedReset()
@@ -22,7 +23,7 @@ namespace WhoWiredThis.Core
 
         private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            isReturningToMenu = false;
+            isFlowTransitionActive = false;
         }
 
         public static bool TryReturnToMainMenu(out string error)
@@ -34,24 +35,65 @@ namespace WhoWiredThis.Core
         {
             error = null;
 
-            if (isReturningToMenu)
+            if (isFlowTransitionActive)
             {
                 return false;
             }
 
-            isReturningToMenu = true;
+            isFlowTransitionActive = true;
             ExitAllPanelFocus();
-
+            PlaytestRunSummary.Clear();
             PlaytestRunTotal.ResetRun();
 
-            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(startSceneName, out error))
+            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(startSceneName, out error, clearSharedHistory: true))
             {
                 Debug.LogError($"[PlaytestFlowUtility] Failed to load '{startSceneName}': {error}");
-                isReturningToMenu = false;
+                isFlowTransitionActive = false;
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Captures run summary (including shared history) before loading GameOverScene without clearing history early.
+        /// </summary>
+        public static bool TryEndRunAndLoadGameOver(bool abandoned, out string error)
+        {
+            error = null;
+
+            if (isFlowTransitionActive)
+            {
+                return false;
+            }
+
+            isFlowTransitionActive = true;
+            ExitAllPanelFocus();
+
+            string activeSceneName = SceneManager.GetActiveScene().name;
+            if (ShouldCountSceneForPlaytestTotal(activeSceneName))
+            {
+                PlaytestRunTotal.CompleteCurrentScene(activeSceneName);
+            }
+
+            PlaytestRunSummary.Set(PlaytestRunSummaryBuilder.Build(abandoned));
+
+            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(GameOverSceneName, out error, clearSharedHistory: false))
+            {
+                Debug.LogError($"[PlaytestFlowUtility] Failed to load '{GameOverSceneName}': {error}");
+                PlaytestRunSummary.Clear();
+                isFlowTransitionActive = false;
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool ShouldCountSceneForPlaytestTotal(string sceneName)
+        {
+            return string.Equals(sceneName, "Tutorial", System.StringComparison.Ordinal) ||
+                   string.Equals(sceneName, "Puzzle Pipes", System.StringComparison.Ordinal) ||
+                   string.Equals(sceneName, "Puzzle Signal", System.StringComparison.Ordinal);
         }
 
         private static void ExitAllPanelFocus()

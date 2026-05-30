@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WhoWiredThis.Core;
+using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.UI
 {
@@ -68,6 +69,8 @@ namespace WhoWiredThis.UI
             hasStarted = true;
             Debug.Log("[StartSceneController] Start button clicked.");
 
+            PlaytestRunSummary.Clear();
+            SharedHistorySO.ClearAllLoaded();
             PlaytestRunTotal.BeginRun();
             Debug.Log("[StartSceneController] Total-time run tracking started.");
 

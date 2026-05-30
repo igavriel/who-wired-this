@@ -165,6 +165,14 @@ namespace WhoWiredThis.Environment
             }
 
             hasTriggered = true;
+
+            if (string.Equals(targetSceneName, PlaytestFlowUtility.GameOverSceneName, StringComparison.Ordinal))
+            {
+                Debug.Log("[SceneTransitionTrigger] Loading GameOverScene with run summary.");
+                PlaytestFlowUtility.TryEndRunAndLoadGameOver(abandoned: false, out _);
+                return;
+            }
+
             PlaytestSceneLoadUtility.PrepareForSceneLoad();
             Debug.Log($"[SceneTransitionTrigger] Loading scene '{targetSceneName}'.");
             SceneManager.LoadScene(targetSceneName, LoadSceneMode.Single);

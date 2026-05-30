@@ -59,6 +59,24 @@ namespace WhoWiredThis.Core
             return Mathf.Max(0f, totalSeconds);
         }
 
+        public static float GetTotalSecondsIncludingCurrentSegment()
+        {
+            if (!hasActiveRun)
+            {
+                return GetTotalSeconds();
+            }
+
+            float currentSegment = Mathf.Max(0f, Time.realtimeSinceStartup - segmentStartRealtime);
+            return totalSeconds + currentSegment;
+        }
+
+        public static int GetCompletedSceneCount()
+        {
+            return CompletedScenes.Count;
+        }
+
+        public static bool HasActiveRun => hasActiveRun;
+
         public static string FormatTime(float seconds)
         {
             int total = Mathf.Max(0, Mathf.FloorToInt(seconds));

@@ -31,7 +31,10 @@ namespace WhoWiredThis.UI
         {
             ValidateReferences();
 
-            float elapsedSeconds = PlaytestRunTotal.GetTotalSeconds();
+            float elapsedSeconds = PlaytestRunSummary.HasSummary
+                ? PlaytestRunSummary.Current.RunTimeSeconds
+                : PlaytestRunTotal.GetTotalSeconds();
+
             Debug.Log($"[GameOverSceneController] Final total elapsed time: {elapsedSeconds:F2}s ({PlaytestRunTotal.FormatTime(elapsedSeconds)}).");
 
             float bestSeconds = PlayerPrefs.GetFloat(BestTimeKey, 0f);
@@ -81,6 +84,8 @@ namespace WhoWiredThis.UI
             {
                 crewRankLabel.text = $"Crew Rank: {GetCrewRank(elapsedSeconds)}";
             }
+
+            ApplyRunSummaryDisplays();
 
             if (restartButton != null)
             {
@@ -204,6 +209,43 @@ namespace WhoWiredThis.UI
             }
 
             return "System Still Concerned";
+        }
+
+        private static void ApplyRunSummaryDisplays()
+        {
+            if (!PlaytestRunSummary.HasSummary)
+            {
+                return;
+            }
+
+            string summaryText = PlaytestRunSummary.FormatDisplayText();
+            TMP_Text[] labels = Object.FindObjectsByType<TMP_Text>(FindObjectsSortMode.None);
+            bool appliedToSummaryLabel = false;
+
+            for (int i = 0; i < labels.Length; i++)
+            {
+                TMP_Text label = labels[i];
+                if (label != null && label.name == "RunSummaryText")
+                {
+                    label.text = summaryText;
+                    appliedToSummaryLabel = true;
+                }
+            }
+
+            if (appliedToSummaryLabel)
+            {
+                return;
+            }
+
+            // Dual-display fallback: both GameOver canvases expose CrewRankText.
+            for (int i = 0; i < labels.Length; i++)
+            {
+                TMP_Text label = labels[i];
+                if (label != null && label.name == "CrewRankText")
+                {
+                    label.text = summaryText;
+                }
+            }
         }
     }
 }

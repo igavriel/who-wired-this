@@ -14,7 +14,7 @@ namespace WhoWiredThis.UI
         private const string GameOverSceneName = "GameOverScene";
 
         private const string ExitConfirmationMessage =
-            "Return to main menu?\n\nPress Esc again to exit\nPress Action to continue";
+            "End current run?\n\nPress Esc again to end\nPress Action to continue";
 
         private static PlaytestEscapeHandler instance;
 
@@ -86,9 +86,9 @@ namespace WhoWiredThis.UI
         {
             if (Input.GetKeyDown(menuKey))
             {
-                Debug.Log("[PlaytestEscapeHandler] Exit confirmed. Returning to main menu.");
+                Debug.Log("[PlaytestEscapeHandler] Run end confirmed. Loading GameOverScene with summary.");
                 isExitConfirmationOpen = false;
-                PlaytestFlowUtility.TryReturnToMainMenu(out _);
+                PlaytestFlowUtility.TryEndRunAndLoadGameOver(abandoned: true, out _);
                 return;
             }
 
