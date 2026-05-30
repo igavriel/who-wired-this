@@ -1,0 +1,75 @@
+---
+description: Use Conventional Commits for all commit messages and PR titles when the user asks for git commits or pull requests
+alwaysApply: true
+---
+
+# Conventional Commits
+
+When the user asks you to **create a git commit** or **open a pull request**, format the message/title using [Conventional Commits](https://www.conventionalcommits.org/).
+
+Do not use this format for casual chat replies — only for git commit messages and PR titles/bodies when committing or creating PRs is part of the task.
+
+## Format
+
+```
+<type>(<optional scope>): <short summary>
+
+<optional body>
+
+<optional footer>
+```
+
+- Summary: imperative mood, lower case, no trailing period, <= 72 chars.
+- Leave a blank line before the body and before any footer.
+- Use the body to explain the **why**, not a file list.
+
+## Allowed types
+
+- `feat` — new feature or player-facing behavior
+- `fix` — bug fix (including build/runtime crashes)
+- `docs` — documentation only (README, `.cursor/plan/`, comments in docs)
+- `style` — formatting or visual-only changes with no logic change
+- `refactor` — code change that neither fixes a bug nor adds a feature
+- `perf` — performance improvement
+- `test` — adding or fixing tests
+- `chore` — tooling, config, or maintenance
+- `build` / `ci` — build settings, pipelines, player builds
+
+## Scope (this project)
+
+Optional, lower case. Prefer scopes that match areas in this repo:
+
+- `playtest` — Start/GameOver flow, run timing, build-scene tools
+- `ui` — scene controllers, HUD, menus
+- `scenes` — `.unity` scene or build-settings changes
+- `editor` — `Assets/WhoWiredThis/Editor/` tools and validators
+- `puzzle` — puzzle managers, transitions, tutorial/puzzle scenes
+- `prefab` — prefab or variant changes
+- `config` — ProjectSettings, packages, render/input settings
+- `docs` — plan archive, README, cursor rules
+
+## Breaking changes
+
+Add `!` after the type/scope and a `BREAKING CHANGE:` footer.
+
+## Examples (Who Wired This)
+
+```
+feat(playtest): add start and game over scene flow with summed run time
+fix(playtest): repair broken Room5x5 serialization that crashed player loads
+fix(editor): pass OK button to DisplayDialog in build scene validator
+docs(playtest): archive plan for start gameover total time flow
+chore(editor): add MCP menu items for playtest validate and repair
+build(scenes): enable playtest scenes in editor build settings
+refactor(ui): load scenes via PlaytestSceneLoadUtility before BeginRun
+```
+
+## With the user's git commit workflow
+
+When committing on request, still follow the user's git safety steps (status, diff, log style). **Draft the commit message in Conventional Commits format** before running `git commit`.
+
+## Git push (not automatic)
+
+- **Do not push** to the remote unless the user explicitly asks (e.g. "push", "push to origin").
+- Creating a commit does **not** imply permission to push.
+- After a successful local commit, stop unless the user requested push or a PR (PR creation may require push only when the user asked for the PR and the branch is not on the remote yet).

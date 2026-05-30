@@ -178,6 +178,7 @@ For **risky** Unity work, Cursor must follow this process in addition to section
 ### Git safety
 
 - Before risky implementation, remind the user to commit or confirm the current working state is safe.
+- When the user asks for a **git commit**, format the message per **[`.cursor/rules/conventional-commits.mdc`](conventional-commits.mdc)** (Conventional Commits).
 - Do not create manual backup prefabs or backup scenes by default just for rollback.
 - Git is the primary rollback mechanism.
 - If the working tree appears dirty and the task is risky, warn the user before implementation.
