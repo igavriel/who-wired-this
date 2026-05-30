@@ -1157,6 +1157,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 596226953}
     m_Modifications:
+    - target: {fileID: 2389374360352687431, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2527624804426106760, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941745525637063802, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3042820148808593092, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: headerLine
       value: ' # | SIDE | INPUT             | STATUS'
@@ -1242,6 +1258,10 @@ PrefabInstance:
       value: " # | SIDE | INPUT             | STATUS\n===+======+===================+========\n
         1 | BLUE | HALF  MID   RGHT  | UNSTABLE"
       objectReference: {fileID: 0}
+    - target: {fileID: 7466239606864499408, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7648358613066156202, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Name
       value: HistoryPanel
@@ -1324,6 +1344,22 @@ PrefabInstance:
     - target: {fileID: 1101612431787048394, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: 'inputOrder.Array.data[1]'
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389374360352687431, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2527624804426106760, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941745525637063802, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3042820148808593092, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: visibleToPlayer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3314305688534659244, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: headerLine
@@ -1413,6 +1449,10 @@ PrefabInstance:
       propertyPath: m_text
       value: " # | SIDE | INPUT             | STATUS\n===+======+===================+========\n
         1 | BLUE | HALF  MID   RGHT  | UNSTABLE"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7466239606864499408, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7648358613066156202, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_Name
@@ -2433,6 +2473,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
   bridgeReference: {fileID: 713330657}
   panelActionLock: {fileID: 0}
+--- !u!115 &834656870
+MonoScript:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 7
+  m_DefaultReferences: {}
+  m_Icon: {fileID: 0}
+  m_Type: 0
+  m_ExecutionOrder: 0
+  m_ClassName: SceneTransitionTriggerRelay
+  m_Namespace: WhoWiredThis.Environment
+  m_AssemblyName: Assembly-CSharp
 --- !u!4 &886406255 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2273833745882361318, guid: ae0664d4f962345f6acef303f597adfc, type: 3}
@@ -3896,8 +3951,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1385774101}
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+--- !u!1 &1385774098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+  m_PrefabInstance: {fileID: 1385774097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1385774099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7449099549273558031, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
@@ -3908,6 +3971,19 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
   m_PrefabInstance: {fileID: 1385774097}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1385774101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385774098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 834656870}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTriggerRelay
+  owner: {fileID: 39441545}
 --- !u!1 &1393415999
 GameObject:
   m_ObjectHideFlags: 0
