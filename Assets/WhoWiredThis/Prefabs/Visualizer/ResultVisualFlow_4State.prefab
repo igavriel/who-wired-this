@@ -333,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6032592995114812279
 Transform:
   m_ObjectHideFlags: 0
@@ -1230,7 +1230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8110890848893157749
 Transform:
   m_ObjectHideFlags: 0
@@ -1375,6 +1375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5078055498046448028}
+  - component: {fileID: 353453428227278314}
   m_Layer: 0
   m_Name: ResultVisualFlow_4State
   m_TagString: Untagged
@@ -1402,6 +1403,31 @@ Transform:
   - {fileID: 8110890848893157749}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &353453428227278314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574920846738771540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+  subjects:
+  - displayName: LEFT
+    subject: {fileID: 828249612229088759}
+  - displayName: UP
+    subject: {fileID: 2766163229883362424}
+  - displayName: RGHT
+    subject: {fileID: 3445938580817814357}
+  - displayName: LOOP
+    subject: {fileID: 5937785680031053631}
+  generalObject: {fileID: 797346900004104447}
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
+  interactionLocked: 0
 --- !u!1 &7891024327341487787
 GameObject:
   m_ObjectHideFlags: 0

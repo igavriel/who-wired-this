@@ -878,6 +878,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2858123509212561124}
+  - component: {fileID: 8851093058755654411}
   m_Layer: 0
   m_Name: ResultVisualAmp_5State
   m_TagString: Untagged
@@ -906,6 +907,33 @@ Transform:
   - {fileID: 7612745854062576943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &8851093058755654411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963186811787336548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+  subjects:
+  - displayName: MAX
+    subject: {fileID: 6423581583059245575}
+  - displayName: HIGH
+    subject: {fileID: 885355207161423102}
+  - displayName: MED
+    subject: {fileID: 5920025307253391808}
+  - displayName: LOW
+    subject: {fileID: 5554662739824122783}
+  - displayName: MIN
+    subject: {fileID: 6401067045722923450}
+  generalObject: {fileID: 1198052037573566178}
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
+  interactionLocked: 0
 --- !u!1 &5200134384530085465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,13 +1553,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7612745854062576943}
+  - component: {fileID: 1479787150947285789}
   m_Layer: 0
   m_Name: StateBar-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7612745854062576943
 Transform:
   m_ObjectHideFlags: 0
@@ -1551,6 +1580,33 @@ Transform:
   - {fileID: 8955832648649037181}
   m_Father: {fileID: 2858123509212561124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1479787150947285789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6401067045722923450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+  subjects:
+  - displayName: 
+    subject: {fileID: 6423581583059245575}
+  - displayName: 
+    subject: {fileID: 885355207161423102}
+  - displayName: 
+    subject: {fileID: 5920025307253391808}
+  - displayName: 
+    subject: {fileID: 5554662739824122783}
+  - displayName: 
+    subject: {fileID: 6401067045722923450}
+  generalObject: {fileID: 1198052037573566178}
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
+  interactionLocked: 0
 --- !u!1 &6423581583059245575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,7 +1622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6356672811664281748
 Transform:
   m_ObjectHideFlags: 0

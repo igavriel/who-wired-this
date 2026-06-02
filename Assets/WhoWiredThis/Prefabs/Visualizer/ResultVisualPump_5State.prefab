@@ -105,7 +105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9186188515981569865
 Transform:
   m_ObjectHideFlags: 0
@@ -283,11 +283,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5469216941975801452, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6044341934629783456, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: activeSubjectIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: subjects.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: subjects.Array.data[4].subject
+      value: 
+      objectReference: {fileID: 2966185088490072570}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: subjects.Array.data[2].displayName
+      value: MED
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: subjects.Array.data[3].displayName
+      value: HIGH
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+      propertyPath: subjects.Array.data[4].displayName
+      value: MAX
       objectReference: {fileID: 0}
     - target: {fileID: 6992229732444828069, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
       propertyPath: m_LocalPosition.x

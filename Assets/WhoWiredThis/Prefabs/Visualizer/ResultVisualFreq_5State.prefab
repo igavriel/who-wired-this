@@ -428,6 +428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4607750662328773268}
+  - component: {fileID: 3285991700324781172}
   m_Layer: 0
   m_Name: ResultVisualFreq_5State
   m_TagString: Untagged
@@ -456,6 +457,33 @@ Transform:
   - {fileID: 8213990563668136287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &3285991700324781172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3411491597722521364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+  subjects:
+  - displayName: MAX
+    subject: {fileID: 4718991250506583671}
+  - displayName: HIGH
+    subject: {fileID: 1446065866482774158}
+  - displayName: MED
+    subject: {fileID: 5363852330033386928}
+  - displayName: LOW
+    subject: {fileID: 6146917286091640815}
+  - displayName: MIN
+    subject: {fileID: 4651431648345585098}
+  generalObject: {fileID: 646346930085071506}
+  visibleToPlayer: 0
+  activeSubjectIndex: 0
+  interactionLocked: 0
 --- !u!1 &3723190575485426369
 GameObject:
   m_ObjectHideFlags: 0
