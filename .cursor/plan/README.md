@@ -69,6 +69,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | Plan | Short description |
 |------|---------------------|
 | [diagnostic_display_ddddc223.plan.md](diagnostic_display_ddddc223.plan.md) | World-space diagnostic like history board; `DiagnosticDisplayController` API. |
+| [diagnostic-display-multidimension-lamps.plan.md](diagnostic-display-multidimension-lamps.plan.md) | Add configurable MultiDimension lamp state values to DiagnosticDisplayController for waiting, success, and error/result output. |
 | [world_history_board_e29554d2.plan.md](world_history_board_e29554d2.plan.md) | Two-stage world TMP history board + adapter from `MultiDimensionPuzzelManager` events. |
 | [history_board_refactor_audit_a28db568.plan.md](history_board_refactor_audit_a28db568.plan.md) | Audit history flow; separate shared data from per-board rendering safely. |
 | [processing_feedback_poc_2f1fd086.plan.md](processing_feedback_poc_2f1fd086.plan.md) | Processing lines + delay before `TryCheckSolutionFromInteractor` in bridge flow. |

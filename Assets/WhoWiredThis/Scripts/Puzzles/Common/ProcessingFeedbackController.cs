@@ -53,6 +53,8 @@ namespace WhoWiredThis.Puzzles.Common
                 yield break;
             }
 
+            ResolveDiagnosticDisplayIfMissing();
+
             if (diagnosticDisplay == null)
             {
                 Debug.LogWarning(
@@ -120,6 +122,16 @@ namespace WhoWiredThis.Puzzles.Common
             }
 
             return DefaultMessages;
+        }
+
+        private void ResolveDiagnosticDisplayIfMissing()
+        {
+            if (diagnosticDisplay != null)
+            {
+                return;
+            }
+
+            diagnosticDisplay = GetComponentInChildren<DiagnosticDisplayController>(true);
         }
     }
 }

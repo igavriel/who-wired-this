@@ -1,6 +1,8 @@
 using System.Text;
 using TMPro;
 using UnityEngine;
+using WhoWiredThis.Enums;
+using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Puzzles.Common
 {
@@ -55,6 +57,22 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private Material lampSuccessMaterial;
         [SerializeField] private Material lampErrorMaterial;
         [SerializeField] private Material lampClearMaterial;
+
+        [Header("Optional MultiDimension Lamp States")]
+        [Tooltip("Optional MultiDimension lamp objects to drive with numeric waiting/success/error state values.")]
+        [SerializeField] private MultiDimension[] multiDimensionLamps;
+
+        [Tooltip("Visibility selection used when applying MultiDimension lamp states.")]
+        [SerializeField] private AllowedPlayerTag multiDimensionLampVisibleToPlayer = AllowedPlayerTag.Any_Player;
+
+        [Tooltip("MultiDimension subject index used while the diagnostic is waiting.")]
+        [SerializeField] private int waitingLampValue;
+
+        [Tooltip("MultiDimension subject index used after success.")]
+        [SerializeField] private int successLampValue = 1;
+
+        [Tooltip("MultiDimension subject index used for failed/result/error diagnostic output.")]
+        [SerializeField] private int errorLampValue = 2;
 
         private DisplayState currentState = DisplayState.Waiting;
 
@@ -117,6 +135,7 @@ namespace WhoWiredThis.Puzzles.Common
             currentState = DisplayState.Clear;
             WriteBody(clearText);
             ApplyLampMaterial(lampClearMaterial);
+            ApplyMultiDimensionLampValue(waitingLampValue);
         }
 
         public void SetWaiting()
@@ -124,6 +143,7 @@ namespace WhoWiredThis.Puzzles.Common
             currentState = DisplayState.Waiting;
             WriteBody(waitingText);
             ApplyLampMaterial(lampWaitingMaterial);
+            ApplyMultiDimensionLampValue(waitingLampValue);
         }
 
         public void SetDiagnosticResult(
@@ -157,6 +177,7 @@ namespace WhoWiredThis.Puzzles.Common
 
             WriteBody(sb.ToString());
             ApplyLampMaterial(lampResultMaterial);
+            ApplyMultiDimensionLampValue(errorLampValue);
         }
 
         public void SetSuccess(string message)
@@ -164,6 +185,7 @@ namespace WhoWiredThis.Puzzles.Common
             currentState = DisplayState.Success;
             WriteBody(message ?? string.Empty);
             ApplyLampMaterial(lampSuccessMaterial);
+            ApplyMultiDimensionLampValue(successLampValue);
         }
 
         /// <summary>Body-only failed-attempt readout (no metric rows). Uses result lamp styling.</summary>
@@ -172,6 +194,7 @@ namespace WhoWiredThis.Puzzles.Common
             currentState = DisplayState.Result;
             WriteBody(message ?? string.Empty);
             ApplyLampMaterial(lampResultMaterial);
+            ApplyMultiDimensionLampValue(errorLampValue);
         }
 
         public void SetError(string message)
@@ -179,6 +202,7 @@ namespace WhoWiredThis.Puzzles.Common
             currentState = DisplayState.Error;
             WriteBody(message ?? string.Empty);
             ApplyLampMaterial(lampErrorMaterial);
+            ApplyMultiDimensionLampValue(errorLampValue);
         }
 
         /// <summary>
@@ -262,6 +286,50 @@ namespace WhoWiredThis.Puzzles.Common
             }
 
             statusLampRenderer.sharedMaterial = material;
+        }
+
+        private void ApplyMultiDimensionLampValue(int configuredValue)
+        {
+            if (multiDimensionLamps == null || multiDimensionLamps.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < multiDimensionLamps.Length; i++)
+            {
+                MultiDimension lamp = multiDimensionLamps[i];
+                if (lamp == null)
+                {
+                    LogRuntimeWarning($"MultiDimension lamp slot {i} is not assigned.");
+                    continue;
+                }
+
+                int subjectCount = lamp.SubjectCount;
+                if (subjectCount <= 0)
+                {
+                    LogRuntimeWarning($"MultiDimension lamp '{lamp.name}' has no configured subjects.");
+                    continue;
+                }
+
+                int value = Mathf.Clamp(configuredValue, 0, subjectCount - 1);
+                if (value != configuredValue)
+                {
+                    LogRuntimeWarning(
+                        $"MultiDimension lamp value {configuredValue} is outside '{lamp.name}' subject range 0..{subjectCount - 1}; using {value}.");
+                }
+
+                lamp.SetSelection(multiDimensionLampVisibleToPlayer, value);
+            }
+        }
+
+        private void LogRuntimeWarning(string message)
+        {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            Debug.LogWarning($"[{nameof(DiagnosticDisplayController)}] {message}", this);
         }
     }
 }

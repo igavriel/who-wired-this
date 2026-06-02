@@ -34,6 +34,8 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void OnEnable()
         {
+            ResolveDiagnosticDisplayIfMissing();
+
             if (puzzleManager != null)
             {
                 puzzleManager.OnAttemptSubmitted += HandleAttemptSubmitted;
@@ -75,6 +77,8 @@ namespace WhoWiredThis.Puzzles.Common
 
         private void Start()
         {
+            ResolveDiagnosticDisplayIfMissing();
+
             if (updateContinuously || diagnosticDisplay == null || puzzleManager == null || puzzleManager.Solved)
             {
                 return;
@@ -152,6 +156,16 @@ namespace WhoWiredThis.Puzzles.Common
                 metric2Label, aligned, total,
                 clue,
                 flavor);
+        }
+
+        private void ResolveDiagnosticDisplayIfMissing()
+        {
+            if (diagnosticDisplay != null)
+            {
+                return;
+            }
+
+            diagnosticDisplay = GetComponentInChildren<DiagnosticDisplayController>(true);
         }
 
         private string BuildMessage(int recognized, int aligned, int total)
