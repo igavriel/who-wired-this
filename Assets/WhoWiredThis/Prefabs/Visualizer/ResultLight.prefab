@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2219883896783194079}
   - component: {fileID: 397686071515322535}
+  - component: {fileID: 5829473610284756103}
   m_Layer: 0
   m_Name: ResultLight
   m_TagString: Untagged
@@ -59,6 +60,23 @@ MonoBehaviour:
   visibleToPlayer: 0
   activeSubjectIndex: 0
   interactionLocked: 0
+--- !u!114 &5829473610284756103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706491683034416665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e3c91f4b2d48e6a9f1058273645b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ResultLightIndicatorPulseController
+  multiDimension: {fileID: 397686071515322535}
+  indicatorChildName: IndicatorLight
+  minIntensity: 0
+  maxIntensity: 0.1
+  pulseSpeed: 50
 --- !u!1 &2289547159780364257
 GameObject:
   m_ObjectHideFlags: 0

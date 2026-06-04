@@ -119,11 +119,61 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5068664476993977950}
   - {fileID: 3015296508901089125}
   - {fileID: 5197724099451885308}
   - {fileID: 347494053625495626}
   m_Father: {fileID: 8807706559440439691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2909165989101398369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5068664476993977950}
+  - component: {fileID: 8586617157140211498}
+  m_Layer: 0
+  m_Name: Bridge_lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5068664476993977950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2909165989101398369}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071065, z: -0, w: 0.7071072}
+  m_LocalPosition: {x: 4, y: -1.619, z: -0.27000356}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2856139740993763288}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8586617157140211498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2909165989101398369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68becaa421100497cacf12735d136875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SplitMetricResultLightsController
+  puzzleManager: {fileID: 0}
+  settings: {fileID: 0}
+  places: {fileID: 0}
+  updateContinuously: 0
+  visibleToPlayer: 0
 --- !u!1 &3083197411979269766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,6 +1531,10 @@ PrefabInstance:
         NEXT ATTEMPT...'
       objectReference: {fileID: 0}
     - target: {fileID: 553826040521772839, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
+      propertyPath: lampWaitingMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
+    - target: {fileID: 553826040521772839, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: multiDimensionLamps.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1514,11 +1568,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1037564223110396989, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.551
+      value: 0.5404
       objectReference: {fileID: 0}
     - target: {fileID: 1037564223110396989, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.212
+      value: 0.1955
       objectReference: {fileID: 0}
     - target: {fileID: 1037564223110396989, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_LocalPosition.z

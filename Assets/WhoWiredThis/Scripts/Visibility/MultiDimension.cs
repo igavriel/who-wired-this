@@ -319,6 +319,16 @@ namespace WhoWiredThis.Visibility
             return generalObject != null && go == generalObject;
         }
 
+        /// <summary>
+        /// Returns the subject root <see cref="GameObject"/> at <paramref name="index"/> (RED/ORNG/GREN slot).
+        /// Does not include <see cref="generalObject"/>.
+        /// </summary>
+        public bool TryGetSubjectRoot(int index, out GameObject subjectRoot)
+        {
+            subjectRoot = GetSubjectGameObject(index);
+            return subjectRoot != null;
+        }
+
         private GameObject GetSubjectGameObject(int index)
         {
             if (subjects == null || index < 0 || index >= subjects.Length)
