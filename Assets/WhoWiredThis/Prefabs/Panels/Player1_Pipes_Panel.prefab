@@ -1402,9 +1402,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7673090260427144774}
     m_Modifications:
+    - target: {fileID: 285417451051457053, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1225646355106314956, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: m_Name
       value: Fader_4State-A
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134394144442331672, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3662892579327658332, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: m_LocalScale.x
@@ -1459,6 +1467,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7082498722753989327, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082498722753989327, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: subjects.Array.data[0].displayName
       value: UP
       objectReference: {fileID: 0}
@@ -1473,6 +1485,10 @@ PrefabInstance:
     - target: {fileID: 7082498722753989327, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: subjects.Array.data[3].displayName
       value: RIGHT
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196018805964165767, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1657,6 +1673,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7673090260427144774}
     m_Modifications:
+    - target: {fileID: 84691345289257304, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 150085697966601777, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1037717753844814389, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -1725,6 +1749,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValveV2_4State-A
       objectReference: {fileID: 0}
+    - target: {fileID: 4047842689887075894, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4129794028597920651, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719029305550017795, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4920179036940600421, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
       propertyPath: m_VersionIndex
       value: 5478
@@ -1733,9 +1769,37 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 343
       objectReference: {fileID: 0}
+    - target: {fileID: 6230804386877090190, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6605357939317759929, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6636225008800592093, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
       propertyPath: m_VersionIndex
       value: 947
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766963888370802494, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223080567457070557, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427063367567241604, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535501722763335251, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632040653319306055, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2593,6 +2657,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7673090260427144774}
     m_Modifications:
+    - target: {fileID: 827100422764341921, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1037717753844814389, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -2653,6 +2721,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 1124
       objectReference: {fileID: 0}
+    - target: {fileID: 2268973330374650899, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2821560125532818445, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_VersionIndex
       value: 391
@@ -2661,13 +2733,57 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValveV1_4State-A
       objectReference: {fileID: 0}
+    - target: {fileID: 3285455948319104607, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5349422759051085687, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5508566182376834095, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5967356641578366653, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_VersionIndex
       value: 612
       objectReference: {fileID: 0}
+    - target: {fileID: 6400380982937929839, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6464591733934888104, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595748873958840349, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767263505277453383, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7631339408269315660, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_VersionIndex
       value: 391
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535501722763335251, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579684350748822971, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8658919322417377377, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908991585840591705, guid: ba44a58e96571486382200ae54961e4d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

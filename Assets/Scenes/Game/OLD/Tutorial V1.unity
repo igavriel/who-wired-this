@@ -1797,6 +1797,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 706340101}
     m_Modifications:
+    - target: {fileID: 3213163749898032725, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: visibleToPlayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933704252449270742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6988646033868771243, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 66133058}
+    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7249757081637817953, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062444268284184317, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
+    - target: {fileID: 8267274584541286520, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
     - target: {fileID: 676625464932066012, guid: 5331db6b76086427bb7f6957cfa9b552, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -1877,38 +1909,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 3213163749898032725, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: visibleToPlayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5933704252449270742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988646033868771243, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 66133058}
-    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7249757081637817953, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8062444268284184317, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
-    - target: {fileID: 8267274584541286520, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2143,6 +2143,7 @@ MonoBehaviour:
   frameFillPercent: 54
   boardRenderer: {fileID: 685025537}
   framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: Left Knob
@@ -2286,6 +2287,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1965086817}
     m_Modifications:
+    - target: {fileID: 3213163749898032725, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5933704252449270742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6988646033868771243, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 1594816477}
+    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7249757081637817953, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8062444268284184317, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
+    - target: {fileID: 8267274584541286520, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
     - target: {fileID: 676625464932066012, guid: 5331db6b76086427bb7f6957cfa9b552, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2366,38 +2399,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 3213163749898032725, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: visibleToPlayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5933704252449270742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6988646033868771243, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 1594816477}
-    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7119697095550625742, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7249757081637817953, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8062444268284184317, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
-    - target: {fileID: 8267274584541286520, guid: 64fd3ce83c54d446ab573a94fd98efaf, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4945,7 +4946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a89a53d646140439bad42506722a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap
-  enterFocusOnStartup: 1
+  enterFocusOnStartup: 0
   playerAFocus: {fileID: 3073909790674315973}
   playerAPanel: {fileID: 2129372216}
   playerBFocus: {fileID: 7069613721803897088}
@@ -5208,6 +5209,7 @@ MonoBehaviour:
   frameFillPercent: 54
   boardRenderer: {fileID: 2129372217}
   framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: Left Knob
