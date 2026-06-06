@@ -2893,33 +2893,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 596226952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3a8c1d24e5b4a7f9d0e1b2c3a4f5b6c, type: 3}
+  m_Script: {fileID: 11500000, guid: c8d4e2f1a6b74329e0f1d2c3b4a5e6f7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SubmittedCombinationVisualizer
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SubmittedCombinationMultiDimensionBridge
   puzzleManager: {fileID: 2097925730}
-  visualRoot: {fileID: 2126403150}
+  visibleToPlayer: 2
   slots:
   - label: VALVE
     sourceInput: {fileID: 1610854067}
-    stateVisuals:
-    - {fileID: 290562944}
-    - {fileID: 290562943}
-    - {fileID: 290562942}
-    - {fileID: 290562941}
+    display: {fileID: 990011010}
   - label: PRESS
     sourceInput: {fileID: 5627932}
-    stateVisuals:
-    - {fileID: 691636542}
-    - {fileID: 691636541}
-    - {fileID: 691636540}
-    - {fileID: 691636539}
+    display: {fileID: 990011011}
   - label: FLOW
     sourceInput: {fileID: 1866243376}
-    stateVisuals:
-    - {fileID: 1316914443}
-    - {fileID: 1316914442}
-    - {fileID: 1316914441}
-    - {fileID: 1316914440}
+    display: {fileID: 990011012}
 --- !u!114 &990012004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2990,33 +2978,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 677608031}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3a8c1d24e5b4a7f9d0e1b2c3a4f5b6c, type: 3}
+  m_Script: {fileID: 11500000, guid: c8d4e2f1a6b74329e0f1d2c3b4a5e6f7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SubmittedCombinationVisualizer
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SubmittedCombinationMultiDimensionBridge
   puzzleManager: {fileID: 1340959902}
-  visualRoot: {fileID: 333328218}
+  visibleToPlayer: 1
   slots:
   - label: GATE
     sourceInput: {fileID: 1778961034}
-    stateVisuals:
-    - {fileID: 507713460}
-    - {fileID: 1225964956}
-    - {fileID: 1407024585}
-    - {fileID: 1325970370}
+    display: {fileID: 990012010}
   - label: PUMP
     sourceInput: {fileID: 1119109209}
-    stateVisuals:
-    - {fileID: 2126449844}
-    - {fileID: 1959043071}
-    - {fileID: 115780976}
-    - {fileID: 248015945}
+    display: {fileID: 990012011}
   - label: ROUTE
     sourceInput: {fileID: 1903414969}
-    stateVisuals:
-    - {fileID: 48843468}
-    - {fileID: 447827340}
-    - {fileID: 151303751}
-    - {fileID: 1079708389}
+    display: {fileID: 990012012}
 --- !u!4 &993040732 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5078055498046448028, guid: 201c845d0ae704290ba448ca64a00623, type: 3}
@@ -6948,3 +6924,70 @@ SceneRoots:
   - {fileID: 596226953}
   - {fileID: 677608034}
   - {fileID: 1446898237}
+--- !u!114 &990011010 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7386320611794802688, guid: 7c8ac65c14e2442e4b1d453a7040f785, type: 3}
+  m_PrefabInstance: {fileID: 290562939}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &990011011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+  m_PrefabInstance: {fileID: 691636537}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &990011012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 353453428227278314, guid: 201c845d0ae704290ba448ca64a00623, type: 3}
+  m_PrefabInstance: {fileID: 1316914438}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &990012010 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7386320611794802688, guid: 7c8ac65c14e2442e4b1d453a7040f785, type: 3}
+  m_PrefabInstance: {fileID: 7198449794264060863}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &990012011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6639441798335494927, guid: 691409db3a8a4489894135497dd5fcdb, type: 3}
+  m_PrefabInstance: {fileID: 4689034340597607653}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &990012012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 353453428227278314, guid: 201c845d0ae704290ba448ca64a00623, type: 3}
+  m_PrefabInstance: {fileID: 3411147829980190447}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+

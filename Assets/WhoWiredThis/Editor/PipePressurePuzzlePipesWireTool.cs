@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -21,11 +22,19 @@ namespace WhoWiredThis.Editor
         private const string ComponentDiagnosticMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Component Diagnostic (Phase 3)";
         private const string ResultVisualizerMenuPath =
-            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Result Visualizer (Phase 4)";
+            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Result Display Bridge (Phase 4)";
         private const string RandomSolutionMenuPath =
             "Who Wired This/Pipe Pressure/Wire Random Solution Assigner (Phase 5)";
 
-        private static readonly Color NeutralVisualColor = new Color(0.55f, 0.58f, 0.62f, 1f);
+        private const string ActiveScenePath = "Assets/Scenes/Game/Puzzle Pipes.unity";
+        private const string V1ScenePath = "Assets/Scenes/Game/OLD/Puzzle Pipes V1.unity";
+
+        private const string ValveDisplayPrefabPath =
+            "Assets/WhoWiredThis/Prefabs/MultiDimension/MultiDimension_ValveV2_4State.prefab";
+        private const string FaderDisplayPrefabPath =
+            "Assets/WhoWiredThis/Prefabs/MultiDimension/MultiDimension_Fader_4State.prefab";
+        private const string FlowDisplayPrefabPath =
+            "Assets/WhoWiredThis/Prefabs/MultiDimension/MultiDimension_ButtonText_4State.prefab";
 
         /// <summary>INPUT column width for three 5-char tokens plus two spaces (17).</summary>
         public const string PuzzlePipesHistoryHeaderLine = " # | SIDE | INPUT             | STATUS";
@@ -154,47 +163,85 @@ namespace WhoWiredThis.Editor
             return so.FindProperty("diagnosticDisplay").objectReferenceValue as DiagnosticDisplayController;
         }
 
+        public static void WireResultVisualizerBatch()
+        {
+            int issues = 0;
+            issues += WireResultVisualizerInScene(ActiveScenePath);
+            issues += WireResultVisualizerInScene(V1ScenePath);
+            if (issues > 0)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzlePipesWireTool] Batch Phase 4 wire finished with {issues} issue(s).");
+                EditorApplication.Exit(1);
+                return;
+            }
+
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Batch Phase 4 result display bridge wire complete.");
+            EditorApplication.Exit(0);
+        }
+
         [MenuItem(ResultVisualizerMenuPath)]
         public static void WireResultVisualizer()
         {
-            WireResultVisualizerSide(
+            if (WireResultVisualizerActiveScene() > 0)
+            {
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] Phase 4 wire finished with issue(s). See console.");
+                return;
+            }
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 4 result display bridge on Puzzle Pipes.");
+        }
+
+        private static int WireResultVisualizerInScene(string scenePath)
+        {
+            if (!System.IO.File.Exists(scenePath))
+            {
+                Debug.LogError($"[PipePressurePuzzlePipesWireTool] Scene not found: '{scenePath}'.");
+                return 1;
+            }
+
+            EditorSceneManager.OpenScene(scenePath);
+            int issues = WireResultVisualizerActiveScene();
+            if (issues == 0)
+            {
+                EditorSceneManager.SaveOpenScenes();
+            }
+
+            return issues;
+        }
+
+        private static int WireResultVisualizerActiveScene()
+        {
+            int issues = 0;
+            issues += WireResultVisualizerSide(
                 "Player1_Panel",
                 "Player2_Panel",
                 new[] { "VALVE", "PRESS", "FLOW" },
-                new[] { "ValveGroup", "PressureGroup", "FlowGroup" },
-                VisualRigLayout.Blue);
+                AllowedPlayerTag.Player_B);
 
-            WireResultVisualizerSide(
+            issues += WireResultVisualizerSide(
                 "Player2_Panel",
                 "Player1_Panel",
                 new[] { "GATE", "PUMP", "ROUTE" },
-                new[] { "GateGroup", "PumpGroup", "RouteGroup" },
-                VisualRigLayout.Red);
-
-            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 4 result visualizer on Puzzle Pipes.");
+                AllowedPlayerTag.Player_A);
+            return issues;
         }
 
-        private enum VisualRigLayout
-        {
-            Blue,
-            Red
-        }
-
-        private static void WireResultVisualizerSide(
+        private static int WireResultVisualizerSide(
             string operatorPanelName,
             string partnerPanelName,
             string[] inputNames,
-            string[] groupNames,
-            VisualRigLayout layout)
+            AllowedPlayerTag visibleToPlayer)
         {
+            int issues = 0;
             GameObject operatorPanel = GameObject.Find(operatorPanelName);
             GameObject partnerPanel = GameObject.Find(partnerPanelName);
             if (operatorPanel == null || partnerPanel == null)
             {
                 Debug.LogError(
                     $"[PipePressurePuzzlePipesWireTool] Missing panel '{operatorPanelName}' or '{partnerPanelName}'.");
-                return;
+                return 1;
             }
 
             DiagnosticDisplayController partnerDisplay =
@@ -203,57 +250,161 @@ namespace WhoWiredThis.Editor
             {
                 Debug.LogError(
                     $"[PipePressurePuzzlePipesWireTool] No DiagnosticDisplayController under '{partnerPanelName}'.");
-                return;
+                return 1;
             }
 
             Transform rigRoot = EnsureResultVisualRig(partnerDisplay.transform);
-            var dimensions = new MultiDimension[inputNames.Length];
-            var stateVisualArrays = new GameObject[inputNames.Length][];
+            RemoveLegacyResultVisualGroups(rigRoot);
 
-            for (int i = 0; i < inputNames.Length; i++)
+            MultiDimension[] displays = EnsureDisplayMultiDimensions(rigRoot, inputNames.Length);
+            if (displays.Length < inputNames.Length)
             {
-                dimensions[i] = GameObject.Find($"{operatorPanelName}/Buttons/{inputNames[i]}")
-                    ?.GetComponent<MultiDimension>();
-                Transform groupRoot = EnsureChild(rigRoot, groupNames[i]);
-                stateVisualArrays[i] = BuildStateVisuals(groupRoot, layout, i);
+                Debug.LogError(
+                    $"[PipePressurePuzzlePipesWireTool] Expected {inputNames.Length} display MultiDimensions under '{rigRoot.name}' on '{partnerPanelName}'.");
+                issues++;
             }
 
-            SubmittedCombinationVisualizer visualizer = operatorPanel.GetComponent<SubmittedCombinationVisualizer>();
-            if (visualizer == null)
+            RemoveSubmittedCombinationVisualizer(operatorPanel);
+
+            SubmittedCombinationMultiDimensionBridge bridge =
+                operatorPanel.GetComponent<SubmittedCombinationMultiDimensionBridge>();
+            if (bridge == null)
             {
-                visualizer = operatorPanel.AddComponent<SubmittedCombinationVisualizer>();
+                bridge = Undo.AddComponent<SubmittedCombinationMultiDimensionBridge>(operatorPanel);
             }
 
             MultiDimensionPuzzleManager puzzleManager = GameObject.Find($"{operatorPanelName}/PuzzleManager")
                 ?.GetComponent<MultiDimensionPuzzleManager>();
 
-            SerializedObject vizSo = new SerializedObject(visualizer);
-            vizSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
-            vizSo.FindProperty("visualRoot").objectReferenceValue = rigRoot;
+            SerializedObject bridgeSo = new SerializedObject(bridge);
+            bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
+            bridgeSo.FindProperty("visibleToPlayer").enumValueIndex = (int)visibleToPlayer;
 
-            SerializedProperty slotsProp = vizSo.FindProperty("slots");
+            SerializedProperty slotsProp = bridgeSo.FindProperty("slots");
             slotsProp.arraySize = inputNames.Length;
             for (int i = 0; i < inputNames.Length; i++)
             {
-                SerializedProperty slot = slotsProp.GetArrayElementAtIndex(i);
-                slot.FindPropertyRelative("sourceInput").objectReferenceValue = dimensions[i];
-                slot.FindPropertyRelative("label").stringValue = inputNames[i];
+                MultiDimension sourceInput = GameObject.Find($"{operatorPanelName}/Buttons/{inputNames[i]}")
+                    ?.GetComponent<MultiDimension>();
 
-                SerializedProperty visuals = slot.FindPropertyRelative("stateVisuals");
-                GameObject[] states = stateVisualArrays[i];
-                visuals.arraySize = states.Length;
-                for (int v = 0; v < states.Length; v++)
+                SerializedProperty slot = slotsProp.GetArrayElementAtIndex(i);
+                slot.FindPropertyRelative("label").stringValue = inputNames[i];
+                slot.FindPropertyRelative("sourceInput").objectReferenceValue = sourceInput;
+                slot.FindPropertyRelative("display").objectReferenceValue =
+                    i < displays.Length ? displays[i] : null;
+
+                if (sourceInput == null || (i < displays.Length && displays[i] == null))
                 {
-                    visuals.GetArrayElementAtIndex(v).objectReferenceValue = states[v];
+                    Debug.LogError(
+                        $"[PipePressurePuzzlePipesWireTool] Missing source or display for slot '{inputNames[i]}' on '{operatorPanelName}'.");
+                    issues++;
                 }
             }
 
-            vizSo.ApplyModifiedPropertiesWithoutUndo();
+            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
 
-            for (int i = 0; i < inputNames.Length; i++)
+            int[] defaultIndices = new int[inputNames.Length];
+            bridge.ApplySubmittedIndices(defaultIndices);
+            return issues;
+        }
+
+        private static void RemoveSubmittedCombinationVisualizer(GameObject operatorPanel)
+        {
+            SubmittedCombinationVisualizer legacy = operatorPanel.GetComponent<SubmittedCombinationVisualizer>();
+            if (legacy != null)
             {
-                SetSlotActive(stateVisualArrays[i], 0);
+                Undo.DestroyObjectImmediate(legacy);
             }
+        }
+
+        private static void RemoveLegacyResultVisualGroups(Transform rigRoot)
+        {
+            for (int i = rigRoot.childCount - 1; i >= 0; i--)
+            {
+                Transform child = rigRoot.GetChild(i);
+                if (child.GetComponentInChildren<MultiDimension>(true) != null)
+                {
+                    continue;
+                }
+
+                if (child.name.EndsWith("Group", System.StringComparison.Ordinal) ||
+                    child.name.StartsWith("State", System.StringComparison.Ordinal))
+                {
+                    Undo.DestroyObjectImmediate(child.gameObject);
+                }
+            }
+        }
+
+        private static MultiDimension[] EnsureDisplayMultiDimensions(Transform rigRoot, int expectedCount)
+        {
+            var displays = CollectDisplayMultiDimensions(rigRoot);
+            if (displays.Count >= expectedCount)
+            {
+                return displays.GetRange(0, expectedCount).ToArray();
+            }
+
+            string[] prefabPaths =
+            {
+                ValveDisplayPrefabPath,
+                FaderDisplayPrefabPath,
+                FlowDisplayPrefabPath
+            };
+
+            float[] xOffsets = { -0.45f, 0f, 0.45f };
+            for (int i = displays.Count; i < expectedCount; i++)
+            {
+                string prefabPath = i < prefabPaths.Length ? prefabPaths[i] : FlowDisplayPrefabPath;
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+                if (prefab == null)
+                {
+                    Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing display prefab at '{prefabPath}'.");
+                    continue;
+                }
+
+                GameObject instance = PrefabUtility.InstantiatePrefab(prefab, rigRoot) as GameObject;
+                if (instance == null)
+                {
+                    continue;
+                }
+
+                Undo.RegisterCreatedObjectUndo(instance, "Create result display MultiDimension");
+                Transform t = instance.transform;
+                t.localRotation = Quaternion.identity;
+                t.localScale = Vector3.one;
+                t.localPosition = new Vector3(i < xOffsets.Length ? xOffsets[i] : 0f, 0f, 0f);
+
+                MultiDimension md = instance.GetComponent<MultiDimension>() ??
+                                    instance.GetComponentInChildren<MultiDimension>(true);
+                if (md != null)
+                {
+                    displays.Add(md);
+                }
+            }
+
+            return displays.Count >= expectedCount
+                ? displays.GetRange(0, expectedCount).ToArray()
+                : displays.ToArray();
+        }
+
+        private static List<MultiDimension> CollectDisplayMultiDimensions(Transform rigRoot)
+        {
+            var displays = new List<MultiDimension>();
+            for (int i = 0; i < rigRoot.childCount; i++)
+            {
+                Transform child = rigRoot.GetChild(i);
+                MultiDimension md = child.GetComponent<MultiDimension>();
+                if (md == null)
+                {
+                    md = child.GetComponentInChildren<MultiDimension>(true);
+                }
+
+                if (md != null)
+                {
+                    displays.Add(md);
+                }
+            }
+
+            return displays;
         }
 
         private static Transform EnsureResultVisualRig(Transform diagnosticRoot)
@@ -272,118 +423,6 @@ namespace WhoWiredThis.Editor
             root.localRotation = Quaternion.identity;
             root.localScale = Vector3.one;
             return root;
-        }
-
-        private static Transform EnsureChild(Transform parent, string childName)
-        {
-            Transform child = parent.Find(childName);
-            if (child != null)
-            {
-                return child;
-            }
-
-            var go = new GameObject(childName);
-            Undo.RegisterCreatedObjectUndo(go, "Create visual group");
-            child = go.transform;
-            child.SetParent(parent, false);
-            child.localRotation = Quaternion.identity;
-            child.localScale = Vector3.one;
-            return child;
-        }
-
-        private static GameObject[] BuildStateVisuals(Transform groupRoot, VisualRigLayout layout, int groupIndex)
-        {
-            var states = new GameObject[4];
-            for (int s = 0; s < 4; s++)
-            {
-                states[s] = CreateNeutralPrimitive(groupRoot, $"State{s}", layout, groupIndex, s);
-            }
-
-            return states;
-        }
-
-        private static GameObject CreateNeutralPrimitive(
-            Transform parent,
-            string name,
-            VisualRigLayout layout,
-            int groupIndex,
-            int stateIndex)
-        {
-            PrimitiveType primitive = layout == VisualRigLayout.Blue && groupIndex == 2
-                ? PrimitiveType.Cylinder
-                : PrimitiveType.Cube;
-
-            GameObject go = GameObject.CreatePrimitive(primitive);
-            Undo.RegisterCreatedObjectUndo(go, "Create visual state");
-            go.name = name;
-            Transform t = go.transform;
-            t.SetParent(parent, false);
-
-            Collider col = go.GetComponent<Collider>();
-            if (col != null)
-            {
-                Undo.DestroyObjectImmediate(col);
-            }
-
-            MeshRenderer renderer = go.GetComponent<MeshRenderer>();
-            if (renderer != null)
-            {
-                Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                mat.color = NeutralVisualColor;
-                renderer.sharedMaterial = mat;
-            }
-
-            ApplyVisualLayout(t, layout, groupIndex, stateIndex);
-            go.SetActive(false);
-            return go;
-        }
-
-        private static void ApplyVisualLayout(Transform t, VisualRigLayout layout, int groupIndex, int stateIndex)
-        {
-            float xOffset = groupIndex * 0.45f - 0.45f;
-
-            if (groupIndex == 0)
-            {
-                float open = 0.15f + stateIndex * 0.28f;
-                t.localPosition = new Vector3(xOffset, 0f, 0f);
-                t.localScale = new Vector3(open, 0.35f, 0.35f);
-                return;
-            }
-
-            if (groupIndex == 1)
-            {
-                float height = 0.2f + stateIndex * 0.25f;
-                t.localPosition = new Vector3(xOffset, height * 0.5f, 0f);
-                t.localScale = new Vector3(0.25f, height, 0.25f);
-                return;
-            }
-
-            float routeX = (stateIndex - 1.5f) * 0.22f;
-            t.localPosition = new Vector3(xOffset + routeX, 0.1f, 0f);
-            if (stateIndex == 3)
-            {
-                t.localScale = new Vector3(0.35f, 0.08f, 0.35f);
-            }
-            else
-            {
-                t.localScale = new Vector3(0.12f, 0.35f, 0.35f);
-            }
-        }
-
-        private static void SetSlotActive(GameObject[] stateVisuals, int activeIndex)
-        {
-            if (stateVisuals == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < stateVisuals.Length; i++)
-            {
-                if (stateVisuals[i] != null)
-                {
-                    stateVisuals[i].SetActive(i == activeIndex);
-                }
-            }
         }
 
         [MenuItem(MenuPath)]

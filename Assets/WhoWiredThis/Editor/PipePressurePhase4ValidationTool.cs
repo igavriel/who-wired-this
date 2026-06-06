@@ -2,6 +2,7 @@
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using WhoWiredThis.Enums;
 using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Visibility;
 
@@ -13,6 +14,9 @@ namespace WhoWiredThis.Editor
         private const string McpMenuRoot = "Who Wired This/Pipe Pressure/MCP/";
         private const string MenuPath = ValidationMenuRoot + "1. Phase 4 (Puzzle Pipes)";
         private const string McpMenuPath = McpMenuRoot + "1. Phase 4 (Puzzle Pipes)";
+
+        private const string TutorialScenePath = "Assets/Scenes/Game/Tutorial.unity";
+        private const string PuzzlePipesScenePath = "Assets/Scenes/Game/Puzzle Pipes.unity";
 
         [MenuItem(MenuPath)]
         public static void Validate()
@@ -35,19 +39,22 @@ namespace WhoWiredThis.Editor
             var sb = new StringBuilder();
             int issues = 0;
 
-            issues += ValidateVisualizerSide(
+            issues += ValidateBridgeSide(
                 sb,
                 "Player1_Panel",
                 "Player2_Panel/DiagnosticPanel",
-                new[] { "VALVE", "PRESS", "FLOW" });
+                new[] { "VALVE", "PRESS", "FLOW" },
+                AllowedPlayerTag.Player_B);
 
-            issues += ValidateVisualizerSide(
+            issues += ValidateBridgeSide(
                 sb,
                 "Player2_Panel",
                 "Player1_Panel/DiagnosticPanel",
-                new[] { "GATE", "PUMP", "ROUTE" });
+                new[] { "GATE", "PUMP", "ROUTE" },
+                AllowedPlayerTag.Player_A);
 
-            issues += ValidateTutorialSceneHasNoVisualizer(sb);
+            issues += ValidateSceneHasNoVisualizer(sb, TutorialScenePath, "Tutorial.unity");
+            issues += ValidateSceneHasNoVisualizer(sb, PuzzlePipesScenePath, "Puzzle Pipes.unity");
 
             sb.AppendLine(issues == 0
                 ? "=== Phase 4 validation: ALL CHECKS PASSED ==="
@@ -57,11 +64,12 @@ namespace WhoWiredThis.Editor
             return issues;
         }
 
-        private static int ValidateVisualizerSide(
+        private static int ValidateBridgeSide(
             StringBuilder sb,
             string operatorPanelName,
             string partnerDiagnosticPath,
-            string[] expectedInputLabels)
+            string[] expectedInputLabels,
+            AllowedPlayerTag expectedVisibleToPlayer)
         {
             int issues = 0;
             sb.AppendLine($"--- {operatorPanelName} → {partnerDiagnosticPath} ---");
@@ -73,22 +81,41 @@ namespace WhoWiredThis.Editor
                 return 1;
             }
 
-            SubmittedCombinationVisualizer visualizer = operatorPanel.GetComponent<SubmittedCombinationVisualizer>();
-            if (visualizer == null)
+            if (operatorPanel.GetComponent<SubmittedCombinationVisualizer>() != null)
             {
-                sb.AppendLine($"FAIL: No SubmittedCombinationVisualizer on '{operatorPanelName}'");
-                return 1;
+                sb.AppendLine($"FAIL: Legacy SubmittedCombinationVisualizer still on '{operatorPanelName}'");
+                issues++;
             }
 
-            SerializedObject vizSo = new SerializedObject(visualizer);
-            Transform visualRoot = vizSo.FindProperty("visualRoot").objectReferenceValue as Transform;
-            MultiDimensionPuzzleManager manager = vizSo.FindProperty("puzzleManager").objectReferenceValue
+            SubmittedCombinationMultiDimensionBridge bridge =
+                operatorPanel.GetComponent<SubmittedCombinationMultiDimensionBridge>();
+            if (bridge == null)
+            {
+                sb.AppendLine($"FAIL: No SubmittedCombinationMultiDimensionBridge on '{operatorPanelName}'");
+                return issues + 1;
+            }
+
+            SerializedObject bridgeSo = new SerializedObject(bridge);
+            MultiDimensionPuzzleManager manager = bridgeSo.FindProperty("puzzleManager").objectReferenceValue
                 as MultiDimensionPuzzleManager;
+            AllowedPlayerTag visibleToPlayer =
+                (AllowedPlayerTag)bridgeSo.FindProperty("visibleToPlayer").enumValueIndex;
 
             if (manager == null)
             {
                 sb.AppendLine("FAIL: puzzleManager not assigned");
                 issues++;
+            }
+
+            if (visibleToPlayer != expectedVisibleToPlayer)
+            {
+                sb.AppendLine(
+                    $"FAIL: visibleToPlayer={visibleToPlayer} expected {expectedVisibleToPlayer}");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine($"PASS: visibleToPlayer={visibleToPlayer}");
             }
 
             GameObject partnerDiag = GameObject.Find(partnerDiagnosticPath);
@@ -97,24 +124,15 @@ namespace WhoWiredThis.Editor
                 sb.AppendLine($"FAIL: Missing '{partnerDiagnosticPath}'");
                 issues++;
             }
-            else if (visualRoot == null || !visualRoot.IsChildOf(partnerDiag.transform))
-            {
-                sb.AppendLine("FAIL: visualRoot is not under partner DiagnosticPanel");
-                issues++;
-            }
-            else
-            {
-                sb.AppendLine($"PASS: visualRoot '{visualRoot.name}' on partner DiagnosticPanel");
-            }
 
-            SerializedProperty slots = vizSo.FindProperty("slots");
+            SerializedProperty slots = bridgeSo.FindProperty("slots");
             if (slots.arraySize != expectedInputLabels.Length)
             {
                 sb.AppendLine($"FAIL: slots count {slots.arraySize} expected {expectedInputLabels.Length}");
                 issues++;
             }
 
-            if (visualRoot == null || manager == null || slots.arraySize != expectedInputLabels.Length)
+            if (manager == null || slots.arraySize != expectedInputLabels.Length)
             {
                 return issues;
             }
@@ -133,11 +151,19 @@ namespace WhoWiredThis.Editor
                 string label = slot.FindPropertyRelative("label").stringValue;
                 MultiDimension sourceInput = slot.FindPropertyRelative("sourceInput").objectReferenceValue
                     as MultiDimension;
-                SerializedProperty visuals = slot.FindPropertyRelative("stateVisuals");
+                MultiDimension display = slot.FindPropertyRelative("display").objectReferenceValue
+                    as MultiDimension;
 
                 if (sourceInput == null)
                 {
                     sb.AppendLine($"FAIL: slot '{expectedLabel}' sourceInput not assigned");
+                    issues++;
+                    continue;
+                }
+
+                if (display == null)
+                {
+                    sb.AppendLine($"FAIL: slot '{expectedLabel}' display not assigned");
                     issues++;
                     continue;
                 }
@@ -154,95 +180,58 @@ namespace WhoWiredThis.Editor
                     sb.AppendLine($"PASS: slot {slotIndex} '{expectedLabel}' wired to {sourceName}");
                 }
 
-                int expectedStates = sourceInput.SubjectCount;
-                if (visuals.arraySize != expectedStates)
+                if (partnerDiag != null &&
+                    !display.transform.IsChildOf(partnerDiag.transform))
                 {
                     sb.AppendLine(
-                        $"FAIL: slot '{expectedLabel}' stateVisuals={visuals.arraySize} expected {expectedStates}");
+                        $"FAIL: slot '{expectedLabel}' display '{display.name}' is not under partner DiagnosticPanel");
                     issues++;
-                    continue;
                 }
 
-                for (int v = 0; v < visuals.arraySize; v++)
-                {
-                    if (visuals.GetArrayElementAtIndex(v).objectReferenceValue == null)
-                    {
-                        sb.AppendLine($"FAIL: slot '{expectedLabel}' stateVisuals[{v}] is null");
-                        issues++;
-                    }
-                }
-
-                int slotIssues = ValidateSlotStateMapping(
-                    sb, visualizer, slotIndex, expectedLabel, visuals, expectedInputLabels.Length);
+                int slotIssues = ValidateSlotDisplayMapping(
+                    sb, bridge, slotIndex, expectedLabel, display, expectedInputLabels.Length);
                 if (slotIssues == 0)
                 {
-                    sb.AppendLine($"PASS: slot '{expectedLabel}' states 0–{expectedStates - 1} map correctly");
+                    sb.AppendLine($"PASS: slot '{expectedLabel}' display indices map correctly");
                 }
 
                 issues += slotIssues;
             }
 
             int[] defaultIndices = new int[expectedInputLabels.Length];
-            visualizer.ApplySubmittedIndices(defaultIndices);
-            int activeStateMeshes = CountActiveAssignedStateVisuals(slots);
-            if (activeStateMeshes != expectedInputLabels.Length)
-            {
-                sb.AppendLine(
-                    $"FAIL: visual root has {activeStateMeshes} active state visuals (expected {expectedInputLabels.Length})");
-                issues++;
-            }
-            else
-            {
-                sb.AppendLine("PASS: exactly one active state visual per slot after ApplySubmittedIndices");
-            }
+            bridge.ApplySubmittedIndices(defaultIndices);
+            sb.AppendLine("PASS: ApplySubmittedIndices(default) completed without error");
 
             return issues;
         }
 
-        private static int ValidateSlotStateMapping(
+        private static int ValidateSlotDisplayMapping(
             StringBuilder sb,
-            SubmittedCombinationVisualizer visualizer,
+            SubmittedCombinationMultiDimensionBridge bridge,
             int slotIndex,
             string slotLabel,
-            SerializedProperty visuals,
+            MultiDimension display,
             int slotCount)
         {
             int issues = 0;
-            int stateCount = visuals.arraySize;
+            int stateCount = display.SubjectCount;
+            if (stateCount <= 0)
+            {
+                sb.AppendLine($"FAIL: slot '{slotLabel}' display '{display.name}' has no subjects");
+                return 1;
+            }
 
             for (int state = 0; state < stateCount; state++)
             {
                 int[] indices = new int[slotCount];
                 indices[slotIndex] = state;
-                visualizer.ApplySubmittedIndices(indices);
+                bridge.ApplySubmittedIndices(indices);
 
-                int activeCount = 0;
-                int activeIndex = -1;
-                for (int v = 0; v < stateCount; v++)
-                {
-                    GameObject visual = visuals.GetArrayElementAtIndex(v).objectReferenceValue as GameObject;
-                    if (visual != null && visual.activeSelf)
-                    {
-                        activeCount++;
-                        activeIndex = v;
-                    }
-                }
-
-                if (activeCount != 1)
+                int currentIndex = display.GetCurrentIndexForSolutionCheck();
+                if (currentIndex != state)
                 {
                     sb.AppendLine(
-                        $"FAIL: slot '{slotLabel}' state {state} has {activeCount} active visuals (expected 1)");
-                    issues++;
-                    continue;
-                }
-
-                if (activeIndex != state)
-                {
-                    GameObject activeVisual = visuals.GetArrayElementAtIndex(activeIndex).objectReferenceValue as GameObject;
-                    GameObject expectedVisual = visuals.GetArrayElementAtIndex(state).objectReferenceValue as GameObject;
-                    sb.AppendLine(
-                        $"FAIL: slot '{slotLabel}' state {state} active visual '{activeVisual?.name}' " +
-                        $"(expected '{expectedVisual?.name}')");
+                        $"FAIL: slot '{slotLabel}' state {state} display index {currentIndex} (expected {state})");
                     issues++;
                 }
             }
@@ -250,36 +239,22 @@ namespace WhoWiredThis.Editor
             return issues;
         }
 
-        private static int CountActiveAssignedStateVisuals(SerializedProperty slots)
+        private static int ValidateSceneHasNoVisualizer(StringBuilder sb, string scenePath, string sceneLabel)
         {
-            int count = 0;
-            for (int s = 0; s < slots.arraySize; s++)
+            if (!System.IO.File.Exists(scenePath))
             {
-                SerializedProperty visuals = slots.GetArrayElementAtIndex(s).FindPropertyRelative("stateVisuals");
-                for (int v = 0; v < visuals.arraySize; v++)
-                {
-                    GameObject visual = visuals.GetArrayElementAtIndex(v).objectReferenceValue as GameObject;
-                    if (visual != null && visual.activeSelf)
-                    {
-                        count++;
-                    }
-                }
+                sb.AppendLine($"WARN: {sceneLabel} not found at '{scenePath}'");
+                return 0;
             }
 
-            return count;
-        }
-
-        private static int ValidateTutorialSceneHasNoVisualizer(StringBuilder sb)
-        {
-            const string tutorialPath = "Assets/Scenes/Tutorial.unity";
-            string text = System.IO.File.ReadAllText(tutorialPath);
+            string text = System.IO.File.ReadAllText(scenePath);
             if (text.Contains("SubmittedCombinationVisualizer"))
             {
-                sb.AppendLine("FAIL: Tutorial.unity references SubmittedCombinationVisualizer");
+                sb.AppendLine($"FAIL: {sceneLabel} references SubmittedCombinationVisualizer");
                 return 1;
             }
 
-            sb.AppendLine("PASS: Tutorial.unity has no SubmittedCombinationVisualizer");
+            sb.AppendLine($"PASS: {sceneLabel} has no SubmittedCombinationVisualizer");
             return 0;
         }
     }

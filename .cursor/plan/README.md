@@ -123,6 +123,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [pipe-pressure-puzzle-puzzel-pipes.md](pipe-pressure-puzzle-puzzel-pipes.md) | Puzzel Pipes Pipe Pressure: Phases 1–5 validated (runtime randomized `correctIndex`); Phase 6 planned. |
 | [puzzel-pipes-randomized-solution-phase5.md](puzzel-pipes-randomized-solution-phase5.md) | Phase 5: `RandomPuzzleSolutionAssigner` + `PuzzleSolutionGenerator`; Puzzel Pipes only; Phase 1 fixed baseline unchanged. |
 | [puzzel-pipes-result-visual-polish.md](puzzel-pipes-result-visual-polish.md) | Industrial pipe-machine polish for Phase 4 result visualizer rigs (scene-only, shared PipeVisualizer materials). |
+| [pipes-multidimension-display-bridge.md](pipes-multidimension-display-bridge.md) | **Implemented:** Replace pipes `SubmittedCombinationVisualizer` with `SubmittedCombinationMultiDimensionBridge` on active + V1 scenes and pipes panel prefab. |
 | [floor_matrix_puzzle_b341240f.plan.md](floor_matrix_puzzle_b341240f.plan.md) | Floor-color matrix puzzle mirroring A17 engage/score; shared helper. |
 | [a17_polarity_panel_c5b54005.plan.md](a17_polarity_panel_c5b54005.plan.md) | A17 polarity panel scene; `IInteractable`, material swap, points scoring. |
 | [coop_calibration_tutorial_plan_89be5bca.plan.md](coop_calibration_tutorial_plan_89be5bca.plan.md) | Two-phase local co-op tutorial machine; duplicate Starter FP scene as base. |
