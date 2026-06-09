@@ -21,3 +21,6 @@ https://sketchfab.com/3d-models/small-modular-pipes-copper-02a9298f15bf452993a60
 
 ISD Bridge Consoles | Starwars
 https://sketchfab.com/3d-models/isd-bridge-consoles-starwars-4d99eee4c8654c7ebb96a38e4ddda638#download
+
+Steampunk Pressure Tanks
+https://sketchfab.com/3d-models/steampunk-pressure-tanks-83ed0e219f4740f1a8b1942342f33a5a
