@@ -719,8 +719,8 @@ Transform:
   m_GameObject: {fileID: 6508467904087654185}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.416, y: -0.328, z: -0.4}
-  m_LocalScale: {x: 0.3278146, y: 0.10000001, z: 0.18}
+  m_LocalPosition: {x: 1.5, y: -0.6, z: -0}
+  m_LocalScale: {x: 0.3, y: 0.10000001, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1701872018950801033}
@@ -854,15 +854,15 @@ MonoBehaviour:
   - input: {fileID: 6475800186739847823}
     diagnosticType: 0
     correctText: VALVE LOOKS STABLE.
-    tooLowText: VALVE IS TOO CLOSED.
-    tooHighText: VALVE IS TOO OPEN.
+    tooLowText: VALVE IS TOO OPEN.
+    tooHighText: VALVE IS TOO CLOSE.
     mismatchText: 
     eligibleForHints: 1
   - input: {fileID: 11941326962432912}
     diagnosticType: 0
     correctText: PRESSURE LOOKS STABLE.
-    tooLowText: PRESSURE IS TOO LOW.
-    tooHighText: PRESSURE IS TOO HIGH.
+    tooLowText: PRESSURE IS TOO HIGH.
+    tooHighText: PRESSURE IS TOO LOW.
     mismatchText: 
     eligibleForHints: 1
   - input: {fileID: 4970527630865062740}

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace WhoWiredThis.PanelFocus
@@ -31,15 +32,39 @@ namespace WhoWiredThis.PanelFocus
                 return;
             }
 
-            if (playerAFocus != null && playerAPanel != null)
+            StartCoroutine(EnterFocusWhenReady());
+        }
+
+        private IEnumerator EnterFocusWhenReady()
+        {
+            // Defer until after Awake/OnEnable on players, cameras, and panel instances.
+            yield return null;
+
+            TryEnterStartupFocus(playerAFocus, playerAPanel, "Player A");
+            TryEnterStartupFocus(playerBFocus, playerBPanel, "Player B");
+        }
+
+        private static void TryEnterStartupFocus(
+            PlayerPanelFocusController focus,
+            PanelFocusController panel,
+            string label)
+        {
+            if (focus == null || panel == null)
             {
-                playerAFocus.TryEnterFocus(playerAPanel);
+                Debug.LogWarning(
+                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because focus or panel reference is missing.");
+                return;
             }
 
-            if (playerBFocus != null && playerBPanel != null)
+            if (focus.TryEnterFocus(panel))
             {
-                playerBFocus.TryEnterFocus(playerBPanel);
+                return;
             }
+
+            Debug.LogWarning(
+                $"[InitialPanelFocusBootstrap] {label} failed to enter focus on '{panel.name}' " +
+                $"(playerId={focus.PlayerId}, allowedPlayerId={panel.AllowedPlayerId}).",
+                panel);
         }
     }
 }

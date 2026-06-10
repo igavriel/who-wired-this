@@ -21,6 +21,8 @@ namespace WhoWiredThis.Editor
         private const string HistoryHeadersMenuPath = "Who Wired This/Pipe Pressure/Apply Puzzle Pipes History Headers (Phase 2)";
         private const string ComponentDiagnosticMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Component Diagnostic (Phase 3)";
+        private const string CrossPartnerDiagnosticMenuPath =
+            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Cross-Partner Diagnostic And Focus";
         private const string ResultVisualizerMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Result Display Bridge (Phase 4)";
         private const string RandomSolutionMenuPath =
@@ -28,6 +30,11 @@ namespace WhoWiredThis.Editor
 
         private const string ActiveScenePath = "Assets/Scenes/Game/Puzzle Pipes.unity";
         private const string V1ScenePath = "Assets/Scenes/Game/OLD/Puzzle Pipes V1.unity";
+
+        private const string PipesPanelAName = "Player1_Pipes_Panel A";
+        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+        private const string LegacyPanelAName = "Player1_Panel";
+        private const string LegacyPanelBName = "Player2_Panel";
 
         private const string ValveDisplayPrefabPath =
             "Assets/WhoWiredThis/Prefabs/MultiDimension/MultiDimension_ValveV2_4State.prefab";
@@ -70,8 +77,15 @@ namespace WhoWiredThis.Editor
         [MenuItem(ComponentDiagnosticMenuPath)]
         public static void WireComponentDiagnostic()
         {
+            if (TryWireComponentDiagnosticForPipesPanels())
+            {
+                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 3 component diagnostic on Puzzle Pipes pipes panels.");
+                return;
+            }
+
             WireComponentDiagnosticPanel(
-                "Player1_Panel",
+                LegacyPanelAName,
                 new[] { "VALVE", "PRESS", "FLOW" },
                 new[]
                 {
@@ -81,7 +95,7 @@ namespace WhoWiredThis.Editor
                 });
 
             WireComponentDiagnosticPanel(
-                "Player2_Panel",
+                LegacyPanelBName,
                 new[] { "GATE", "PUMP", "ROUTE" },
                 new[]
                 {
@@ -92,6 +106,181 @@ namespace WhoWiredThis.Editor
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log("[PipePressurePuzzlePipesWireTool] Wired Phase 3 component diagnostic on Puzzle Pipes.");
+        }
+
+        [MenuItem(CrossPartnerDiagnosticMenuPath)]
+        public static void WireCrossPartnerDiagnosticAndFocus()
+        {
+            GameObject panelA = GameObject.Find(PipesPanelAName);
+            GameObject panelB = GameObject.Find(PipesPanelBName);
+            if (panelA == null || panelB == null)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzlePipesWireTool] Missing '{PipesPanelAName}' or '{PipesPanelBName}'. Open Puzzle Pipes scene.");
+                return;
+            }
+
+            WireCrossPartnerOperatorSide(
+                panelA,
+                panelB,
+                new[] { "VALVE", "PRESS", "FLOW" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "VALVE LOOKS STABLE.", "VALVE IS TOO CLOSED.", "VALVE IS TOO OPEN.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "PRESSURE LOOKS STABLE.", "PRESSURE IS TOO LOW.", "PRESSURE IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "FLOW ROUTE LOOKS STABLE.", string.Empty, string.Empty, "FLOW ROUTE DOES NOT MATCH.")
+                },
+                AllowedPlayerTag.Player_B);
+
+            WireCrossPartnerOperatorSide(
+                panelB,
+                panelA,
+                new[] { "GATE", "PUMP", "ROUTE" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "GATE LOOKS STABLE.", "GATE IS TOO CLOSED.", "GATE IS TOO OPEN.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "PUMP LOOKS STABLE.", "PUMP IS TOO LOW.", "PUMP IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "ROUTE LOOKS STABLE.", string.Empty, string.Empty, "ROUTE DOES NOT MATCH.")
+                },
+                AllowedPlayerTag.Player_A);
+
+            EnsurePanelFocusReady(panelA, AllowedPlayerTag.Player_A);
+            EnsurePanelFocusReady(panelB, AllowedPlayerTag.Player_B);
+            WireInitialPanelFocusBootstrap(panelA, panelB);
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log("[PipePressurePuzzlePipesWireTool] Wired cross-partner diagnostics and startup panel focus.");
+        }
+
+        private static bool TryWireComponentDiagnosticForPipesPanels()
+        {
+            GameObject panelA = GameObject.Find(PipesPanelAName);
+            GameObject panelB = GameObject.Find(PipesPanelBName);
+            if (panelA == null || panelB == null)
+            {
+                return false;
+            }
+
+            WireCrossPartnerOperatorSide(
+                panelA,
+                panelB,
+                null,
+                null,
+                AllowedPlayerTag.Player_B);
+            WireCrossPartnerOperatorSide(
+                panelB,
+                panelA,
+                null,
+                null,
+                AllowedPlayerTag.Player_A);
+            return true;
+        }
+
+        private static void WireCrossPartnerOperatorSide(
+            GameObject operatorPanel,
+            GameObject partnerPanel,
+            string[] inputNames,
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
+            AllowedPlayerTag partnerDiagnosticVisibleTo)
+        {
+            DiagnosticDisplayController partnerDisplay =
+                partnerPanel.GetComponentInChildren<DiagnosticDisplayController>(true);
+            if (partnerDisplay == null)
+            {
+                Debug.LogError(
+                    $"[PipePressurePuzzlePipesWireTool] No DiagnosticDisplayController under '{partnerPanel.name}'.");
+                return;
+            }
+
+            ComponentDiagnosticAdapter adapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            if (adapter == null && inputNames != null && defs != null)
+            {
+                WireComponentDiagnosticPanel(operatorPanel.name, inputNames, defs);
+                adapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            }
+
+            ProcessingFeedbackController feedback = operatorPanel.GetComponentInChildren<ProcessingFeedbackController>(true);
+            if (adapter != null)
+            {
+                SerializedObject adapterSo = new SerializedObject(adapter);
+                adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerDisplay;
+                adapterSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            if (feedback != null)
+            {
+                SerializedObject feedbackSo = new SerializedObject(feedback);
+                feedbackSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerDisplay;
+                feedbackSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            MultiDimensionRecursive visibility =
+                partnerDisplay.GetComponentInChildren<MultiDimensionRecursive>(true);
+            if (visibility != null)
+            {
+                SerializedObject visSo = new SerializedObject(visibility);
+                visSo.FindProperty("visibleToPlayer").enumValueIndex = (int)partnerDiagnosticVisibleTo;
+                visSo.ApplyModifiedPropertiesWithoutUndo();
+                visibility.ApplyConfiguration();
+            }
+        }
+
+        private static void EnsurePanelFocusReady(GameObject panel, AllowedPlayerTag allowedPlayer)
+        {
+            PanelFocusController focus = panel.GetComponentInChildren<PanelFocusController>(true);
+            if (focus == null)
+            {
+                Debug.LogError($"[PipePressurePuzzlePipesWireTool] Missing PanelFocusController under '{panel.name}'.");
+                return;
+            }
+
+            SerializedObject focusSo = new SerializedObject(focus);
+            focusSo.FindProperty("allowedPlayerId").enumValueIndex = (int)allowedPlayer;
+            focusSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SerializedProperty boardRendererProp = focusSo.FindProperty("boardRenderer");
+            Renderer boardRenderer = boardRendererProp.objectReferenceValue as Renderer;
+            if (boardRenderer != null && !boardRenderer.enabled)
+            {
+                boardRenderer.enabled = true;
+            }
+
+            SolveInteractProxy solveProxy = panel.GetComponentInChildren<SolveInteractProxy>(true);
+            if (solveProxy != null)
+            {
+                SerializedProperty solveButtonProp = focusSo.FindProperty("solveButton");
+                SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
+                if (interactableRef.objectReferenceValue == null)
+                {
+                    interactableRef.objectReferenceValue = solveProxy;
+                    focusSo.ApplyModifiedPropertiesWithoutUndo();
+                }
+            }
+        }
+
+        private static void WireInitialPanelFocusBootstrap(GameObject panelA, GameObject panelB)
+        {
+            InitialPanelFocusBootstrap bootstrap = Object.FindObjectOfType<InitialPanelFocusBootstrap>();
+            if (bootstrap == null)
+            {
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] No InitialPanelFocusBootstrap in scene.");
+                return;
+            }
+
+            PlayerPanelFocusController playerAFocus =
+                GameObject.Find("FirstPersonPlayer_A")?.GetComponent<PlayerPanelFocusController>();
+            PlayerPanelFocusController playerBFocus =
+                GameObject.Find("FirstPersonPlayer_B")?.GetComponent<PlayerPanelFocusController>();
+            PanelFocusController panelAFocus = panelA.GetComponentInChildren<PanelFocusController>(true);
+            PanelFocusController panelBFocus = panelB.GetComponentInChildren<PanelFocusController>(true);
+
+            SerializedObject bootstrapSo = new SerializedObject(bootstrap);
+            bootstrapSo.FindProperty("enterFocusOnStartup").boolValue = true;
+            bootstrapSo.FindProperty("playerAFocus").objectReferenceValue = playerAFocus;
+            bootstrapSo.FindProperty("playerAPanel").objectReferenceValue = panelAFocus;
+            bootstrapSo.FindProperty("playerBFocus").objectReferenceValue = playerBFocus;
+            bootstrapSo.FindProperty("playerBPanel").objectReferenceValue = panelBFocus;
+            bootstrapSo.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void WireComponentDiagnosticPanel(
