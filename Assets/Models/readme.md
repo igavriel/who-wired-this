@@ -25,6 +25,12 @@ https://sketchfab.com/3d-models/steampunk-pressure-tanks-83ed0e219f4740f1a8b1942
 Sci-Fi Tablet Display
 https://sketchfab.com/3d-models/sci-fi-tablet-display-bb6a0dc16a4b40f7a8ab181953a06d69
 
+Lever Power Switch
+https://sketchfab.com/3d-models/lever-power-switch-374608f75c114b8a9bf41dbc02c51c50
+
+Old Lever
+https://sketchfab.com/3d-models/old-lever-f1075e12ba4a49368e0f29c62881ac73
+
 NOT IN USE
 ----------
 ISD Bridge Consoles | Starwars

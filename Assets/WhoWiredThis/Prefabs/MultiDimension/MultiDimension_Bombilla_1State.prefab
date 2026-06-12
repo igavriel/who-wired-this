@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
   subjects:
-  - displayName: BLU
+  - displayName: PUSH
     subject: {fileID: 4528035580627581563}
   generalObject: {fileID: 3243221669803475669}
   visibleToPlayer: 0
@@ -418,7 +418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1252711222669828706
 Transform:
   m_ObjectHideFlags: 0
@@ -565,6 +565,10 @@ PrefabInstance:
     - target: {fileID: 9079736911830268041, guid: f623c6612c4a445c29270235791a908d, type: 3}
       propertyPath: m_Name
       value: Bombilla
+      objectReference: {fileID: 0}
+    - target: {fileID: 9079736911830268041, guid: f623c6612c4a445c29270235791a908d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
