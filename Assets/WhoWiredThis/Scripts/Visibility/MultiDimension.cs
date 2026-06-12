@@ -89,6 +89,13 @@ namespace WhoWiredThis.Visibility
             ApplyConfiguration();
         }
 
+        /// <summary>Updates the active subject index without changing the configured visibility player tag.</summary>
+        public void SetActiveSubjectIndex(int subjectIndex)
+        {
+            activeSubjectIndex = subjectIndex;
+            ApplyConfiguration();
+        }
+
         /// <summary>Number of subject slots (length of the subjects array).</summary>
         public int SubjectCount => subjects == null ? 0 : subjects.Length;
         public bool IsSolved => interactionLocked;

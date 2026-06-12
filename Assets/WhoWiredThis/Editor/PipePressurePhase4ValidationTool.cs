@@ -39,27 +39,62 @@ namespace WhoWiredThis.Editor
             var sb = new StringBuilder();
             int issues = 0;
 
-            issues += ValidateBridgeSide(
-                sb,
-                "Player1_Panel",
-                "Player2_Panel/DiagnosticPanel",
-                new[] { "VALVE", "PRESS", "FLOW" },
-                AllowedPlayerTag.Player_B);
+            if (GameObject.Find(PipesPanelAName) != null)
+            {
+                issues += ValidateBridgeSide(
+                    sb,
+                    PipesPanelAName,
+                    $"{PipesPanelBName}/DiagnosticPanel",
+                    new[] { "PRESS", "FLOW", "VALVE" },
+                    AllowedPlayerTag.Player_B);
 
-            issues += ValidateBridgeSide(
-                sb,
-                "Player2_Panel",
-                "Player1_Panel/DiagnosticPanel",
-                new[] { "GATE", "PUMP", "ROUTE" },
-                AllowedPlayerTag.Player_A);
+                issues += ValidateBridgeSide(
+                    sb,
+                    PipesPanelBName,
+                    $"{PipesPanelAName}/DiagnosticPanel",
+                    new[] { "GATE", "PUMP", "ROUTE" },
+                    AllowedPlayerTag.Player_A);
+            }
+            else
+            {
+                issues += ValidateBridgeSide(
+                    sb,
+                    "Player1_Panel",
+                    "Player2_Panel/DiagnosticPanel",
+                    new[] { "VALVE", "PRESS", "FLOW" },
+                    AllowedPlayerTag.Player_B);
+
+                issues += ValidateBridgeSide(
+                    sb,
+                    "Player2_Panel",
+                    "Player1_Panel/DiagnosticPanel",
+                    new[] { "GATE", "PUMP", "ROUTE" },
+                    AllowedPlayerTag.Player_A);
+            }
 
             issues += ValidateSceneHasNoVisualizer(sb, TutorialScenePath, "Tutorial.unity");
             issues += ValidateSceneHasNoVisualizer(sb, PuzzlePipesScenePath, "Puzzle Pipes.unity");
+
+            if (GameObject.Find(PipesPanelAName) != null)
+            {
+                issues += ValidatePipesResultLights(sb);
+            }
 
             sb.AppendLine(issues == 0
                 ? "=== Phase 4 validation: ALL CHECKS PASSED ==="
                 : $"=== Phase 4 validation: {issues} issue(s) ===");
 
+            report = sb.ToString();
+            return issues;
+        }
+
+        public static int RunPipesResultLightsValidation(out string report)
+        {
+            var sb = new StringBuilder();
+            int issues = ValidatePipesResultLights(sb);
+            sb.AppendLine(issues == 0
+                ? "=== Pipes result lights validation: ALL CHECKS PASSED ==="
+                : $"=== Pipes result lights validation: {issues} issue(s) ===");
             report = sb.ToString();
             return issues;
         }
@@ -88,7 +123,7 @@ namespace WhoWiredThis.Editor
             }
 
             SubmittedCombinationMultiDimensionBridge bridge =
-                operatorPanel.GetComponent<SubmittedCombinationMultiDimensionBridge>();
+                operatorPanel.GetComponentInChildren<SubmittedCombinationMultiDimensionBridge>(true);
             if (bridge == null)
             {
                 sb.AppendLine($"FAIL: No SubmittedCombinationMultiDimensionBridge on '{operatorPanelName}'");
@@ -256,6 +291,240 @@ namespace WhoWiredThis.Editor
 
             sb.AppendLine($"PASS: {sceneLabel} has no SubmittedCombinationVisualizer");
             return 0;
+        }
+
+        private const string PipesPanelAName = "Player1_Pipes_Panel A";
+        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+        private const string PipesResultLightsRootName = "PuzzlePipes_ResultLights";
+        private static readonly string[] PipesLightNames = { "ResultLight-Upper", "ResultLight-Middle", "ResultLight-Lower" };
+
+        private static int ValidatePipesResultLights(StringBuilder sb)
+        {
+            int issues = 0;
+            sb.AppendLine("--- Puzzle Pipes result lights ---");
+
+            issues += ValidatePipesResultLightsBridge(
+                sb,
+                bridgeName: "Bridge_A_to_B_lights",
+                operatorPanelName: PipesPanelAName,
+                partnerPanelName: PipesPanelBName,
+                expectedVisibleToPlayer: AllowedPlayerTag.Player_B);
+
+            issues += ValidatePipesResultLightsBridge(
+                sb,
+                bridgeName: "Bridge_B_to_A_lights",
+                operatorPanelName: PipesPanelBName,
+                partnerPanelName: PipesPanelAName,
+                expectedVisibleToPlayer: AllowedPlayerTag.Player_A);
+
+            return issues;
+        }
+
+        private static int ValidatePipesResultLightsBridge(
+            StringBuilder sb,
+            string bridgeName,
+            string operatorPanelName,
+            string partnerPanelName,
+            AllowedPlayerTag expectedVisibleToPlayer)
+        {
+            int issues = 0;
+            sb.AppendLine($"--- {bridgeName} ({operatorPanelName} → {partnerPanelName}) ---");
+
+            GameObject bridgeRoot = GameObject.Find(PipesResultLightsRootName);
+            if (bridgeRoot == null)
+            {
+                sb.AppendLine($"FAIL: Missing scene root '{PipesResultLightsRootName}'");
+                return 1;
+            }
+
+            Transform bridgeTransform = bridgeRoot.transform.Find(bridgeName);
+            if (bridgeTransform == null)
+            {
+                sb.AppendLine($"FAIL: Missing '{PipesResultLightsRootName}/{bridgeName}'");
+                return issues + 1;
+            }
+
+            SplitResultPipesController controller = bridgeTransform.GetComponent<SplitResultPipesController>();
+            if (controller == null)
+            {
+                sb.AppendLine($"FAIL: No SplitResultPipesController on '{bridgeName}'");
+                return issues + 1;
+            }
+
+            GameObject operatorPanel = GameObject.Find(operatorPanelName);
+            if (operatorPanel == null)
+            {
+                sb.AppendLine($"FAIL: Missing '{operatorPanelName}'");
+                issues++;
+            }
+
+            MultiDimensionPuzzleManager operatorManager = operatorPanel != null
+                ? operatorPanel.GetComponentInChildren<MultiDimensionPuzzleManager>(true)
+                : null;
+
+            SerializedObject controllerSo = new SerializedObject(controller);
+            MultiDimensionPuzzleManager wiredManager =
+                controllerSo.FindProperty("puzzleManager").objectReferenceValue as MultiDimensionPuzzleManager;
+            AllowedPlayerTag visibleToPlayer =
+                (AllowedPlayerTag)controllerSo.FindProperty("visibleToPlayer").enumValueIndex;
+
+            if (wiredManager == null)
+            {
+                sb.AppendLine("FAIL: puzzleManager not assigned on result lights bridge");
+                issues++;
+            }
+            else if (operatorManager != null && wiredManager != operatorManager)
+            {
+                sb.AppendLine("FAIL: puzzleManager is not the operator panel manager");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine("PASS: puzzleManager wired to operator panel");
+            }
+
+            if (visibleToPlayer != expectedVisibleToPlayer)
+            {
+                sb.AppendLine(
+                    $"FAIL: visibleToPlayer={visibleToPlayer} expected {expectedVisibleToPlayer}");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine($"PASS: visibleToPlayer={visibleToPlayer}");
+            }
+
+            SerializedProperty slots = controllerSo.FindProperty("elementLights");
+            if (slots.arraySize != PipesLightNames.Length)
+            {
+                sb.AppendLine($"FAIL: elementLights count {slots.arraySize} expected {PipesLightNames.Length}");
+                issues++;
+            }
+
+            GameObject partnerPanel = GameObject.Find(partnerPanelName);
+            if (partnerPanel == null)
+            {
+                sb.AppendLine($"FAIL: Missing '{partnerPanelName}'");
+                issues++;
+            }
+
+            if (wiredManager == null || slots.arraySize != PipesLightNames.Length)
+            {
+                return issues;
+            }
+
+            for (int slotIndex = 0; slotIndex < PipesLightNames.Length; slotIndex++)
+            {
+                string lightName = PipesLightNames[slotIndex];
+                SerializedProperty slot = slots.GetArrayElementAtIndex(slotIndex);
+                MultiDimension sourceElement = slot.FindPropertyRelative("sourceElement").objectReferenceValue
+                    as MultiDimension;
+                MultiDimension resultLight = slot.FindPropertyRelative("resultLight").objectReferenceValue
+                    as MultiDimension;
+                ComponentDiagnosticType diagnosticType =
+                    (ComponentDiagnosticType)slot.FindPropertyRelative("diagnosticType").enumValueIndex;
+
+                if (sourceElement == null)
+                {
+                    sb.AppendLine($"FAIL: slot {slotIndex} sourceElement not assigned");
+                    issues++;
+                    continue;
+                }
+
+                if (resultLight == null)
+                {
+                    sb.AppendLine($"FAIL: slot {slotIndex} resultLight not assigned");
+                    issues++;
+                    continue;
+                }
+
+                if (resultLight.name != lightName)
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot {slotIndex} resultLight='{resultLight.name}' expected '{lightName}'");
+                    issues++;
+                }
+                else
+                {
+                    sb.AppendLine($"PASS: slot {slotIndex} '{lightName}' wired");
+                }
+
+                if (partnerPanel != null &&
+                    !resultLight.transform.IsChildOf(partnerPanel.transform))
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot '{lightName}' light is not under partner panel '{partnerPanelName}'");
+                    issues++;
+                }
+
+                if (!wiredManager.TryGetPuzzleElement(slotIndex, out MultiDimension expectedElement, out int correctIndex))
+                {
+                    sb.AppendLine($"FAIL: puzzle slot {slotIndex} not available on manager");
+                    issues++;
+                    continue;
+                }
+
+                if (sourceElement != expectedElement)
+                {
+                    sb.AppendLine(
+                        $"FAIL: slot {slotIndex} source '{sourceElement.name}' != puzzle element '{expectedElement.name}'");
+                    issues++;
+                }
+
+                issues += ValidatePipesResultLightColorMapping(
+                    sb,
+                    controller,
+                    slotIndex,
+                    lightName,
+                    diagnosticType,
+                    correctIndex,
+                    wiredManager.PuzzleElementCount);
+            }
+
+            return issues;
+        }
+
+        private static int ValidatePipesResultLightColorMapping(
+            StringBuilder sb,
+            SplitResultPipesController controller,
+            int slotIndex,
+            string slotLabel,
+            ComponentDiagnosticType diagnosticType,
+            int correctIndex,
+            int slotCount)
+        {
+            int issues = 0;
+
+            if (diagnosticType == ComponentDiagnosticType.Categorical)
+            {
+                int[] wrong = new int[slotCount];
+                controller.ApplySubmittedIndices(wrong, solved: false);
+                sb.AppendLine($"PASS: slot '{slotLabel}' categorical mismatch mapping exercised");
+                return issues;
+            }
+
+            if (correctIndex > 0)
+            {
+                int[] tooLow = new int[slotCount];
+                tooLow[slotIndex] = correctIndex - 1;
+                controller.ApplySubmittedIndices(tooLow, solved: false);
+                sb.AppendLine($"PASS: slot '{slotLabel}' too-low path exercised (submitted {tooLow[slotIndex]})");
+            }
+
+            if (correctIndex < 3)
+            {
+                int[] tooHigh = new int[slotCount];
+                tooHigh[slotIndex] = correctIndex + 1;
+                controller.ApplySubmittedIndices(tooHigh, solved: false);
+                sb.AppendLine($"PASS: slot '{slotLabel}' too-high path exercised (submitted {tooHigh[slotIndex]})");
+            }
+
+            int[] correct = new int[slotCount];
+            correct[slotIndex] = correctIndex;
+            controller.ApplySubmittedIndices(correct, solved: false);
+            sb.AppendLine($"PASS: slot '{slotLabel}' correct path exercised");
+
+            return issues;
         }
     }
 }

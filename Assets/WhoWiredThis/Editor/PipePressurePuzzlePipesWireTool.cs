@@ -236,6 +236,7 @@ namespace WhoWiredThis.Editor
 
             SerializedObject focusSo = new SerializedObject(focus);
             focusSo.FindProperty("allowedPlayerId").enumValueIndex = (int)allowedPlayer;
+            focusSo.FindProperty("includeExitInFocusCycle").boolValue = false;
             focusSo.ApplyModifiedPropertiesWithoutUndo();
 
             SerializedProperty boardRendererProp = focusSo.FindProperty("boardRenderer");

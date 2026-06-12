@@ -52,18 +52,10 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private string systemTwoCorrect = "PIPE RESPONSE IS CLOSE.";
         [SerializeField] private string partnerLine = "TELL YOUR PARTNER WHAT YOU LEARNED.";
 
-        private enum SlotStatus
-        {
-            Correct,
-            TooLow,
-            TooHigh,
-            Mismatch
-        }
-
         private struct SlotEvaluation
         {
             public int SlotIndex;
-            public SlotStatus Status;
+            public ComponentSlotDiagnosticStatus Status;
             public ComponentDiagnosticDefinition Definition;
         }
 
@@ -130,7 +122,7 @@ namespace WhoWiredThis.Puzzles.Common
             int correctCount = 0;
             for (int i = 0; i < evaluations.Count; i++)
             {
-                if (evaluations[i].Status == SlotStatus.Correct)
+                if (evaluations[i].Status == ComponentSlotDiagnosticStatus.Correct)
                 {
                     correctCount++;
                 }
@@ -223,24 +215,12 @@ namespace WhoWiredThis.Puzzles.Common
             return false;
         }
 
-        private static SlotStatus Classify(ComponentDiagnosticDefinition def, int submitted, int correctIndex)
+        private static ComponentSlotDiagnosticStatus Classify(
+            ComponentDiagnosticDefinition def,
+            int submitted,
+            int correctIndex)
         {
-            if (submitted == correctIndex)
-            {
-                return SlotStatus.Correct;
-            }
-
-            if (def.diagnosticType == ComponentDiagnosticType.Categorical)
-            {
-                return SlotStatus.Mismatch;
-            }
-
-            if (submitted < correctIndex)
-            {
-                return SlotStatus.TooLow;
-            }
-
-            return SlotStatus.TooHigh;
+            return ComponentDiagnosticClassifier.Classify(def.diagnosticType, submitted, correctIndex);
         }
 
         private static void CollectHintLines(List<SlotEvaluation> evaluations, List<string> hintLines)
@@ -257,7 +237,7 @@ namespace WhoWiredThis.Puzzles.Common
                     continue;
                 }
 
-                if (eval.Status == SlotStatus.Correct)
+                if (eval.Status == ComponentSlotDiagnosticStatus.Correct)
                 {
                     if (firstCorrect == null)
                     {
@@ -304,11 +284,11 @@ namespace WhoWiredThis.Puzzles.Common
             ComponentDiagnosticDefinition def = eval.Definition;
             switch (eval.Status)
             {
-                case SlotStatus.TooLow:
+                case ComponentSlotDiagnosticStatus.TooLow:
                     return def.tooLowText;
-                case SlotStatus.TooHigh:
+                case ComponentSlotDiagnosticStatus.TooHigh:
                     return def.tooHighText;
-                case SlotStatus.Mismatch:
+                case ComponentSlotDiagnosticStatus.Mismatch:
                     return def.mismatchText;
                 default:
                     return null;

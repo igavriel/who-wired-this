@@ -10,7 +10,7 @@ using WhoWiredThis.Visibility;
 namespace WhoWiredThis.Editor
 {
     /// <summary>
-    /// Wires cross-opponent <see cref="SplitMetricResultLightsController"/> bridges in Tutorial - Visual.unity only.
+    /// Wires cross-opponent <see cref="SplitResultTutorialController"/> bridges in Tutorial - Visual.unity only.
     /// </summary>
     public static class TutorialVisualResultLightsWireTool
     {
@@ -116,11 +116,11 @@ namespace WhoWiredThis.Editor
                 bridgeObject = bridgeTransform.gameObject;
             }
 
-            SplitMetricResultLightsController controller =
-                bridgeObject.GetComponent<SplitMetricResultLightsController>();
+            SplitResultTutorialController controller =
+                bridgeObject.GetComponent<SplitResultTutorialController>();
             if (controller == null)
             {
-                controller = bridgeObject.AddComponent<SplitMetricResultLightsController>();
+                controller = bridgeObject.AddComponent<SplitResultTutorialController>();
             }
 
             MultiDimensionPuzzleManager puzzleManager = FindChildComponent<MultiDimensionPuzzleManager>(

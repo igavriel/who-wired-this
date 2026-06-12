@@ -1501,7 +1501,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac2414ee6dc9b4596b3d60014ff15754, type: 2}
+  - {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1828,7 +1828,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d8d364a46ad7c4aa0b16c88417daccd6, type: 2}
+  - {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2414,7 +2414,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ac2414ee6dc9b4596b3d60014ff15754, type: 2}
+  - {fileID: 2100000, guid: 41685ff83fdb341619dda36017f95861, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2738,6 +2738,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5760471162482929149}
     m_Modifications:
+    - target: {fileID: 1428871257324424575, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40d4c495e8a3144408c463ca512f7e2f, type: 2}
+    - target: {fileID: 2184379178225939837, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40d4c495e8a3144408c463ca512f7e2f, type: 2}
     - target: {fileID: 3823538717603232036, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2782,10 +2790,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5460436658588960781, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40d4c495e8a3144408c463ca512f7e2f, type: 2}
+    - target: {fileID: 5954398543350339420, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40d4c495e8a3144408c463ca512f7e2f, type: 2}
     - target: {fileID: 6135330970338018532, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6894680487502308710, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 40d4c495e8a3144408c463ca512f7e2f, type: 2}
     - target: {fileID: 7476986216385957775, guid: 80b628723502a43d5b3d41269094b4e9, type: 3}
       propertyPath: m_Name
       value: Fader

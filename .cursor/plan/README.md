@@ -124,6 +124,8 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [puzzel-pipes-randomized-solution-phase5.md](puzzel-pipes-randomized-solution-phase5.md) | Phase 5: `RandomPuzzleSolutionAssigner` + `PuzzleSolutionGenerator`; Puzzel Pipes only; Phase 1 fixed baseline unchanged. |
 | [puzzel-pipes-result-visual-polish.md](puzzel-pipes-result-visual-polish.md) | Industrial pipe-machine polish for Phase 4 result visualizer rigs (scene-only, shared PipeVisualizer materials). |
 | [pipes-multidimension-display-bridge.md](pipes-multidimension-display-bridge.md) | **Implemented:** Replace pipes `SubmittedCombinationVisualizer` with `SubmittedCombinationMultiDimensionBridge` on active + V1 scenes and pipes panel prefab. |
+| [puzzle-pipes-submit-lever-exit-popup.md](puzzle-pipes-submit-lever-exit-popup.md) | **Implemented:** Submit lever solve proxy + ON/OFF feedback, scene-only Exit opt-out, Action dismisses completion popup in focus. |
+| [split-result-pipes-controller.md](split-result-pipes-controller.md) | **Implemented:** `SplitResultPipesController` — three partner result lights (red/orange/green per element) on Puzzle Pipes; replaces tutorial controller on pipes prefab. |
 | [floor_matrix_puzzle_b341240f.plan.md](floor_matrix_puzzle_b341240f.plan.md) | Floor-color matrix puzzle mirroring A17 engage/score; shared helper. |
 | [a17_polarity_panel_c5b54005.plan.md](a17_polarity_panel_c5b54005.plan.md) | A17 polarity panel scene; `IInteractable`, material swap, points scoring. |
 | [coop_calibration_tutorial_plan_89be5bca.plan.md](coop_calibration_tutorial_plan_89be5bca.plan.md) | Two-phase local co-op tutorial machine; duplicate Starter FP scene as base. |

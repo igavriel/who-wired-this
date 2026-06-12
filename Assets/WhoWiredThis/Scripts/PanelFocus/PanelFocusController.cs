@@ -62,6 +62,10 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField] private PanelFocusButton exitButton;
 
         [Header("Exit")]
+        [Tooltip("When off, Exit is omitted from the focus selection cycle (Solve remains).")]
+        [SerializeField]
+        private bool includeExitInFocusCycle = true;
+
         [Tooltip("Second Activate on Exit within this interval (seconds) exits panel focus.")]
         [SerializeField]
         [Min(0.05f)]
@@ -94,9 +98,9 @@ namespace WhoWiredThis.PanelFocus
         private int ButtonCount => interactableButtons != null ? interactableButtons.Length : 0;
         private int SolveIndex => ButtonCount;
         private int ExitIndex => ButtonCount + 1;
-        private int TotalCount => ButtonCount + 2; // + dedicated solve and exit buttons
+        private int TotalCount => ButtonCount + (includeExitInFocusCycle ? 2 : 1);
         private bool IsSolveSelected => selectedIndex == SolveIndex;
-        private bool IsExitSelected => selectedIndex == ExitIndex;
+        private bool IsExitSelected => includeExitInFocusCycle && selectedIndex == ExitIndex;
 
         public string GetPromptText() => promptText;
 
@@ -107,7 +111,7 @@ namespace WhoWiredThis.PanelFocus
                 Debug.LogWarning($"[PanelFocusController] Solve button / HighlightAnchor is missing on {name}.", this);
             }
 
-            if (exitButton == null || exitButton.HighlightAnchor == null)
+            if (includeExitInFocusCycle && (exitButton == null || exitButton.HighlightAnchor == null))
             {
                 Debug.LogWarning($"[PanelFocusController] Exit button / HighlightAnchor is missing on {name}.", this);
             }

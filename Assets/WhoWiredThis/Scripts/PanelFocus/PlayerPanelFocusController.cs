@@ -133,6 +133,12 @@ namespace WhoWiredThis.PanelFocus
 
             if (Input.GetKeyDown(inputBindings.Interact))
             {
+                if (playerActions != null && playerActions.PlayerHud != null && playerActions.PlayerHud.IsPopupOpen)
+                {
+                    playerActions.PlayerHud.HidePopup();
+                    return;
+                }
+
                 currentPanel.ActivateSelected(gameObject);
             }
         }

@@ -5,10 +5,10 @@ using WhoWiredThis.Visibility;
 namespace WhoWiredThis.Puzzles.Common
 {
     /// <summary>
-    /// Drives SETTINGS (left) and PLACES (middle) result lamps from an opponent puzzle manager snapshot.
+    /// Tutorial-only: drives SETTINGS (left) and PLACES (middle) result lamps from an opponent puzzle manager snapshot.
     /// Scene-local wiring; uses <see cref="MultiDimension"/> subject indices 0=red, 1=orange, 2=green.
     /// </summary>
-    public class SplitMetricResultLightsController : MonoBehaviour
+    public class SplitResultTutorialController : MonoBehaviour
     {
         private const int ColorRed = 0;
         private const int ColorOrange = 1;
@@ -138,14 +138,14 @@ namespace WhoWiredThis.Puzzles.Common
         {
             if (lamp == null)
             {
-                Debug.LogWarning($"[{nameof(SplitMetricResultLightsController)}] Missing MultiDimension reference on '{name}'.", this);
+                Debug.LogWarning($"[{nameof(SplitResultTutorialController)}] Missing MultiDimension reference on '{name}'.", this);
                 return;
             }
 
             int subjectCount = lamp.SubjectCount;
             if (subjectCount <= 0)
             {
-                Debug.LogWarning($"[{nameof(SplitMetricResultLightsController)}] '{lamp.name}' has no subjects.", this);
+                Debug.LogWarning($"[{nameof(SplitResultTutorialController)}] '{lamp.name}' has no subjects.", this);
                 return;
             }
 

@@ -24,6 +24,9 @@ namespace WhoWiredThis.Visibility
         [Tooltip("When set, runs processing lines on the diagnostic body before TryCheckSolutionFromInteractor.")]
         [SerializeField] private ProcessingFeedbackController processingFeedback;
 
+        [Tooltip("Optional 2-state lever feedback: ON at submit, OFF after delay on failure, latched ON on success.")]
+        [SerializeField] private SubmitLeverMultiDimensionFeedback leverFeedback;
+
         [Tooltip("When locked, Interact is ignored. Leave empty to use a PanelActionLock on a panel ancestor.")]
         [SerializeField] private PanelActionLock panelActionLock;
 
@@ -80,6 +83,8 @@ namespace WhoWiredThis.Visibility
             activateFlowRunning = true;
             try
             {
+                leverFeedback?.SetSubmitOn();
+
                 if (pressFeedback != null)
                 {
                     yield return pressFeedback.PlayPressFeedbackRoutine();
@@ -100,6 +105,11 @@ namespace WhoWiredThis.Visibility
                 }
 
                 target.TryCheckSolutionFromInteractor(interactor);
+
+                if (leverFeedback != null)
+                {
+                    yield return leverFeedback.FinishSubmitRoutine(target.Solved);
+                }
             }
             finally
             {
