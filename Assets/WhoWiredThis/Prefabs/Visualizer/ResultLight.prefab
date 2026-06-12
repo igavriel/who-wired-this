@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2219883896783194079}
   - component: {fileID: 397686071515322535}
-  - component: {fileID: 5829473610284756103}
   m_Layer: 0
   m_Name: ResultLight
   m_TagString: Untagged
@@ -60,23 +59,6 @@ MonoBehaviour:
   visibleToPlayer: 0
   activeSubjectIndex: 0
   interactionLocked: 0
---- !u!114 &5829473610284756103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 706491683034416665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7e3c91f4b2d48e6a9f1058273645b8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ResultLightIndicatorPulseController
-  multiDimension: {fileID: 397686071515322535}
-  indicatorChildName: IndicatorLight
-  minIntensity: 0
-  maxIntensity: 0.1
-  pulseSpeed: 50
 --- !u!1 &2289547159780364257
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,6 +71,7 @@ GameObject:
   - component: {fileID: 3188108574679147578}
   - component: {fileID: 351168328632217969}
   - component: {fileID: 2585727621234763936}
+  - component: {fileID: 4108749660253052674}
   m_Layer: 0
   m_Name: OFF
   m_TagString: Untagged
@@ -190,6 +173,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4108749660253052674
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2289547159780364257}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 530f5e09717724c9491e377034767ee5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2735779445554068255
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +238,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
   m_Intensity: 3
   m_Range: 0.1
   m_SpotAngle: 30
@@ -329,6 +334,7 @@ GameObject:
   - component: {fileID: 2901121211280556178}
   - component: {fileID: 4113472481330297165}
   - component: {fileID: 4983176194825222782}
+  - component: {fileID: 72371341772551672}
   m_Layer: 0
   m_Name: Green
   m_TagString: Untagged
@@ -430,6 +436,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &72371341772551672
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669086045445142315}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 530f5e09717724c9491e377034767ee5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3756425783075214919
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +470,7 @@ GameObject:
   - component: {fileID: 4119309281179235259}
   - component: {fileID: 777804591904582828}
   - component: {fileID: 3002230787698629595}
+  - component: {fileID: 6773942453076979480}
   m_Layer: 0
   m_Name: Orange
   m_TagString: Untagged
@@ -543,6 +572,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &6773942453076979480
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3756425783075214919}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 530f5e09717724c9491e377034767ee5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4152117603608944596
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +637,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Intensity: 3
   m_Range: 0.1
   m_SpotAngle: 30
@@ -713,7 +764,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.5918405, b: 0, a: 1}
   m_Intensity: 3
   m_Range: 0.1
   m_SpotAngle: 30
@@ -840,7 +891,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24703789, g: 1, b: 0, a: 1}
   m_Intensity: 3
   m_Range: 0.1
   m_SpotAngle: 30
@@ -936,6 +987,7 @@ GameObject:
   - component: {fileID: 383300121466588992}
   - component: {fileID: 4465414064089435082}
   - component: {fileID: 3658171035425652091}
+  - component: {fileID: 6469365213591874325}
   m_Layer: 0
   m_Name: Red
   m_TagString: Untagged
@@ -1037,3 +1089,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &6469365213591874325
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695260173002167746}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 530f5e09717724c9491e377034767ee5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
