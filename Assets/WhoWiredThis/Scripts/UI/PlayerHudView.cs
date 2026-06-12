@@ -108,6 +108,7 @@ namespace WhoWiredThis.UI
 
         public void HidePopup()
         {
+            CacheMessagePanelFromHierarchy();
             messagePanel?.Hide();
         }
 
