@@ -112,6 +112,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [tutorial-summary-popup.md](tutorial-summary-popup.md) | Tutorial completion: `TutorialSummaryPopupPresenter` shows team metrics summary on both HUDs from `GetSnapshot()`; `Tutorial.unity` only. |
 | [ui-canvas-dual-hud-promote-to-production.md](ui-canvas-dual-hud-promote-to-production.md) | Promote dual HUD to UI_Canvas.prefab; pilot Split Tutorial first; user approval before remaining scenes. |
 | [playtest-flow-start-gameover-total-time.md](playtest-flow-start-gameover-total-time.md) | Implemented quick playtest flow: `StartScene -> Tutorial -> Puzzle Pipes -> Puzzle Signal -> GameOverScene` with summed scene-time total and best-time persistence. |
+| [tutorial-exit-hide-popup-scene-transition.md](tutorial-exit-hide-popup-scene-transition.md) | **Implemented (Tutorial + Puzzle Pipes + Puzzle Signal):** Hide Exit; fade out then load next scene on completion popup dismiss. |
 | [phase-1-history-clear-escape-menu.md](phase-1-history-clear-escape-menu.md) | Clear shared history on scene transitions; cap at 20 entries per puzzle; Escape returns to StartScene via PlaytestFlowUtility. |
 
 ---

@@ -16,6 +16,9 @@ namespace WhoWiredThis.UI
         [Header("Popup")]
         [SerializeField] private MessagePanel messagePanel;
 
+        [Header("Scene transition")]
+        [SerializeField] private SceneTransitionFadeOverlay fadeOverlay;
+
         public bool IsPopupOpen
         {
             get
@@ -25,10 +28,29 @@ namespace WhoWiredThis.UI
             }
         }
 
+        public MessagePanel MessagePanel
+        {
+            get
+            {
+                CacheMessagePanelFromHierarchy();
+                return messagePanel;
+            }
+        }
+
+        public SceneTransitionFadeOverlay FadeOverlay
+        {
+            get
+            {
+                CacheFadeOverlayFromHierarchy();
+                return fadeOverlay;
+            }
+        }
+
         void Awake()
         {
             CacheTopBarTextsFromHierarchy();
             CacheMessagePanelFromHierarchy();
+            CacheFadeOverlayFromHierarchy();
         }
 
         public void ApplySharedHudState(string roomName, string scoreLine, string timeLine)
@@ -120,6 +142,20 @@ namespace WhoWiredThis.UI
             }
 
             messagePanel = GetComponentInChildren<MessagePanel>(true);
+        }
+
+        private void CacheFadeOverlayFromHierarchy()
+        {
+            if (fadeOverlay != null)
+            {
+                return;
+            }
+
+            fadeOverlay = GetComponent<SceneTransitionFadeOverlay>();
+            if (fadeOverlay == null)
+            {
+                fadeOverlay = gameObject.AddComponent<SceneTransitionFadeOverlay>();
+            }
         }
 
         private void CacheTopBarTextsFromHierarchy()

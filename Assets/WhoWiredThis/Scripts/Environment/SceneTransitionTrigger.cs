@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using WhoWiredThis.Core;
 using WhoWiredThis.Player;
+using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Environment
 {
@@ -14,6 +14,11 @@ namespace WhoWiredThis.Environment
         [SerializeField] private string targetSceneName = string.Empty;
         [Tooltip("If the active scene name matches the target scene name, the trigger will not load the target scene.")]
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
+
+        [Header("Fade (optional)")]
+        [Tooltip("When > 0, fades these overlays before loading. When 0, loads immediately.")]
+        [SerializeField] private float fadeOutDurationSeconds;
+        [SerializeField] private SceneTransitionFadeOverlay[] fadeOverlays;
 
         [Header("Trigger Behavior")]
         [Tooltip("If the trigger has already been activated, it will not be activated again.")]
@@ -140,49 +145,34 @@ namespace WhoWiredThis.Environment
 
         private void TryLoadTargetScene()
         {
-            if (string.IsNullOrWhiteSpace(targetSceneName))
-            {
-                Debug.LogWarning("[SceneTransitionTrigger] Target scene name is empty.");
-                return;
-            }
-
-            string activeSceneName = SceneManager.GetActiveScene().name;
-            if (ignoreWhenAlreadyInTargetScene &&
-                string.Equals(activeSceneName, targetSceneName, StringComparison.Ordinal))
+            if (hasTriggered && loadOnce)
             {
                 return;
             }
 
-            if (!Application.CanStreamedLevelBeLoaded(targetSceneName))
+            if (fadeOutDurationSeconds > 0f && fadeOverlays != null && fadeOverlays.Length > 0)
             {
-                Debug.LogWarning($"[SceneTransitionTrigger] Scene '{targetSceneName}' is not in Build Settings.");
+                if (SceneTransitionUtility.TryBeginTransitionWithFade(
+                        this,
+                        targetSceneName,
+                        fadeOutDurationSeconds,
+                        fadeOverlays,
+                        ignoreWhenAlreadyInTargetScene,
+                        out _))
+                {
+                    hasTriggered = true;
+                }
+
                 return;
             }
 
-            if (ShouldCountSceneForPlaytestTotal(activeSceneName))
+            if (SceneTransitionUtility.TryLoadSceneImmediate(
+                    targetSceneName,
+                    ignoreWhenAlreadyInTargetScene,
+                    out _))
             {
-                PlaytestRunTotal.CompleteCurrentScene(activeSceneName);
+                hasTriggered = true;
             }
-
-            hasTriggered = true;
-
-            if (string.Equals(targetSceneName, PlaytestFlowUtility.GameOverSceneName, StringComparison.Ordinal))
-            {
-                Debug.Log("[SceneTransitionTrigger] Loading GameOverScene with run summary.");
-                PlaytestFlowUtility.TryEndRunAndLoadGameOver(abandoned: false, out _);
-                return;
-            }
-
-            PlaytestSceneLoadUtility.PrepareForSceneLoad();
-            Debug.Log($"[SceneTransitionTrigger] Loading scene '{targetSceneName}'.");
-            SceneManager.LoadScene(targetSceneName, LoadSceneMode.Single);
-        }
-
-        private static bool ShouldCountSceneForPlaytestTotal(string sceneName)
-        {
-            return string.Equals(sceneName, "Tutorial", StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Pipes", StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Signal", StringComparison.Ordinal);
         }
     }
 

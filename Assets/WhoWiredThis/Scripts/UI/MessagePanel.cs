@@ -23,6 +23,9 @@ namespace WhoWiredThis.UI
         private Action onCancel;
         private bool isConfirmationVisible;
 
+        /// <summary>Raised when a visible popup is hidden (Close, Action dismiss, confirmation cancel).</summary>
+        public event Action PopupHidden;
+
         void Awake()
         {
             if (registerAsSingleton)
@@ -113,7 +116,15 @@ namespace WhoWiredThis.UI
             panelRoot?.SetActive(true);
         }
 
-        public void Hide() => panelRoot?.SetActive(false);
+        public void Hide()
+        {
+            bool wasVisible = IsVisible;
+            panelRoot?.SetActive(false);
+            if (wasVisible)
+            {
+                PopupHidden?.Invoke();
+            }
+        }
 
         public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
 

@@ -516,13 +516,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39441544}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81f84998efa584edcaf6e9687e750f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTrigger
   targetSceneName: GameOverScene
   ignoreWhenAlreadyInTargetScene: 1
+  fadeOutDurationSeconds: 0
+  fadeOverlays: []
   loadOnce: 1
   triggerCollider: {fileID: 1385774100}
   useBoundsPollingFallback: 1
@@ -947,6 +949,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2126403150}
     m_Modifications:
+    - target: {fileID: 1198052037573566178, guid: e5feeea58a1ab4a5aabad6bc931ee409, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2858123509212561124, guid: e5feeea58a1ab4a5aabad6bc931ee409, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.25
@@ -990,6 +996,10 @@ PrefabInstance:
     - target: {fileID: 3963186811787336548, guid: e5feeea58a1ab4a5aabad6bc931ee409, type: 3}
       propertyPath: m_Name
       value: Wave_5State
+      objectReference: {fileID: 0}
+    - target: {fileID: 5696995425311211073, guid: e5feeea58a1ab4a5aabad6bc931ee409, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1976,6 +1986,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 1340959902}
   pressFeedback: {fileID: 654811934}
   processingFeedback: {fileID: 990012004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -2142,6 +2153,8 @@ MonoBehaviour:
   allowedPlayerId: 2
   frameFillPercent: 54
   boardRenderer: {fileID: 685025537}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: TUNE
@@ -2161,6 +2174,7 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1965309141}
     interactableReference: {fileID: 1965309142}
+  includeExitInFocusCycle: 0
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 458659913}
@@ -2426,6 +2440,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 2097925730}
   pressFeedback: {fileID: 713330670}
   processingFeedback: {fileID: 990011004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -2800,6 +2815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 950581922}
   - component: {fileID: 950581923}
+  - component: {fileID: 950581926}
   m_Layer: 0
   m_Name: TutorialStageManager
   m_TagString: Untagged
@@ -2917,13 +2933,32 @@ MonoBehaviour:
   exitDoorBlockersToDisableOnComplete: []
   completionMessage: 'PUZZLE COMPLETE
 
-    Synchronization confirmed. The exit door
-    is now unlocked.
 
-    Both players may proceed to the next room.
+    Synchronization confirmed.
 
-    Double-click
-    the Exit button to close this panel and return to the game.'
+
+    Close
+    the summary popup to continue.'
+--- !u!114 &950581926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950581921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e377d637a44740bfb14692cd727ffc97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.CompletionPopupSceneTransition
+  tutorialStageManager: {fileID: 950581923}
+  completionPopupPanelA: {fileID: 0}
+  completionPopupPanelB: {fileID: 0}
+  targetSceneName: GameOverScene
+  ignoreWhenAlreadyInTargetScene: 1
+  loadOnce: 1
+  fadeOutDurationSeconds: 1
+  fadeOverlays: []
 --- !u!114 &990011004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3304,6 +3339,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2126403150}
     m_Modifications:
+    - target: {fileID: 1198052037573566178, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689839037169715644, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2858123509212561124, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1
@@ -3347,6 +3390,18 @@ PrefabInstance:
     - target: {fileID: 3963186811787336548, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
       propertyPath: m_Name
       value: Amp_5State
+      objectReference: {fileID: 0}
+    - target: {fileID: 5696995425311211073, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064329161900503557, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579170103707259994, guid: e6f218927d0a6422cb391f802cbc47c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3692,7 +3747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2949805065554514774, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_sharedMaterial
@@ -3773,13 +3828,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7509627124323060259, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4078762300450301152, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
 --- !u!4 &1278314707 stripped
 Transform:
@@ -5324,7 +5373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2949805065554514774, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_sharedMaterial
@@ -5405,13 +5454,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7509627124323060259, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4078762300450301152, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
 --- !u!4 &1965309140 stripped
 Transform:
@@ -5458,9 +5501,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2126403150}
     m_Modifications:
+    - target: {fileID: 593300584888209213, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 646346930085071506, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3411491597722521364, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
       propertyPath: m_Name
       value: Freq_5State
+      objectReference: {fileID: 0}
+    - target: {fileID: 3723190575485426369, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4607750662328773268, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5501,6 +5556,18 @@ PrefabInstance:
     - target: {fileID: 4607750662328773268, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310785351063594672, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748256537189126307, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073894651874531908, guid: d1f3a339e04654ddf85ac7be6b0b06b0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5661,7 +5728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a89a53d646140439bad42506722a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap
-  enterFocusOnStartup: 0
+  enterFocusOnStartup: 1
   playerAFocus: {fileID: 3073909790674315973}
   playerAPanel: {fileID: 2129372216}
   playerBFocus: {fileID: 7069613721803897088}
@@ -6097,6 +6164,8 @@ MonoBehaviour:
   allowedPlayerId: 1
   frameFillPercent: 54
   boardRenderer: {fileID: 2129372217}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: FREQ
@@ -6116,6 +6185,7 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1278314708}
     interactableReference: {fileID: 1278314709}
+  includeExitInFocusCycle: 0
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 631392080}
