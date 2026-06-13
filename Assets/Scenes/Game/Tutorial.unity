@@ -1058,12 +1058,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1590526297271768594, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5757665884806840692, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 2254742358765498295, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 2144414215153944925, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -3127,7 +3121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTrigger
   targetSceneName: Puzzle Pipes
   ignoreWhenAlreadyInTargetScene: 1
-  fadeOutDurationSeconds: 2
+  fadeOutDurationSeconds: 5
   fadeOverlays: []
   loadOnce: 1
   triggerCollider: {fileID: 518627909}

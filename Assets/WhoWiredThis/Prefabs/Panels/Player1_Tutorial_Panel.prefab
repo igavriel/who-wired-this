@@ -444,6 +444,7 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1426748073469280046}
     interactableReference: {fileID: 1808201110544418328}
+  includeExitInFocusCycle: 1
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 2291634651272148026}
@@ -935,6 +936,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 3383061087320299235}
   pressFeedback: {fileID: 4512518086814690612}
   processingFeedback: {fileID: 9180544622259930615}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -1179,7 +1181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3392454775771116045, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_text
@@ -2176,11 +2178,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -425199181783681384, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 242832958459323788, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_Name
@@ -2196,11 +2198,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5419521196978236527, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7360958891211615422, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7997436524154211754, guid: e3fafc56ceb7742b298da965ed801c92, type: 3}
       propertyPath: m_IsActive

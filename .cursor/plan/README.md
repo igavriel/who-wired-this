@@ -88,6 +88,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [rebuild_panel_one_scene_9ea2a622.plan.md](rebuild_panel_one_scene_9ea2a622.plan.md) | New scene from Split Puzzle with full Player A panel (knobs, solve, diagnostic, history). |
 | [panel_focus_mode_test_99d2c9e2.plan.md](panel_focus_mode_test_99d2c9e2.plan.md) | Panel focus test scene: two panels, camera snap, movement off until exit. |
 | [simplify_panel_focus_fix_45250b08.plan.md](simplify_panel_focus_fix_45250b08.plan.md) | Collapse panel-focus stack; variable buttons + Exit; border selection frame. |
+| [panel-focus-ws-arrow-selection.md](panel-focus-ws-arrow-selection.md) | **Implemented:** Panel focus dual-axis — A/D or Left/Right select; W/S or Up/Down action (cycle/submit like Ctrl). |
 
 ---
 

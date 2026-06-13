@@ -131,16 +131,33 @@ namespace WhoWiredThis.PanelFocus
                 currentPanel.MoveSelection(+1);
             }
 
-            if (Input.GetKeyDown(inputBindings.Interact))
+            if (IsActionPressedThisFrame())
             {
-                if (playerActions != null && playerActions.PlayerHud != null && playerActions.PlayerHud.IsPopupOpen)
+                if (TryDismissPopupIfOpen())
                 {
-                    playerActions.PlayerHud.HidePopup();
                     return;
                 }
 
                 currentPanel.ActivateSelected(gameObject);
             }
+        }
+
+        private bool IsActionPressedThisFrame()
+        {
+            return Input.GetKeyDown(inputBindings.Interact)
+                   || Input.GetKeyDown(inputBindings.MoveForward)
+                   || Input.GetKeyDown(inputBindings.MoveBack);
+        }
+
+        private bool TryDismissPopupIfOpen()
+        {
+            if (playerActions == null || playerActions.PlayerHud == null || !playerActions.PlayerHud.IsPopupOpen)
+            {
+                return false;
+            }
+
+            playerActions.PlayerHud.HidePopup();
+            return true;
         }
     }
 }

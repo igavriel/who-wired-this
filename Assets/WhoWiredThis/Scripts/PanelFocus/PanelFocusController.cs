@@ -324,7 +324,7 @@ namespace WhoWiredThis.PanelFocus
             {
                 Debug.LogWarning(
                     $"[PanelFocusController] Action blocked on '{name}' for {activeController.PlayerId} — panel is locked " +
-                    $"(waiting for your turn, or puzzle complete). A/D still moves selection; Ctrl cannot cycle inputs or Send.",
+                    $"(waiting for your turn, or puzzle complete). Selection keys still move focus; Ctrl and vertical action keys cannot cycle inputs or Send.",
                     this);
                 return;
             }
