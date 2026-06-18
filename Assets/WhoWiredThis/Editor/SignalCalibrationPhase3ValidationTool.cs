@@ -9,7 +9,7 @@ namespace WhoWiredThis.Editor
 {
     public static class SignalCalibrationPhase3ValidationTool
     {
-        private const string ScenePath = "Assets/Scenes/Puzzle Signal.unity";
+        private const string ScenePath = "Assets/Scenes/Game/Puzzle Signal.unity";
         private const string ValidationMenuRoot = "Who Wired This/Signal Calibration/Validation/";
         private const string McpMenuRoot = "Who Wired This/Signal Calibration/MCP/";
         private const string MenuPath = ValidationMenuRoot + "2. Phase 3 (Randomized Solution)";

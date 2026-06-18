@@ -17,7 +17,11 @@ namespace WhoWiredThis.Editor
     /// </summary>
     public static class SignalCalibrationPuzzleSignalWireTool
     {
-        private const string ScenePath = "Assets/Scenes/Puzzle Signal.unity";
+        private const string ScenePath = "Assets/Scenes/Game/Puzzle Signal.unity";
+        private const string SignalPanelAName = "Player1_Signal_Panel-A";
+        private const string SignalPanelBName = "Player2_Signal_Panel-B";
+        private const string FullWireMenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Full Scene";
+        private const string FullWireMcpMenuPath = "Who Wired This/Signal Calibration/MCP/Wire Puzzle Signal Full Scene";
         private const string MenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Phase 1";
         private const string Phase2MenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Phase 2 (Diagnostics)";
         private const string Phase3MenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Phase 3 (Random Solution)";
@@ -141,6 +145,453 @@ namespace WhoWiredThis.Editor
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log("[SignalCalibrationPuzzleSignalWireTool] Phase 3 RandomPuzzleSolutionAssigner wired on Puzzle Signal.");
+        }
+
+        [MenuItem(FullWireMenuPath)]
+        public static void WirePuzzleSignalFullScene()
+        {
+            WirePuzzleSignalFullSceneInternal(showDialog: true);
+        }
+
+        [MenuItem(FullWireMcpMenuPath)]
+        public static void WirePuzzleSignalFullSceneForMcp()
+        {
+            WirePuzzleSignalFullSceneInternal(showDialog: false);
+            EditorSceneManager.SaveOpenScenes();
+        }
+
+        private static void WirePuzzleSignalFullSceneInternal(bool showDialog)
+        {
+            if (!EnsurePuzzleSignalSceneActive())
+            {
+                return;
+            }
+
+            if (!TryGetSignalPanels(out GameObject panelA, out GameObject panelB))
+            {
+                if (showDialog)
+                {
+                    EditorUtility.DisplayDialog(
+                        "Puzzle Signal Wire",
+                        $"Open '{ScenePath}' with '{SignalPanelAName}' and '{SignalPanelBName}' in the hierarchy.",
+                        "OK");
+                }
+
+                return;
+            }
+
+            WireCrossPartnerDiagnosticAndFocusInternal(markSceneDirty: false);
+            WirePanelActionLocks(panelA);
+            WirePanelActionLocks(panelB);
+            EnsureLocalBridgePuzzleManager(panelA);
+            EnsureLocalBridgePuzzleManager(panelB);
+            EnsurePuzzleCorrectIndices(panelA, new[] { 2, 2, 2 });
+            EnsurePuzzleCorrectIndices(panelB, new[] { 3, 2, 3 });
+            EnsureLeverFeedback(panelA);
+            EnsureLeverFeedback(panelB);
+            WireSimultaneousOperatorMode();
+            WireTurnLocksForSignalPanels(panelA, panelB);
+            int resultIssues = SignalCalibrationPuzzleSignalResultWireTool.WireAllResultFeedback();
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log(resultIssues == 0
+                ? "[SignalCalibrationPuzzleSignalWireTool] Full Puzzle Signal wire complete (focus, diagnostics, turn locks, bridges, result feedback)."
+                : $"[SignalCalibrationPuzzleSignalWireTool] Full wire finished with {resultIssues} result-feedback issue(s). See console.");
+        }
+
+        private static bool TryGetSignalPanels(out GameObject panelA, out GameObject panelB)
+        {
+            panelA = GameObject.Find(SignalPanelAName);
+            panelB = GameObject.Find(SignalPanelBName);
+            return panelA != null && panelB != null;
+        }
+
+        private static void WireCrossPartnerDiagnosticAndFocusInternal(bool markSceneDirty)
+        {
+            if (!TryGetSignalPanels(out GameObject panelA, out GameObject panelB))
+            {
+                Debug.LogError(
+                    $"[SignalCalibrationPuzzleSignalWireTool] Missing '{SignalPanelAName}' or '{SignalPanelBName}'.");
+                return;
+            }
+
+            WireCrossPartnerOperatorSide(
+                panelA,
+                panelB,
+                new[] { "FREQ", "GAIN", "WAVE" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "FREQ LOOKS STABLE.", "FREQ IS TOO LOW.", "FREQ IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "GAIN LOOKS STABLE.", "GAIN IS TOO LOW.", "GAIN IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "WAVE PATTERN MATCHES.", string.Empty, string.Empty, "WAVE PATTERN DOES NOT MATCH.")
+                },
+                AllowedPlayerTag.Player_B);
+
+            WireCrossPartnerOperatorSide(
+                panelB,
+                panelA,
+                new[] { "TUNE", "AMP", "MODE" },
+                new[]
+                {
+                    (ComponentDiagnosticType.Ordered, "TUNE LOOKS STABLE.", "TUNE IS TOO LOW.", "TUNE IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Ordered, "AMP LOOKS STABLE.", "AMP IS TOO LOW.", "AMP IS TOO HIGH.", string.Empty),
+                    (ComponentDiagnosticType.Categorical, "MODE PATTERN MATCHES.", string.Empty, string.Empty, "MODE PATTERN DOES NOT MATCH.")
+                },
+                AllowedPlayerTag.Player_A);
+
+            EnsurePanelFocusReady(panelA, AllowedPlayerTag.Player_A);
+            EnsurePanelFocusReady(panelB, AllowedPlayerTag.Player_B);
+            WireInitialPanelFocusBootstrap(panelA, panelB);
+
+            if (markSceneDirty)
+            {
+                EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            }
+
+            Debug.Log("[SignalCalibrationPuzzleSignalWireTool] Wired cross-partner diagnostics and startup panel focus.");
+        }
+
+        private static void WireCrossPartnerOperatorSide(
+            GameObject operatorPanel,
+            GameObject partnerPanel,
+            string[] inputNames,
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
+            AllowedPlayerTag partnerDiagnosticVisibleTo)
+        {
+            DiagnosticDisplayController partnerDisplay =
+                partnerPanel.GetComponentInChildren<DiagnosticDisplayController>(true);
+            if (partnerDisplay == null)
+            {
+                Debug.LogError(
+                    $"[SignalCalibrationPuzzleSignalWireTool] No DiagnosticDisplayController under '{partnerPanel.name}'.");
+                return;
+            }
+
+            ComponentDiagnosticAdapter adapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            if (adapter == null && inputNames != null && defs != null)
+            {
+                WireComponentDiagnosticPanel(operatorPanel, inputNames, defs);
+                adapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            }
+
+            ProcessingFeedbackController feedback =
+                operatorPanel.GetComponentInChildren<ProcessingFeedbackController>(true);
+            if (adapter != null)
+            {
+                SerializedObject adapterSo = new SerializedObject(adapter);
+                adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerDisplay;
+                adapterSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            if (feedback != null)
+            {
+                SerializedObject feedbackSo = new SerializedObject(feedback);
+                feedbackSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerDisplay;
+                feedbackSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            MultiDimensionRecursive visibility =
+                partnerDisplay.GetComponentInChildren<MultiDimensionRecursive>(true);
+            if (visibility != null)
+            {
+                SerializedObject visSo = new SerializedObject(visibility);
+                visSo.FindProperty("visibleToPlayer").enumValueIndex = (int)partnerDiagnosticVisibleTo;
+                visSo.ApplyModifiedPropertiesWithoutUndo();
+                visibility.ApplyConfiguration();
+            }
+        }
+
+        private static void WirePanelActionLocks(GameObject panel)
+        {
+            PanelActionLock panelLock = panel.GetComponent<PanelActionLock>();
+            if (panelLock == null)
+            {
+                Debug.LogWarning($"[SignalCalibrationPuzzleSignalWireTool] No PanelActionLock on '{panel.name}'.");
+                return;
+            }
+
+            foreach (PanelFocusController focus in panel.GetComponentsInChildren<PanelFocusController>(true))
+            {
+                SerializedObject focusSo = new SerializedObject(focus);
+                focusSo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
+                focusSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            foreach (MultiDimensionPuzzleInteractableBridge bridge in panel.GetComponentsInChildren<MultiDimensionPuzzleInteractableBridge>(true))
+            {
+                SerializedObject bridgeSo = new SerializedObject(bridge);
+                bridgeSo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
+                bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            foreach (SolveInteractProxy proxy in panel.GetComponentsInChildren<SolveInteractProxy>(true))
+            {
+                SerializedObject proxySo = new SerializedObject(proxy);
+                proxySo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
+                proxySo.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+
+        private static void EnsureLocalBridgePuzzleManager(GameObject panel)
+        {
+            SubmittedCombinationMultiDimensionBridge bridge =
+                panel.GetComponentInChildren<SubmittedCombinationMultiDimensionBridge>(true);
+            MultiDimensionPuzzleManager puzzleManager =
+                panel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
+            if (bridge == null || puzzleManager == null)
+            {
+                return;
+            }
+
+            SerializedObject bridgeSo = new SerializedObject(bridge);
+            bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
+            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireSimultaneousOperatorMode()
+        {
+            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            if (stageManager == null)
+            {
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found; skipped simultaneous operator mode.");
+                return;
+            }
+
+            SerializedObject tsmSo = new SerializedObject(stageManager);
+            tsmSo.FindProperty("simultaneousOperators").boolValue = true;
+            tsmSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void EnsureLeverFeedback(GameObject panel)
+        {
+            MultiDimensionPuzzleInteractableBridge bridge =
+                panel.GetComponentInChildren<MultiDimensionPuzzleInteractableBridge>(true);
+            SubmitLeverMultiDimensionFeedback leverFeedback =
+                panel.GetComponentInChildren<SubmitLeverMultiDimensionFeedback>(true);
+            if (bridge == null || leverFeedback == null)
+            {
+                return;
+            }
+
+            SerializedObject bridgeSo = new SerializedObject(bridge);
+            if (bridgeSo.FindProperty("leverFeedback").objectReferenceValue == null)
+            {
+                bridgeSo.FindProperty("leverFeedback").objectReferenceValue = leverFeedback;
+                bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+
+        private static void EnsurePuzzleCorrectIndices(GameObject panel, int[] correctIndices)
+        {
+            MultiDimensionPuzzleManager puzzleManager =
+                panel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
+            if (puzzleManager == null || correctIndices == null)
+            {
+                return;
+            }
+
+            SerializedObject pmSo = new SerializedObject(puzzleManager);
+            SerializedProperty elems = pmSo.FindProperty("puzzleElements");
+            if (elems.arraySize != correctIndices.Length)
+            {
+                return;
+            }
+
+            for (int i = 0; i < correctIndices.Length; i++)
+            {
+                elems.GetArrayElementAtIndex(i).FindPropertyRelative("correctIndex").intValue = correctIndices[i];
+            }
+
+            pmSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireTurnLocksForSignalPanels(GameObject panelA, GameObject panelB)
+        {
+            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            if (stageManager == null)
+            {
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found; skipped turn locks.");
+                return;
+            }
+
+            SerializedObject tsmSo = new SerializedObject(stageManager);
+            WireLockBundleFromPanel(tsmSo, "playerAPanelLock", panelA);
+            WireLockBundleFromPanel(tsmSo, "playerBPanelLock", panelB);
+            tsmSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireLockBundleFromPanel(SerializedObject tsmSo, string bundleProperty, GameObject panel)
+        {
+            PanelFocusController focus = panel.GetComponentInChildren<PanelFocusController>(true);
+            if (focus == null)
+            {
+                Debug.LogWarning($"[SignalCalibrationPuzzleSignalWireTool] No PanelFocusController under '{panel.name}' for turn lock.");
+                return;
+            }
+
+            PanelActionLock panelLock = panel.GetComponent<PanelActionLock>();
+            SerializedObject focusSo = new SerializedObject(focus);
+            SerializedProperty buttons = focusSo.FindProperty("interactableButtons");
+            int inputCount = buttons.arraySize;
+
+            SerializedProperty bundle = tsmSo.FindProperty(bundleProperty);
+            SerializedProperty colliders = bundle.FindPropertyRelative("actionColliders");
+            colliders.arraySize = inputCount + 1;
+            bundle.FindPropertyRelative("panelActionLock").objectReferenceValue = panelLock;
+
+            for (int i = 0; i < inputCount; i++)
+            {
+                var cycler = buttons.GetArrayElementAtIndex(i)
+                    .FindPropertyRelative("interactableReference")
+                    .objectReferenceValue as MultiDimensionSubjectCycler;
+                colliders.GetArrayElementAtIndex(i).objectReferenceValue = GetProbeColliderFromCycler(cycler);
+            }
+
+            SolveInteractProxy solveProxy = panel.GetComponentInChildren<SolveInteractProxy>(true);
+            Collider solveCollider = solveProxy != null
+                ? solveProxy.GetComponentInChildren<Collider>(true)
+                : null;
+            colliders.GetArrayElementAtIndex(inputCount).objectReferenceValue = solveCollider;
+        }
+
+        private static Collider GetProbeColliderFromCycler(MultiDimensionSubjectCycler cycler)
+        {
+            if (cycler == null)
+            {
+                return null;
+            }
+
+            SerializedObject so = new SerializedObject(cycler);
+            return so.FindProperty("dimensionProbe").objectReferenceValue as Collider;
+        }
+
+        private static void EnsurePanelFocusReady(GameObject panel, AllowedPlayerTag allowedPlayer)
+        {
+            PanelFocusController focus = panel.GetComponentInChildren<PanelFocusController>(true);
+            if (focus == null)
+            {
+                Debug.LogError($"[SignalCalibrationPuzzleSignalWireTool] Missing PanelFocusController under '{panel.name}'.");
+                return;
+            }
+
+            SerializedObject focusSo = new SerializedObject(focus);
+            focusSo.FindProperty("allowedPlayerId").enumValueIndex = (int)allowedPlayer;
+            focusSo.FindProperty("includeExitInFocusCycle").boolValue = false;
+
+            SerializedProperty boardRendererProp = focusSo.FindProperty("boardRenderer");
+            if (boardRendererProp.objectReferenceValue == null)
+            {
+                Renderer boardRenderer = focus.GetComponent<MeshRenderer>();
+                if (boardRenderer == null)
+                {
+                    boardRenderer = focus.GetComponentInChildren<MeshRenderer>(true);
+                }
+
+                if (boardRenderer != null)
+                {
+                    boardRendererProp.objectReferenceValue = boardRenderer;
+                }
+            }
+            else if (boardRendererProp.objectReferenceValue is Renderer existing && !existing.enabled)
+            {
+                existing.enabled = true;
+            }
+
+            SolveInteractProxy solveProxy = panel.GetComponentInChildren<SolveInteractProxy>(true);
+            if (solveProxy != null)
+            {
+                SerializedProperty solveButtonProp = focusSo.FindProperty("solveButton");
+                SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
+                interactableRef.objectReferenceValue = solveProxy;
+            }
+
+            SerializedProperty selectionFrameProp = focusSo.FindProperty("selectionFrame");
+            if (selectionFrameProp.objectReferenceValue == null)
+            {
+                Transform selectionBorder = FindChildTransform(panel.transform, "SelectionBorder");
+                if (selectionBorder != null)
+                {
+                    selectionFrameProp.objectReferenceValue = selectionBorder.gameObject;
+                }
+            }
+
+            SerializedProperty buttons = focusSo.FindProperty("interactableButtons");
+            for (int i = 0; i < buttons.arraySize; i++)
+            {
+                SerializedProperty button = buttons.GetArrayElementAtIndex(i);
+                string label = button.FindPropertyRelative("label").stringValue;
+                if (string.IsNullOrEmpty(label))
+                {
+                    continue;
+                }
+
+                Transform inputTransform = FindChildTransform(panel.transform, label);
+                if (inputTransform == null)
+                {
+                    continue;
+                }
+
+                SerializedProperty anchorProp = button.FindPropertyRelative("highlightAnchor");
+                if (anchorProp.objectReferenceValue == null)
+                {
+                    anchorProp.objectReferenceValue = inputTransform;
+                }
+
+                SerializedProperty interactableRef = button.FindPropertyRelative("interactableReference");
+                if (interactableRef.objectReferenceValue == null)
+                {
+                    MultiDimensionSubjectCycler cycler = inputTransform.GetComponent<MultiDimensionSubjectCycler>();
+                    if (cycler != null)
+                    {
+                        interactableRef.objectReferenceValue = cycler;
+                    }
+                }
+            }
+
+            focusSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireInitialPanelFocusBootstrap(GameObject panelA, GameObject panelB)
+        {
+            InitialPanelFocusBootstrap bootstrap = Object.FindFirstObjectByType<InitialPanelFocusBootstrap>();
+            if (bootstrap == null)
+            {
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] No InitialPanelFocusBootstrap in scene.");
+                return;
+            }
+
+            PlayerPanelFocusController playerAFocus =
+                GameObject.Find("FirstPersonPlayer_A")?.GetComponent<PlayerPanelFocusController>();
+            PlayerPanelFocusController playerBFocus =
+                GameObject.Find("FirstPersonPlayer_B")?.GetComponent<PlayerPanelFocusController>();
+            PanelFocusController panelAFocus = panelA.GetComponentInChildren<PanelFocusController>(true);
+            PanelFocusController panelBFocus = panelB.GetComponentInChildren<PanelFocusController>(true);
+
+            SerializedObject bootstrapSo = new SerializedObject(bootstrap);
+            bootstrapSo.FindProperty("enterFocusOnStartup").boolValue = true;
+            bootstrapSo.FindProperty("playerAFocus").objectReferenceValue = playerAFocus;
+            bootstrapSo.FindProperty("playerAPanel").objectReferenceValue = panelAFocus;
+            bootstrapSo.FindProperty("playerBFocus").objectReferenceValue = playerBFocus;
+            bootstrapSo.FindProperty("playerBPanel").objectReferenceValue = panelBFocus;
+            bootstrapSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static Transform FindChildTransform(Transform root, string childName)
+        {
+            if (root.name == childName)
+            {
+                return root;
+            }
+
+            for (int i = 0; i < root.childCount; i++)
+            {
+                Transform match = FindChildTransform(root.GetChild(i), childName);
+                if (match != null)
+                {
+                    return match;
+                }
+            }
+
+            return null;
         }
 
         private static bool EnsurePuzzleSignalSceneActive()
@@ -401,50 +852,42 @@ namespace WhoWiredThis.Editor
         }
 
         private static void WireComponentDiagnosticPanel(
-            string panelName,
+            GameObject panel,
             string[] inputNames,
-            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
-            string solvedMessage,
-            string systemNoneCorrect,
-            string systemOneCorrect,
-            string systemTwoCorrect)
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs)
         {
-            GameObject panel = GameObject.Find(panelName);
             if (panel == null)
             {
-                Debug.LogError($"[SignalCalibrationPuzzleSignalWireTool] Missing '{panelName}'.");
                 return;
             }
 
             ComponentDiagnosticAdapter adapter = panel.GetComponent<ComponentDiagnosticAdapter>();
             if (adapter == null)
             {
-                Debug.LogError($"[SignalCalibrationPuzzleSignalWireTool] Missing ComponentDiagnosticAdapter on '{panelName}'.");
-                return;
+                adapter = panel.AddComponent<ComponentDiagnosticAdapter>();
             }
 
-            MultiDimensionPuzzleManager puzzleManager = GameObject.Find($"{panelName}/PuzzleManager")
-                ?.GetComponent<MultiDimensionPuzzleManager>();
-            SerializedObject adapterSo = new SerializedObject(adapter);
+            MultiDimensionPuzzleManager puzzleManager =
+                panel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
             DiagnosticDisplayController display =
-                adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue as DiagnosticDisplayController;
+                panel.GetComponentInChildren<DiagnosticDisplayController>(true);
 
             if (puzzleManager == null || display == null)
             {
                 Debug.LogError(
-                    $"[SignalCalibrationPuzzleSignalWireTool] Missing puzzleManager or diagnosticDisplay for '{panelName}'.");
+                    $"[SignalCalibrationPuzzleSignalWireTool] Missing puzzleManager or diagnosticDisplay for '{panel.name}'.");
                 return;
             }
 
             var dimensions = new MultiDimension[inputNames.Length];
             for (int i = 0; i < inputNames.Length; i++)
             {
-                dimensions[i] = GameObject.Find($"{panelName}/Buttons/{inputNames[i]}")
-                    ?.GetComponent<MultiDimension>();
+                Transform inputTransform = FindChildTransform(panel.transform, inputNames[i]);
+                dimensions[i] = inputTransform?.GetComponent<MultiDimension>();
             }
 
+            SerializedObject adapterSo = new SerializedObject(adapter);
             adapterSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
-            adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue = display;
 
             SerializedProperty componentsProp = adapterSo.FindProperty("components");
             componentsProp.arraySize = defs.Length;
@@ -460,11 +903,43 @@ namespace WhoWiredThis.Editor
                 entry.FindPropertyRelative("eligibleForHints").boolValue = true;
             }
 
+            adapterSo.FindProperty("solvedMessage").stringValue = "SIGNAL LINK CALIBRATED.";
+            adapterSo.FindProperty("systemNoneCorrect").stringValue = "SIGNAL IS UNSTABLE.";
+            adapterSo.FindProperty("systemOneCorrect").stringValue = "ONE SIGNAL CHANNEL RESPONDS.";
+            adapterSo.FindProperty("systemTwoCorrect").stringValue = "SIGNAL IS CLOSE.";
+            adapterSo.FindProperty("partnerLine").stringValue = "TELL YOUR PARTNER WHAT YOU LEARNED.";
+            adapterSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireComponentDiagnosticPanel(
+            string panelName,
+            string[] inputNames,
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
+            string solvedMessage,
+            string systemNoneCorrect,
+            string systemOneCorrect,
+            string systemTwoCorrect)
+        {
+            GameObject panel = GameObject.Find(panelName);
+            if (panel == null)
+            {
+                Debug.LogError($"[SignalCalibrationPuzzleSignalWireTool] Missing '{panelName}'.");
+                return;
+            }
+
+            WireComponentDiagnosticPanel(panel, inputNames, defs);
+
+            ComponentDiagnosticAdapter adapter = panel.GetComponent<ComponentDiagnosticAdapter>();
+            if (adapter == null)
+            {
+                return;
+            }
+
+            SerializedObject adapterSo = new SerializedObject(adapter);
             adapterSo.FindProperty("solvedMessage").stringValue = solvedMessage;
             adapterSo.FindProperty("systemNoneCorrect").stringValue = systemNoneCorrect;
             adapterSo.FindProperty("systemOneCorrect").stringValue = systemOneCorrect;
             adapterSo.FindProperty("systemTwoCorrect").stringValue = systemTwoCorrect;
-            adapterSo.FindProperty("partnerLine").stringValue = "TELL YOUR PARTNER WHAT YOU LEARNED.";
             adapterSo.ApplyModifiedPropertiesWithoutUndo();
         }
 

@@ -555,9 +555,9 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 0}
     interactableReference: {fileID: 0}
-  includeExitInFocusCycle: 1
+  includeExitInFocusCycle: 0
   exitDoubleClickMaxIntervalSeconds: 0.5
-  panelActionLock: {fileID: 0}
+  panelActionLock: {fileID: 1747072262410204288}
   selectionFrame: {fileID: 2291634651272148026}
   promptText: $INTERACT$ Open Panel
   hideOnFocusObjects:
@@ -1211,7 +1211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3882052364625853783
 Transform:
   m_ObjectHideFlags: 0
@@ -1664,7 +1664,7 @@ MonoBehaviour:
   pressFeedback: {fileID: 4512518086814690612}
   processingFeedback: {fileID: 9180544622259930615}
   leverFeedback: {fileID: 5812345678901234503}
-  panelActionLock: {fileID: 0}
+  panelActionLock: {fileID: 1747072262410204288}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
 --- !u!114 &4512518086814690612
@@ -1945,7 +1945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1225646355106314956, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: m_Name
-      value: Fader_4State-A
+      value: FLOW
       objectReference: {fileID: 0}
     - target: {fileID: 2134394144442331672, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: m_Layer
@@ -2206,7 +2206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008273305179832264, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
       propertyPath: m_Name
-      value: ValveV2_4State-A
+      value: VALVE
       objectReference: {fileID: 0}
     - target: {fileID: 3300674383120217590, guid: 9bab42129f49a4f9184ce0610e15785d, type: 3}
       propertyPath: m_Layer
@@ -2824,7 +2824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6094926008974731097, guid: cdba918d1585242978b9bae1ca8be79b, type: 3}
       propertyPath: m_Name
-      value: Submit_Lever_2State-A
+      value: Submit Lever
       objectReference: {fileID: 0}
     - target: {fileID: 7200033325155149821, guid: cdba918d1585242978b9bae1ca8be79b, type: 3}
       propertyPath: m_Layer
@@ -2898,7 +2898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.SolveInteractProxy
   bridgeReference: {fileID: 8963415286669324403}
-  panelActionLock: {fileID: 0}
+  panelActionLock: {fileID: 1747072262410204288}
 --- !u!114 &7466329754449908493 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 70604077961118384, guid: cdba918d1585242978b9bae1ca8be79b, type: 3}
@@ -3288,7 +3288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008273305179832264, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_Name
-      value: ValveV1_4State-A
+      value: PRESS
       objectReference: {fileID: 0}
     - target: {fileID: 3161677086795066720, guid: ba44a58e96571486382200ae54961e4d, type: 3}
       propertyPath: m_Layer

@@ -182,6 +182,11 @@ namespace WhoWiredThis.Tutorial
             "The exit door is now unlocked.\n\n" +
             "Double-click the Exit button to close this panel and return to the game.";
 
+        [Header("Playtest puzzles")]
+        [SerializeField]
+        [Tooltip("When enabled, both players can operate their panels at the same time. Completion fires when both puzzle managers are solved.")]
+        private bool simultaneousOperators;
+
         private TutorialSessionStage stage = TutorialSessionStage.PlayerAOperator;
         private bool completionRaised;
 
@@ -231,7 +236,15 @@ namespace WhoWiredThis.Tutorial
 
         private void Start()
         {
-            ApplyStageVisualAndLocks();
+            if (simultaneousOperators)
+            {
+                ApplySimultaneousOperatorLocks();
+            }
+            else
+            {
+                ApplyStageVisualAndLocks();
+            }
+
             OnTutorialStarted?.Invoke();
             NotifyStageChanged();
             StartCoroutine(BootstrapTutorialDiagnosticCopy());
@@ -285,6 +298,12 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
+            if (simultaneousOperators)
+            {
+                TryCompleteWhenBothSolved();
+                return;
+            }
+
             if (stage != TutorialSessionStage.PlayerAOperator)
             {
                 return;
@@ -303,6 +322,12 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
+            if (simultaneousOperators)
+            {
+                TryCompleteWhenBothSolved();
+                return;
+            }
+
             if (stage != TutorialSessionStage.PlayerBOperator)
             {
                 return;
@@ -312,6 +337,38 @@ namespace WhoWiredThis.Tutorial
             ApplyStageVisualAndLocks();
             NotifyStageChanged();
             RaiseCompletionOnce();
+        }
+
+        private void TryCompleteWhenBothSolved()
+        {
+            if (completionRaised)
+            {
+                return;
+            }
+
+            bool aSolved = playerAPuzzleManager != null && playerAPuzzleManager.Solved;
+            bool bSolved = playerBPuzzleManager != null && playerBPuzzleManager.Solved;
+            if (!aSolved || !bSolved)
+            {
+                return;
+            }
+
+            stage = TutorialSessionStage.Complete;
+            ApplyStageVisualAndLocks();
+            NotifyStageChanged();
+            RaiseCompletionOnce();
+        }
+
+        private void ApplySimultaneousOperatorLocks()
+        {
+            if (playerAPanelLock == null || playerBPanelLock == null)
+            {
+                Debug.LogWarning($"{LogPrefix} Missing playerAPanelLock or playerBPanelLock on '{name}'.", this);
+                return;
+            }
+
+            playerAPanelLock.ApplyOperatorState();
+            playerBPanelLock.ApplyOperatorState();
         }
 
         private void RaiseCompletionOnce()

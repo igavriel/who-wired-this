@@ -613,6 +613,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.375
       objectReference: {fileID: 0}
+    - target: {fileID: 5768452256885206071, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+      propertyPath: dimensionProbe
+      value: 
+      objectReference: {fileID: 4697471667218307020}
     - target: {fileID: 5992655319663144171, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -668,5 +672,10 @@ Transform:
 --- !u!4 &4457573730295572474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 697663425914891500, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
+  m_PrefabInstance: {fileID: 3779332077775817494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &4697471667218307020 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 8449358833105722586, guid: 520abb0e91c214d13833604e600b8cc8, type: 3}
   m_PrefabInstance: {fileID: 3779332077775817494}
   m_PrefabAsset: {fileID: 0}

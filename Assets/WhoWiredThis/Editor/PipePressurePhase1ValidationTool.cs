@@ -18,6 +18,9 @@ namespace WhoWiredThis.Editor
         private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzle Pipes)";
         private const string McpMenuPath = McpMenuRoot + "0. Phase 1 (Puzzle Pipes)";
 
+        private const string PipesPanelAName = "Player1_Pipes_Panel A";
+        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+
         [MenuItem(MenuPath)]
         public static void Validate()
         {
@@ -39,30 +42,40 @@ namespace WhoWiredThis.Editor
             var sb = new StringBuilder();
             int issues = 0;
 
-            issues += ValidatePanel(sb, "Player1_Panel", AllowedPlayerTag.Player_A,
-                new[] { "VALVE", "PRESS", "FLOW" },
-                new[]
-                {
-                    new[] { "SHUT", "LOW", "HALF", "OPEN" },
-                    new[] { "LOW", "MID", "HIGH", "MAX" },
-                    new[] { "LEFT", "MID", "RGHT", "LOOP" }
-                },
-                new[] { 2, 1, 2 });
+            if (GameObject.Find(PipesPanelAName) != null && GameObject.Find(PipesPanelBName) != null)
+            {
+                issues += ValidatePipesPanelInstance(sb, PipesPanelAName, AllowedPlayerTag.Player_A);
+                issues += ValidatePipesPanelInstance(sb, PipesPanelBName, AllowedPlayerTag.Player_B);
+                issues += ValidateTurnLockCollidersForPanel(sb, "playerAPanelLock", PipesPanelAName);
+                issues += ValidateTurnLockCollidersForPanel(sb, "playerBPanelLock", PipesPanelBName);
+            }
+            else
+            {
+                issues += ValidatePanel(sb, "Player1_Panel", AllowedPlayerTag.Player_A,
+                    new[] { "VALVE", "PRESS", "FLOW" },
+                    new[]
+                    {
+                        new[] { "SHUT", "LOW", "HALF", "OPEN" },
+                        new[] { "LOW", "MID", "HIGH", "MAX" },
+                        new[] { "LEFT", "MID", "RGHT", "LOOP" }
+                    },
+                    new[] { 2, 1, 2 });
 
-            issues += ValidatePanel(sb, "Player2_Panel", AllowedPlayerTag.Player_B,
-                new[] { "GATE", "PUMP", "ROUTE" },
-                new[]
-                {
-                    new[] { "SHUT", "LOW", "HALF", "OPEN" },
-                    new[] { "LOW", "MID", "HIGH", "MAX" },
-                    new[] { "LEFT", "MID", "RGHT", "LOOP" }
-                },
-                new[] { 3, 2, 3 });
+                issues += ValidatePanel(sb, "Player2_Panel", AllowedPlayerTag.Player_B,
+                    new[] { "GATE", "PUMP", "ROUTE" },
+                    new[]
+                    {
+                        new[] { "SHUT", "LOW", "HALF", "OPEN" },
+                        new[] { "LOW", "MID", "HIGH", "MAX" },
+                        new[] { "LEFT", "MID", "RGHT", "LOOP" }
+                    },
+                    new[] { 3, 2, 3 });
 
-            issues += ValidateTurnLockColliders(sb, "playerAPanelLock", "Player1_Panel",
-                new[] { "VALVE", "PRESS", "FLOW" });
-            issues += ValidateTurnLockColliders(sb, "playerBPanelLock", "Player2_Panel",
-                new[] { "GATE", "PUMP", "ROUTE" });
+                issues += ValidateTurnLockColliders(sb, "playerAPanelLock", "Player1_Panel",
+                    new[] { "VALVE", "PRESS", "FLOW" });
+                issues += ValidateTurnLockColliders(sb, "playerBPanelLock", "Player2_Panel",
+                    new[] { "GATE", "PUMP", "ROUTE" });
+            }
 
             issues += ValidateHistoryBoards(sb);
 
@@ -74,23 +87,164 @@ namespace WhoWiredThis.Editor
             return issues;
         }
 
+        private static int ValidatePipesPanelInstance(StringBuilder sb, string panelName, AllowedPlayerTag player)
+        {
+            int issues = 0;
+            sb.AppendLine($"--- {panelName} (Pipes prefab instance) ---");
+
+            GameObject panel = GameObject.Find(panelName);
+            if (panel == null)
+            {
+                sb.AppendLine($"FAIL: Missing '{panelName}'");
+                return 1;
+            }
+
+            PanelFocusController focus = panel.GetComponentInChildren<PanelFocusController>(true);
+            if (focus == null)
+            {
+                sb.AppendLine("FAIL: No PanelFocusController");
+                return issues + 1;
+            }
+
+            SerializedObject focusSo = new SerializedObject(focus);
+            if ((AllowedPlayerTag)focusSo.FindProperty("allowedPlayerId").enumValueIndex != player)
+            {
+                sb.AppendLine($"FAIL: allowedPlayerId != {player}");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine($"PASS: allowedPlayerId={player}");
+            }
+
+            int btnCount = focusSo.FindProperty("interactableButtons").arraySize;
+            if (btnCount != 3)
+            {
+                sb.AppendLine($"FAIL: interactableButtons={btnCount}");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine("PASS: interactableButtons=3");
+            }
+
+            var solveRef = focusSo.FindProperty("solveButton").FindPropertyRelative("interactableReference");
+            if (solveRef.objectReferenceValue == null)
+            {
+                sb.AppendLine("FAIL: solveButton.interactableReference is null");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine("PASS: solveButton wired");
+            }
+
+            MultiDimensionPuzzleManager pm = panel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
+            if (pm == null)
+            {
+                sb.AppendLine("FAIL: Missing MultiDimensionPuzzleManager");
+                issues++;
+            }
+            else
+            {
+                SerializedObject pmSo = new SerializedObject(pm);
+                if (pmSo.FindProperty("puzzleElements").arraySize != 3)
+                {
+                    sb.AppendLine("FAIL: puzzleElements != 3");
+                    issues++;
+                }
+                else
+                {
+                    sb.AppendLine("PASS: puzzleElements=3");
+                }
+            }
+
+            ComponentDiagnosticAdapter adapter = panel.GetComponentInChildren<ComponentDiagnosticAdapter>(true);
+            if (adapter == null)
+            {
+                sb.AppendLine("FAIL: Missing ComponentDiagnosticAdapter");
+                issues++;
+            }
+            else
+            {
+                SerializedObject adapterSo = new SerializedObject(adapter);
+                if (adapterSo.FindProperty("diagnosticDisplay").objectReferenceValue == null)
+                {
+                    sb.AppendLine("FAIL: adapter.diagnosticDisplay is null");
+                    issues++;
+                }
+                else
+                {
+                    sb.AppendLine("PASS: adapter.diagnosticDisplay assigned");
+                }
+            }
+
+            return issues;
+        }
+
+        private static int ValidateTurnLockCollidersForPanel(StringBuilder sb, string bundleProp, string panelName)
+        {
+            PanelFocusController focus = GameObject.Find(panelName)?.GetComponentInChildren<PanelFocusController>(true);
+            if (focus == null)
+            {
+                sb.AppendLine($"FAIL: No PanelFocusController on {panelName} for turn-lock check");
+                return 1;
+            }
+
+            int expectedInputs = new SerializedObject(focus).FindProperty("interactableButtons").arraySize;
+            return ValidateTurnLockColliderCount(sb, bundleProp, expectedInputs);
+        }
+
+        private static int ValidateTurnLockColliderCount(StringBuilder sb, string bundleProp, int inputCount)
+        {
+            int issues = 0;
+            TutorialStageManager tsm = Object.FindFirstObjectByType<TutorialStageManager>();
+            if (tsm == null)
+            {
+                sb.AppendLine("FAIL: TutorialStageManager not found");
+                return 1;
+            }
+
+            SerializedObject tsmSo = new SerializedObject(tsm);
+            SerializedProperty colliders = tsmSo.FindProperty(bundleProp).FindPropertyRelative("actionColliders");
+            int expected = inputCount + 1;
+            if (colliders.arraySize != expected)
+            {
+                sb.AppendLine($"FAIL: {bundleProp} actionColliders={colliders.arraySize} expected {expected}");
+                issues++;
+            }
+            else
+            {
+                sb.AppendLine($"PASS: {bundleProp} actionColliders={colliders.arraySize} ({inputCount} inputs + Send)");
+            }
+
+            if (colliders.arraySize > inputCount &&
+                colliders.GetArrayElementAtIndex(inputCount).objectReferenceValue == null)
+            {
+                sb.AppendLine($"FAIL: {bundleProp} Send collider (index {inputCount}) is null");
+                issues++;
+            }
+
+            return issues;
+        }
+
         /// <summary>Clears solve lock left by Play Mode or TryCheckSolution so cycle/TMP checks are reliable.</summary>
         public static void ResetPuzzlePipesSolveStateForValidationPublic() =>
             ResetPuzzlePipesSolveStateForValidation();
 
         private static void ResetPuzzlePipesSolveStateForValidation()
         {
-            string[] panelNames = { "Player1_Panel", "Player2_Panel" };
-            string[][] inputs =
+            string[] panelNames =
             {
-                new[] { "VALVE", "PRESS", "FLOW" },
-                new[] { "GATE", "PUMP", "ROUTE" }
+                PipesPanelAName,
+                PipesPanelBName,
+                "Player1_Panel",
+                "Player2_Panel"
             };
-
             for (int p = 0; p < panelNames.Length; p++)
             {
-                MultiDimensionPuzzleManager pm = GameObject.Find($"{panelNames[p]}/PuzzleManager")
-                    ?.GetComponent<MultiDimensionPuzzleManager>();
+                MultiDimensionPuzzleManager pm = GameObject.Find(panelNames[p])
+                    ?.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
                 pm?.ResetSessionForNewRun();
             }
         }
@@ -423,15 +577,36 @@ namespace WhoWiredThis.Editor
         {
             int issues = 0;
             const int requiredInputHeaderWidth = 17;
-            string[] panelHistoryPaths =
-            {
-                "Player1_Panel/HistoryPanel",
-                "Player2_Panel/HistoryPanel"
-            };
+            var historyBoards = new System.Collections.Generic.List<(string label, HistoryBoardController board)>();
 
-            foreach (string path in panelHistoryPaths)
+            GameObject pipesPanelA = GameObject.Find(PipesPanelAName);
+            GameObject pipesPanelB = GameObject.Find(PipesPanelBName);
+            if (pipesPanelA != null && pipesPanelB != null)
             {
-                HistoryBoardController board = GameObject.Find(path)?.GetComponent<HistoryBoardController>();
+                HistoryBoardController boardA =
+                    pipesPanelA.GetComponentInChildren<HistoryBoardController>(true);
+                HistoryBoardController boardB =
+                    pipesPanelB.GetComponentInChildren<HistoryBoardController>(true);
+                historyBoards.Add(($"{PipesPanelAName}/History", boardA));
+                historyBoards.Add(($"{PipesPanelBName}/History", boardB));
+            }
+            else
+            {
+                string[] legacyPanelNames = { "Player1_Panel", "Player2_Panel" };
+                foreach (string panelName in legacyPanelNames)
+                {
+                    GameObject panel = GameObject.Find(panelName);
+                    HistoryBoardController board =
+                        panel?.GetComponentInChildren<HistoryBoardController>(true);
+                    if (board != null)
+                    {
+                        historyBoards.Add(($"{panelName}/HistoryPanel", board));
+                    }
+                }
+            }
+
+            foreach ((string path, HistoryBoardController board) in historyBoards)
+            {
                 if (board == null)
                 {
                     sb.AppendLine($"FAIL: Missing HistoryBoardController at '{path}'");
