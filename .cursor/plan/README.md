@@ -113,8 +113,10 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [tutorial-summary-popup.md](tutorial-summary-popup.md) | Tutorial completion: `TutorialSummaryPopupPresenter` shows team metrics summary on both HUDs from `GetSnapshot()`; `Tutorial.unity` only. |
 | [ui-canvas-dual-hud-promote-to-production.md](ui-canvas-dual-hud-promote-to-production.md) | Promote dual HUD to UI_Canvas.prefab; pilot Split Tutorial first; user approval before remaining scenes. |
 | [playtest-flow-start-gameover-total-time.md](playtest-flow-start-gameover-total-time.md) | Implemented quick playtest flow: `StartScene -> Tutorial -> Puzzle Pipes -> Puzzle Signal -> GameOverScene` with summed scene-time total and best-time persistence. |
-| [cutscene-intro-cinemachine-priority-scene-transition.md](cutscene-intro-cinemachine-priority-scene-transition.md) | **Implemented:** On `CutScene-Intro`, hold + dual-HUD fade out, then load `Tutorial` when intro Cinemachine priority drops to -1. |
+| [cutscene-intro-cinemachine-priority-scene-transition.md](cutscene-intro-cinemachine-priority-scene-transition.md) | **Implemented:** On `CutScene-Intro`, hold + dual-HUD fade out, then load `Tutorial` when intro Cinemachine dolly position reaches 1. |
 | [tutorial-exit-hide-popup-scene-transition.md](tutorial-exit-hide-popup-scene-transition.md) | **Implemented (Tutorial + Puzzle Pipes + Puzzle Signal):** Hide Exit; fade out then load next scene on completion popup dismiss. |
+| [tutorial-completion-cutscene-transition.md](tutorial-completion-cutscene-transition.md) | **Implemented (Tutorial only):** Retarget completion popup dismiss to load `CutScene-Tutorial-Pipe`; defer cutscene handoff on other scenes one-by-one. |
+| [puzzle-pipes-completion-cutscene-transition.md](puzzle-pipes-completion-cutscene-transition.md) | **Implemented:** Puzzle Pipes completion popup dismiss loads `CutScene-Pipe-Signal`; cutscene exits to `Puzzle Signal`; scene added to build settings. |
 | [phase-1-history-clear-escape-menu.md](phase-1-history-clear-escape-menu.md) | Clear shared history on scene transitions; cap at 20 entries per puzzle; Escape returns to StartScene via PlaytestFlowUtility. |
 
 ---

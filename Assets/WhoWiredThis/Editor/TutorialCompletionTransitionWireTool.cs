@@ -27,13 +27,13 @@ namespace WhoWiredThis.Editor
         [MenuItem(TutorialMenuPath)]
         public static void WireTutorialCompletionTransition()
         {
-            WireScene(TutorialScenePath, "Puzzle Pipes", hideExit: true);
+            WireScene(TutorialScenePath, "CutScene-Tutorial-Pipe", hideExit: true);
         }
 
         [MenuItem(PipesMenuPath)]
         public static void WirePuzzlePipesCompletionTransition()
         {
-            WireScene(PuzzlePipesScenePath, "Puzzle Signal", hideExit: false);
+            WireScene(PuzzlePipesScenePath, "CutScene-Pipe-Signal", hideExit: false);
         }
 
         [MenuItem(SignalMenuPath)]
