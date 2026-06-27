@@ -3195,10 +3195,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap
   enterFocusOnStartup: 1
-  playerAFocus: {fileID: 3073909790674315973}
-  playerAPanel: {fileID: 2129372216}
-  playerBFocus: {fileID: 7069613721803897088}
-  playerBPanel: {fileID: 1696466946}
+  startupOperatorPlayer: 1
+  playerA:
+    focus: {fileID: 3073909790674315973}
+    panel: {fileID: 2129372216}
+    diagnostic: {fileID: 0}
+  playerB:
+    focus: {fileID: 7069613721803897088}
+    panel: {fileID: 1696466946}
+    diagnostic: {fileID: 0}
+  playerAFocus: {fileID: 0}
+  playerAPanel: {fileID: 0}
+  playerBFocus: {fileID: 0}
+  playerBPanel: {fileID: 0}
 --- !u!114 &2079907317 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7632537193174693116, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}

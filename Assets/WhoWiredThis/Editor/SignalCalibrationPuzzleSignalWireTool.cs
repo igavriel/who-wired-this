@@ -568,10 +568,10 @@ namespace WhoWiredThis.Editor
 
             SerializedObject bootstrapSo = new SerializedObject(bootstrap);
             bootstrapSo.FindProperty("enterFocusOnStartup").boolValue = true;
-            bootstrapSo.FindProperty("playerAFocus").objectReferenceValue = playerAFocus;
-            bootstrapSo.FindProperty("playerAPanel").objectReferenceValue = panelAFocus;
-            bootstrapSo.FindProperty("playerBFocus").objectReferenceValue = playerBFocus;
-            bootstrapSo.FindProperty("playerBPanel").objectReferenceValue = panelBFocus;
+            bootstrapSo.FindProperty("playerA.focus").objectReferenceValue = playerAFocus;
+            bootstrapSo.FindProperty("playerA.panel").objectReferenceValue = panelAFocus;
+            bootstrapSo.FindProperty("playerB.focus").objectReferenceValue = playerBFocus;
+            bootstrapSo.FindProperty("playerB.panel").objectReferenceValue = panelBFocus;
             bootstrapSo.ApplyModifiedPropertiesWithoutUndo();
         }
 

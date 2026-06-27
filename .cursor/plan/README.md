@@ -99,6 +99,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [tutorial-visual-result-lights-cross-wire.md](tutorial-visual-result-lights-cross-wire.md) | **Implemented:** cross-opponent SETTINGS/PLACES result lights on Tutorial - Visual via `SplitMetricResultLightsController` + wire tool. |
 | [result-light-sine-indicator-pulse.md](result-light-sine-indicator-pulse.md) | **Implemented:** sine pulse on active subject `IndicatorLight`; `ResultLightIndicatorPulseController` on ResultLight.prefab. |
 | [split_tutorial_startup_focus_6d619ef5.plan.md](split_tutorial_startup_focus_6d619ef5.plan.md) | `InitialPanelFocusBootstrap`: optional both players in panel focus on play. |
+| [initial-panel-focus-bootstrap-operator-diagnostic.md](initial-panel-focus-bootstrap-operator-diagnostic.md) | **Implemented:** bootstrap per-player Focus/Panel/Diagnostic bindings, operator dropdown, asymmetric startup focus; legacy when diagnostics unset. |
 | [tutorial_stage_manager_4d8fbac0.plan.md](tutorial_stage_manager_4d8fbac0.plan.md) | Tutorial stages from `OnAttemptSubmitted`; locks + glass; `DefaultExecutionOrder`. |
 | [split_tutorial_input_configuration_approved.plan.md](split_tutorial_input_configuration_approved.plan.md) | Approved Split Tutorial inputs: scene-only TMP + displayName sync, vocab, correctIndex, history order, diagnostic solved copy. |
 | [puzzle-input-labels-5char.md](puzzle-input-labels-5char.md) | Widen state labels to max 5 chars (all tutorial scenes + Knob/Slider prefabs) + Shared History token width 5. |
