@@ -135,19 +135,19 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3571224485952273151, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
   m_PrefabInstance: {fileID: 968524633}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1421610563}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2b8a914d6f04f7e8e1d0c9b8a7f6543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelActionLock
---- !u!134 &195311418
+--- !u!134 &132276841
 PhysicsMaterial:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ' (Instance)'
+  m_Name: ' (Instance) (Instance)'
   serializedVersion: 2
   m_DynamicFriction: 0.6
   m_StaticFriction: 0.6
@@ -297,19 +297,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
---- !u!134 &618947612
-PhysicsMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: ' (Instance)'
-  serializedVersion: 2
-  m_DynamicFriction: 0.6
-  m_StaticFriction: 0.6
-  m_Bounciness: 0
-  m_FrictionCombine: 0
-  m_BounceCombine: 0
 --- !u!114 &625510220 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1955526228935626338, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
@@ -409,13 +396,13 @@ MonoBehaviour:
     glassOverlayRoot: {fileID: 1019864812}
     overlayInstructionText: {fileID: 1019864811}
   playerADiagnosticDisplay: {fileID: 968524634}
-  playerBDiagnosticDisplay: {fileID: 1019864810}
+  playerBDiagnosticDisplay: {fileID: 8752344511047424878}
   playerAIntroBody: 'OPERATOR MODE
 
 
     SET TWO CONTROLS.
 
-    PRESS SEND.
+    PRESS SUBMIT.
 
 
     YOUR
@@ -433,7 +420,7 @@ MonoBehaviour:
     UNDERSTOOD.
 
 
-    USE THE HISTORY.'
+    FIND THE PATTERN.'
   playerABodyAfterPlayerASolved: 'BLUE SIDE CALIBRATED.
 
 
@@ -449,7 +436,7 @@ MonoBehaviour:
 
     SET TWO CONTROLS.
 
-    PRESS SEND.
+    PRESS SUBMIT.
 
 
     YOUR
@@ -671,18 +658,18 @@ PrefabInstance:
     - target: {fileID: 315032061425989153, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 618947612}
+      objectReference: {fileID: 132276841}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.095
+      value: 3.2886634
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.07
+      value: -0.52223736
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 0.8660254
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -690,7 +677,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.38268343
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.z
@@ -698,16 +685,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -45
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 1143821477524205108, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1486570366048301939, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725292362705215388, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1725292362705215388, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 8752344511047424878}
+    - target: {fileID: 1852481070147390874, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2658673463569455981, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: visibleToPlayer
       value: 1
@@ -732,15 +731,31 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3632960787082895832, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752790519744000604, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: extraDistance
+      value: -0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 3752790519744000604, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: frameFillPercent
-      value: 54
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4061770106136863069, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4359508632530654951, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396923704363652367, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: visibleToPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412343662975496054, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -751,6 +766,10 @@ PrefabInstance:
     - target: {fileID: 5454599046290045353, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Name
       value: _OLD_DiagnosticPanel-A
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804004274648882346, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -804,6 +823,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6649499802707615687, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6816369041996032341, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: places
       value: 
@@ -836,6 +859,10 @@ PrefabInstance:
       propertyPath: machineFeedbackText
       value: 
       objectReference: {fileID: 968524635}
+    - target: {fileID: 8999675472447084798, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8999684052602406301, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: visibleToPlayer
       value: 1
@@ -844,6 +871,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 250203754137442553, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1421610568}
     - targetCorrespondingSourceObject: {fileID: 4585788625760049261, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -893,6 +923,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+--- !u!114 &968524637 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3536565520736276831, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+  m_PrefabInstance: {fileID: 968524633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!114 &1019864808 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3645602522426993811, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
@@ -915,17 +956,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f664a2b9f11488a8b13ea7f6f03b757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleManager
---- !u!114 &1019864810 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9185001599381384125, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-  m_PrefabInstance: {fileID: 8752344511047424877}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a083b83ea8cf4f2997fe591aa19e230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
 --- !u!114 &1019864811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4288199262554081892, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
@@ -947,7 +977,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3673565548657442802, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
   m_PrefabInstance: {fileID: 8752344511047424877}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1847350731}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2b8a914d6f04f7e8e1d0c9b8a7f6543, type: 3}
@@ -1501,6 +1531,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edd80cddaece41ce86e3cdb7d4d1cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.PlayerHudView
+--- !u!1 &1421610563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 250203754137442553, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+  m_PrefabInstance: {fileID: 968524633}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1421610568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421610563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b4c838981d040afa63c1218b58617c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Diagnostics.TutorialDiagnosticController
+  puzzleManager: {fileID: 1674202233}
+  display: {fileID: 8752344511047424878}
+  strings:
+    InfoMessage: "Other player submit // YOU read Results\n### There is a PATTERN
+      in the results ### \nZERO is GOOD"
+    ResultReadout: 'DIAGNOSTIC LOG  REV {0}
+
+      STATUS .... ANALYZING'
+    WinMessage: 'ALL CHANNELS LOCKED.
+
+      CALIBRATION COMPLETE.'
 --- !u!1 &1446898236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,6 +1592,19 @@ Transform:
   - {fileID: 1696186567}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!134 &1517970013
+PhysicsMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ' (Instance) (Instance)'
+  serializedVersion: 2
+  m_DynamicFriction: 0.6
+  m_StaticFriction: 0.6
+  m_Bounciness: 0
+  m_FrictionCombine: 0
+  m_BounceCombine: 0
 --- !u!1 &1523667502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,6 +1972,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728330346}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1847350731 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3464722709913076, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+  m_PrefabInstance: {fileID: 8752344511047424877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1847350736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847350731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b4c838981d040afa63c1218b58617c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Diagnostics.TutorialDiagnosticController
+  puzzleManager: {fileID: 1019864809}
+  display: {fileID: 968524634}
+  strings:
+    InfoMessage: "Other player submit // YOU read Results\n### There is a PATTERN
+      in the results ### \nZERO is GOOD"
+    ResultReadout: 'DIAGNOSTIC LOG  REV {0}
+
+      STATUS .... ANALYZING'
+    WinMessage: 'ALL CHANNELS LOCKED.
+
+      CALIBRATION COMPLETE.'
 --- !u!134 &1861871925
 PhysicsMaterial:
   m_ObjectHideFlags: 0
@@ -1963,13 +2062,13 @@ MonoBehaviour:
   playerA:
     focus: {fileID: 3073909790674315973}
     panelCamera: {fileID: 968524636}
-    diagnosticCamera: {fileID: 968524636}
+    diagnosticCamera: {fileID: 968524637}
     legacyPanel: {fileID: 81865391}
     legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
     panelCamera: {fileID: 8752344511047424879}
-    diagnosticCamera: {fileID: 8752344511047424879}
+    diagnosticCamera: {fileID: 8752344511047424880}
     legacyPanel: {fileID: 1019864808}
     legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
@@ -2422,7 +2521,19 @@ PrefabInstance:
     - target: {fileID: 516680464596857644, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 195311418}
+      objectReference: {fileID: 1517970013}
+    - target: {fileID: 1200634972800442323, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: viewAxis
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200634972800442323, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: frameFillPercent
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478818519737391761, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1478818519737391761, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: diagnosticDisplay
       value: 
@@ -2489,15 +2600,15 @@ PrefabInstance:
       objectReference: {fileID: 625510220}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.7462368
+      value: -3.2562952
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.0672135
+      value: -0.18376398
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 0.8660254
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2505,7 +2616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.38268343
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2513,12 +2624,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 45
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3464722709913076, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1847350736}
     - targetCorrespondingSourceObject: {fileID: 4384069166668062048, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -2549,6 +2663,17 @@ MonoBehaviour:
 --- !u!114 &8752344511047424879 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3990258267245852497, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+  m_PrefabInstance: {fileID: 8752344511047424877}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+--- !u!114 &8752344511047424880 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1200634972800442323, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
   m_PrefabInstance: {fileID: 8752344511047424877}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -31,6 +31,7 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField] private PlayerActions playerActions;
 
         private bool isFocused;
+        private bool isCameraOnlyFocus;
         private PanelFocusController currentPanel;
         private Vector3 cachedCameraLocalPosition;
         private Quaternion cachedCameraLocalRotation;
@@ -38,6 +39,7 @@ namespace WhoWiredThis.PanelFocus
 
         public AllowedPlayerTag PlayerId => playerId;
         public bool IsFocused => isFocused;
+        public bool IsCameraOnlyFocus => isCameraOnlyFocus;
 
         // Prevent same-frame double-triggers: the Interact press that enters focus
         // must not also activate a target this frame, and the press that exits focus
@@ -62,15 +64,63 @@ namespace WhoWiredThis.PanelFocus
                 return false;
             }
 
-            cachedCameraLocalPosition = playerCamera.transform.localPosition;
-            cachedCameraLocalRotation = playerCamera.transform.localRotation;
+            CacheCameraTransform();
 
-            if (!TryApplyCameraSnapPose(panel, playerCamera))
+            PanelFocusCamera focusCamera = panel.GetComponent<PanelFocusCamera>();
+            if (!TryApplyCameraSnapPose(focusCamera, playerCamera, panel.name))
             {
-                Debug.LogError($"[PlayerPanelFocusController] Failed to apply camera snap pose on {panel.name}.", panel);
                 return false;
             }
 
+            DisableGameplayWhileFocused();
+            isCameraOnlyFocus = false;
+            currentPanel = panel;
+            isFocused = true;
+            lastStateChangeFrame = Time.frameCount;
+            panel.OnFocusEntered(this);
+            return true;
+        }
+
+        /// <summary>
+        /// Locks the player view on a framing target without panel selection or
+        /// <see cref="PanelFocusController"/> interaction. Movement and interact are disabled.
+        /// </summary>
+        public bool TryEnterCameraFocus(PanelFocusCamera focusCamera)
+        {
+            if (isFocused || focusCamera == null || !IsInputAllowedThisFrame)
+            {
+                return false;
+            }
+
+            if (playerCamera == null)
+            {
+                Debug.LogWarning($"[PlayerPanelFocusController] Missing player camera reference on {name}.", this);
+                return false;
+            }
+
+            CacheCameraTransform();
+
+            if (!TryApplyCameraSnapPose(focusCamera, playerCamera, focusCamera.name))
+            {
+                return false;
+            }
+
+            DisableGameplayWhileFocused();
+            isCameraOnlyFocus = true;
+            currentPanel = null;
+            isFocused = true;
+            lastStateChangeFrame = Time.frameCount;
+            return true;
+        }
+
+        private void CacheCameraTransform()
+        {
+            cachedCameraLocalPosition = playerCamera.transform.localPosition;
+            cachedCameraLocalRotation = playerCamera.transform.localRotation;
+        }
+
+        private void DisableGameplayWhileFocused()
+        {
             if (firstPersonController != null)
             {
                 firstPersonController.enabled = false;
@@ -81,22 +131,19 @@ namespace WhoWiredThis.PanelFocus
                 playerActions.ClearInteractPrompt();
                 playerActions.enabled = false;
             }
-
-            currentPanel = panel;
-            isFocused = true;
-            lastStateChangeFrame = Time.frameCount;
-            panel.OnFocusEntered(this);
-            return true;
         }
 
-        private static bool TryApplyCameraSnapPose(PanelFocusController panel, Camera playerCamera)
+        private static bool TryApplyCameraSnapPose(
+            PanelFocusCamera focusCamera,
+            Camera playerCamera,
+            string contextName)
         {
-            PanelFocusCamera focusCamera = panel.GetComponent<PanelFocusCamera>();
             if (focusCamera == null)
             {
-                Debug.LogError($"[PlayerPanelFocusController] Missing PanelFocusCamera on {panel.name}.", panel);
+                Debug.LogError($"[PlayerPanelFocusController] Missing PanelFocusCamera for '{contextName}'.");
                 return false;
             }
+
             focusCamera.GetCameraSnapPose(playerCamera, out Vector3 snapPosition, out Quaternion snapRotation);
             playerCamera.transform.SetPositionAndRotation(snapPosition, snapRotation);
             return true;
@@ -128,13 +175,14 @@ namespace WhoWiredThis.PanelFocus
 
             PanelFocusController exitingPanel = currentPanel;
             currentPanel = null;
+            isCameraOnlyFocus = false;
             isFocused = false;
             exitingPanel?.OnFocusExited();
         }
 
         private void Update()
         {
-            if (!isFocused || currentPanel == null || inputBindings == null || !IsInputAllowedThisFrame)
+            if (!isFocused || isCameraOnlyFocus || currentPanel == null || inputBindings == null || !IsInputAllowedThisFrame)
             {
                 return;
             }

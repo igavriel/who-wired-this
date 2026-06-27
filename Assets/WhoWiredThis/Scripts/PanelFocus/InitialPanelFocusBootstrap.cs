@@ -16,7 +16,7 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField]
         private PanelFocusCamera panelCamera;
 
-        [Tooltip("Optional diagnostic camera framing target for partner readout at startup.")]
+        [Tooltip("Optional diagnostic framing target for partner readout at startup. Camera-only is supported; PanelFocusController not required.")]
         [SerializeField]
         private PanelFocusCamera diagnosticCamera;
 
@@ -239,11 +239,17 @@ namespace WhoWiredThis.PanelFocus
                 return;
             }
 
-            PanelFocusController panel = binding.ResolvePanelController(diagnostic);
+            if (diagnostic)
+            {
+                TryEnterDiagnosticStartupFocus(focus, binding, label);
+                return;
+            }
+
+            PanelFocusController panel = binding.ResolvePanelController(diagnostic: false);
             if (panel == null)
             {
                 Debug.LogWarning(
-                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because no PanelFocusController could be resolved from the camera binding.");
+                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because no PanelFocusController could be resolved from the panel camera binding.");
                 return;
             }
 
@@ -256,6 +262,44 @@ namespace WhoWiredThis.PanelFocus
                 $"[InitialPanelFocusBootstrap] {label} failed to enter focus on '{panel.name}' " +
                 $"(playerId={focus.PlayerId}, allowedPlayerId={panel.AllowedPlayerId}).",
                 panel);
+        }
+
+        private static void TryEnterDiagnosticStartupFocus(
+            PlayerPanelFocusController focus,
+            PlayerStartupFocusBinding binding,
+            string label)
+        {
+            PanelFocusCamera diagnosticCamera = binding.DiagnosticCamera;
+            if (diagnosticCamera == null)
+            {
+                Debug.LogWarning(
+                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because diagnostic camera is missing.");
+                return;
+            }
+
+            PanelFocusController panel = binding.ResolvePanelController(diagnostic: true);
+            if (panel != null)
+            {
+                if (focus.TryEnterFocus(panel))
+                {
+                    return;
+                }
+
+                Debug.LogWarning(
+                    $"[InitialPanelFocusBootstrap] {label} failed to enter focus on '{panel.name}' " +
+                    $"(playerId={focus.PlayerId}, allowedPlayerId={panel.AllowedPlayerId}).",
+                    panel);
+                return;
+            }
+
+            if (focus.TryEnterCameraFocus(diagnosticCamera))
+            {
+                return;
+            }
+
+            Debug.LogWarning(
+                $"[InitialPanelFocusBootstrap] {label} failed to enter camera-only focus on '{diagnosticCamera.name}'.",
+                diagnosticCamera);
         }
     }
 }

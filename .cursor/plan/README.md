@@ -76,6 +76,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [processing_on_body_tmp_af3c4dfe.plan.md](processing_on_body_tmp_af3c4dfe.plan.md) | Drive diagnostic `Body_TMP` only; suppress adapter overwrites; remove extra TMP. |
 | [activate_button_press_feedback_7b9a1256.plan.md](activate_button_press_feedback_7b9a1256.plan.md) | Optional press coroutine before processing + check in `RunActivateFlow`. |
 | [diagnostic_after_solve_flow_4a02306d.plan.md](diagnostic_after_solve_flow_4a02306d.plan.md) | Waiting state until Solve; then processing, then show real diagnostic result. |
+| [tutorial-diagnostic-decode-matrix.md](tutorial-diagnostic-decode-matrix.md) | **Implemented (Tutorial only):** Mastermind-style hidden feedback in a 40×12 hex decode matrix; pure-C# `TutorialDiagnosticReport` + `TutorialDiagnosticController` + editor wire tool; cross-partner displays on `Tutorial.unity`. |
 
 ---
 
@@ -101,6 +102,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [result-light-sine-indicator-pulse.md](result-light-sine-indicator-pulse.md) | **Implemented:** sine pulse on active subject `IndicatorLight`; `ResultLightIndicatorPulseController` on ResultLight.prefab. |
 | [split_tutorial_startup_focus_6d619ef5.plan.md](split_tutorial_startup_focus_6d619ef5.plan.md) | `InitialPanelFocusBootstrap`: optional both players in panel focus on play. |
 | [initial-panel-focus-bootstrap-operator-diagnostic.md](initial-panel-focus-bootstrap-operator-diagnostic.md) | **Implemented:** bootstrap per-player Focus/Panel/Diagnostic bindings, operator dropdown, asymmetric startup focus; legacy when diagnostics unset. |
+| [panel-focus-camera-only-diagnostic-startup.md](panel-focus-camera-only-diagnostic-startup.md) | **Implemented:** `TryEnterCameraFocus` for observer diagnostic startup; movement locked without `PanelFocusController` on Diagnostic-Focus. |
 | [tutorial_stage_manager_4d8fbac0.plan.md](tutorial_stage_manager_4d8fbac0.plan.md) | Tutorial stages from `OnAttemptSubmitted`; locks + glass; `DefaultExecutionOrder`. |
 | [split_tutorial_input_configuration_approved.plan.md](split_tutorial_input_configuration_approved.plan.md) | Approved Split Tutorial inputs: scene-only TMP + displayName sync, vocab, correctIndex, history order, diagnostic solved copy. |
 | [puzzle-input-labels-5char.md](puzzle-input-labels-5char.md) | Widen state labels to max 5 chars (all tutorial scenes + Knob/Slider prefabs) + Shared History token width 5. |
