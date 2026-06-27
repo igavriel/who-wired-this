@@ -43,6 +43,10 @@ https://sketchfab.com/3d-models/isd-bridge-consoles-starwars-4d99eee4c8654c7ebb9
 Low Poly Sci-Fi Terminal Remix
 https://sketchfab.com/3d-models/low-poly-sci-fi-terminal-remix-286f338f6e6d48769eeea40d3fb65ca9
 
+Blockout Sci-Fi Console
+https://sketchfab.com/3d-models/blockout-sci-fi-console-81320e6817bc4ea0b888f7e266d98a50
+
+
 NOT IN USE
 ----------
 
