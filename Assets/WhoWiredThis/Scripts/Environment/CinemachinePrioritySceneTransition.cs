@@ -29,6 +29,11 @@ namespace WhoWiredThis.Environment
 
         [Header("Flow")]
         [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+
+        [Tooltip("Optional: when set (not None), load this scene id instead of the chain 'next'. " +
+            "Used for return-to-Tutorial cut scenes that are explicit side-trips (e.g. CutScene-Tutorial-Swap -> Tutorial).")]
+        [SerializeField] private PlaytestSceneId overrideTargetSceneId = PlaytestSceneId.None;
+
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
         [SerializeField] private bool loadOnce = true;
 
@@ -148,6 +153,12 @@ namespace WhoWiredThis.Environment
         private bool TryLoadNextWithFade(out string error)
         {
             ResolveFlowBootstrap();
+
+            if (overrideTargetSceneId != PlaytestSceneId.None)
+            {
+                return TryLoadOverrideWithFade(out error);
+            }
+
             Debug.Log($"{LogPrefix} Fading to '{GetNextSceneNameForLog()}'.", this);
 
             PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
@@ -169,6 +180,21 @@ namespace WhoWiredThis.Environment
         private bool TryLoadNextImmediate(out string error)
         {
             ResolveFlowBootstrap();
+
+            if (overrideTargetSceneId != PlaytestSceneId.None)
+            {
+                if (!TryResolveOverrideSceneName(out string overrideSceneName))
+                {
+                    error = $"Override scene id '{overrideTargetSceneId}' is not configured in flow config.";
+                    return false;
+                }
+
+                return SceneTransitionUtility.TryLoadSceneImmediate(
+                    overrideSceneName,
+                    ignoreWhenAlreadyInTargetScene,
+                    out error);
+            }
+
             PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
             if (bootstrap == null)
             {
@@ -183,6 +209,37 @@ namespace WhoWiredThis.Environment
                 ignoreWhenAlreadyInTargetScene,
                 preferFadeWhenAvailable: false,
                 out error);
+        }
+
+        private bool TryLoadOverrideWithFade(out string error)
+        {
+            error = null;
+            if (!TryResolveOverrideSceneName(out string sceneName))
+            {
+                error = $"Override scene id '{overrideTargetSceneId}' is not configured in flow config.";
+                return false;
+            }
+
+            Debug.Log($"{LogPrefix} Fading to override scene '{sceneName}'.", this);
+            return SceneTransitionUtility.TryBeginTransitionWithFade(
+                this,
+                sceneName,
+                fadeOutDurationSeconds,
+                fadeOverlays,
+                ignoreWhenAlreadyInTargetScene,
+                out error);
+        }
+
+        private bool TryResolveOverrideSceneName(out string sceneName)
+        {
+            sceneName = null;
+            ResolveFlowBootstrap();
+            if (flowBootstrap == null || flowBootstrap.FlowConfig == null)
+            {
+                return false;
+            }
+
+            return flowBootstrap.FlowConfig.TryGetSceneName(overrideTargetSceneId, out sceneName);
         }
 
         private void ResolveFlowBootstrap()
@@ -229,6 +286,12 @@ namespace WhoWiredThis.Environment
         private string GetNextSceneNameForLog()
         {
             ResolveFlowBootstrap();
+
+            if (overrideTargetSceneId != PlaytestSceneId.None)
+            {
+                return TryResolveOverrideSceneName(out string overrideName) ? overrideName : "(override not configured)";
+            }
+
             if (flowBootstrap != null && flowBootstrap.TryGetNextSceneName(out string sceneName))
             {
                 return sceneName;

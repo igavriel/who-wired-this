@@ -201,6 +201,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &379680354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4908867042482081736, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+  m_PrefabInstance: {fileID: 8752344511047424877}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!1001 &491408169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,6 +342,7 @@ GameObject:
   - component: {fileID: 950581923}
   - component: {fileID: 950581925}
   - component: {fileID: 950581926}
+  - component: {fileID: 950581927}
   m_Layer: 0
   m_Name: TutorialStageManager
   m_TagString: Untagged
@@ -450,6 +462,7 @@ MonoBehaviour:
     Close the summary popup to
     continue.'
   simultaneousOperators: 0
+  roleSwapMode: 1
 --- !u!114 &950581925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +503,27 @@ MonoBehaviour:
   completionPopupPanelA: {fileID: 0}
   completionPopupPanelB: {fileID: 0}
   flowBootstrap: {fileID: 491408170}
+  ignoreWhenAlreadyInTargetScene: 1
+  loadOnce: 1
+  fadeOutDurationSeconds: 1
+  fadeOverlays: []
+--- !u!114 &950581927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950581921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae853eb7c74f42fda22be24681ccbf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.TutorialRoleSwapCutsceneTransition
+  tutorialStageManager: {fileID: 950581923}
+  delaySeconds: 3
+  useUnscaledTime: 1
+  flowBootstrap: {fileID: 0}
+  targetCutScene: 9
   ignoreWhenAlreadyInTargetScene: 1
   loadOnce: 1
   fadeOutDurationSeconds: 1
@@ -2059,6 +2093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap
   enterFocusOnStartup: 1
   startupOperatorPlayer: 1
+  useTutorialRoleStateOperator: 1
   playerA:
     focus: {fileID: 3073909790674315973}
     panelCamera: {fileID: 968524636}
@@ -2068,7 +2103,7 @@ MonoBehaviour:
   playerB:
     focus: {fileID: 7069613721803897088}
     panelCamera: {fileID: 8752344511047424879}
-    diagnosticCamera: {fileID: 8752344511047424880}
+    diagnosticCamera: {fileID: 379680354}
     legacyPanel: {fileID: 1019864808}
     legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
@@ -2538,6 +2573,10 @@ PrefabInstance:
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 968524634}
+    - target: {fileID: 1521857072860761000, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2646548706999489615, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_Material
       value: 
@@ -2545,6 +2584,10 @@ PrefabInstance:
     - target: {fileID: 5243888945041194148, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_Name
       value: _OLD_DiagnosticPanel-B
+      objectReference: {fileID: 0}
+    - target: {fileID: 5263123908410397050, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5836307652151362297, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2598,6 +2641,10 @@ PrefabInstance:
       propertyPath: settings
       value: 
       objectReference: {fileID: 625510220}
+    - target: {fileID: 8263671490669468510, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.2562952
@@ -2627,7 +2674,8 @@ PrefabInstance:
       value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1521857072860761000, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3464722709913076, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
@@ -2663,17 +2711,6 @@ MonoBehaviour:
 --- !u!114 &8752344511047424879 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3990258267245852497, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-  m_PrefabInstance: {fileID: 8752344511047424877}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
---- !u!114 &8752344511047424880 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1200634972800442323, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
   m_PrefabInstance: {fileID: 8752344511047424877}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

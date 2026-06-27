@@ -16,6 +16,16 @@ namespace WhoWiredThis.Tutorial
         Complete = 2
     }
 
+    public enum TutorialRoleSwapMode
+    {
+        /// <summary>Default: Player A -> Player B operator hand-off happens within this scene.</summary>
+        InScene = 0,
+
+        /// <summary>Player A solving raises <see cref="TutorialStageManager.OnPhaseOneSolved"/> for a cut-scene
+        /// round trip; the starting stage is read from <see cref="TutorialRoleState"/> on load.</summary>
+        CutSceneRoundTrip = 1
+    }
+
     /// <summary>
     /// Action-area lock only: input / Send colliders plus glass hint. Panel focus and board entry stay driven
     /// by <see cref="WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap"/> and <see cref="WhoWiredThis.PanelFocus.PlayerPanelFocusController"/>; do not exit or disable focus here.
@@ -187,8 +197,16 @@ namespace WhoWiredThis.Tutorial
         [Tooltip("When enabled, both players can operate their panels at the same time. Completion fires when both puzzle managers are solved.")]
         private bool simultaneousOperators;
 
+        [Header("Role swap")]
+        [SerializeField]
+        [Tooltip("InScene = Player A -> Player B operator switch within this scene (default, unchanged). " +
+            "CutSceneRoundTrip = Player A solving raises OnPhaseOneSolved for a cut-scene round trip; " +
+            "the starting stage is read from TutorialRoleState on load. Ignored when simultaneousOperators is on.")]
+        private TutorialRoleSwapMode roleSwapMode = TutorialRoleSwapMode.InScene;
+
         private TutorialSessionStage stage = TutorialSessionStage.PlayerAOperator;
         private bool completionRaised;
+        private bool phaseOneSolvedRaised;
 
         public TutorialSessionStage CurrentStage => stage;
 
@@ -199,6 +217,10 @@ namespace WhoWiredThis.Tutorial
 
         /// <summary>Raised once when both panels are solved and the tutorial locks both sides.</summary>
         public event Action OnTutorialCompleted;
+
+        /// <summary>Cut-scene mode only: raised once when the Phase-1 operator (Player A) solves, so a listener
+        /// can run the role-swap cut-scene round trip instead of switching operators within this scene.</summary>
+        public event Action OnPhaseOneSolved;
 
         private void OnEnable()
         {
@@ -236,6 +258,13 @@ namespace WhoWiredThis.Tutorial
 
         private void Start()
         {
+            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip && !simultaneousOperators)
+            {
+                stage = TutorialRoleState.HasSwapped
+                    ? TutorialSessionStage.PlayerBOperator
+                    : TutorialSessionStage.PlayerAOperator;
+            }
+
             if (simultaneousOperators)
             {
                 ApplySimultaneousOperatorLocks();
@@ -258,6 +287,15 @@ namespace WhoWiredThis.Tutorial
         private IEnumerator BootstrapTutorialDiagnosticCopy()
         {
             yield return null;
+
+            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip &&
+                !simultaneousOperators &&
+                stage == TutorialSessionStage.PlayerBOperator)
+            {
+                ApplyRoleSwitchDiagnosticBodies();
+                yield break;
+            }
+
             ApplyIntroDiagnosticBodies();
         }
 
@@ -270,6 +308,11 @@ namespace WhoWiredThis.Tutorial
         private IEnumerator ApplyRoleSwitchBodiesAfterDelay()
         {
             yield return null;
+            ApplyRoleSwitchDiagnosticBodies();
+        }
+
+        private void ApplyRoleSwitchDiagnosticBodies()
+        {
             TrySetInstructionBody(
                 playerADiagnosticDisplay,
                 playerABodyAfterPlayerASolved,
@@ -309,10 +352,28 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
+            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip)
+            {
+                RaisePhaseOneSolvedOnce();
+                return;
+            }
+
             stage = TutorialSessionStage.PlayerBOperator;
             ApplyStageVisualAndLocks();
             NotifyStageChanged();
             StartCoroutine(ApplyRoleSwitchBodiesAfterDelay());
+        }
+
+        private void RaisePhaseOneSolvedOnce()
+        {
+            if (phaseOneSolvedRaised)
+            {
+                return;
+            }
+
+            phaseOneSolvedRaised = true;
+            Debug.Log($"{LogPrefix} Phase 1 solved (cut-scene round-trip mode). Raising OnPhaseOneSolved.", this);
+            OnPhaseOneSolved?.Invoke();
         }
 
         private void HandlePlayerBAttempt(MultiDimensionAttemptResult result)

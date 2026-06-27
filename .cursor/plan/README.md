@@ -123,6 +123,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [puzzle-pipes-completion-cutscene-transition.md](puzzle-pipes-completion-cutscene-transition.md) | **Implemented:** Puzzle Pipes completion popup dismiss loads `CutScene-Pipe-Signal`; cutscene exits to `Puzzle Signal`; scene added to build settings. |
 | [playtest-scene-flow-scriptable-object.md](playtest-scene-flow-scriptable-object.md) | **Implemented:** Scene bootstrap sends `PlaytestSceneId`; flow SO chain picks next; MCP validator + logic tests. |
 | [phase-1-history-clear-escape-menu.md](phase-1-history-clear-escape-menu.md) | Clear shared history on scene transitions; cap at 20 entries per puzzle; Escape returns to StartScene via PlaytestFlowUtility. |
+| [tutorial-role-swap-cutscene-round-trip.md](tutorial-role-swap-cutscene-round-trip.md) | **Implemented (Tutorial only):** A solves → B reads solution diagnostic → ~3s delay → new `CutScene-Tutorial-Swap` → return to Tutorial with roles swapped (B operator/A diagnostic); static `TutorialRoleState` phase + opt-in `roleSwapMode`; new `CutSceneTutorialSwap` enum + `overrideTargetSceneId` on `CinemachinePrioritySceneTransition`. Pending manual Play Mode test. |
 
 ---
 

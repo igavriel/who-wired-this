@@ -14,5 +14,10 @@ namespace WhoWiredThis.Core
         CutScenePipeSignal,
         PuzzleSignal,
         GameOverScene,
+
+        // Added at the end to preserve serialized int values of existing entries.
+        // Tutorial role-swap side-trip: not part of the linear playtest chain order;
+        // loaded explicitly by id (Tutorial -> here -> Tutorial).
+        CutSceneTutorialSwap,
     }
 }

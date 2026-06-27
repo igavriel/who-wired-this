@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WhoWiredThis.PanelFocus;
+using WhoWiredThis.Tutorial;
 
 namespace WhoWiredThis.Core
 {
@@ -43,6 +44,7 @@ namespace WhoWiredThis.Core
             isFlowTransitionActive = true;
             ExitAllPanelFocus();
             PlaytestRunSummary.Clear();
+            TutorialRoleState.Reset();
             PlaytestRunTotal.ResetRun();
 
             if (!PlaytestSceneLoadUtility.TryLoadSingleScene(startSceneName, out error, clearSharedHistory: true))

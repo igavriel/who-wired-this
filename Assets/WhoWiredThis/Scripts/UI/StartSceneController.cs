@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using WhoWiredThis.Core;
 using WhoWiredThis.Environment;
 using WhoWiredThis.Puzzles.Common;
+using WhoWiredThis.Tutorial;
 
 namespace WhoWiredThis.UI
 {
@@ -72,6 +73,7 @@ namespace WhoWiredThis.UI
 
             PlaytestRunSummary.Clear();
             SharedHistorySO.ClearAllLoaded();
+            TutorialRoleState.Reset();
             PlaytestRunTotal.BeginRun();
             Debug.Log("[StartSceneController] Total-time run tracking started.");
 
