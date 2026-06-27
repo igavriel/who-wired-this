@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WhoWiredThis.Core;
+using WhoWiredThis.Environment;
 
 namespace WhoWiredThis.Core
 {
@@ -9,12 +11,15 @@ namespace WhoWiredThis.Core
         [Serializable]
         private struct SceneHotkeyBinding
         {
-            [SerializeField] private string sceneName;
+            [SerializeField] private PlaytestSceneId sceneId;
             [SerializeField] private KeyCode shortcut;
 
-            public string SceneName => sceneName;
+            public PlaytestSceneId SceneId => sceneId;
             public KeyCode Shortcut => shortcut;
         }
+
+        [Header("Flow")]
+        [SerializeField] private PlaytestSceneFlowConfigSO flowConfig;
 
         [Header("Bindings")]
         [SerializeField] private SceneHotkeyBinding[] bindings = Array.Empty<SceneHotkeyBinding>();
@@ -37,6 +42,11 @@ namespace WhoWiredThis.Core
                 return;
             }
 
+            if (flowConfig == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < bindings.Length; i++)
             {
                 SceneHotkeyBinding binding = bindings[i];
@@ -45,27 +55,34 @@ namespace WhoWiredThis.Core
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(binding.SceneName))
+                if (binding.SceneId == PlaytestSceneId.None)
                 {
-                    Debug.LogWarning($"[SceneHotkeySwitcher] Binding {i} has an empty scene name.");
+                    Debug.LogWarning($"[SceneHotkeySwitcher] Binding {i} has no scene id.");
+                    continue;
+                }
+
+                if (!flowConfig.TryGetSceneName(binding.SceneId, out string sceneName))
+                {
+                    Debug.LogWarning($"[SceneHotkeySwitcher] Binding {i} scene id '{binding.SceneId}' is not configured.");
                     continue;
                 }
 
                 string activeSceneName = SceneManager.GetActiveScene().name;
-                if (ignoreWhenAlreadyInTargetScene && string.Equals(activeSceneName, binding.SceneName, StringComparison.Ordinal))
+                if (ignoreWhenAlreadyInTargetScene &&
+                    string.Equals(activeSceneName, sceneName, StringComparison.Ordinal))
                 {
-                    Debug.Log($"[SceneHotkeySwitcher] Already in scene '{binding.SceneName}'.");
+                    Debug.Log($"[SceneHotkeySwitcher] Already in scene '{sceneName}'.");
                     continue;
                 }
 
-                if (!Application.CanStreamedLevelBeLoaded(binding.SceneName))
+                if (!Application.CanStreamedLevelBeLoaded(sceneName))
                 {
-                    Debug.LogWarning($"[SceneHotkeySwitcher] Scene '{binding.SceneName}' is not in Build Settings.");
+                    Debug.LogWarning($"[SceneHotkeySwitcher] Scene '{sceneName}' is not in Build Settings.");
                     continue;
                 }
 
-                Debug.Log($"[SceneHotkeySwitcher] Loading scene '{binding.SceneName}' from shortcut {binding.Shortcut}.");
-                SceneManager.LoadScene(binding.SceneName, LoadSceneMode.Single);
+                Debug.Log($"[SceneHotkeySwitcher] Loading scene '{sceneName}' from shortcut {binding.Shortcut}.");
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
                 return;
             }
         }

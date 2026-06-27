@@ -1486,8 +1486,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f84998efa584edcaf6e9687e750f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTrigger
-  targetSceneName: Puzzle Signal
+  flowBootstrap: {fileID: 491408170}
   ignoreWhenAlreadyInTargetScene: 1
+  fadeOutDurationSeconds: 0
+  fadeOverlays: []
   loadOnce: 1
   triggerCollider: {fileID: 1754719015}
   useBoundsPollingFallback: 1
@@ -1515,6 +1517,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: sceneId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1249580574213425681, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -1584,6 +1590,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+--- !u!114 &491408170 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+  m_PrefabInstance: {fileID: 491408169}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
 --- !u!4 &573578378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8113491064860821040, guid: 7516c9f35182548e18e591d5484dbc79, type: 3}
@@ -1918,6 +1935,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 1340959902}
   pressFeedback: {fileID: 654811934}
   processingFeedback: {fileID: 990012004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -2113,6 +2131,7 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1965309141}
     interactableReference: {fileID: 1965309142}
+  includeExitInFocusCycle: 1
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 458659913}
@@ -2480,6 +2499,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 2097925730}
   pressFeedback: {fileID: 713330670}
   processingFeedback: {fileID: 990011004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -2755,6 +2775,7 @@ MonoBehaviour:
 
     Double-click
     the Exit button to close this panel and return to the game.'
+  simultaneousOperators: 0
 --- !u!114 &990011004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4472,6 +4493,72 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2135813231}
+    - targetCorrespondingSourceObject: {fileID: 2861517457121979730, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6097440252622568741, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 7702598350785424511, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 199839434058777737, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 147390636219199236, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5571490268433113616, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6024108648920060215, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8581451304983983067, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 4324336259131988163, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5704780378264209588, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8165068447477258734, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1833245379907465496, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1855101642570111637, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6261392150319241089, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6121223443156611743, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 2871791501817242344, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 1847024360521610162, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8178864944608009028, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8164869709588689097, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 4473545972377550301, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 2364828382928309430, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 314988617240473178, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
 --- !u!1 &1754719014 stripped
 GameObject:
@@ -5954,6 +6041,7 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1278314708}
     interactableReference: {fileID: 1278314709}
+  includeExitInFocusCycle: 1
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 631392080}

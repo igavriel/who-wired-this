@@ -22,8 +22,8 @@ namespace WhoWiredThis.Environment
         [SerializeField] private MessagePanel completionPopupPanelA;
         [SerializeField] private MessagePanel completionPopupPanelB;
 
-        [Header("Target scene")]
-        [SerializeField] private string targetSceneName = "Puzzle Pipes";
+        [Header("Flow")]
+        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
         [SerializeField] private bool loadOnce = true;
 
@@ -73,7 +73,7 @@ namespace WhoWiredThis.Environment
             SubscribePopup(completionPopupPanelA, true);
             SubscribePopup(completionPopupPanelB, false);
             armedForCompletionPopup = true;
-            Debug.Log($"{LogPrefix} Armed — dismiss the summary popup to continue to '{targetSceneName}'.", this);
+            Debug.Log($"{LogPrefix} Armed — dismiss the summary popup to continue to '{GetNextSceneNameForLog()}'.", this);
         }
 
         private void HandlePopupHidden()
@@ -83,14 +83,22 @@ namespace WhoWiredThis.Environment
                 return;
             }
 
-            Debug.Log($"{LogPrefix} Summary popup dismissed — starting fade to '{targetSceneName}'.", this);
+            ResolveFlowBootstrap();
+            Debug.Log($"{LogPrefix} Summary popup dismissed — starting fade to '{GetNextSceneNameForLog()}'.", this);
 
-            if (!SceneTransitionUtility.TryBeginTransitionWithFade(
+            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            if (bootstrap == null)
+            {
+                Debug.LogWarning($"{LogPrefix} PlaytestSceneFlowBootstrap not found.", this);
+                return;
+            }
+
+            if (!bootstrap.TryLoadNextScene(
                     this,
-                    targetSceneName,
                     fadeOutDurationSeconds,
                     fadeOverlays,
                     ignoreWhenAlreadyInTargetScene,
+                    preferFadeWhenAvailable: true,
                     out string error))
             {
                 if (!string.IsNullOrEmpty(error) && error != "Already in target scene.")
@@ -157,6 +165,16 @@ namespace WhoWiredThis.Environment
                 TryAddOverlay(hudB, overlays);
                 fadeOverlays = overlays.ToArray();
             }
+
+            ResolveFlowBootstrap();
+        }
+
+        private void ResolveFlowBootstrap()
+        {
+            if (flowBootstrap == null)
+            {
+                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+            }
         }
 
         private static PlayerHudView FindPlayerHud(string playerSuffix)
@@ -192,6 +210,17 @@ namespace WhoWiredThis.Environment
             {
                 overlays.Add(overlay);
             }
+        }
+
+        private string GetNextSceneNameForLog()
+        {
+            ResolveFlowBootstrap();
+            if (flowBootstrap != null && flowBootstrap.TryGetNextSceneName(out string sceneName))
+            {
+                return sceneName;
+            }
+
+            return "(not configured)";
         }
 
         private static bool AllOverlaysNull(SceneTransitionFadeOverlay[] overlays)

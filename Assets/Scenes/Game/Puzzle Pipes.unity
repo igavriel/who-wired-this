@@ -4245,6 +4245,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: sceneId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1249580574213425681, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -4318,6 +4322,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+--- !u!114 &491408170 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+  m_PrefabInstance: {fileID: 491408169}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
 --- !u!1 &520687001
 GameObject:
   m_ObjectHideFlags: 0
@@ -9277,7 +9292,7 @@ MonoBehaviour:
   tutorialStageManager: {fileID: 950581923}
   completionPopupPanelA: {fileID: 0}
   completionPopupPanelB: {fileID: 0}
-  targetSceneName: CutScene-Pipe-Signal
+  flowBootstrap: {fileID: 491408170}
   ignoreWhenAlreadyInTargetScene: 1
   loadOnce: 1
   fadeOutDurationSeconds: 1
@@ -22469,19 +22484,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8660254
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -22489,7 +22504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7724792345534187104, guid: 7aca62c6b6c064d20a82f25a5ad1c5cd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -22594,19 +22609,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8660254
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -22614,7 +22629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 339816460428077418, guid: 6a14fb7a35f324786a3ab597fcf20d39, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

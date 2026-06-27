@@ -5790,6 +5790,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+      propertyPath: sceneId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1249580574213425681, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -5863,6 +5867,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+--- !u!114 &491408170 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 113804981967003751, guid: eca398f6bb79843d39a6de2973aaf4ac, type: 3}
+  m_PrefabInstance: {fileID: 491408169}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
 --- !u!65 &518627909 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1752013549613184482, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}
@@ -17671,7 +17686,7 @@ MonoBehaviour:
   triggerPosition: 1
   delaySeconds: 0.3
   useUnscaledTime: 1
-  targetSceneName: Puzzle Pipes
+  flowBootstrap: {fileID: 0}
   ignoreWhenAlreadyInTargetScene: 1
   loadOnce: 1
   fadeOutDurationSeconds: 1
@@ -20595,7 +20610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f84998efa584edcaf6e9687e750f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.SceneTransitionTrigger
-  targetSceneName: Puzzle Pipes
+  flowBootstrap: {fileID: 491408170}
   ignoreWhenAlreadyInTargetScene: 1
   fadeOutDurationSeconds: 5
   fadeOverlays: []

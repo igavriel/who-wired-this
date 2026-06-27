@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WhoWiredThis.Core;
+using WhoWiredThis.Environment;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,7 +20,7 @@ namespace WhoWiredThis.UI
         [SerializeField] private TMP_Text crewRankLabel;
         [SerializeField] private Button restartButton;
         [SerializeField] private Button quitButton;
-        [SerializeField] private string startSceneName = "StartScene";
+        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
         [SerializeField] private KeyCode bossModifierKey = KeyCode.F12;
@@ -175,7 +176,25 @@ namespace WhoWiredThis.UI
             hasRestarted = true;
             Debug.Log("[GameOverSceneController] Restart clicked.");
 
-            if (!PlaytestFlowUtility.TryReturnToMainMenu(startSceneName, out string loadError))
+            if (flowBootstrap == null)
+            {
+                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+            }
+
+            if (flowBootstrap != null)
+            {
+                if (flowBootstrap.TryLoadSceneById(
+                        PlaytestSceneId.StartScene,
+                        ignoreWhenAlreadyInTargetScene: true,
+                        out string bootstrapError))
+                {
+                    return;
+                }
+
+                Debug.LogWarning($"[GameOverSceneController] Bootstrap restart failed: {bootstrapError}");
+            }
+
+            if (!PlaytestFlowUtility.TryReturnToMainMenu(PlaytestFlowUtility.DefaultStartSceneName, out _))
             {
                 hasRestarted = false;
             }

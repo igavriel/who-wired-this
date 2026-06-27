@@ -9,9 +9,8 @@ namespace WhoWiredThis.Environment
     [DisallowMultipleComponent]
     public class SceneTransitionTrigger : MonoBehaviour
     {
-        [Header("Target Scene")]
-        [Tooltip("The name of the scene to load when the trigger is activated.")]
-        [SerializeField] private string targetSceneName = string.Empty;
+        [Header("Flow")]
+        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [Tooltip("If the active scene name matches the target scene name, the trigger will not load the target scene.")]
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
 
@@ -150,28 +149,32 @@ namespace WhoWiredThis.Environment
                 return;
             }
 
-            if (fadeOutDurationSeconds > 0f && fadeOverlays != null && fadeOverlays.Length > 0)
+            ResolveFlowBootstrap();
+            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            if (bootstrap == null)
             {
-                if (SceneTransitionUtility.TryBeginTransitionWithFade(
-                        this,
-                        targetSceneName,
-                        fadeOutDurationSeconds,
-                        fadeOverlays,
-                        ignoreWhenAlreadyInTargetScene,
-                        out _))
-                {
-                    hasTriggered = true;
-                }
-
+                Debug.LogWarning("[SceneTransitionTrigger] PlaytestSceneFlowBootstrap not found.", this);
                 return;
             }
 
-            if (SceneTransitionUtility.TryLoadSceneImmediate(
-                    targetSceneName,
+            bool preferFade = fadeOutDurationSeconds > 0f && fadeOverlays != null && fadeOverlays.Length > 0;
+            if (bootstrap.TryLoadNextScene(
+                    this,
+                    fadeOutDurationSeconds,
+                    fadeOverlays,
                     ignoreWhenAlreadyInTargetScene,
+                    preferFade,
                     out _))
             {
                 hasTriggered = true;
+            }
+        }
+
+        private void ResolveFlowBootstrap()
+        {
+            if (flowBootstrap == null)
+            {
+                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
             }
         }
     }

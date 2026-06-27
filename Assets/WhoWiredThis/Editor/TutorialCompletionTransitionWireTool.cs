@@ -13,6 +13,7 @@ namespace WhoWiredThis.Editor
 {
     /// <summary>
     /// Wires playtest scenes: hide Exit in focus, fade overlays on dual HUD, completion popup scene transition.
+    /// Scene targets come from <see cref="PlaytestSceneFlowBootstrap"/> + flow config SO.
     /// </summary>
     public static class TutorialCompletionTransitionWireTool
     {
@@ -27,40 +28,43 @@ namespace WhoWiredThis.Editor
         [MenuItem(TutorialMenuPath)]
         public static void WireTutorialCompletionTransition()
         {
-            WireScene(TutorialScenePath, "CutScene-Tutorial-Pipe", hideExit: true);
+            WireScene(TutorialScenePath, PlaytestSceneId.Tutorial, hideExit: true);
         }
 
         [MenuItem(PipesMenuPath)]
         public static void WirePuzzlePipesCompletionTransition()
         {
-            WireScene(PuzzlePipesScenePath, "CutScene-Pipe-Signal", hideExit: false);
+            WireScene(PuzzlePipesScenePath, PlaytestSceneId.PuzzlePipes, hideExit: false);
         }
 
         [MenuItem(SignalMenuPath)]
         public static void WirePuzzleSignalCompletionTransition()
         {
-            WireScene(PuzzleSignalScenePath, PlaytestFlowUtility.GameOverSceneName, hideExit: true);
+            WireScene(PuzzleSignalScenePath, PlaytestSceneId.PuzzleSignal, hideExit: true);
         }
 
-        private static void WireScene(string scenePath, string targetSceneName, bool hideExit)
+        private static void WireScene(string scenePath, PlaytestSceneId sceneId, bool hideExit)
         {
             if (!EnsureSceneActive(scenePath, out Scene scene))
             {
                 return;
             }
 
+            PlaytestSceneFlowSetupTool.SetupSceneFlowConfig();
+            PlaytestSceneFlowSetupTool.EnsureCurrentSceneBootstrap(sceneId);
+
             int exitHidden = hideExit ? HideExitButtonsInScene() : 0;
             int focusUpdated = hideExit ? DisableExitInFocusCycleOnPanels() : 0;
             int hudFadeCount = EnsureFadeOverlaysOnUiCanvasPrefab();
-            int transitionWired = WireCompletionPopupTransition(targetSceneName);
-            int triggersDisabled = DisableWalkThroughTransitionTriggers(targetSceneName);
+            int transitionWired = WireCompletionPopupTransition();
+            int triggersDisabled = DisableWalkThroughTransitionTriggers();
 
             UpdateCompletionCopy();
             EditorSceneManager.MarkSceneDirty(scene);
             AssetDatabase.SaveAssets();
 
             Debug.Log(
-                $"[TutorialCompletionTransitionWireTool] Done on '{scene.name}' -> '{targetSceneName}': " +
+                $"[TutorialCompletionTransitionWireTool] Done on '{scene.name}' ({sceneId}): " +
                 $"exitHidden={exitHidden}, focusUpdated={focusUpdated}, hudFadeOnPrefab={hudFadeCount}, " +
                 $"transitionWired={transitionWired}, walkTriggersDisabled={triggersDisabled}.");
         }
@@ -184,7 +188,7 @@ namespace WhoWiredThis.Editor
             return count;
         }
 
-        private static int WireCompletionPopupTransition(string targetSceneName)
+        private static int WireCompletionPopupTransition()
         {
             TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
             if (stageManager == null)
@@ -227,11 +231,13 @@ namespace WhoWiredThis.Editor
                 transition = stageManager.gameObject.AddComponent<CompletionPopupSceneTransition>();
             }
 
+            PlaytestSceneFlowBootstrap bootstrap = Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+
             SerializedObject serializedObject = new SerializedObject(transition);
             serializedObject.FindProperty("tutorialStageManager").objectReferenceValue = stageManager;
             serializedObject.FindProperty("completionPopupPanelA").objectReferenceValue = hudA.GetComponentInChildren<MessagePanel>(true);
             serializedObject.FindProperty("completionPopupPanelB").objectReferenceValue = hudB.GetComponentInChildren<MessagePanel>(true);
-            serializedObject.FindProperty("targetSceneName").stringValue = targetSceneName;
+            serializedObject.FindProperty("flowBootstrap").objectReferenceValue = bootstrap;
             serializedObject.FindProperty("fadeOutDurationSeconds").floatValue = 1f;
             serializedObject.FindProperty("fadeOverlays").arraySize = 2;
             serializedObject.FindProperty("fadeOverlays").GetArrayElementAtIndex(0).objectReferenceValue =
@@ -242,7 +248,7 @@ namespace WhoWiredThis.Editor
             return 1;
         }
 
-        private static int DisableWalkThroughTransitionTriggers(string targetSceneName)
+        private static int DisableWalkThroughTransitionTriggers()
         {
             int count = 0;
             SceneTransitionTrigger[] triggers = Object.FindObjectsByType<SceneTransitionTrigger>(FindObjectsSortMode.None);
@@ -254,14 +260,8 @@ namespace WhoWiredThis.Editor
                     continue;
                 }
 
-                SerializedObject serializedObject = new SerializedObject(trigger);
-                SerializedProperty targetScene = serializedObject.FindProperty("targetSceneName");
-                if (targetScene != null &&
-                    string.Equals(targetScene.stringValue, targetSceneName, System.StringComparison.Ordinal))
-                {
-                    trigger.enabled = false;
-                    count++;
-                }
+                trigger.enabled = false;
+                count++;
             }
 
             return count;

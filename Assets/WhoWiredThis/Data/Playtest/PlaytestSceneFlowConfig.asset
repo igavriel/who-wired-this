@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ace152710e1aa400aa59af08fa52edce, type: 3}
+  m_Name: PlaytestSceneFlowConfig
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.PlaytestSceneFlowConfigSO
+  sceneEntries:
+  - id: 1
+    sceneName: StartScene
+  - id: 2
+    sceneName: CutScene-Start-Tutorial
+  - id: 3
+    sceneName: Tutorial
+  - id: 4
+    sceneName: CutScene-Tutorial-Pipe
+  - id: 5
+    sceneName: Puzzle Pipes
+  - id: 6
+    sceneName: CutScene-Pipe-Signal
+  - id: 7
+    sceneName: Puzzle Signal
+  - id: 8
+    sceneName: GameOverScene
+  playtestChainOrder: 0100000002000000030000000400000005000000060000000700000008000000

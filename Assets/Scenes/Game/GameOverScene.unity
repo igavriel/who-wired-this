@@ -447,7 +447,7 @@ MonoBehaviour:
   crewRankLabel: {fileID: 1901138824}
   restartButton: {fileID: 1131922900}
   quitButton: {fileID: 1361101725}
-  startSceneName: StartScene
+  flowBootstrap: {fileID: 444549256}
   playerAActionKey: 306
   playerBActionKey: 305
   bossModifierKey: 293
@@ -604,6 +604,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.CameraViewportPresetApplier
   targetCamera: {fileID: 405077842}
   preset: 3
+--- !u!1001 &444549255
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2504777630820040641, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: sceneId
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342775897917043609, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_Name
+      value: PlaytestSceneFlowBootstrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+--- !u!114 &444549256 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2504777630820040641, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
+  m_PrefabInstance: {fileID: 444549255}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
 --- !u!114 &641350190 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 349496738996346868, guid: 08de7deac3c7646ab8c71f8fec74ba01, type: 3}
@@ -1003,3 +1075,4 @@ SceneRoots:
   - {fileID: 1347432773}
   - {fileID: 2648232091737231500}
   - {fileID: 1120304993}
+  - {fileID: 444549255}

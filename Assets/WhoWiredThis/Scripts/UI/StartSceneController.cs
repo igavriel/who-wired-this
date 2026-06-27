@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WhoWiredThis.Core;
+using WhoWiredThis.Environment;
 using WhoWiredThis.Puzzles.Common;
 
 namespace WhoWiredThis.UI
@@ -13,7 +14,7 @@ namespace WhoWiredThis.UI
 
         [SerializeField] private TMP_Text introTextLabel;
         [SerializeField] private Button startButton;
-        [SerializeField] private string tutorialSceneName = "Tutorial";
+        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
         [SerializeField] private KeyCode bossModifierKey = KeyCode.F12;
@@ -74,9 +75,28 @@ namespace WhoWiredThis.UI
             PlaytestRunTotal.BeginRun();
             Debug.Log("[StartSceneController] Total-time run tracking started.");
 
-            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(tutorialSceneName, out string loadError))
+            if (flowBootstrap == null)
             {
-                Debug.LogError($"[StartSceneController] Failed to load '{tutorialSceneName}': {loadError}");
+                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+            }
+
+            if (flowBootstrap == null)
+            {
+                Debug.LogError("[StartSceneController] PlaytestSceneFlowBootstrap not found.", this);
+                PlaytestRunTotal.ResetRun();
+                hasStarted = false;
+                return;
+            }
+
+            if (!flowBootstrap.TryLoadNextScene(
+                    this,
+                    fadeOutDurationSeconds: 0f,
+                    fadeOverlays: null,
+                    ignoreWhenAlreadyInTargetScene: true,
+                    preferFadeWhenAvailable: false,
+                    out string loadError))
+            {
+                Debug.LogError($"[StartSceneController] Failed to load next scene: {loadError}");
                 PlaytestRunTotal.ResetRun();
                 hasStarted = false;
             }

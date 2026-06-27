@@ -117,6 +117,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [tutorial-exit-hide-popup-scene-transition.md](tutorial-exit-hide-popup-scene-transition.md) | **Implemented (Tutorial + Puzzle Pipes + Puzzle Signal):** Hide Exit; fade out then load next scene on completion popup dismiss. |
 | [tutorial-completion-cutscene-transition.md](tutorial-completion-cutscene-transition.md) | **Implemented (Tutorial only):** Retarget completion popup dismiss to load `CutScene-Tutorial-Pipe`; defer cutscene handoff on other scenes one-by-one. |
 | [puzzle-pipes-completion-cutscene-transition.md](puzzle-pipes-completion-cutscene-transition.md) | **Implemented:** Puzzle Pipes completion popup dismiss loads `CutScene-Pipe-Signal`; cutscene exits to `Puzzle Signal`; scene added to build settings. |
+| [playtest-scene-flow-scriptable-object.md](playtest-scene-flow-scriptable-object.md) | **Implemented:** Scene bootstrap sends `PlaytestSceneId`; flow SO chain picks next; MCP validator + logic tests. |
 | [phase-1-history-clear-escape-menu.md](phase-1-history-clear-escape-menu.md) | Clear shared history on scene transitions; cap at 20 entries per puzzle; Escape returns to StartScene via PlaytestFlowUtility. |
 
 ---

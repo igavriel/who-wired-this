@@ -27,8 +27,8 @@ namespace WhoWiredThis.Environment
         [SerializeField] private float delaySeconds = 1f;
         [SerializeField] private bool useUnscaledTime = true;
 
-        [Header("Target scene")]
-        [SerializeField] private string targetSceneName = "Tutorial";
+        [Header("Flow")]
+        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
         [SerializeField] private bool loadOnce = true;
 
@@ -42,6 +42,7 @@ namespace WhoWiredThis.Environment
 
         private void Awake()
         {
+            ResolveFlowBootstrap();
             ResolveFadeOverlays();
         }
 
@@ -118,18 +119,12 @@ namespace WhoWiredThis.Environment
                 }
             }
 
+            ResolveFlowBootstrap();
             ResolveFadeOverlays();
 
             if (ShouldUseFade())
             {
-                Debug.Log($"{LogPrefix} Fading to '{targetSceneName}'.", this);
-                if (!SceneTransitionUtility.TryBeginTransitionWithFade(
-                        this,
-                        targetSceneName,
-                        fadeOutDurationSeconds,
-                        fadeOverlays,
-                        ignoreWhenAlreadyInTargetScene,
-                        out string fadeError))
+                if (TryLoadNextWithFade(out string fadeError))
                 {
                     if (!string.IsNullOrEmpty(fadeError) && fadeError != "Already in target scene.")
                     {
@@ -140,18 +135,61 @@ namespace WhoWiredThis.Environment
                 yield break;
             }
 
-            Debug.LogWarning(
-                $"{LogPrefix} Fade not configured; loading '{targetSceneName}' immediately after delay.",
-                this);
+            Debug.LogWarning($"{LogPrefix} Fade not configured; loading next scene immediately after delay.", this);
 
-            if (!SceneTransitionUtility.TryLoadSceneImmediate(
-                    targetSceneName,
-                    ignoreWhenAlreadyInTargetScene,
-                    out string loadError) &&
+            if (!TryLoadNextImmediate(out string loadError) &&
                 !string.IsNullOrEmpty(loadError) &&
                 loadError != "Already in target scene.")
             {
                 Debug.LogWarning($"{LogPrefix} Load blocked: {loadError}", this);
+            }
+        }
+
+        private bool TryLoadNextWithFade(out string error)
+        {
+            ResolveFlowBootstrap();
+            Debug.Log($"{LogPrefix} Fading to '{GetNextSceneNameForLog()}'.", this);
+
+            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            if (bootstrap == null)
+            {
+                error = "PlaytestSceneFlowBootstrap not found.";
+                return false;
+            }
+
+            return bootstrap.TryLoadNextScene(
+                this,
+                fadeOutDurationSeconds,
+                fadeOverlays,
+                ignoreWhenAlreadyInTargetScene,
+                preferFadeWhenAvailable: true,
+                out error);
+        }
+
+        private bool TryLoadNextImmediate(out string error)
+        {
+            ResolveFlowBootstrap();
+            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            if (bootstrap == null)
+            {
+                error = "PlaytestSceneFlowBootstrap not found.";
+                return false;
+            }
+
+            return bootstrap.TryLoadNextScene(
+                this,
+                fadeOutDurationSeconds,
+                fadeOverlays,
+                ignoreWhenAlreadyInTargetScene,
+                preferFadeWhenAvailable: false,
+                out error);
+        }
+
+        private void ResolveFlowBootstrap()
+        {
+            if (flowBootstrap == null)
+            {
+                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
             }
         }
 
@@ -186,6 +224,17 @@ namespace WhoWiredThis.Environment
             {
                 fadeOverlays = overlays.ToArray();
             }
+        }
+
+        private string GetNextSceneNameForLog()
+        {
+            ResolveFlowBootstrap();
+            if (flowBootstrap != null && flowBootstrap.TryGetNextSceneName(out string sceneName))
+            {
+                return sceneName;
+            }
+
+            return "(not configured)";
         }
 
 #if UNITY_EDITOR
