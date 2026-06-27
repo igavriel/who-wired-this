@@ -2813,6 +2813,17 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!114 &314771354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6219872527518483418, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
+  m_PrefabInstance: {fileID: 610607694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!43 &315599402
 Mesh:
   m_ObjectHideFlags: 0
@@ -6448,6 +6459,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 601592550}
+    - target: {fileID: 6219872527518483418, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
+      propertyPath: frameFillPercent
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6224784513394665122, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -15460,6 +15475,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2069207257}
+    - target: {fileID: 6219872527518483418, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
+      propertyPath: frameFillPercent
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6224784513394665122, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -20706,16 +20725,31 @@ MonoBehaviour:
   startupOperatorPlayer: 1
   playerA:
     focus: {fileID: 3073909790674315973}
-    panel: {fileID: 1697858146}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 2036157307}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 1697858146}
+    legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
-    panel: {fileID: 2003294023}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 314771354}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 2003294023}
+    legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
   playerAPanel: {fileID: 0}
   playerBFocus: {fileID: 0}
   playerBPanel: {fileID: 0}
+--- !u!114 &2036157307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6219872527518483418, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
+  m_PrefabInstance: {fileID: 1547994696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!43 &2040013634
 Mesh:
   m_ObjectHideFlags: 0

@@ -1589,6 +1589,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4545497145379159907, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
   m_PrefabInstance: {fileID: 816706097}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &816706102 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5025555386608412713, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
+  m_PrefabInstance: {fileID: 816706097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!64 &816706103 stripped
 MeshCollider:
   m_CorrespondingSourceObject: {fileID: 1461317632556733156, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
@@ -1974,6 +1985,17 @@ MonoBehaviour:
   loadOnce: 1
   fadeOutDurationSeconds: 1
   fadeOverlays: []
+--- !u!114 &1133953208 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5025555386608412713, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
+  m_PrefabInstance: {fileID: 8373575766079395432}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!134 &1349629783
 PhysicsMaterial:
   m_ObjectHideFlags: 0
@@ -3218,12 +3240,16 @@ MonoBehaviour:
   startupOperatorPlayer: 1
   playerA:
     focus: {fileID: 3073909790674315973}
-    panel: {fileID: 2129372216}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 1133953208}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 2129372216}
+    legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
-    panel: {fileID: 1696466946}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 816706102}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 1696466946}
+    legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
   playerAPanel: {fileID: 0}
   playerBFocus: {fileID: 0}

@@ -2207,6 +2207,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 1340959902}
   pressFeedback: {fileID: 654811934}
   processingFeedback: {fileID: 990012004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -2338,6 +2339,7 @@ GameObject:
   - component: {fileID: 685025538}
   - component: {fileID: 685025537}
   - component: {fileID: 685025536}
+  - component: {fileID: 685025540}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -2376,6 +2378,8 @@ MonoBehaviour:
   allowedPlayerId: 2
   frameFillPercent: 54
   boardRenderer: {fileID: 685025537}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: TUNE
@@ -2395,10 +2399,12 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1965309141}
     interactableReference: {fileID: 1965309142}
+  includeExitInFocusCycle: 1
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 458659913}
   promptText: $INTERACT$ Open Panel
+  hideOnFocusObjects: []
 --- !u!23 &685025537
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2477,6 +2483,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685025534}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &685025540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685025534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+  frameFillPercent: 54
+  boardRenderer: {fileID: 685025537}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
+  extraDistance: 0.02
 --- !u!1 &706340100
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2866,7 @@ MonoBehaviour:
   puzzleTargetReference: {fileID: 2097925730}
   pressFeedback: {fileID: 713330670}
   processingFeedback: {fileID: 990011004}
+  leverFeedback: {fileID: 0}
   panelActionLock: {fileID: 0}
   interactPrompt: $INTERACT$ Solve
   solvedPrompt: Solved
@@ -3314,9 +3338,16 @@ MonoBehaviour:
 
     YOUR
     PARTNER READS.'
-  onTutorialCompletedUnity:
-    m_PersistentCalls:
-      m_Calls: []
+  objectsToDisableOnComplete: []
+  exitDoorBlockersToDisableOnComplete: []
+  completionMessage: 'Synchronization confirmed.
+
+    The exit door is now unlocked.
+
+
+    Double-click
+    the Exit button to close this panel and return to the game.'
+  simultaneousOperators: 0
 --- !u!1 &965360416
 GameObject:
   m_ObjectHideFlags: 0
@@ -6380,12 +6411,16 @@ MonoBehaviour:
   startupOperatorPlayer: 1
   playerA:
     focus: {fileID: 3073909790674315973}
-    panel: {fileID: 2129372216}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 2129372220}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 2129372216}
+    legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
-    panel: {fileID: 685025536}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 685025540}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 685025536}
+    legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
   playerAPanel: {fileID: 0}
   playerBFocus: {fileID: 0}
@@ -6783,6 +6818,7 @@ GameObject:
   - component: {fileID: 2129372218}
   - component: {fileID: 2129372217}
   - component: {fileID: 2129372216}
+  - component: {fileID: 2129372220}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -6821,6 +6857,8 @@ MonoBehaviour:
   allowedPlayerId: 1
   frameFillPercent: 54
   boardRenderer: {fileID: 2129372217}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
   extraDistance: 0.02
   interactableButtons:
   - label: FREQ
@@ -6840,10 +6878,12 @@ MonoBehaviour:
     label: Exit
     highlightAnchor: {fileID: 1278314708}
     interactableReference: {fileID: 1278314709}
+  includeExitInFocusCycle: 1
   exitDoubleClickMaxIntervalSeconds: 0.5
   panelActionLock: {fileID: 0}
   selectionFrame: {fileID: 631392080}
   promptText: $INTERACT$ Open Panel
+  hideOnFocusObjects: []
 --- !u!23 &2129372217
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6922,6 +6962,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129372214}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2129372220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129372214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+  frameFillPercent: 54
+  boardRenderer: {fileID: 2129372217}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
+  extraDistance: 0.02
 --- !u!1001 &2766497345434886481
 PrefabInstance:
   m_ObjectHideFlags: 0

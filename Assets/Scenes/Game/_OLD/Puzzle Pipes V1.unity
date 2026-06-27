@@ -2072,6 +2072,7 @@ GameObject:
   - component: {fileID: 685025538}
   - component: {fileID: 685025537}
   - component: {fileID: 685025536}
+  - component: {fileID: 685025540}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -2216,6 +2217,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685025534}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &685025540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685025534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+  frameFillPercent: 54
+  boardRenderer: {fileID: 685025537}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
+  extraDistance: 0.02
 --- !u!1001 &691636537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5675,12 +5693,16 @@ MonoBehaviour:
   startupOperatorPlayer: 1
   playerA:
     focus: {fileID: 3073909790674315973}
-    panel: {fileID: 2129372216}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 2129372220}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 2129372216}
+    legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
-    panel: {fileID: 685025536}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 685025540}
+    diagnosticCamera: {fileID: 0}
+    legacyPanel: {fileID: 685025536}
+    legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
   playerAPanel: {fileID: 0}
   playerBFocus: {fileID: 0}
@@ -5991,6 +6013,7 @@ GameObject:
   - component: {fileID: 2129372218}
   - component: {fileID: 2129372217}
   - component: {fileID: 2129372216}
+  - component: {fileID: 2129372220}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -6135,6 +6158,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129372214}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2129372220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129372214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+  frameFillPercent: 54
+  boardRenderer: {fileID: 2129372217}
+  framingTransform: {fileID: 0}
+  viewAxis: 0
+  extraDistance: 0.02
 --- !u!1 &2135813229 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2871830394908093244, guid: 1fa38ca0ec0bd4b2a9f949a51f345a12, type: 3}

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WhoWiredThis.Enums;
 
 namespace WhoWiredThis.PanelFocus
@@ -11,37 +12,103 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField]
         private PlayerPanelFocusController focus;
 
-        [Tooltip("This player's main puzzle board PanelFocusController.")]
+        [Tooltip("Camera framing target on the board (same GameObject as PanelFocusController).")]
         [SerializeField]
-        private PanelFocusController panel;
+        private PanelFocusCamera panelCamera;
 
-        [Tooltip("Optional diagnostic PanelFocusController for this player; leave empty until wired.")]
+        [Tooltip("Optional diagnostic camera framing target for partner readout at startup.")]
         [SerializeField]
-        private PanelFocusController diagnostic;
+        private PanelFocusCamera diagnosticCamera;
+
+        [FormerlySerializedAs("panel")]
+        [HideInInspector]
+        [SerializeField]
+        private PanelFocusController legacyPanel;
+
+        [FormerlySerializedAs("diagnostic")]
+        [HideInInspector]
+        [SerializeField]
+        private PanelFocusController legacyDiagnostic;
 
         public PlayerPanelFocusController Focus => focus;
-        public PanelFocusController Panel => panel;
-        public PanelFocusController Diagnostic => diagnostic;
+        public PanelFocusCamera PanelCamera => ResolvePanelCamera();
+        public PanelFocusCamera DiagnosticCamera => ResolveDiagnosticCamera();
 
         internal void MigrateFromLegacy(
             PlayerPanelFocusController legacyFocus,
-            PanelFocusController legacyPanel)
+            PanelFocusController legacyPanelRef)
         {
             if (focus == null && legacyFocus != null)
             {
                 focus = legacyFocus;
             }
 
-            if (panel == null && legacyPanel != null)
+            if (legacyPanel == null && legacyPanelRef != null)
             {
-                panel = legacyPanel;
+                legacyPanel = legacyPanelRef;
             }
+        }
+
+        public PanelFocusController ResolvePanelController(bool diagnostic = false)
+        {
+            if (diagnostic)
+            {
+                return ResolveControllerFromCamera(ResolveDiagnosticCamera(), legacyDiagnostic);
+            }
+
+            return ResolveControllerFromCamera(ResolvePanelCamera(), legacyPanel);
+        }
+
+        private PanelFocusCamera ResolvePanelCamera()
+        {
+            if (panelCamera != null)
+            {
+                return panelCamera;
+            }
+
+            if (legacyPanel != null)
+            {
+                return legacyPanel.GetComponent<PanelFocusCamera>();
+            }
+
+            return null;
+        }
+
+        private PanelFocusCamera ResolveDiagnosticCamera()
+        {
+            if (diagnosticCamera != null)
+            {
+                return diagnosticCamera;
+            }
+
+            if (legacyDiagnostic != null)
+            {
+                return legacyDiagnostic.GetComponent<PanelFocusCamera>();
+            }
+
+            return null;
+        }
+
+        private static PanelFocusController ResolveControllerFromCamera(
+            PanelFocusCamera camera,
+            PanelFocusController legacyController)
+        {
+            if (camera != null)
+            {
+                PanelFocusController fromCamera = camera.GetComponent<PanelFocusController>();
+                if (fromCamera != null)
+                {
+                    return fromCamera;
+                }
+            }
+
+            return legacyController;
         }
     }
 
     /// <summary>
-    /// Optionally puts each player into panel focus on play so cameras use
-    /// <see cref="PanelFocusController.GetCameraSnapPose"/>. Toggle <see cref="enterFocusOnStartup"/> in the Inspector.
+    /// Optionally puts each player into panel focus on play using board
+    /// <see cref="PanelFocusCamera"/> framing. Toggle <see cref="enterFocusOnStartup"/> in the Inspector.
     /// When operator diagnostics are wired, the startup operator frames their panel and the partner frames their diagnostic.
     /// </summary>
     public class InitialPanelFocusBootstrap : MonoBehaviour, ISerializationCallbackReceiver
@@ -63,7 +130,6 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField]
         private PlayerStartupFocusBinding playerB = new PlayerStartupFocusBinding();
 
-        // Legacy flat references kept for existing scene YAML; copied into bindings on deserialize.
         [HideInInspector, SerializeField]
         private PlayerPanelFocusController playerAFocus;
 
@@ -108,7 +174,6 @@ namespace WhoWiredThis.PanelFocus
 
         private IEnumerator EnterFocusWhenReady()
         {
-            // Defer until after Awake/OnEnable on players, cameras, and panel instances.
             yield return null;
 
             if (UsesOperatorDiagnosticMode())
@@ -117,8 +182,8 @@ namespace WhoWiredThis.PanelFocus
                 yield break;
             }
 
-            TryEnterStartupFocus(playerA.Focus, playerA.Panel, "Player A");
-            TryEnterStartupFocus(playerB.Focus, playerB.Panel, "Player B");
+            TryEnterStartupFocus(playerA.Focus, playerA, diagnostic: false, "Player A");
+            TryEnterStartupFocus(playerB.Focus, playerB, diagnostic: false, "Player B");
         }
 
         private bool UsesOperatorDiagnosticMode()
@@ -126,10 +191,10 @@ namespace WhoWiredThis.PanelFocus
             AllowedPlayerTag operatorPlayer = NormalizeStartupOperator();
             if (operatorPlayer == AllowedPlayerTag.Player_A)
             {
-                return playerA.Panel != null && playerB.Diagnostic != null;
+                return playerA.ResolvePanelController() != null && playerB.DiagnosticCamera != null;
             }
 
-            return playerB.Panel != null && playerA.Diagnostic != null;
+            return playerB.ResolvePanelController() != null && playerA.DiagnosticCamera != null;
         }
 
         private void EnterOperatorDiagnosticFocus()
@@ -138,13 +203,13 @@ namespace WhoWiredThis.PanelFocus
 
             if (operatorPlayer == AllowedPlayerTag.Player_A)
             {
-                TryEnterStartupFocus(playerA.Focus, playerA.Panel, "Player A (operator panel)");
-                TryEnterStartupFocus(playerB.Focus, playerB.Diagnostic, "Player B (diagnostic)");
+                TryEnterStartupFocus(playerA.Focus, playerA, diagnostic: false, "Player A (operator panel)");
+                TryEnterStartupFocus(playerB.Focus, playerB, diagnostic: true, "Player B (diagnostic)");
                 return;
             }
 
-            TryEnterStartupFocus(playerB.Focus, playerB.Panel, "Player B (operator panel)");
-            TryEnterStartupFocus(playerA.Focus, playerA.Diagnostic, "Player A (diagnostic)");
+            TryEnterStartupFocus(playerB.Focus, playerB, diagnostic: false, "Player B (operator panel)");
+            TryEnterStartupFocus(playerA.Focus, playerA, diagnostic: true, "Player A (diagnostic)");
         }
 
         private AllowedPlayerTag NormalizeStartupOperator()
@@ -163,13 +228,22 @@ namespace WhoWiredThis.PanelFocus
 
         private static void TryEnterStartupFocus(
             PlayerPanelFocusController focus,
-            PanelFocusController panel,
+            PlayerStartupFocusBinding binding,
+            bool diagnostic,
             string label)
         {
-            if (focus == null || panel == null)
+            if (focus == null || binding == null)
             {
                 Debug.LogWarning(
-                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because focus or target reference is missing.");
+                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because focus or binding is missing.");
+                return;
+            }
+
+            PanelFocusController panel = binding.ResolvePanelController(diagnostic);
+            if (panel == null)
+            {
+                Debug.LogWarning(
+                    $"[InitialPanelFocusBootstrap] Skipping {label} startup focus because no PanelFocusController could be resolved from the camera binding.");
                 return;
             }
 

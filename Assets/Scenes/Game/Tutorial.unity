@@ -721,10 +721,6 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3594824633759377822, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      propertyPath: frameFillPercent
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3594824633759377822, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: includeExitInFocusCycle
       value: 0
       objectReference: {fileID: 0}
@@ -735,6 +731,10 @@ PrefabInstance:
     - target: {fileID: 3620569556810928222, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752790519744000604, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: frameFillPercent
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: 4061770106136863069, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
@@ -769,16 +769,8 @@ PrefabInstance:
       value: 0.81649655
       objectReference: {fileID: 0}
     - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.81649655
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.57735026
       objectReference: {fileID: 0}
     - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalRotation.y
@@ -791,10 +783,6 @@ PrefabInstance:
     - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6019644999126878196, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -859,12 +847,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4585788625760049261, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3779412981372536610, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1224330996399809998, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 2631890570021186700, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -900,6 +882,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e6d8f0a2b4436587a9c0d1e2f3a4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.MachineFeedbackTextController
+--- !u!114 &968524636 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3752790519744000604, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+  m_PrefabInstance: {fileID: 968524633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!114 &1019864808 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3645602522426993811, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
@@ -1969,12 +1962,16 @@ MonoBehaviour:
   startupOperatorPlayer: 1
   playerA:
     focus: {fileID: 3073909790674315973}
-    panel: {fileID: 81865391}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 968524636}
+    diagnosticCamera: {fileID: 968524636}
+    legacyPanel: {fileID: 81865391}
+    legacyDiagnostic: {fileID: 0}
   playerB:
     focus: {fileID: 7069613721803897088}
-    panel: {fileID: 1019864808}
-    diagnostic: {fileID: 0}
+    panelCamera: {fileID: 8752344511047424879}
+    diagnosticCamera: {fileID: 8752344511047424879}
+    legacyPanel: {fileID: 1019864808}
+    legacyDiagnostic: {fileID: 0}
   playerAFocus: {fileID: 0}
   playerAPanel: {fileID: 0}
   playerBFocus: {fileID: 0}
@@ -2418,6 +2415,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3464722709913076, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_Name
+      value: Tutorial_B V2 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 516680464596857644, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 195311418}
+    - target: {fileID: 1478818519737391761, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: diagnosticDisplay
+      value: 
+      objectReference: {fileID: 968524634}
+    - target: {fileID: 2646548706999489615, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 952553859}
     - target: {fileID: 5243888945041194148, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_Name
       value: _OLD_DiagnosticPanel-B
@@ -2474,22 +2487,6 @@ PrefabInstance:
       propertyPath: settings
       value: 
       objectReference: {fileID: 625510220}
-    - target: {fileID: 2646548706999489615, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 952553859}
-    - target: {fileID: 3464722709913076, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-      propertyPath: m_Name
-      value: Tutorial_B V2 Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 516680464596857644, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 195311418}
-    - target: {fileID: 1478818519737391761, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-      propertyPath: diagnosticDisplay
-      value: 
-      objectReference: {fileID: 968524634}
     - target: {fileID: 8356151819041968795, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.7462368
@@ -2549,6 +2546,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a083b83ea8cf4f2997fe591aa19e230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
+--- !u!114 &8752344511047424879 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3990258267245852497, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+  m_PrefabInstance: {fileID: 8752344511047424877}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using FirstPerson;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Player;
+using UnityEditor.PackageManager;
 
 namespace WhoWiredThis.PanelFocus
 {
@@ -64,8 +65,11 @@ namespace WhoWiredThis.PanelFocus
             cachedCameraLocalPosition = playerCamera.transform.localPosition;
             cachedCameraLocalRotation = playerCamera.transform.localRotation;
 
-            panel.GetCameraSnapPose(playerCamera, out Vector3 snapPosition, out Quaternion snapRotation);
-            playerCamera.transform.SetPositionAndRotation(snapPosition, snapRotation);
+            if (!TryApplyCameraSnapPose(panel, playerCamera))
+            {
+                Debug.LogError($"[PlayerPanelFocusController] Failed to apply camera snap pose on {panel.name}.", panel);
+                return false;
+            }
 
             if (firstPersonController != null)
             {
@@ -82,6 +86,19 @@ namespace WhoWiredThis.PanelFocus
             isFocused = true;
             lastStateChangeFrame = Time.frameCount;
             panel.OnFocusEntered(this);
+            return true;
+        }
+
+        private static bool TryApplyCameraSnapPose(PanelFocusController panel, Camera playerCamera)
+        {
+            PanelFocusCamera focusCamera = panel.GetComponent<PanelFocusCamera>();
+            if (focusCamera == null)
+            {
+                Debug.LogError($"[PlayerPanelFocusController] Missing PanelFocusCamera on {panel.name}.", panel);
+                return false;
+            }
+            focusCamera.GetCameraSnapPose(playerCamera, out Vector3 snapPosition, out Quaternion snapRotation);
+            playerCamera.transform.SetPositionAndRotation(snapPosition, snapRotation);
             return true;
         }
 

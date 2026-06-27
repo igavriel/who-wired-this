@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 3309695705041270878}
   - component: {fileID: 4400028482924920076}
   - component: {fileID: 1752516796037228513}
+  - component: {fileID: 2136331648821771299}
   m_Layer: 0
   m_Name: Board-A
   m_TagString: Untagged
@@ -451,6 +452,23 @@ MonoBehaviour:
   promptText: $INTERACT$ Open Panel
   hideOnFocusObjects:
   - {fileID: 0}
+--- !u!114 &2136331648821771299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3751370499678927627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fdea34b74274582b976ae780946763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.PanelFocus.PanelFocusCamera
+  frameFillPercent: 54
+  boardRenderer: {fileID: 7805041994269428495}
+  framingTransform: {fileID: 0}
+  viewAxis: 3
+  extraDistance: 0.02
 --- !u!1 &4599013027175464605
 GameObject:
   m_ObjectHideFlags: 0
