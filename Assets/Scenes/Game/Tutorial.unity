@@ -549,10 +549,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7515927285896638, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -672,6 +668,10 @@ PrefabInstance:
     - target: {fileID: 9110279849976430267, guid: 69eff0b70f60e4784bef65367b1b7c14, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 195177243823056672, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
@@ -888,6 +888,14 @@ PrefabInstance:
     - target: {fileID: 8190692443922629937, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276720087879913652, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: Priority.Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276720087879913652, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: Priority.m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8935994412904738480, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: machineFeedbackText
