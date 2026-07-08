@@ -19,5 +19,9 @@ namespace WhoWiredThis.Core
         // Tutorial role-swap side-trip: not part of the linear playtest chain order;
         // loaded explicitly by id (Tutorial -> here -> Tutorial).
         CutSceneTutorialSwap,
+
+        // Puzzle Pipes role-swap side-trip: not part of the linear playtest chain order;
+        // loaded explicitly by id (Puzzle Pipes -> here -> Puzzle Pipes).
+        CutScenePipeSwap,
     }
 }

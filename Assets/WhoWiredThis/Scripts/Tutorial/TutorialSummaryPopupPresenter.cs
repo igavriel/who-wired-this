@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Serialization;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Tutorial
@@ -14,8 +16,9 @@ namespace WhoWiredThis.Tutorial
         private const string LogPrefix = "[TutorialSummaryPopupPresenter]";
 
         [Header("References")]
+        [FormerlySerializedAs("tutorialStageManager")]
         [SerializeField]
-        private TutorialStageManager tutorialStageManager;
+        private SceneStageManager sceneStageManager;
 
         [SerializeField]
         private TutorialMetricsTracker tutorialMetricsTracker;
@@ -53,25 +56,25 @@ namespace WhoWiredThis.Tutorial
 
         private void OnEnable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialCompleted += HandleTutorialCompleted;
+                sceneStageManager.OnStageCompleted += HandleStageCompleted;
             }
             else
             {
-                Debug.LogWarning($"{LogPrefix} tutorialStageManager is not assigned.", this);
+                Debug.LogWarning($"{LogPrefix} sceneStageManager is not assigned.", this);
             }
         }
 
         private void OnDisable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialCompleted -= HandleTutorialCompleted;
+                sceneStageManager.OnStageCompleted -= HandleStageCompleted;
             }
         }
 
-        private void HandleTutorialCompleted()
+        private void HandleStageCompleted()
         {
             StartCoroutine(ShowSummaryNextFrame());
         }

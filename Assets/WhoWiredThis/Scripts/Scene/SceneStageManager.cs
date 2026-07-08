@@ -7,31 +7,31 @@ using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Visibility;
 
-namespace WhoWiredThis.Tutorial
+namespace WhoWiredThis.Scenes
 {
-    public enum TutorialSessionStage
+    public enum SceneSessionStage
     {
         PlayerAOperator = 0,
         PlayerBOperator = 1,
         Complete = 2
     }
 
-    public enum TutorialRoleSwapMode
+    public enum SceneRoleSwapMode
     {
         /// <summary>Default: Player A -> Player B operator hand-off happens within this scene.</summary>
         InScene = 0,
 
-        /// <summary>Player A solving raises <see cref="TutorialStageManager.OnPhaseOneSolved"/> for a cut-scene
-        /// round trip; the starting stage is read from <see cref="TutorialRoleState"/> on load.</summary>
+        /// <summary>Player A solving raises <see cref="SceneStageManager.OnPhaseOneSolved"/> for a cut-scene
+        /// round trip; the starting stage is read from <see cref="SceneRoleState"/> on load.</summary>
         CutSceneRoundTrip = 1
     }
 
     /// <summary>
     /// Action-area lock only: input / Send colliders plus glass hint. Panel focus and board entry stay driven
-    /// by <see cref="WhoWiredThis.PanelFocus.InitialPanelFocusBootstrap"/> and <see cref="WhoWiredThis.PanelFocus.PlayerPanelFocusController"/>; do not exit or disable focus here.
+    /// by <see cref="InitialPanelFocusBootstrap"/> and <see cref="PlayerPanelFocusController"/>; do not exit or disable focus here.
     /// </summary>
     [Serializable]
-    public class TutorialPanelLockBundle
+    public class ScenePanelLockBundle
     {
         [Header("Player-facing copy (Blue / Red in UI only)")]
         [SerializeField]
@@ -41,7 +41,7 @@ namespace WhoWiredThis.Tutorial
 
         [Header("Action area only (knob/slider/send, etc.)")]
         [SerializeField]
-        [Tooltip("Colliders for input modules and Send; toggled per tutorial stage. Board / panel focus entry is not modified.")]
+        [Tooltip("Colliders for input modules and Send; toggled per stage. Board / panel focus entry is not modified.")]
         private Collider[] actionColliders;
 
         [Tooltip("Logical gate so keyboard / direct Interact paths cannot bypass disabled colliders.")]
@@ -83,7 +83,7 @@ namespace WhoWiredThis.Tutorial
             }
         }
 
-        /// <summary>Tutorial finished: action colliders off; no completion UI on overlay.</summary>
+        /// <summary>Stage finished: action colliders off; no completion UI on overlay.</summary>
         public void ApplyCompleteLock()
         {
             panelActionLock?.SetLocked(true);
@@ -123,13 +123,13 @@ namespace WhoWiredThis.Tutorial
     }
 
     /// <summary>
-    /// Staged tutorial flow on top of two MultiDimensionPuzzleManager instances. Does not change puzzle logic.
+    /// Staged two-player flow on top of two MultiDimensionPuzzleManager instances. Does not change puzzle logic.
     /// Runs after InitialPanelFocusBootstrap via DefaultExecutionOrder.
     /// </summary>
     [DefaultExecutionOrder(100)]
-    public class TutorialStageManager : MonoBehaviour
+    public class SceneStageManager : MonoBehaviour
     {
-        private const string LogPrefix = "[TutorialStageManager]";
+        private const string LogPrefix = "[SceneStageManager]";
 
         [Header("Blue / Red = UI labels only — maps to Player A / B")]
         [SerializeField]
@@ -139,12 +139,12 @@ namespace WhoWiredThis.Tutorial
         private MultiDimensionPuzzleManager playerBPuzzleManager;
 
         [SerializeField]
-        private TutorialPanelLockBundle playerAPanelLock;
+        private ScenePanelLockBundle playerAPanelLock;
 
         [SerializeField]
-        private TutorialPanelLockBundle playerBPanelLock;
+        private ScenePanelLockBundle playerBPanelLock;
 
-        [Header("Diagnostic Body_TMP (tutorial copy only at stage boundaries)")]
+        [Header("Diagnostic Body_TMP (stage copy at boundaries)")]
         [SerializeField]
         private DiagnosticDisplayController playerADiagnosticDisplay;
 
@@ -201,22 +201,22 @@ namespace WhoWiredThis.Tutorial
         [SerializeField]
         [Tooltip("InScene = Player A -> Player B operator switch within this scene (default, unchanged). " +
             "CutSceneRoundTrip = Player A solving raises OnPhaseOneSolved for a cut-scene round trip; " +
-            "the starting stage is read from TutorialRoleState on load. Ignored when simultaneousOperators is on.")]
-        private TutorialRoleSwapMode roleSwapMode = TutorialRoleSwapMode.InScene;
+            "the starting stage is read from SceneRoleState on load. Ignored when simultaneousOperators is on.")]
+        private SceneRoleSwapMode roleSwapMode = SceneRoleSwapMode.InScene;
 
-        private TutorialSessionStage stage = TutorialSessionStage.PlayerAOperator;
+        private SceneSessionStage stage = SceneSessionStage.PlayerAOperator;
         private bool completionRaised;
         private bool phaseOneSolvedRaised;
 
-        public TutorialSessionStage CurrentStage => stage;
+        public SceneSessionStage CurrentStage => stage;
 
-        /// <summary>Raised once after initial <see cref="TutorialSessionStage.PlayerAOperator"/> locks are applied and input is allowed for the operator.</summary>
-        public event Action OnTutorialStarted;
+        /// <summary>Raised once after initial <see cref="SceneSessionStage.PlayerAOperator"/> locks are applied and input is allowed for the operator.</summary>
+        public event Action OnStageStarted;
 
-        public event Action<TutorialSessionStage> OnStageChanged;
+        public event Action<SceneSessionStage> OnStageChanged;
 
-        /// <summary>Raised once when both panels are solved and the tutorial locks both sides.</summary>
-        public event Action OnTutorialCompleted;
+        /// <summary>Raised once when both panels are solved and the stage locks both sides.</summary>
+        public event Action OnStageCompleted;
 
         /// <summary>Cut-scene mode only: raised once when the Phase-1 operator (Player A) solves, so a listener
         /// can run the role-swap cut-scene round trip instead of switching operators within this scene.</summary>
@@ -258,11 +258,11 @@ namespace WhoWiredThis.Tutorial
 
         private void Start()
         {
-            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip && !simultaneousOperators)
+            if (roleSwapMode == SceneRoleSwapMode.CutSceneRoundTrip && !simultaneousOperators)
             {
-                stage = TutorialRoleState.HasSwapped
-                    ? TutorialSessionStage.PlayerBOperator
-                    : TutorialSessionStage.PlayerAOperator;
+                stage = SceneRoleState.HasSwapped
+                    ? SceneSessionStage.PlayerBOperator
+                    : SceneSessionStage.PlayerAOperator;
             }
 
             if (simultaneousOperators)
@@ -274,9 +274,9 @@ namespace WhoWiredThis.Tutorial
                 ApplyStageVisualAndLocks();
             }
 
-            OnTutorialStarted?.Invoke();
+            OnStageStarted?.Invoke();
             NotifyStageChanged();
-            StartCoroutine(BootstrapTutorialDiagnosticCopy());
+            StartCoroutine(BootstrapStageDiagnosticCopy());
         }
 
         private void NotifyStageChanged()
@@ -284,13 +284,13 @@ namespace WhoWiredThis.Tutorial
             OnStageChanged?.Invoke(stage);
         }
 
-        private IEnumerator BootstrapTutorialDiagnosticCopy()
+        private IEnumerator BootstrapStageDiagnosticCopy()
         {
             yield return null;
 
-            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip &&
+            if (roleSwapMode == SceneRoleSwapMode.CutSceneRoundTrip &&
                 !simultaneousOperators &&
-                stage == TutorialSessionStage.PlayerBOperator)
+                stage == SceneSessionStage.PlayerBOperator)
             {
                 ApplyRoleSwitchDiagnosticBodies();
                 yield break;
@@ -347,18 +347,18 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
-            if (stage != TutorialSessionStage.PlayerAOperator)
+            if (stage != SceneSessionStage.PlayerAOperator)
             {
                 return;
             }
 
-            if (roleSwapMode == TutorialRoleSwapMode.CutSceneRoundTrip)
+            if (roleSwapMode == SceneRoleSwapMode.CutSceneRoundTrip)
             {
                 RaisePhaseOneSolvedOnce();
                 return;
             }
 
-            stage = TutorialSessionStage.PlayerBOperator;
+            stage = SceneSessionStage.PlayerBOperator;
             ApplyStageVisualAndLocks();
             NotifyStageChanged();
             StartCoroutine(ApplyRoleSwitchBodiesAfterDelay());
@@ -389,12 +389,12 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
-            if (stage != TutorialSessionStage.PlayerBOperator)
+            if (stage != SceneSessionStage.PlayerBOperator)
             {
                 return;
             }
 
-            stage = TutorialSessionStage.Complete;
+            stage = SceneSessionStage.Complete;
             ApplyStageVisualAndLocks();
             NotifyStageChanged();
             RaiseCompletionOnce();
@@ -414,7 +414,7 @@ namespace WhoWiredThis.Tutorial
                 return;
             }
 
-            stage = TutorialSessionStage.Complete;
+            stage = SceneSessionStage.Complete;
             ApplyStageVisualAndLocks();
             NotifyStageChanged();
             RaiseCompletionOnce();
@@ -443,7 +443,7 @@ namespace WhoWiredThis.Tutorial
             DisableConfiguredObjectsOnComplete();
             DisableExitDoorBlockersOnComplete();
             ShowCompletionMessageOnDiagnostics();
-            OnTutorialCompleted?.Invoke();
+            OnStageCompleted?.Invoke();
         }
 
         private void DisableConfiguredObjectsOnComplete()
@@ -511,15 +511,15 @@ namespace WhoWiredThis.Tutorial
 
             switch (stage)
             {
-                case TutorialSessionStage.PlayerAOperator:
+                case SceneSessionStage.PlayerAOperator:
                     playerAPanelLock.ApplyOperatorState();
                     playerBPanelLock.ApplyWaitingState();
                     break;
-                case TutorialSessionStage.PlayerBOperator:
+                case SceneSessionStage.PlayerBOperator:
                     playerAPanelLock.ApplyWaitingState();
                     playerBPanelLock.ApplyOperatorState();
                     break;
-                case TutorialSessionStage.Complete:
+                case SceneSessionStage.Complete:
                     playerAPanelLock.ApplyCompleteLock();
                     playerBPanelLock.ApplyCompleteLock();
                     break;

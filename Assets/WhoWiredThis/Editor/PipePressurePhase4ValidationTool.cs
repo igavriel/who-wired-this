@@ -293,8 +293,8 @@ namespace WhoWiredThis.Editor
             return 0;
         }
 
-        private const string PipesPanelAName = "Player1_Pipes_Panel A";
-        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+        private const string PipesPanelAName = "Pipes_A V2 Variant";
+        private const string PipesPanelBName = "Pipes_B V2 Variant";
         private const string PipesResultLightsRootName = "PuzzlePipes_ResultLights";
         private static readonly string[] PipesLightNames = { "ResultLight-Upper", "ResultLight-Middle", "ResultLight-Lower" };
 

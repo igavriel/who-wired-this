@@ -6,7 +6,7 @@ namespace WhoWiredThis.Puzzles.Common
 {
     /// <summary>
     /// Randomizes <see cref="MultiDimensionPuzzleManager"/> correctIndex values at runtime for Puzzles Pipes.
-    /// Must run before <see cref="Tutorial.TutorialStageManager"/> enables player input (execution order).
+    /// Must run before <see cref="Scenes.SceneStageManager"/> enables player input (execution order).
     /// </summary>
     [DefaultExecutionOrder(-50)]
     public class RandomPuzzleSolutionAssigner : MonoBehaviour

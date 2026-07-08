@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WhoWiredThis.Core;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Environment
 {
     /// <summary>
-    /// Tutorial role-swap round trip (cut-scene mode). When the Phase-1 operator (Player A) solves,
+    /// Role-swap round trip (cut-scene mode). When the Phase-1 operator (Player A) solves,
     /// waits <see cref="delaySeconds"/> so the partner reads the solution diagnostic, flags
-    /// <see cref="TutorialRoleState"/> for Player B operator, then fades and loads the configured cut scene.
-    /// The cut scene returns to Tutorial, which now starts in Phase 2 (Player B operator).
+    /// <see cref="SceneRoleState"/> for Player B operator, then fades and loads the configured cut scene.
+    /// The cut scene returns to the puzzle scene, which now starts in Phase 2 (Player B operator).
     /// </summary>
     [DisallowMultipleComponent]
-    public class TutorialRoleSwapCutsceneTransition : MonoBehaviour
+    public class SceneRoleSwapCutsceneTransition : MonoBehaviour
     {
-        private const string LogPrefix = "[TutorialRoleSwapCutsceneTransition]";
+        private const string LogPrefix = "[SceneRoleSwapCutsceneTransition]";
 
         [Header("Completion source")]
-        [Tooltip("Tutorial stage manager whose OnPhaseOneSolved triggers the round trip. Resolved if left empty.")]
-        [SerializeField] private TutorialStageManager tutorialStageManager;
+        [Tooltip("Stage manager whose OnPhaseOneSolved triggers the round trip. Resolved if left empty.")]
+        [FormerlySerializedAs("tutorialStageManager")]
+        [SerializeField] private SceneStageManager sceneStageManager;
 
         [Header("Reveal delay")]
         [Tooltip("Seconds the partner reads the solution diagnostic before the cut scene loads.")]
@@ -32,7 +34,7 @@ namespace WhoWiredThis.Environment
         [Header("Flow")]
         [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
 
-        [Tooltip("Cut scene loaded after Player A solves. Default: CutSceneTutorialSwap.")]
+        [Tooltip("Cut scene loaded after Player A solves.")]
         [SerializeField] private PlaytestSceneId targetCutScene = PlaytestSceneId.CutSceneTutorialSwap;
 
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
@@ -53,21 +55,21 @@ namespace WhoWiredThis.Environment
 
         private void OnEnable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnPhaseOneSolved += HandlePhaseOneSolved;
+                sceneStageManager.OnPhaseOneSolved += HandlePhaseOneSolved;
             }
             else
             {
-                Debug.LogWarning($"{LogPrefix} tutorialStageManager is not assigned on '{name}'.", this);
+                Debug.LogWarning($"{LogPrefix} sceneStageManager is not assigned on '{name}'.", this);
             }
         }
 
         private void OnDisable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnPhaseOneSolved -= HandlePhaseOneSolved;
+                sceneStageManager.OnPhaseOneSolved -= HandlePhaseOneSolved;
             }
 
             if (routine != null)
@@ -135,9 +137,8 @@ namespace WhoWiredThis.Environment
                 return;
             }
 
-            // Transition accepted: flag the next Tutorial load as Phase 2 (Player B operator).
-            TutorialRoleState.MarkSwapToPlayerBOperator();
-            Debug.Log($"{LogPrefix} Loading '{sceneName}'; next Tutorial load = Player B operator.", this);
+            SceneRoleState.MarkSwapToPlayerBOperator();
+            Debug.Log($"{LogPrefix} Loading '{sceneName}'; next scene load = Player B operator.", this);
             hasLoaded = true;
             armed = false;
         }
@@ -157,9 +158,9 @@ namespace WhoWiredThis.Environment
 
         private void ResolveReferences()
         {
-            if (tutorialStageManager == null)
+            if (sceneStageManager == null)
             {
-                tutorialStageManager = FindFirstObjectByType<TutorialStageManager>();
+                sceneStageManager = FindFirstObjectByType<SceneStageManager>();
             }
 
             ResolveFlowBootstrap();

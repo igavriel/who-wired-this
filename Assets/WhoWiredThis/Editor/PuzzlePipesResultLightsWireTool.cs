@@ -19,8 +19,8 @@ namespace WhoWiredThis.Editor
         private const string McpMenuPath = "Who Wired This/Pipe Pressure/MCP/Wire Puzzle Pipes Result Lights";
         private const string BridgeRootName = "PuzzlePipes_ResultLights";
 
-        private const string PanelAName = "Player1_Pipes_Panel A";
-        private const string PanelBName = "Player2_Pipes_Panel B";
+        private const string PanelAName = "Pipes_A V2 Variant";
+        private const string PanelBName = "Pipes_B V2 Variant";
 
         private static readonly string[] LightNames = { "ResultLight-Upper", "ResultLight-Middle", "ResultLight-Lower" };
 

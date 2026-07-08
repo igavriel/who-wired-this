@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1256039037834633424}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.415, y: 0, z: 3.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47,7 +47,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 350518593700108425, guid: c78116fe5fb994759b9d737f76c29985, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.807001
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 350518593700108425, guid: c78116fe5fb994759b9d737f76c29985, type: 3}
       propertyPath: m_LocalPosition.y
@@ -117,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8365680074205480399, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.2177753
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8365680074205480399, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_LocalPosition.y
@@ -165,6 +165,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8365680074205480399, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
   m_PrefabInstance: {fileID: 6502296932285812865}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6742831209349078950 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 553826040521772839, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
+  m_PrefabInstance: {fileID: 6502296932285812865}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a083b83ea8cf4f2997fe591aa19e230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.DiagnosticDisplayController
 --- !u!1001 &8549961575804071917
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -173,6 +184,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 901243898324821034, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
+      propertyPath: m_Name
+      value: _OLD_DiagnosticPanel-A
+      objectReference: {fileID: 0}
     - target: {fileID: 2948386410546135336, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -213,6 +228,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4701043755645498264, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
+      propertyPath: puzzleManager
+      value: 
+      objectReference: {fileID: 758042076092068269}
+    - target: {fileID: 4701043755645498264, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
+      propertyPath: diagnosticDisplay
+      value: 
+      objectReference: {fileID: 6742831209349078950}
     - target: {fileID: 8653719559822368293, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
       propertyPath: m_Name
       value: Pipes_A V2 Variant
@@ -225,6 +248,17 @@ PrefabInstance:
       addedObject: {fileID: 1019788588374155911}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
+--- !u!114 &758042076092068269 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8944865194321780288, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}
+  m_PrefabInstance: {fileID: 8549961575804071917}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f664a2b9f11488a8b13ea7f6f03b757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionPuzzleManager
 --- !u!4 &6795180945822150341 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2948386410546135336, guid: ad429b0e4f2ed496d85c4187225489c5, type: 3}

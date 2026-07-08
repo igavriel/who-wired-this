@@ -12,8 +12,8 @@ namespace WhoWiredThis.Editor
         private const string MenuPath = "Who Wired This/Pipe Pressure/Validation/2. Pipes Submit Lever And Focus";
         private const string McpMenuPath = "Who Wired This/Pipe Pressure/MCP/2. Pipes Submit Lever And Focus";
 
-        private const string PanelAName = "Player1_Pipes_Panel A";
-        private const string PanelBName = "Player2_Pipes_Panel B";
+        private const string PanelAName = "Pipes_A V2 Variant";
+        private const string PanelBName = "Pipes_B V2 Variant";
 
         [MenuItem(MenuPath)]
         public static void Validate()

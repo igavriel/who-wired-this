@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Puzzles.Diagnostics;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Editor
@@ -27,10 +27,10 @@ namespace WhoWiredThis.Editor
                 return;
             }
 
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogError("[TutorialDiagnosticWireTool] TutorialStageManager not found in scene.");
+                Debug.LogError("[TutorialDiagnosticWireTool] SceneStageManager not found in scene.");
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace WhoWiredThis.Editor
 
             if (playerAPuzzle == null || playerBPuzzle == null)
             {
-                Debug.LogError("[TutorialDiagnosticWireTool] Missing puzzle managers on TutorialStageManager.");
+                Debug.LogError("[TutorialDiagnosticWireTool] Missing puzzle managers on SceneStageManager.");
                 return;
             }
 

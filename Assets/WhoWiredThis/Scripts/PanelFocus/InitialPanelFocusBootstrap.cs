@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using WhoWiredThis.Enums;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 
 namespace WhoWiredThis.PanelFocus
 {
@@ -123,9 +123,10 @@ namespace WhoWiredThis.PanelFocus
         [SerializeField]
         private AllowedPlayerTag startupOperatorPlayer = AllowedPlayerTag.Player_A;
 
-        [Tooltip("Tutorial only: when on, the startup operator is taken from TutorialRoleState (Phase 1 = Player A, Phase 2 = Player B after the role-swap cut scene) instead of the field above.")]
+        [Tooltip("When on, the startup operator is taken from SceneRoleState (Phase 1 = Player A, Phase 2 = Player B after the role-swap cut scene) instead of the field above.")]
+        [FormerlySerializedAs("useTutorialRoleStateOperator")]
         [SerializeField]
-        private bool useTutorialRoleStateOperator;
+        private bool useSceneRoleStateOperator;
 
         [Header("Player A")]
         [SerializeField]
@@ -219,9 +220,9 @@ namespace WhoWiredThis.PanelFocus
 
         private AllowedPlayerTag NormalizeStartupOperator()
         {
-            if (useTutorialRoleStateOperator)
+            if (useSceneRoleStateOperator)
             {
-                return TutorialRoleState.HasSwapped
+                return SceneRoleState.HasSwapped
                     ? AllowedPlayerTag.Player_B
                     : AllowedPlayerTag.Player_A;
             }

@@ -6,7 +6,7 @@ using TMPro;
 using WhoWiredThis.Enums;
 using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Editor
@@ -118,10 +118,10 @@ namespace WhoWiredThis.Editor
                 return;
             }
 
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogError("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found in scene.");
+                Debug.LogError("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found in scene.");
                 return;
             }
 
@@ -349,10 +349,10 @@ namespace WhoWiredThis.Editor
 
         private static void WireSimultaneousOperatorMode()
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found; skipped simultaneous operator mode.");
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found; skipped simultaneous operator mode.");
                 return;
             }
 
@@ -406,10 +406,10 @@ namespace WhoWiredThis.Editor
 
         private static void WireTurnLocksForSignalPanels(GameObject panelA, GameObject panelB)
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found; skipped turn locks.");
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found; skipped turn locks.");
                 return;
             }
 
@@ -813,10 +813,10 @@ namespace WhoWiredThis.Editor
 
         private static void WireTurnLockBundle(string panelName, string[] inputNames)
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] TutorialStageManager not found; skipped turn locks.");
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found; skipped turn locks.");
                 return;
             }
 

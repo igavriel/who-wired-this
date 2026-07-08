@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Tutorial
@@ -13,8 +15,9 @@ namespace WhoWiredThis.Tutorial
         private const float Unset = -1f;
 
         [Header("References")]
+        [FormerlySerializedAs("tutorialStageManager")]
         [SerializeField]
-        private TutorialStageManager tutorialStageManager;
+        private SceneStageManager sceneStageManager;
 
         [SerializeField]
         private MultiDimensionPuzzleManager playerAPuzzleManager;
@@ -60,15 +63,15 @@ namespace WhoWiredThis.Tutorial
 
         private void OnEnable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialStarted += HandleTutorialStarted;
-                tutorialStageManager.OnStageChanged += HandleStageChanged;
-                tutorialStageManager.OnTutorialCompleted += HandleTutorialCompleted;
+                sceneStageManager.OnStageStarted += HandleStageStarted;
+                sceneStageManager.OnStageChanged += HandleStageChanged;
+                sceneStageManager.OnStageCompleted += HandleStageCompleted;
             }
             else
             {
-                Debug.LogWarning("[TutorialMetricsTracker] tutorialStageManager is not assigned.", this);
+                Debug.LogWarning("[TutorialMetricsTracker] sceneStageManager is not assigned.", this);
             }
 
             if (playerAPuzzleManager != null)
@@ -92,11 +95,11 @@ namespace WhoWiredThis.Tutorial
 
         private void OnDisable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialStarted -= HandleTutorialStarted;
-                tutorialStageManager.OnStageChanged -= HandleStageChanged;
-                tutorialStageManager.OnTutorialCompleted -= HandleTutorialCompleted;
+                sceneStageManager.OnStageStarted -= HandleStageStarted;
+                sceneStageManager.OnStageChanged -= HandleStageChanged;
+                sceneStageManager.OnStageCompleted -= HandleStageCompleted;
             }
 
             if (playerAPuzzleManager != null)
@@ -154,7 +157,7 @@ namespace WhoWiredThis.Tutorial
                 complete);
         }
 
-        private void HandleTutorialStarted()
+        private void HandleStageStarted()
         {
             if (_rtAtTutorialStart >= 0f)
             {
@@ -165,9 +168,9 @@ namespace WhoWiredThis.Tutorial
             RefreshDebugFields();
         }
 
-        private void HandleStageChanged(TutorialSessionStage stage)
+        private void HandleStageChanged(SceneSessionStage stage)
         {
-            if (stage == TutorialSessionStage.PlayerBOperator && _rtAtPlayerBOperator < 0f)
+            if (stage == SceneSessionStage.PlayerBOperator && _rtAtPlayerBOperator < 0f)
             {
                 _rtAtPlayerBOperator = Time.realtimeSinceStartup;
             }
@@ -175,7 +178,7 @@ namespace WhoWiredThis.Tutorial
             RefreshDebugFields();
         }
 
-        private void HandleTutorialCompleted()
+        private void HandleStageCompleted()
         {
             if (_rtAtTutorialComplete >= 0f)
             {

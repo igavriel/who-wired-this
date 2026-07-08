@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WhoWiredThis.Core;
-using WhoWiredThis.Tutorial;
+using UnityEngine.Serialization;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Environment
@@ -16,7 +17,8 @@ namespace WhoWiredThis.Environment
         private const string LogPrefix = "[CompletionPopupSceneTransition]";
 
         [Header("Completion source")]
-        [SerializeField] private TutorialStageManager tutorialStageManager;
+        [FormerlySerializedAs("tutorialStageManager")]
+        [SerializeField] private SceneStageManager sceneStageManager;
 
         [Header("Popup panels (per-player HUD MessagePanel)")]
         [SerializeField] private MessagePanel completionPopupPanelA;
@@ -41,13 +43,13 @@ namespace WhoWiredThis.Environment
 
         private void OnEnable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialCompleted += HandleTutorialCompleted;
+                sceneStageManager.OnStageCompleted += HandleStageCompleted;
             }
             else
             {
-                Debug.LogWarning($"{LogPrefix} tutorialStageManager is not assigned on '{name}'.", this);
+                Debug.LogWarning($"{LogPrefix} sceneStageManager is not assigned on '{name}'.", this);
             }
 
             SubscribePopup(completionPopupPanelA, true);
@@ -56,16 +58,16 @@ namespace WhoWiredThis.Environment
 
         private void OnDisable()
         {
-            if (tutorialStageManager != null)
+            if (sceneStageManager != null)
             {
-                tutorialStageManager.OnTutorialCompleted -= HandleTutorialCompleted;
+                sceneStageManager.OnStageCompleted -= HandleStageCompleted;
             }
 
             UnsubscribePopup(completionPopupPanelA);
             UnsubscribePopup(completionPopupPanelB);
         }
 
-        private void HandleTutorialCompleted()
+        private void HandleStageCompleted()
         {
             ResolveReferences();
             UnsubscribePopup(completionPopupPanelA);
@@ -140,9 +142,9 @@ namespace WhoWiredThis.Environment
 
         private void ResolveReferences()
         {
-            if (tutorialStageManager == null)
+            if (sceneStageManager == null)
             {
-                tutorialStageManager = FindFirstObjectByType<TutorialStageManager>();
+                sceneStageManager = FindFirstObjectByType<SceneStageManager>();
             }
 
             PlayerHudView hudA = FindPlayerHud("A");

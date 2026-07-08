@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using WhoWiredThis.Core;
 using WhoWiredThis.Environment;
 using WhoWiredThis.PanelFocus;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Editor
@@ -190,10 +190,10 @@ namespace WhoWiredThis.Editor
 
         private static int WireCompletionPopupTransition()
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogError("[TutorialCompletionTransitionWireTool] TutorialStageManager not found in scene.");
+                Debug.LogError("[TutorialCompletionTransitionWireTool] SceneStageManager not found in scene.");
                 return 0;
             }
 
@@ -234,7 +234,7 @@ namespace WhoWiredThis.Editor
             PlaytestSceneFlowBootstrap bootstrap = Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
 
             SerializedObject serializedObject = new SerializedObject(transition);
-            serializedObject.FindProperty("tutorialStageManager").objectReferenceValue = stageManager;
+            serializedObject.FindProperty("sceneStageManager").objectReferenceValue = stageManager;
             serializedObject.FindProperty("completionPopupPanelA").objectReferenceValue = hudA.GetComponentInChildren<MessagePanel>(true);
             serializedObject.FindProperty("completionPopupPanelB").objectReferenceValue = hudB.GetComponentInChildren<MessagePanel>(true);
             serializedObject.FindProperty("flowBootstrap").objectReferenceValue = bootstrap;
@@ -269,7 +269,7 @@ namespace WhoWiredThis.Editor
 
         private static void UpdateCompletionCopy()
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
                 return;

@@ -6,7 +6,7 @@ using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Editor
@@ -23,6 +23,10 @@ namespace WhoWiredThis.Editor
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Component Diagnostic (Phase 3)";
         private const string CrossPartnerDiagnosticMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Cross-Partner Diagnostic And Focus";
+        private const string DualDiagnosticSurfacesMenuPath =
+            "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Dual Diagnostic Surfaces (Rules + Monitor)";
+        private const string DualDiagnosticSurfacesMcpMenuPath =
+            "Who Wired This/Pipe Pressure/MCP/Wire Puzzle Pipes Dual Diagnostic Surfaces";
         private const string FullWireMenuPath =
             "Who Wired This/Pipe Pressure/Wire Puzzle Pipes Full Scene";
         private const string FullWireMcpMenuPath =
@@ -35,8 +39,10 @@ namespace WhoWiredThis.Editor
         private const string ActiveScenePath = "Assets/Scenes/Game/Puzzle Pipes.unity";
         private const string V1ScenePath = "Assets/Scenes/Game/OLD/Puzzle Pipes V1.unity";
 
-        private const string PipesPanelAName = "Player1_Pipes_Panel A";
-        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+        private const string PipesPanelAName = "Pipes_A V2 Variant";
+        private const string PipesPanelBName = "Pipes_B V2 Variant";
+        private const string LegacyPipesPanelAName = "Player1_Pipes_Panel A";
+        private const string LegacyPipesPanelBName = "Player2_Pipes_Panel B";
         private const string LegacyPanelAName = "Player1_Panel";
         private const string LegacyPanelBName = "Player2_Panel";
 
@@ -116,6 +122,193 @@ namespace WhoWiredThis.Editor
         public static void WireCrossPartnerDiagnosticAndFocus()
         {
             WireCrossPartnerDiagnosticAndFocusInternal(markSceneDirty: true);
+        }
+
+        /// <summary>Cross-partner diagnostic + panel focus for explicit panel roots (V2 migration).</summary>
+        public static void WireCrossPartnerDiagnosticAndFocusForPanels(GameObject panelA, GameObject panelB)
+        {
+            WireDualDiagnosticSurfacesForPanels(panelA, panelB);
+            EnsurePanelFocusReady(panelA, AllowedPlayerTag.Player_A);
+            EnsurePanelFocusReady(panelB, AllowedPlayerTag.Player_B);
+        }
+
+        [MenuItem(DualDiagnosticSurfacesMenuPath)]
+        public static void WirePuzzlePipesDualDiagnosticSurfaces()
+        {
+            if (!TryGetPipesPanels(out GameObject panelA, out GameObject panelB))
+            {
+                Debug.LogError("[PipePressurePuzzlePipesWireTool] Missing V2 pipes panels in active scene.");
+                return;
+            }
+
+            WireDualDiagnosticSurfacesForPanels(panelA, panelB);
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log(
+                "[PipePressurePuzzlePipesWireTool] Wired dual diagnostics: legacy panels = local rules, Monitor = partner hints.");
+        }
+
+        [MenuItem(DualDiagnosticSurfacesMcpMenuPath)]
+        public static void WirePuzzlePipesDualDiagnosticSurfacesForMcp()
+        {
+            if (EditorSceneManager.GetActiveScene().path != ActiveScenePath)
+            {
+                EditorSceneManager.OpenScene(ActiveScenePath);
+            }
+
+            if (!TryGetPipesPanels(out GameObject panelA, out GameObject panelB))
+            {
+                Debug.LogError("[PipePressurePuzzlePipesWireTool] Missing V2 pipes panels.");
+                return;
+            }
+
+            WireDualDiagnosticSurfacesForPanels(panelA, panelB);
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            EditorSceneManager.SaveOpenScenes();
+            Debug.Log("[PipePressurePuzzlePipesWireTool] MCP dual diagnostic surfaces wire complete.");
+        }
+
+        /// <summary>
+        /// Legacy DiagnosticPanel-A/B receive SceneStageManager rule copy for the local player.
+        /// DiagnosticPanel Monitor-* on the partner panel receive submit hints for the other player.
+        /// </summary>
+        public static void WireDualDiagnosticSurfacesForPanels(GameObject panelA, GameObject panelB)
+        {
+            DiagnosticDisplayController rulesA = FindRulesDiagnosticDisplay(panelA, "DiagnosticPanel-A");
+            DiagnosticDisplayController rulesB = FindRulesDiagnosticDisplay(panelB, "DiagnosticPanel-B");
+            DiagnosticDisplayController monitorA = FindMonitorDiagnosticDisplay(panelA);
+            DiagnosticDisplayController monitorB = FindMonitorDiagnosticDisplay(panelB);
+
+            if (rulesA == null || rulesB == null || monitorA == null || monitorB == null)
+            {
+                Debug.LogError(
+                    "[PipePressurePuzzlePipesWireTool] Missing rules or monitor DiagnosticDisplayController on V2 panels.");
+                return;
+            }
+
+            SetDiagnosticVisibility(rulesA, AllowedPlayerTag.Player_A);
+            SetDiagnosticVisibility(rulesB, AllowedPlayerTag.Player_B);
+            SetDiagnosticVisibility(monitorA, AllowedPlayerTag.Player_A);
+            SetDiagnosticVisibility(monitorB, AllowedPlayerTag.Player_B);
+
+            WireOperatorHintsToPartnerMonitor(panelA, monitorB, AllowedPlayerTag.Player_B);
+            WireOperatorHintsToPartnerMonitor(panelB, monitorA, AllowedPlayerTag.Player_A);
+
+            WireSceneStageManagerRuleDisplays(rulesA, rulesB);
+        }
+
+        private static void WireOperatorHintsToPartnerMonitor(
+            GameObject operatorPanel,
+            DiagnosticDisplayController partnerMonitorDisplay,
+            AllowedPlayerTag partnerVisibleTo)
+        {
+            ComponentDiagnosticAdapter rootAdapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            if (rootAdapter != null)
+            {
+                SerializedObject rootSo = new SerializedObject(rootAdapter);
+                rootSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerMonitorDisplay;
+                rootSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            ProcessingFeedbackController feedback =
+                operatorPanel.GetComponentInChildren<ProcessingFeedbackController>(true);
+            if (feedback != null)
+            {
+                SerializedObject feedbackSo = new SerializedObject(feedback);
+                feedbackSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerMonitorDisplay;
+                feedbackSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            foreach (ComponentDiagnosticAdapter childAdapter in operatorPanel.GetComponentsInChildren<ComponentDiagnosticAdapter>(true))
+            {
+                if (childAdapter == rootAdapter)
+                {
+                    continue;
+                }
+
+                SerializedObject childSo = new SerializedObject(childAdapter);
+                childSo.FindProperty("diagnosticDisplay").objectReferenceValue = partnerMonitorDisplay;
+                childSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+
+        private static void WireSceneStageManagerRuleDisplays(
+            DiagnosticDisplayController rulesA,
+            DiagnosticDisplayController rulesB)
+        {
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
+            if (stageManager == null)
+            {
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] No SceneStageManager; skipped rule display wiring.");
+                return;
+            }
+
+            SerializedObject tsmSo = new SerializedObject(stageManager);
+            tsmSo.FindProperty("playerADiagnosticDisplay").objectReferenceValue = rulesA;
+            tsmSo.FindProperty("playerBDiagnosticDisplay").objectReferenceValue = rulesB;
+            tsmSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static DiagnosticDisplayController FindRulesDiagnosticDisplay(GameObject panel, string childName)
+        {
+            Transform diagnosticRoot = FindChildTransform(panel.transform, childName);
+            return diagnosticRoot != null
+                ? diagnosticRoot.GetComponentInChildren<DiagnosticDisplayController>(true)
+                : null;
+        }
+
+        private static DiagnosticDisplayController FindMonitorDiagnosticDisplay(GameObject panel)
+        {
+            string[] monitorNames =
+            {
+                "DiagnosticPanel Monitor-A",
+                "DiagnosticPanel Monitor-B",
+                "DiagnosticPanel Monitor",
+            };
+
+            foreach (string monitorName in monitorNames)
+            {
+                Transform monitorRoot = FindChildTransform(panel.transform, monitorName);
+                if (monitorRoot == null)
+                {
+                    continue;
+                }
+
+                DiagnosticDisplayController display =
+                    monitorRoot.GetComponentInChildren<DiagnosticDisplayController>(true);
+                if (display != null)
+                {
+                    return display;
+                }
+            }
+
+            return null;
+        }
+
+        private static void SetDiagnosticVisibility(
+            DiagnosticDisplayController display,
+            AllowedPlayerTag visibleToPlayer)
+        {
+            MultiDimensionRecursive visibility = display.GetComponentInChildren<MultiDimensionRecursive>(true);
+            if (visibility == null)
+            {
+                return;
+            }
+
+            SerializedObject visSo = new SerializedObject(visibility);
+            visSo.FindProperty("visibleToPlayer").enumValueIndex = (int)visibleToPlayer;
+            visSo.ApplyModifiedPropertiesWithoutUndo();
+            visibility.ApplyConfiguration();
+        }
+
+        /// <summary>Locks, bridges, and TSM turn-lock colliders after V2 migration copy.</summary>
+        public static void WirePipesPanelPostMigration(GameObject panelA, GameObject panelB)
+        {
+            WirePanelActionLocks(panelA);
+            WirePanelActionLocks(panelB);
+            EnsureLocalBridgePuzzleManager(panelA);
+            EnsureLocalBridgePuzzleManager(panelB);
+            WireTurnLocksForPipesPanels(panelA, panelB);
+            WireResultVisualizerForPanels(panelA, panelB);
         }
 
         [MenuItem(FullWireMenuPath)]
@@ -219,7 +412,32 @@ namespace WhoWiredThis.Editor
         {
             panelA = GameObject.Find(PipesPanelAName);
             panelB = GameObject.Find(PipesPanelBName);
+            if (panelA != null && panelB != null)
+            {
+                return true;
+            }
+
+            panelA = GameObject.Find(LegacyPipesPanelAName);
+            panelB = GameObject.Find(LegacyPipesPanelBName);
             return panelA != null && panelB != null;
+        }
+
+        private static void WireCrossPartnerDiagnosticForPanels(GameObject panelA, GameObject panelB)
+        {
+            WireCrossPartnerOperatorSide(
+                panelA,
+                panelB,
+                partnerDiagnosticChildName: "DiagnosticPanel-B",
+                inputNames: null,
+                defs: null,
+                partnerDiagnosticVisibleTo: AllowedPlayerTag.Player_B);
+            WireCrossPartnerOperatorSide(
+                panelB,
+                panelA,
+                partnerDiagnosticChildName: "DiagnosticPanel-A",
+                inputNames: null,
+                defs: null,
+                partnerDiagnosticVisibleTo: AllowedPlayerTag.Player_A);
         }
 
         private static void WirePanelActionLocks(GameObject panel)
@@ -271,10 +489,10 @@ namespace WhoWiredThis.Editor
 
         private static void WireTurnLocksForPipesPanels(GameObject panelA, GameObject panelB)
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] TutorialStageManager not found; skipped turn-lock colliders.");
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] SceneStageManager not found; skipped turn-lock colliders.");
                 return;
             }
 
@@ -358,12 +576,32 @@ namespace WhoWiredThis.Editor
             (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
             AllowedPlayerTag partnerDiagnosticVisibleTo)
         {
+            string partnerChildName = operatorPanel.name.Contains(" A") || operatorPanel.name.EndsWith("Panel A")
+                ? "DiagnosticPanel-B"
+                : "DiagnosticPanel-A";
+            WireCrossPartnerOperatorSide(
+                operatorPanel,
+                partnerPanel,
+                partnerChildName,
+                inputNames,
+                defs,
+                partnerDiagnosticVisibleTo);
+        }
+
+        private static void WireCrossPartnerOperatorSide(
+            GameObject operatorPanel,
+            GameObject partnerPanel,
+            string partnerDiagnosticChildName,
+            string[] inputNames,
+            (ComponentDiagnosticType type, string correct, string tooLow, string tooHigh, string mismatch)[] defs,
+            AllowedPlayerTag partnerDiagnosticVisibleTo)
+        {
             DiagnosticDisplayController partnerDisplay =
-                partnerPanel.GetComponentInChildren<DiagnosticDisplayController>(true);
+                FindLegacyDiagnosticDisplay(partnerPanel, partnerDiagnosticChildName);
             if (partnerDisplay == null)
             {
                 Debug.LogError(
-                    $"[PipePressurePuzzlePipesWireTool] No DiagnosticDisplayController under '{partnerPanel.name}'.");
+                    $"[PipePressurePuzzlePipesWireTool] No DiagnosticDisplayController at '{partnerPanel.name}/{partnerDiagnosticChildName}'.");
                 return;
             }
 
@@ -414,7 +652,7 @@ namespace WhoWiredThis.Editor
             focusSo.FindProperty("includeExitInFocusCycle").boolValue = false;
 
             SerializedProperty boardRendererProp = focusSo.FindProperty("boardRenderer");
-            if (boardRendererProp.objectReferenceValue == null)
+            if (boardRendererProp != null && boardRendererProp.objectReferenceValue == null)
             {
                 Renderer boardRenderer = focus.GetComponent<MeshRenderer>();
                 if (boardRenderer == null)
@@ -427,7 +665,7 @@ namespace WhoWiredThis.Editor
                     boardRendererProp.objectReferenceValue = boardRenderer;
                 }
             }
-            else if (boardRendererProp.objectReferenceValue is Renderer existing && !existing.enabled)
+            else if (boardRendererProp != null && boardRendererProp.objectReferenceValue is Renderer existing && !existing.enabled)
             {
                 existing.enabled = true;
             }
@@ -436,8 +674,14 @@ namespace WhoWiredThis.Editor
             if (solveProxy != null)
             {
                 SerializedProperty solveButtonProp = focusSo.FindProperty("solveButton");
-                SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
-                interactableRef.objectReferenceValue = solveProxy;
+                if (solveButtonProp != null)
+                {
+                    SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
+                    if (interactableRef != null)
+                    {
+                        interactableRef.objectReferenceValue = solveProxy;
+                    }
+                }
             }
 
             focusSo.ApplyModifiedPropertiesWithoutUndo();
@@ -460,12 +704,56 @@ namespace WhoWiredThis.Editor
             PanelFocusController panelBFocus = panelB.GetComponentInChildren<PanelFocusController>(true);
 
             SerializedObject bootstrapSo = new SerializedObject(bootstrap);
-            bootstrapSo.FindProperty("enterFocusOnStartup").boolValue = true;
-            bootstrapSo.FindProperty("playerA.focus").objectReferenceValue = playerAFocus;
-            bootstrapSo.FindProperty("playerA.panel").objectReferenceValue = panelAFocus;
-            bootstrapSo.FindProperty("playerB.focus").objectReferenceValue = playerBFocus;
-            bootstrapSo.FindProperty("playerB.panel").objectReferenceValue = panelBFocus;
+            SerializedProperty enterFocusProp = bootstrapSo.FindProperty("enterFocusOnStartup");
+            if (enterFocusProp != null)
+            {
+                enterFocusProp.boolValue = true;
+            }
+
+            SerializedProperty playerAProp = bootstrapSo.FindProperty("playerA");
+            SerializedProperty playerBProp = bootstrapSo.FindProperty("playerB");
+            if (playerAProp != null)
+            {
+                SetBindingFocus(playerAProp, playerAFocus);
+                SetBindingPanelCamera(playerAProp, panelAFocus);
+            }
+
+            if (playerBProp != null)
+            {
+                SetBindingFocus(playerBProp, playerBFocus);
+                SetBindingPanelCamera(playerBProp, panelBFocus);
+            }
+
             bootstrapSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void SetBindingFocus(SerializedProperty bindingProp, PlayerPanelFocusController focus)
+        {
+            SerializedProperty focusProp = bindingProp.FindPropertyRelative("focus");
+            if (focusProp != null)
+            {
+                focusProp.objectReferenceValue = focus;
+            }
+        }
+
+        private static void SetBindingPanelCamera(SerializedProperty bindingProp, PanelFocusController panelFocus)
+        {
+            if (panelFocus == null)
+            {
+                return;
+            }
+
+            SerializedProperty panelCameraProp = bindingProp.FindPropertyRelative("panelCamera");
+            if (panelCameraProp == null)
+            {
+                return;
+            }
+
+            PanelFocusCamera panelCamera = panelFocus.GetComponent<PanelFocusCamera>();
+            if (panelCamera != null)
+            {
+                panelCameraProp.objectReferenceValue = panelCamera;
+            }
         }
 
         private static void WireComponentDiagnosticPanel(
@@ -548,6 +836,77 @@ namespace WhoWiredThis.Editor
         {
             SerializedObject so = new SerializedObject(legacy);
             return so.FindProperty("diagnosticDisplay").objectReferenceValue as DiagnosticDisplayController;
+        }
+
+        private static DiagnosticDisplayController FindLegacyDiagnosticDisplay(
+            GameObject partnerPanel,
+            string diagnosticChildName)
+        {
+            Transform diagnosticRoot = FindChildTransform(partnerPanel.transform, diagnosticChildName);
+            if (diagnosticRoot == null)
+            {
+                return null;
+            }
+
+            return diagnosticRoot.GetComponentInChildren<DiagnosticDisplayController>(true);
+        }
+
+        private static void WireResultVisualizerForPanels(GameObject panelA, GameObject panelB)
+        {
+            WireResultBridgeForOperatorPanel(panelA, panelB);
+            WireResultBridgeForOperatorPanel(panelB, panelA);
+        }
+
+        private static void WireResultBridgeForOperatorPanel(
+            GameObject operatorPanel,
+            GameObject partnerPanel)
+        {
+            SubmittedCombinationMultiDimensionBridge bridge =
+                operatorPanel.GetComponentInChildren<SubmittedCombinationMultiDimensionBridge>(true);
+            if (bridge == null)
+            {
+                return;
+            }
+
+            MultiDimensionPuzzleManager puzzleManager =
+                operatorPanel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
+            Transform resultLightRoot = FindChildTransform(partnerPanel.transform, "ResultLight");
+            if (puzzleManager == null || resultLightRoot == null)
+            {
+                Debug.LogWarning(
+                    $"[PipePressurePuzzlePipesWireTool] Missing puzzleManager or ResultLight under '{partnerPanel.name}'.");
+                return;
+            }
+
+            Transform upper = FindChildTransform(resultLightRoot, "ResultLight-Upper");
+            Transform middle = FindChildTransform(resultLightRoot, "ResultLight-Middle");
+            Transform lower = FindChildTransform(resultLightRoot, "ResultLight-Lower");
+            if (upper == null || middle == null || lower == null)
+            {
+                Debug.LogWarning(
+                    $"[PipePressurePuzzlePipesWireTool] Missing ResultLight children under '{partnerPanel.name}/ResultLight'.");
+                return;
+            }
+
+            SerializedObject bridgeSo = new SerializedObject(bridge);
+            bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
+            WireBridgeSlot(bridgeSo, 0, upper);
+            WireBridgeSlot(bridgeSo, 1, middle);
+            WireBridgeSlot(bridgeSo, 2, lower);
+            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireBridgeSlot(SerializedObject bridgeSo, int index, Transform displayTransform)
+        {
+            SerializedProperty slots = bridgeSo.FindProperty("slots");
+            if (index >= slots.arraySize)
+            {
+                return;
+            }
+
+            SerializedProperty slot = slots.GetArrayElementAtIndex(index);
+            slot.FindPropertyRelative("display").objectReferenceValue =
+                displayTransform.GetComponent<MultiDimension>();
         }
 
         private static Transform FindChildTransform(Transform root, string childName)
@@ -951,10 +1310,10 @@ namespace WhoWiredThis.Editor
 
         private static void WireTurnLocks()
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] TutorialStageManager not found; skipped turn-lock colliders.");
+                Debug.LogWarning("[PipePressurePuzzlePipesWireTool] SceneStageManager not found; skipped turn-lock colliders.");
                 return;
             }
 
@@ -1001,10 +1360,10 @@ namespace WhoWiredThis.Editor
         [MenuItem(RandomSolutionMenuPath)]
         public static void WireRandomSolutionAssigner()
         {
-            TutorialStageManager stageManager = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogError("[PipePressurePuzzlePipesWireTool] TutorialStageManager not found in scene.");
+                Debug.LogError("[PipePressurePuzzlePipesWireTool] SceneStageManager not found in scene.");
                 return;
             }
 

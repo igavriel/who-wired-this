@@ -6,7 +6,7 @@ using UnityEngine;
 using WhoWiredThis.Enums;
 using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
-using WhoWiredThis.Tutorial;
+using WhoWiredThis.Scenes;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Editor
@@ -18,8 +18,8 @@ namespace WhoWiredThis.Editor
         private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzle Pipes)";
         private const string McpMenuPath = McpMenuRoot + "0. Phase 1 (Puzzle Pipes)";
 
-        private const string PipesPanelAName = "Player1_Pipes_Panel A";
-        private const string PipesPanelBName = "Player2_Pipes_Panel B";
+        private const string PipesPanelAName = "Pipes_A V2 Variant";
+        private const string PipesPanelBName = "Pipes_B V2 Variant";
 
         [MenuItem(MenuPath)]
         public static void Validate()
@@ -198,10 +198,10 @@ namespace WhoWiredThis.Editor
         private static int ValidateTurnLockColliderCount(StringBuilder sb, string bundleProp, int inputCount)
         {
             int issues = 0;
-            TutorialStageManager tsm = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager tsm = Object.FindFirstObjectByType<SceneStageManager>();
             if (tsm == null)
             {
-                sb.AppendLine("FAIL: TutorialStageManager not found");
+                sb.AppendLine("FAIL: SceneStageManager not found");
                 return 1;
             }
 
@@ -551,10 +551,10 @@ namespace WhoWiredThis.Editor
             string[] inputNames)
         {
             int issues = 0;
-            TutorialStageManager tsm = Object.FindFirstObjectByType<TutorialStageManager>();
+            SceneStageManager tsm = Object.FindFirstObjectByType<SceneStageManager>();
             if (tsm == null)
             {
-                sb.AppendLine("FAIL: TutorialStageManager not found");
+                sb.AppendLine("FAIL: SceneStageManager not found");
                 return 1;
             }
 
