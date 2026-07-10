@@ -121,6 +121,7 @@ namespace WhoWiredThis.Core
                 new SceneEntry { id = PlaytestSceneId.CutScenePipeSwap, sceneName = "CutScene-Pipe-Swap" },
                 new SceneEntry { id = PlaytestSceneId.CutScenePipeSignal, sceneName = "CutScene-Pipe-Signal" },
                 new SceneEntry { id = PlaytestSceneId.PuzzleSignal, sceneName = "Puzzle Signal" },
+                new SceneEntry { id = PlaytestSceneId.CutSceneSignalSwap, sceneName = "CutScene-Signal-Swap" },
                 new SceneEntry { id = PlaytestSceneId.GameOverScene, sceneName = "GameOverScene" },
             };
 

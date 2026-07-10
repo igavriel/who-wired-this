@@ -18,8 +18,10 @@ namespace WhoWiredThis.Editor
     public static class SignalCalibrationPuzzleSignalWireTool
     {
         private const string ScenePath = "Assets/Scenes/Game/Puzzle Signal.unity";
-        private const string SignalPanelAName = "Player1_Signal_Panel-A";
-        private const string SignalPanelBName = "Player2_Signal_Panel-B";
+        private const string SignalPanelAName = "Signal_A_V2 Variant";
+        private const string SignalPanelBName = "Signal_B_V2 Variant";
+        private const string LegacySignalPanelAName = "Player1_Signal_Panel-A";
+        private const string LegacySignalPanelBName = "Player2_Signal_Panel-B";
         private const string FullWireMenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Full Scene";
         private const string FullWireMcpMenuPath = "Who Wired This/Signal Calibration/MCP/Wire Puzzle Signal Full Scene";
         private const string MenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Phase 1";
@@ -189,7 +191,7 @@ namespace WhoWiredThis.Editor
             EnsurePuzzleCorrectIndices(panelB, new[] { 3, 2, 3 });
             EnsureLeverFeedback(panelA);
             EnsureLeverFeedback(panelB);
-            WireSimultaneousOperatorMode();
+            WireOperatorModeForScene();
             WireTurnLocksForSignalPanels(panelA, panelB);
             int resultIssues = SignalCalibrationPuzzleSignalResultWireTool.WireAllResultFeedback();
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
@@ -200,9 +202,235 @@ namespace WhoWiredThis.Editor
 
         private static bool TryGetSignalPanels(out GameObject panelA, out GameObject panelB)
         {
-            panelA = GameObject.Find(SignalPanelAName);
-            panelB = GameObject.Find(SignalPanelBName);
+            panelA = FindSceneObjectByName(SignalPanelAName);
+            panelB = FindSceneObjectByName(SignalPanelBName);
+            if (panelA != null && panelB != null)
+            {
+                return true;
+            }
+
+            panelA = FindSceneObjectByName(LegacySignalPanelAName);
+            panelB = FindSceneObjectByName(LegacySignalPanelBName);
             return panelA != null && panelB != null;
+        }
+
+        private static GameObject FindSceneObjectByName(string objectName)
+        {
+            Transform[] transforms = Object.FindObjectsByType<Transform>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None);
+            foreach (Transform transform in transforms)
+            {
+                if (transform.name == objectName && transform.gameObject.scene.isLoaded)
+                {
+                    return transform.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Legacy DiagnosticPanel-A/B receive SceneStageManager rule copy for the local player.
+        /// DiagnosticPanel Monitor on the partner panel receives submit hints.
+        /// </summary>
+        public static void WireDualDiagnosticSurfacesForPanels(GameObject panelA, GameObject panelB)
+        {
+            DiagnosticDisplayController rulesA = FindRulesDiagnosticDisplay(panelA);
+            DiagnosticDisplayController rulesB = FindRulesDiagnosticDisplay(panelB);
+            DiagnosticDisplayController monitorA = FindMonitorDiagnosticDisplay(panelA);
+            DiagnosticDisplayController monitorB = FindMonitorDiagnosticDisplay(panelB);
+
+            if (rulesA == null || rulesB == null || monitorA == null || monitorB == null)
+            {
+                Debug.LogError(
+                    "[SignalCalibrationPuzzleSignalWireTool] Missing rules or monitor DiagnosticDisplayController on V2 panels.");
+                return;
+            }
+
+            SetDiagnosticVisibility(rulesA, AllowedPlayerTag.Player_A);
+            SetDiagnosticVisibility(rulesB, AllowedPlayerTag.Player_B);
+            SetDiagnosticVisibility(monitorA, AllowedPlayerTag.Player_A);
+            SetDiagnosticVisibility(monitorB, AllowedPlayerTag.Player_B);
+
+            WireOperatorHintsToPartnerMonitor(panelA, monitorB, AllowedPlayerTag.Player_B);
+            WireOperatorHintsToPartnerMonitor(panelB, monitorA, AllowedPlayerTag.Player_A);
+
+            WireSceneStageManagerRuleDisplays(rulesA, rulesB);
+        }
+
+        public static void WireCrossPartnerDiagnosticAndFocusForPanels(GameObject panelA, GameObject panelB)
+        {
+            WireDualDiagnosticSurfacesForPanels(panelA, panelB);
+            EnsurePanelFocusReady(panelA, AllowedPlayerTag.Player_A);
+            EnsurePanelFocusReady(panelB, AllowedPlayerTag.Player_B);
+            WireInitialPanelFocusBootstrap(panelA, panelB);
+        }
+
+        /// <summary>Locks, bridges, and TSM turn-lock colliders after V2 migration copy.</summary>
+        public static void WireSignalPanelPostMigration(GameObject panelA, GameObject panelB)
+        {
+            WirePanelActionLocks(panelA);
+            WirePanelActionLocks(panelB);
+            EnsureLocalBridgePuzzleManager(panelA);
+            EnsureLocalBridgePuzzleManager(panelB);
+            WireTurnLocksForSignalPanels(panelA, panelB);
+            EnsurePuzzleCorrectIndices(panelA, new[] { 2, 2, 2 });
+            EnsurePuzzleCorrectIndices(panelB, new[] { 3, 2, 3 });
+            EnsureLeverFeedback(panelA);
+            EnsureLeverFeedback(panelB);
+        }
+
+        private static void WireOperatorHintsToPartnerMonitor(
+            GameObject operatorPanel,
+            DiagnosticDisplayController partnerMonitorDisplay,
+            AllowedPlayerTag partnerVisibleTo)
+        {
+            ComponentDiagnosticAdapter rootAdapter = operatorPanel.GetComponent<ComponentDiagnosticAdapter>();
+            if (rootAdapter != null)
+            {
+                SerializedObject rootSo = new SerializedObject(rootAdapter);
+                SerializedProperty displayProp = rootSo.FindProperty("diagnosticDisplay");
+                if (displayProp != null)
+                {
+                    displayProp.objectReferenceValue = partnerMonitorDisplay;
+                    rootSo.ApplyModifiedPropertiesWithoutUndo();
+                }
+            }
+
+            ProcessingFeedbackController feedback =
+                operatorPanel.GetComponentInChildren<ProcessingFeedbackController>(true);
+            if (feedback != null)
+            {
+                SerializedObject feedbackSo = new SerializedObject(feedback);
+                SerializedProperty displayProp = feedbackSo.FindProperty("diagnosticDisplay");
+                if (displayProp != null)
+                {
+                    displayProp.objectReferenceValue = partnerMonitorDisplay;
+                    feedbackSo.ApplyModifiedPropertiesWithoutUndo();
+                }
+            }
+
+            foreach (ComponentDiagnosticAdapter childAdapter in operatorPanel.GetComponentsInChildren<ComponentDiagnosticAdapter>(true))
+            {
+                if (childAdapter == rootAdapter)
+                {
+                    continue;
+                }
+
+                SerializedObject childSo = new SerializedObject(childAdapter);
+                SerializedProperty displayProp = childSo.FindProperty("diagnosticDisplay");
+                if (displayProp != null)
+                {
+                    displayProp.objectReferenceValue = partnerMonitorDisplay;
+                    childSo.ApplyModifiedPropertiesWithoutUndo();
+                }
+            }
+        }
+
+        private static void WireSceneStageManagerRuleDisplays(
+            DiagnosticDisplayController rulesA,
+            DiagnosticDisplayController rulesB)
+        {
+            SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
+            if (stageManager == null)
+            {
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] No SceneStageManager; skipped rule display wiring.");
+                return;
+            }
+
+            SerializedObject tsmSo = new SerializedObject(stageManager);
+            SerializedProperty displayAProp = tsmSo.FindProperty("playerADiagnosticDisplay");
+            SerializedProperty displayBProp = tsmSo.FindProperty("playerBDiagnosticDisplay");
+            if (displayAProp != null)
+            {
+                displayAProp.objectReferenceValue = rulesA;
+            }
+
+            if (displayBProp != null)
+            {
+                displayBProp.objectReferenceValue = rulesB;
+            }
+
+            tsmSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static DiagnosticDisplayController FindRulesDiagnosticDisplay(GameObject panel)
+        {
+            string[] childNames =
+            {
+                "DiagnosticPanel-A",
+                "_OLD_DiagnosticPanel-A",
+                "DiagnosticPanel-B",
+                "_OLD_DiagnosticPanel-B",
+            };
+
+            foreach (string childName in childNames)
+            {
+                Transform diagnosticRoot = FindChildTransform(panel.transform, childName);
+                if (diagnosticRoot == null)
+                {
+                    continue;
+                }
+
+                DiagnosticDisplayController display =
+                    diagnosticRoot.GetComponentInChildren<DiagnosticDisplayController>(true);
+                if (display != null)
+                {
+                    return display;
+                }
+            }
+
+            return null;
+        }
+
+        private static DiagnosticDisplayController FindMonitorDiagnosticDisplay(GameObject panel)
+        {
+            string[] monitorNames =
+            {
+                "DiagnosticPanel Monitor-A",
+                "DiagnosticPanel Monitor-B",
+                "DiagnosticPanel Monitor",
+            };
+
+            foreach (string monitorName in monitorNames)
+            {
+                Transform monitorRoot = FindChildTransform(panel.transform, monitorName);
+                if (monitorRoot == null)
+                {
+                    continue;
+                }
+
+                DiagnosticDisplayController display =
+                    monitorRoot.GetComponentInChildren<DiagnosticDisplayController>(true);
+                if (display != null)
+                {
+                    return display;
+                }
+            }
+
+            return null;
+        }
+
+        private static void SetDiagnosticVisibility(
+            DiagnosticDisplayController display,
+            AllowedPlayerTag visibleToPlayer)
+        {
+            MultiDimensionRecursive visibility = display.GetComponentInChildren<MultiDimensionRecursive>(true);
+            if (visibility == null)
+            {
+                return;
+            }
+
+            SerializedObject visSo = new SerializedObject(visibility);
+            SerializedProperty visibleToProp = visSo.FindProperty("visibleToPlayer");
+            if (visibleToProp != null)
+            {
+                visibleToProp.enumValueIndex = (int)visibleToPlayer;
+                visSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            visibility.ApplyConfiguration();
         }
 
         private static void WireCrossPartnerDiagnosticAndFocusInternal(bool markSceneDirty)
@@ -214,30 +442,7 @@ namespace WhoWiredThis.Editor
                 return;
             }
 
-            WireCrossPartnerOperatorSide(
-                panelA,
-                panelB,
-                new[] { "FREQ", "GAIN", "WAVE" },
-                new[]
-                {
-                    (ComponentDiagnosticType.Ordered, "FREQ LOOKS STABLE.", "FREQ IS TOO LOW.", "FREQ IS TOO HIGH.", string.Empty),
-                    (ComponentDiagnosticType.Ordered, "GAIN LOOKS STABLE.", "GAIN IS TOO LOW.", "GAIN IS TOO HIGH.", string.Empty),
-                    (ComponentDiagnosticType.Categorical, "WAVE PATTERN MATCHES.", string.Empty, string.Empty, "WAVE PATTERN DOES NOT MATCH.")
-                },
-                AllowedPlayerTag.Player_B);
-
-            WireCrossPartnerOperatorSide(
-                panelB,
-                panelA,
-                new[] { "TUNE", "AMP", "MODE" },
-                new[]
-                {
-                    (ComponentDiagnosticType.Ordered, "TUNE LOOKS STABLE.", "TUNE IS TOO LOW.", "TUNE IS TOO HIGH.", string.Empty),
-                    (ComponentDiagnosticType.Ordered, "AMP LOOKS STABLE.", "AMP IS TOO LOW.", "AMP IS TOO HIGH.", string.Empty),
-                    (ComponentDiagnosticType.Categorical, "MODE PATTERN MATCHES.", string.Empty, string.Empty, "MODE PATTERN DOES NOT MATCH.")
-                },
-                AllowedPlayerTag.Player_A);
-
+            WireDualDiagnosticSurfacesForPanels(panelA, panelB);
             EnsurePanelFocusReady(panelA, AllowedPlayerTag.Player_A);
             EnsurePanelFocusReady(panelB, AllowedPlayerTag.Player_B);
             WireInitialPanelFocusBootstrap(panelA, panelB);
@@ -312,22 +517,34 @@ namespace WhoWiredThis.Editor
             foreach (PanelFocusController focus in panel.GetComponentsInChildren<PanelFocusController>(true))
             {
                 SerializedObject focusSo = new SerializedObject(focus);
-                focusSo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
-                focusSo.ApplyModifiedPropertiesWithoutUndo();
+                SerializedProperty lockProp = focusSo.FindProperty("panelActionLock");
+                if (lockProp != null)
+                {
+                    lockProp.objectReferenceValue = panelLock;
+                    focusSo.ApplyModifiedPropertiesWithoutUndo();
+                }
             }
 
             foreach (MultiDimensionPuzzleInteractableBridge bridge in panel.GetComponentsInChildren<MultiDimensionPuzzleInteractableBridge>(true))
             {
                 SerializedObject bridgeSo = new SerializedObject(bridge);
-                bridgeSo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
-                bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+                SerializedProperty lockProp = bridgeSo.FindProperty("panelActionLock");
+                if (lockProp != null)
+                {
+                    lockProp.objectReferenceValue = panelLock;
+                    bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+                }
             }
 
             foreach (SolveInteractProxy proxy in panel.GetComponentsInChildren<SolveInteractProxy>(true))
             {
                 SerializedObject proxySo = new SerializedObject(proxy);
-                proxySo.FindProperty("panelActionLock").objectReferenceValue = panelLock;
-                proxySo.ApplyModifiedPropertiesWithoutUndo();
+                SerializedProperty lockProp = proxySo.FindProperty("panelActionLock");
+                if (lockProp != null)
+                {
+                    lockProp.objectReferenceValue = panelLock;
+                    proxySo.ApplyModifiedPropertiesWithoutUndo();
+                }
             }
         }
 
@@ -343,22 +560,34 @@ namespace WhoWiredThis.Editor
             }
 
             SerializedObject bridgeSo = new SerializedObject(bridge);
-            bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
-            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+            SerializedProperty puzzleManagerProp = bridgeSo.FindProperty("puzzleManager");
+            if (puzzleManagerProp != null)
+            {
+                puzzleManagerProp.objectReferenceValue = puzzleManager;
+                bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+            }
         }
 
-        private static void WireSimultaneousOperatorMode()
+        private static void WireOperatorModeForScene()
         {
             SceneStageManager stageManager = Object.FindFirstObjectByType<SceneStageManager>();
             if (stageManager == null)
             {
-                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found; skipped simultaneous operator mode.");
+                Debug.LogWarning("[SignalCalibrationPuzzleSignalWireTool] SceneStageManager not found; skipped operator mode.");
                 return;
             }
 
             SerializedObject tsmSo = new SerializedObject(stageManager);
-            tsmSo.FindProperty("simultaneousOperators").boolValue = true;
-            tsmSo.ApplyModifiedPropertiesWithoutUndo();
+            SerializedProperty roleSwapProp = tsmSo.FindProperty("roleSwapMode");
+            bool cutSceneSwap = roleSwapProp != null &&
+                roleSwapProp.enumValueIndex == (int)SceneRoleSwapMode.CutSceneRoundTrip;
+
+            SerializedProperty simultaneousProp = tsmSo.FindProperty("simultaneousOperators");
+            if (simultaneousProp != null)
+            {
+                simultaneousProp.boolValue = !cutSceneSwap;
+                tsmSo.ApplyModifiedPropertiesWithoutUndo();
+            }
         }
 
         private static void EnsureLeverFeedback(GameObject panel)
@@ -373,9 +602,10 @@ namespace WhoWiredThis.Editor
             }
 
             SerializedObject bridgeSo = new SerializedObject(bridge);
-            if (bridgeSo.FindProperty("leverFeedback").objectReferenceValue == null)
+            SerializedProperty leverFeedbackProp = bridgeSo.FindProperty("leverFeedback");
+            if (leverFeedbackProp != null && leverFeedbackProp.objectReferenceValue == null)
             {
-                bridgeSo.FindProperty("leverFeedback").objectReferenceValue = leverFeedback;
+                leverFeedbackProp.objectReferenceValue = leverFeedback;
                 bridgeSo.ApplyModifiedPropertiesWithoutUndo();
             }
         }
@@ -431,18 +661,42 @@ namespace WhoWiredThis.Editor
             PanelActionLock panelLock = panel.GetComponent<PanelActionLock>();
             SerializedObject focusSo = new SerializedObject(focus);
             SerializedProperty buttons = focusSo.FindProperty("interactableButtons");
+            if (buttons == null)
+            {
+                Debug.LogWarning($"[SignalCalibrationPuzzleSignalWireTool] No interactableButtons on PanelFocusController under '{panel.name}'.");
+                return;
+            }
+
             int inputCount = buttons.arraySize;
 
             SerializedProperty bundle = tsmSo.FindProperty(bundleProperty);
+            if (bundle == null)
+            {
+                Debug.LogWarning($"[SignalCalibrationPuzzleSignalWireTool] Missing '{bundleProperty}' on SceneStageManager.");
+                return;
+            }
+
             SerializedProperty colliders = bundle.FindPropertyRelative("actionColliders");
+            if (colliders == null)
+            {
+                Debug.LogWarning($"[SignalCalibrationPuzzleSignalWireTool] Missing actionColliders on '{bundleProperty}'.");
+                return;
+            }
+
             colliders.arraySize = inputCount + 1;
-            bundle.FindPropertyRelative("panelActionLock").objectReferenceValue = panelLock;
+            SerializedProperty panelLockProp = bundle.FindPropertyRelative("panelActionLock");
+            if (panelLockProp != null)
+            {
+                panelLockProp.objectReferenceValue = panelLock;
+            }
 
             for (int i = 0; i < inputCount; i++)
             {
-                var cycler = buttons.GetArrayElementAtIndex(i)
-                    .FindPropertyRelative("interactableReference")
-                    .objectReferenceValue as MultiDimensionSubjectCycler;
+                SerializedProperty interactableRef = buttons.GetArrayElementAtIndex(i)
+                    .FindPropertyRelative("interactableReference");
+                var cycler = interactableRef != null
+                    ? interactableRef.objectReferenceValue as MultiDimensionSubjectCycler
+                    : null;
                 colliders.GetArrayElementAtIndex(i).objectReferenceValue = GetProbeColliderFromCycler(cycler);
             }
 
@@ -461,7 +715,8 @@ namespace WhoWiredThis.Editor
             }
 
             SerializedObject so = new SerializedObject(cycler);
-            return so.FindProperty("dimensionProbe").objectReferenceValue as Collider;
+            SerializedProperty probeProp = so.FindProperty("dimensionProbe");
+            return probeProp != null ? probeProp.objectReferenceValue as Collider : null;
         }
 
         private static void EnsurePanelFocusReady(GameObject panel, AllowedPlayerTag allowedPlayer)
@@ -474,38 +729,56 @@ namespace WhoWiredThis.Editor
             }
 
             SerializedObject focusSo = new SerializedObject(focus);
-            focusSo.FindProperty("allowedPlayerId").enumValueIndex = (int)allowedPlayer;
-            focusSo.FindProperty("includeExitInFocusCycle").boolValue = false;
+            SerializedProperty allowedPlayerProp = focusSo.FindProperty("allowedPlayerId");
+            if (allowedPlayerProp != null)
+            {
+                allowedPlayerProp.enumValueIndex = (int)allowedPlayer;
+            }
+
+            SerializedProperty includeExitProp = focusSo.FindProperty("includeExitInFocusCycle");
+            if (includeExitProp != null)
+            {
+                includeExitProp.boolValue = false;
+            }
 
             SerializedProperty boardRendererProp = focusSo.FindProperty("boardRenderer");
-            if (boardRendererProp.objectReferenceValue == null)
+            if (boardRendererProp != null)
             {
-                Renderer boardRenderer = focus.GetComponent<MeshRenderer>();
-                if (boardRenderer == null)
+                if (boardRendererProp.objectReferenceValue == null)
                 {
-                    boardRenderer = focus.GetComponentInChildren<MeshRenderer>(true);
-                }
+                    Renderer boardRenderer = focus.GetComponent<MeshRenderer>();
+                    if (boardRenderer == null)
+                    {
+                        boardRenderer = focus.GetComponentInChildren<MeshRenderer>(true);
+                    }
 
-                if (boardRenderer != null)
-                {
-                    boardRendererProp.objectReferenceValue = boardRenderer;
+                    if (boardRenderer != null)
+                    {
+                        boardRendererProp.objectReferenceValue = boardRenderer;
+                    }
                 }
-            }
-            else if (boardRendererProp.objectReferenceValue is Renderer existing && !existing.enabled)
-            {
-                existing.enabled = true;
+                else if (boardRendererProp.objectReferenceValue is Renderer existing && !existing.enabled)
+                {
+                    existing.enabled = true;
+                }
             }
 
             SolveInteractProxy solveProxy = panel.GetComponentInChildren<SolveInteractProxy>(true);
             if (solveProxy != null)
             {
                 SerializedProperty solveButtonProp = focusSo.FindProperty("solveButton");
-                SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
-                interactableRef.objectReferenceValue = solveProxy;
+                if (solveButtonProp != null)
+                {
+                    SerializedProperty interactableRef = solveButtonProp.FindPropertyRelative("interactableReference");
+                    if (interactableRef != null)
+                    {
+                        interactableRef.objectReferenceValue = solveProxy;
+                    }
+                }
             }
 
             SerializedProperty selectionFrameProp = focusSo.FindProperty("selectionFrame");
-            if (selectionFrameProp.objectReferenceValue == null)
+            if (selectionFrameProp != null && selectionFrameProp.objectReferenceValue == null)
             {
                 Transform selectionBorder = FindChildTransform(panel.transform, "SelectionBorder");
                 if (selectionBorder != null)
@@ -515,10 +788,17 @@ namespace WhoWiredThis.Editor
             }
 
             SerializedProperty buttons = focusSo.FindProperty("interactableButtons");
+            if (buttons == null)
+            {
+                focusSo.ApplyModifiedPropertiesWithoutUndo();
+                return;
+            }
+
             for (int i = 0; i < buttons.arraySize; i++)
             {
                 SerializedProperty button = buttons.GetArrayElementAtIndex(i);
-                string label = button.FindPropertyRelative("label").stringValue;
+                SerializedProperty labelProp = button.FindPropertyRelative("label");
+                string label = labelProp != null ? labelProp.stringValue : null;
                 if (string.IsNullOrEmpty(label))
                 {
                     continue;
@@ -531,13 +811,13 @@ namespace WhoWiredThis.Editor
                 }
 
                 SerializedProperty anchorProp = button.FindPropertyRelative("highlightAnchor");
-                if (anchorProp.objectReferenceValue == null)
+                if (anchorProp != null && anchorProp.objectReferenceValue == null)
                 {
                     anchorProp.objectReferenceValue = inputTransform;
                 }
 
                 SerializedProperty interactableRef = button.FindPropertyRelative("interactableReference");
-                if (interactableRef.objectReferenceValue == null)
+                if (interactableRef != null && interactableRef.objectReferenceValue == null)
                 {
                     MultiDimensionSubjectCycler cycler = inputTransform.GetComponent<MultiDimensionSubjectCycler>();
                     if (cycler != null)
@@ -560,19 +840,63 @@ namespace WhoWiredThis.Editor
             }
 
             PlayerPanelFocusController playerAFocus =
-                GameObject.Find("FirstPersonPlayer_A")?.GetComponent<PlayerPanelFocusController>();
+                FindSceneObjectByName("FirstPersonPlayer_A")?.GetComponent<PlayerPanelFocusController>();
             PlayerPanelFocusController playerBFocus =
-                GameObject.Find("FirstPersonPlayer_B")?.GetComponent<PlayerPanelFocusController>();
+                FindSceneObjectByName("FirstPersonPlayer_B")?.GetComponent<PlayerPanelFocusController>();
             PanelFocusController panelAFocus = panelA.GetComponentInChildren<PanelFocusController>(true);
             PanelFocusController panelBFocus = panelB.GetComponentInChildren<PanelFocusController>(true);
 
             SerializedObject bootstrapSo = new SerializedObject(bootstrap);
-            bootstrapSo.FindProperty("enterFocusOnStartup").boolValue = true;
-            bootstrapSo.FindProperty("playerA.focus").objectReferenceValue = playerAFocus;
-            bootstrapSo.FindProperty("playerA.panel").objectReferenceValue = panelAFocus;
-            bootstrapSo.FindProperty("playerB.focus").objectReferenceValue = playerBFocus;
-            bootstrapSo.FindProperty("playerB.panel").objectReferenceValue = panelBFocus;
+            SerializedProperty enterFocusProp = bootstrapSo.FindProperty("enterFocusOnStartup");
+            if (enterFocusProp != null)
+            {
+                enterFocusProp.boolValue = true;
+            }
+
+            SerializedProperty playerAProp = bootstrapSo.FindProperty("playerA");
+            SerializedProperty playerBProp = bootstrapSo.FindProperty("playerB");
+            if (playerAProp != null)
+            {
+                SetBindingFocus(playerAProp, playerAFocus);
+                SetBindingPanelCamera(playerAProp, panelAFocus);
+            }
+
+            if (playerBProp != null)
+            {
+                SetBindingFocus(playerBProp, playerBFocus);
+                SetBindingPanelCamera(playerBProp, panelBFocus);
+            }
+
             bootstrapSo.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void SetBindingFocus(SerializedProperty bindingProp, PlayerPanelFocusController focus)
+        {
+            SerializedProperty focusProp = bindingProp.FindPropertyRelative("focus");
+            if (focusProp != null)
+            {
+                focusProp.objectReferenceValue = focus;
+            }
+        }
+
+        private static void SetBindingPanelCamera(SerializedProperty bindingProp, PanelFocusController panelFocus)
+        {
+            if (panelFocus == null)
+            {
+                return;
+            }
+
+            SerializedProperty panelCameraProp = bindingProp.FindPropertyRelative("panelCamera");
+            if (panelCameraProp == null)
+            {
+                return;
+            }
+
+            PanelFocusCamera panelCamera = panelFocus.GetComponent<PanelFocusCamera>();
+            if (panelCamera != null)
+            {
+                panelCameraProp.objectReferenceValue = panelCamera;
+            }
         }
 
         private static Transform FindChildTransform(Transform root, string childName)

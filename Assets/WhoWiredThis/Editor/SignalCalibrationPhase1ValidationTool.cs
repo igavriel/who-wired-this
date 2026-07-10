@@ -14,8 +14,10 @@ namespace WhoWiredThis.Editor
     public static class SignalCalibrationPhase1ValidationTool
     {
         private const string ScenePath = "Assets/Scenes/Game/Puzzle Signal.unity";
-        private const string SignalPanelAName = "Player1_Signal_Panel-A";
-        private const string SignalPanelBName = "Player2_Signal_Panel-B";
+        private const string SignalPanelAName = "Signal_A_V2 Variant";
+        private const string SignalPanelBName = "Signal_B_V2 Variant";
+        private const string LegacySignalPanelAName = "Player1_Signal_Panel-A";
+        private const string LegacySignalPanelBName = "Player2_Signal_Panel-B";
         private const string ValidationMenuRoot = "Who Wired This/Signal Calibration/Validation/";
         private const string McpMenuRoot = "Who Wired This/Signal Calibration/MCP/";
         private const string MenuPath = ValidationMenuRoot + "0. Phase 1 (Puzzle Signal)";
@@ -52,18 +54,18 @@ namespace WhoWiredThis.Editor
                 return 1;
             }
 
-            if (GameObject.Find(SignalPanelAName) != null && GameObject.Find(SignalPanelBName) != null)
+            if (TryGetSignalPanelNames(out string panelAName, out string panelBName))
             {
-                issues += ValidateSignalPanelInstance(sb, SignalPanelAName, AllowedPlayerTag.Player_A,
+                issues += ValidateSignalPanelInstance(sb, panelAName, AllowedPlayerTag.Player_A,
                     new[] { "FREQ", "GAIN", "WAVE" },
                     new[] { KnobStates, KnobStates, ButtonStates },
                     new[] { 2, 2, 2 });
-                issues += ValidateSignalPanelInstance(sb, SignalPanelBName, AllowedPlayerTag.Player_B,
+                issues += ValidateSignalPanelInstance(sb, panelBName, AllowedPlayerTag.Player_B,
                     new[] { "TUNE", "AMP", "MODE" },
                     new[] { KnobStates, KnobStates, ButtonStates },
                     new[] { 3, 2, 3 });
-                issues += ValidateTurnLockCollidersForPanel(sb, "playerAPanelLock", SignalPanelAName);
-                issues += ValidateTurnLockCollidersForPanel(sb, "playerBPanelLock", SignalPanelBName);
+                issues += ValidateTurnLockCollidersForPanel(sb, "playerAPanelLock", panelAName);
+                issues += ValidateTurnLockCollidersForPanel(sb, "playerBPanelLock", panelBName);
             }
             else
             {
@@ -95,12 +97,35 @@ namespace WhoWiredThis.Editor
 
         public static void ResetSignalSolveStateForValidationPublic() => ResetSignalSolveStateForValidation();
 
+        private static bool TryGetSignalPanelNames(out string panelAName, out string panelBName)
+        {
+            if (GameObject.Find(SignalPanelAName) != null && GameObject.Find(SignalPanelBName) != null)
+            {
+                panelAName = SignalPanelAName;
+                panelBName = SignalPanelBName;
+                return true;
+            }
+
+            if (GameObject.Find(LegacySignalPanelAName) != null && GameObject.Find(LegacySignalPanelBName) != null)
+            {
+                panelAName = LegacySignalPanelAName;
+                panelBName = LegacySignalPanelBName;
+                return true;
+            }
+
+            panelAName = null;
+            panelBName = null;
+            return false;
+        }
+
         private static void ResetSignalSolveStateForValidation()
         {
             string[] panelNames =
             {
                 SignalPanelAName,
                 SignalPanelBName,
+                LegacySignalPanelAName,
+                LegacySignalPanelBName,
                 "Player1_Panel",
                 "Player2_Panel"
             };

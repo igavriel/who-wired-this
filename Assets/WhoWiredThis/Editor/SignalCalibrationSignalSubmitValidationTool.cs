@@ -12,8 +12,10 @@ namespace WhoWiredThis.Editor
         private const string MenuPath = "Who Wired This/Signal Calibration/Validation/2. Signal Submit Lever And Focus";
         private const string McpMenuPath = "Who Wired This/Signal Calibration/MCP/2. Signal Submit Lever And Focus";
 
-        private const string PanelAName = "Player1_Signal_Panel-A";
-        private const string PanelBName = "Player2_Signal_Panel-B";
+        private const string PanelAName = "Signal_A_V2 Variant";
+        private const string PanelBName = "Signal_B_V2 Variant";
+        private const string LegacyPanelAName = "Player1_Signal_Panel-A";
+        private const string LegacyPanelBName = "Player2_Signal_Panel-B";
 
         [MenuItem(MenuPath)]
         public static void Validate()
@@ -34,8 +36,15 @@ namespace WhoWiredThis.Editor
             var sb = new StringBuilder();
             int issues = 0;
 
-            issues += ValidatePanel(sb, PanelAName);
-            issues += ValidatePanel(sb, PanelBName);
+            if (!TryGetSignalPanelNames(out string panelAName, out string panelBName))
+            {
+                sb.AppendLine("FAIL: Missing V2 or legacy signal panels in scene.");
+                report = sb.ToString();
+                return 1;
+            }
+
+            issues += ValidatePanel(sb, panelAName);
+            issues += ValidatePanel(sb, panelBName);
 
             sb.AppendLine(issues == 0
                 ? "=== Signal submit lever validation: ALL CHECKS PASSED ==="
@@ -43,6 +52,27 @@ namespace WhoWiredThis.Editor
 
             report = sb.ToString();
             return issues;
+        }
+
+        private static bool TryGetSignalPanelNames(out string panelAName, out string panelBName)
+        {
+            if (GameObject.Find(PanelAName) != null && GameObject.Find(PanelBName) != null)
+            {
+                panelAName = PanelAName;
+                panelBName = PanelBName;
+                return true;
+            }
+
+            if (GameObject.Find(LegacyPanelAName) != null && GameObject.Find(LegacyPanelBName) != null)
+            {
+                panelAName = LegacyPanelAName;
+                panelBName = LegacyPanelBName;
+                return true;
+            }
+
+            panelAName = null;
+            panelBName = null;
+            return false;
         }
 
         private static int ValidatePanel(StringBuilder sb, string panelName)

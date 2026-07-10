@@ -90,6 +90,12 @@ namespace WhoWiredThis.Scenes
                 return true;
             }
 
+            if (string.Equals(sceneName, "CutScene-Signal-Swap", StringComparison.Ordinal))
+            {
+                id = PlaytestSceneId.CutSceneSignalSwap;
+                return true;
+            }
+
             if (string.Equals(sceneName, "Puzzle Signal", StringComparison.Ordinal))
             {
                 id = PlaytestSceneId.PuzzleSignal;

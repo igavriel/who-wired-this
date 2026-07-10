@@ -63,6 +63,15 @@ namespace WhoWiredThis.Scenes
 
                     Reset();
                     break;
+
+                case PlaytestSceneId.PuzzleSignal:
+                    if (previousScene == PlaytestSceneId.CutSceneSignalSwap)
+                    {
+                        return;
+                    }
+
+                    Reset();
+                    break;
             }
         }
     }

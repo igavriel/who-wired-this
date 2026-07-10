@@ -20,8 +20,10 @@ namespace WhoWiredThis.Editor
         private const string McpMenuPath = "Who Wired This/Signal Calibration/MCP/Wire Puzzle Signal Result Feedback";
         private const string BridgeRootName = "PuzzleSignal_ResultLights";
 
-        private const string PanelAName = "Player1_Signal_Panel-A";
-        private const string PanelBName = "Player2_Signal_Panel-B";
+        private const string PanelAName = "Signal_A_V2 Variant";
+        private const string PanelBName = "Signal_B_V2 Variant";
+        private const string LegacyPanelAName = "Player1_Signal_Panel-A";
+        private const string LegacyPanelBName = "Player2_Signal_Panel-B";
 
         private static readonly string[] LightNames = { "ResultLight-Left", "ResultLight-Middle", "ResultLight-Right" };
 
@@ -61,27 +63,90 @@ namespace WhoWiredThis.Editor
 
         public static int WireAllResultFeedback()
         {
+            if (!TryGetSignalPanels(out GameObject panelA, out GameObject panelB))
+            {
+                Debug.LogError(
+                    "[SignalCalibrationPuzzleSignalResultWireTool] Missing V2 or legacy signal panels in scene.");
+                return 1;
+            }
+
+            return WireAllResultFeedback(panelA, panelB);
+        }
+
+        public static int WireAllResultFeedback(GameObject panelA, GameObject panelB)
+        {
+            if (panelA == null || panelB == null)
+            {
+                Debug.LogError(
+                    "[SignalCalibrationPuzzleSignalResultWireTool] Missing panel references for result feedback wiring.");
+                return 1;
+            }
+
             int issues = 0;
             issues += WireOperatorResultVisual(
-                PanelAName,
+                panelA,
                 AllowedPlayerTag.Player_A,
                 new[] { "WAVE", "FREQ", "GAIN" });
             issues += WireOperatorResultVisual(
-                PanelBName,
+                panelB,
                 AllowedPlayerTag.Player_B,
                 new[] { "MODE", "TUNE", "AMP" });
 
             issues += WireResultLightsBridge(
                 bridgeName: "Bridge_A_to_B_lights",
-                operatorPanelName: PanelAName,
-                partnerPanelName: PanelBName,
+                operatorPanel: panelA,
+                partnerPanel: panelB,
                 visibleToPlayer: AllowedPlayerTag.Player_B);
             issues += WireResultLightsBridge(
                 bridgeName: "Bridge_B_to_A_lights",
-                operatorPanelName: PanelBName,
-                partnerPanelName: PanelAName,
+                operatorPanel: panelB,
+                partnerPanel: panelA,
                 visibleToPlayer: AllowedPlayerTag.Player_A);
             return issues;
+        }
+
+        private static bool TryGetSignalPanels(out GameObject panelA, out GameObject panelB)
+        {
+            panelA = FindSceneObjectByName(PanelAName);
+            panelB = FindSceneObjectByName(PanelBName);
+            if (panelA != null && panelB != null)
+            {
+                return true;
+            }
+
+            panelA = FindSceneObjectByName(LegacyPanelAName);
+            panelB = FindSceneObjectByName(LegacyPanelBName);
+            return panelA != null && panelB != null;
+        }
+
+        private static bool TryGetSignalPanels(out string panelAName, out string panelBName)
+        {
+            if (TryGetSignalPanels(out GameObject panelA, out GameObject panelB))
+            {
+                panelAName = panelA.name;
+                panelBName = panelB.name;
+                return true;
+            }
+
+            panelAName = null;
+            panelBName = null;
+            return false;
+        }
+
+        private static GameObject FindSceneObjectByName(string objectName)
+        {
+            Transform[] transforms = Object.FindObjectsByType<Transform>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None);
+            foreach (Transform transform in transforms)
+            {
+                if (transform.name == objectName && transform.gameObject.scene.isLoaded)
+                {
+                    return transform.gameObject;
+                }
+            }
+
+            return null;
         }
 
         private static bool EnsureSceneActive()
@@ -105,19 +170,18 @@ namespace WhoWiredThis.Editor
         }
 
         private static int WireOperatorResultVisual(
-            string operatorPanelName,
+            GameObject operatorPanel,
             AllowedPlayerTag operatorPlayer,
             string[] slotLabels)
         {
             int issues = 0;
-            GameObject operatorPanel = GameObject.Find(operatorPanelName);
             if (operatorPanel == null)
             {
-                Debug.LogError(
-                    $"[SignalCalibrationPuzzleSignalResultWireTool] Missing panel '{operatorPanelName}'.");
+                Debug.LogError("[SignalCalibrationPuzzleSignalResultWireTool] Missing operator panel.");
                 return 1;
             }
 
+            string operatorPanelName = operatorPanel.name;
             SubmittedCombinationMultiDimensionBridge bridge =
                 operatorPanel.GetComponentInChildren<SubmittedCombinationMultiDimensionBridge>(true);
             if (bridge == null)
@@ -214,8 +278,8 @@ namespace WhoWiredThis.Editor
 
         private static int WireResultLightsBridge(
             string bridgeName,
-            string operatorPanelName,
-            string partnerPanelName,
+            GameObject operatorPanel,
+            GameObject partnerPanel,
             AllowedPlayerTag visibleToPlayer)
         {
             int issues = 0;
@@ -264,14 +328,15 @@ namespace WhoWiredThis.Editor
                 controller = Undo.AddComponent<SplitResultPipesController>(bridgeObject);
             }
 
-            GameObject operatorPanel = GameObject.Find(operatorPanelName);
-            GameObject partnerPanel = GameObject.Find(partnerPanelName);
             if (operatorPanel == null || partnerPanel == null)
             {
                 Debug.LogError(
-                    $"[SignalCalibrationPuzzleSignalResultWireTool] Missing panel '{operatorPanelName}' or '{partnerPanelName}'.");
+                    "[SignalCalibrationPuzzleSignalResultWireTool] Missing operator or partner panel for result lights bridge.");
                 return issues + 1;
             }
+
+            string operatorPanelName = operatorPanel.name;
+            string partnerPanelName = partnerPanel.name;
 
             MultiDimensionPuzzleManager puzzleManager =
                 operatorPanel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);

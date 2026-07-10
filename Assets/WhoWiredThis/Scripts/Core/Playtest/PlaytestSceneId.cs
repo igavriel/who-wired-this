@@ -23,5 +23,9 @@ namespace WhoWiredThis.Core
         // Puzzle Pipes role-swap side-trip: not part of the linear playtest chain order;
         // loaded explicitly by id (Puzzle Pipes -> here -> Puzzle Pipes).
         CutScenePipeSwap,
+
+        // Puzzle Signal role-swap side-trip: not part of the linear playtest chain order;
+        // loaded explicitly by id (Puzzle Signal -> here -> Puzzle Signal).
+        CutSceneSignalSwap,
     }
 }
