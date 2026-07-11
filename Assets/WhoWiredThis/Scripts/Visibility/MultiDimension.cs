@@ -51,9 +51,15 @@ namespace WhoWiredThis.Visibility
         [SerializeField]
         private bool interactionLocked;
 
+        [Header("Audio (optional)")]
+        [Tooltip("Plays when a player advances the subject index via AdvanceIndexForPlayer. Skipped when clips are empty.")]
+        [SerializeField]
+        private MultiDimensionSwitchAudioSettings switchAudio = new MultiDimensionSwitchAudioSettings();
+
         private int[] _defaultLayerPerSubject;
         private int _defaultLayerGeneral = -1;
         private bool _defaultsCaptured;
+        private bool _loggedMissingSwitchAudioSource;
 
         private void Awake()
         {
@@ -186,7 +192,13 @@ namespace WhoWiredThis.Visibility
                 return;
             }
 
+            int previousIndex = activeSubjectIndex;
             activeSubjectIndex = (activeSubjectIndex + 1) % n;
+            if (previousIndex != activeSubjectIndex)
+            {
+                TryPlaySwitchAudio();
+            }
+
             SetSelection(visibleToPlayer, activeSubjectIndex);
         }
 
@@ -376,6 +388,21 @@ namespace WhoWiredThis.Visibility
             for (int c = 0; c < root.childCount; c++)
             {
                 SetRootLayerRecursive(root.GetChild(c), layer);
+            }
+        }
+
+        private void TryPlaySwitchAudio()
+        {
+            if (!MultiDimensionSwitchAudioPlayer.TryPlay(switchAudio, this)
+                && MultiDimensionSwitchAudioPlayer.HasPlayableClips(switchAudio)
+                && !MultiDimensionSwitchAudioPlayer.CanResolveAudioSource(switchAudio, this)
+                && !_loggedMissingSwitchAudioSource)
+            {
+                _loggedMissingSwitchAudioSource = true;
+                Debug.LogWarning(
+                    $"[{nameof(MultiDimension)}] Switch audio clips are assigned on '{name}' but no AudioSource was found. " +
+                    "Assign one on this GameObject or in switch audio settings.",
+                    this);
             }
         }
 
