@@ -3,7 +3,7 @@ overview: >-
   Pilot baked warehouse lighting on Test_Room_Light (room + Wall Light_Lit prefabs),
   then roll out the same recipe scene-by-scene so all Game levels look realistic
   and perform well at runtime — not dark, not yellow.
-status: in_progress
+status: implemented
 date: 2026-07-11
 ---
 
@@ -111,15 +111,15 @@ Baked realistic lighting — pilot on `Test_Room_Light`, rollout to all Game war
 
 ### Phase 3 — Shared settings for Game scenes
 
-8. ⬜ Create or tune **`WhoWiredThis_WarehouseBakedSettings`** — **blocked until pilot sign-off**
-9. ⬜ Assign to Game warehouse scenes (replace current `SciFi_WarehouseSettings` where realtime GI is unwanted).
+8. ✅ Create **`WhoWiredThis_WarehouseBakedSettings`** (`Assets/Settings/`) — baked GI ON, shadowmask, indirect ~1.2.
+9. ✅ Assign to **`Tutorial.unity`** (replaces `SciFi_WarehouseSettings` realtime GI).
 
 ### Phase 4 — Scene-by-scene rollout (after pilot ✅)
 
-10. ⬜ `Tutorial.unity` — assign settings, Generate Lighting, sign-off.
-11. ⬜ `Puzzle Pipes.unity` — same.
-12. ⬜ `Puzzle Signal.unity` — same.
-13. ⬜ Cutscenes with rooms — one at a time (`CutScene-*`).
+10. ✅ **`Tutorial.unity`** — settings, static GI, bake; **sign-off OK**.
+11. ✅ `Puzzle Pipes.unity` — settings, static GI, bake.
+12. ✅ `Puzzle Signal.unity` — same.
+13. ✅ Cutscenes — all `CutScene-*` with Room5x5 baked (`Start-Tutorial`, `Tutorial-Pipe`, `Tutorial-Swap`, `Pipe-Signal`, `Pipe-Swap`, `Signal-Swap`).
 
 ### Phase 5 — Documentation
 
