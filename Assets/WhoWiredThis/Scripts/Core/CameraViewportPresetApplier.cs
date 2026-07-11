@@ -65,6 +65,16 @@ namespace WhoWiredThis.Core
                     targetCamera.rect = new Rect(0f, 0f, 1f, 1f);
                     targetCamera.targetDisplay = 1; // Display 2
                     break;
+
+                case ViewportPreset.Left_Half_Display2:
+                    targetCamera.rect = new Rect(0f, 0f, 0.5f, 1f);
+                    targetCamera.targetDisplay = 1; // Display 2
+                    break;
+
+                case ViewportPreset.Right_Half_Display2:
+                    targetCamera.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+                    targetCamera.targetDisplay = 1; // Display 2
+                    break;
             }
 
             lastAppliedPreset = preset;

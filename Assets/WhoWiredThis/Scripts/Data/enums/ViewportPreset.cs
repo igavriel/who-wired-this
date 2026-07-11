@@ -5,6 +5,8 @@ namespace WhoWiredThis.Enums
         Left_Half_Display1,
         Right_Half_Display1,
         Full_Display1,
-        Full_Display2
+        Full_Display2,
+        Left_Half_Display2,
+        Right_Half_Display2
     }
 }

@@ -27,6 +27,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [fix_firstperson_movement_10c9b5af.plan.md](fix_firstperson_movement_10c9b5af.plan.md) | Forward/back vs camera; left/right yaw; validate Single/Dual via MCP. |
 | [simplify_firstperson_controller_(no_camerarig)_c0cd09e6.plan.md](simplify_firstperson_controller_(no_camerarig)_c0cd09e6.plan.md) | Require explicit camera/input; remove CameraRig dependency and fallbacks. |
 | [retarget_easystart_to_myplayer_d616e5fc.plan.md](retarget_easystart_to_myplayer_d616e5fc.plan.md) | Move EasyStart third-person behavior onto MyPlayer in TestScene with rollback path. |
+| [dual-viewport-display-swap-toggle.md](dual-viewport-display-swap-toggle.md) | **Implemented:** `toggleSwitchKey` on `DualSingleViewportSwitcher` swaps left/right display targets (D2/D1) in dual and single layouts. |
 
 ---
 
