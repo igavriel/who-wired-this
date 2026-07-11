@@ -62,8 +62,31 @@ namespace WhoWiredThis.Visibility
         }
 
 #if UNITY_EDITOR
+        private bool _onValidateApplyScheduled;
+
         private void OnValidate()
         {
+            // Layer changes during OnValidate trigger Unity SendMessage errors on UI renderers
+            // (e.g. "Red: OnLayersChanged"). Defer apply to the next editor tick.
+            if (_onValidateApplyScheduled)
+            {
+                return;
+            }
+
+            _onValidateApplyScheduled = true;
+            UnityEditor.EditorApplication.delayCall += DeferredOnValidateApply;
+        }
+
+        private void DeferredOnValidateApply()
+        {
+            UnityEditor.EditorApplication.delayCall -= DeferredOnValidateApply;
+            _onValidateApplyScheduled = false;
+
+            if (this == null)
+            {
+                return;
+            }
+
             // Edit mode: refresh captured root layers when references/array size change, then apply.
             // Play mode: re-apply from inspector only — do not re-capture layers (roots may already
             // be on DimensionA/B after ApplyConfiguration, which would corrupt RestoreCapturedRootLayers).

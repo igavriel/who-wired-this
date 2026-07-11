@@ -24,9 +24,9 @@ Split camera framing out of `PanelFocusController` into `PanelFocusCamera`, pilo
 - [`PlayerPanelFocusController.cs`](Assets/WhoWiredThis/Scripts/PanelFocus/PlayerPanelFocusController.cs) — resolves `PanelFocusCamera` via `panel.GetComponent<PanelFocusCamera>()` on every focus entry; falls back to `panel.GetCameraSnapPose()` for legacy boards.
 - [`InitialPanelFocusBootstrap.cs`](Assets/WhoWiredThis/Scripts/PanelFocus/InitialPanelFocusBootstrap.cs) — `PlayerStartupFocusBinding` primary refs: `panelCamera` / `diagnosticCamera` (`PanelFocusCamera`); hidden `legacyPanel` / `legacyDiagnostic` with `[FormerlySerializedAs("panel")]` / `[FormerlySerializedAs("diagnostic")]`. Resolves `PanelFocusController` from the camera GameObject for `TryEnterFocus`.
 - [`PanelFocusCameraMigrationTool.cs`](Assets/WhoWiredThis/Editor/PanelFocusCameraMigrationTool.cs) — menu items:
-  - `WhoWiredThis/Panel Focus/Migrate All PanelFocusCamera` — all panel prefabs + all bootstrap scenes
-  - `WhoWiredThis/Panel Focus/Migrate Tutorial PanelFocusCamera` — Tutorial-only (legacy menu)
-  - `WhoWiredThis/Panel Focus/Wire Tutorial Bootstrap PanelFocusCamera` — wire bootstrap only
+  - `Who Wired This/Panel Focus/Migrate All PanelFocusCamera` — all panel prefabs + all bootstrap scenes
+  - `Who Wired This/Panel Focus/Migrate Tutorial PanelFocusCamera` — Tutorial-only (legacy menu)
+  - `Who Wired This/Panel Focus/Wire Tutorial Bootstrap PanelFocusCamera` — wire bootstrap only
 
 ### Prefabs (completed)
 

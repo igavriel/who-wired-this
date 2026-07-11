@@ -21,7 +21,7 @@ namespace WhoWiredThis.Editor
             "Assets/WhoWiredThis/Prefabs/Panels/Player1_Signal_Panel.prefab",
         };
 
-        [MenuItem("WhoWiredThis/Panel Focus/Migrate All PanelFocusCamera")]
+        [MenuItem("Who Wired This/Panel Focus/Migrate All PanelFocusCamera")]
         public static void MigrateAllPanelFocusCamera()
         {
             int prefabBoards = 0;
@@ -53,7 +53,7 @@ namespace WhoWiredThis.Editor
                 $"Prefab boards migrated: {prefabBoards}. Bootstrap scenes processed: {scenesProcessed}.");
         }
 
-        [MenuItem("WhoWiredThis/Panel Focus/Wire Tutorial Bootstrap PanelFocusCamera")]
+        [MenuItem("Who Wired This/Panel Focus/Wire Tutorial Bootstrap PanelFocusCamera")]
         public static void WireTutorialBootstrapPanelFocusCamera()
         {
             if (ProcessBootstrapScene(TutorialScenePath))
@@ -62,7 +62,7 @@ namespace WhoWiredThis.Editor
             }
         }
 
-        [MenuItem("WhoWiredThis/Panel Focus/Migrate Tutorial PanelFocusCamera")]
+        [MenuItem("Who Wired This/Panel Focus/Migrate Tutorial PanelFocusCamera")]
         public static void MigrateTutorialPanelFocusCamera()
         {
             int migratedV1 = MigratePrefabBoards(PrefabPaths[0]);

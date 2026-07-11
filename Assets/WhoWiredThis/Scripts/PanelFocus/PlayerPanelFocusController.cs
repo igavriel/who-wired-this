@@ -2,7 +2,6 @@ using UnityEngine;
 using FirstPerson;
 using WhoWiredThis.Enums;
 using WhoWiredThis.Player;
-using UnityEditor.PackageManager;
 
 namespace WhoWiredThis.PanelFocus
 {

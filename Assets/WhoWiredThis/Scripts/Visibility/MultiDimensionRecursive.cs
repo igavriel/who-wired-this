@@ -21,8 +21,29 @@ namespace WhoWiredThis.Visibility
         }
 
 #if UNITY_EDITOR
+        private bool _onValidateApplyScheduled;
+
         private void OnValidate()
         {
+            if (_onValidateApplyScheduled)
+            {
+                return;
+            }
+
+            _onValidateApplyScheduled = true;
+            UnityEditor.EditorApplication.delayCall += DeferredOnValidateApply;
+        }
+
+        private void DeferredOnValidateApply()
+        {
+            UnityEditor.EditorApplication.delayCall -= DeferredOnValidateApply;
+            _onValidateApplyScheduled = false;
+
+            if (this == null)
+            {
+                return;
+            }
+
             ApplyConfiguration();
         }
 #endif
