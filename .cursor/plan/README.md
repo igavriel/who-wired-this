@@ -128,6 +128,15 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 
 ---
 
+## Scenes & lighting
+
+| Plan | Short description |
+|------|---------------------|
+| [test-room-light-interior-sun-lighting.md](test-room-light-interior-sun-lighting.md) | **Implemented (pilot):** Sun + `Wall Light_Lit` point fixtures on `Test_Room_Light`; `SciFi_WarehouseSettings`; URP additional lights 8; manual Generate Lighting + Play Mode sign-off. |
+| [baked-lighting-all-scenes-pilot.md](baked-lighting-all-scenes-pilot.md) | **In progress (pilot only):** `Wall Light_Lit` → Mixed; `Test_Room_Light` static GI + bake done; Game scenes **not** touched — awaiting Play Mode sign-off. |
+
+---
+
 ## Other puzzles & tutorial experiments
 
 | Plan | Short description |
