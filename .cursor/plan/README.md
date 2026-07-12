@@ -52,6 +52,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [multi-dimension-puzzle-elements-inspector.md](multi-dimension-puzzle-elements-inspector.md) | Compact `ReorderableList` for `puzzleElements` and `MultiDimension.subjects` (reusable editor pattern; Unity 6 compile validated). |
 | [multidimension-5state-prefab-variant-chain.md](multidimension-5state-prefab-variant-chain.md) | MultiDimension 5-state prefab chain validated; `_5State_Test` in Test Multi Dimensions approved (2026-05-23). Production scenes remain 4-state. |
 | [multidimension-switch-audio.md](multidimension-switch-audio.md) | Optional per-control switch audio on MultiDimension: random clip + subtle pitch/volume when player advances subject index. |
+| [signal-submit-button-audio.md](signal-submit-button-audio.md) | **Implemented:** submit click audio on root `Signal_A_V1`, `Pipes_A V1`, `Tutorial_A V1` prefabs; variants inherit. |
 
 ---
 

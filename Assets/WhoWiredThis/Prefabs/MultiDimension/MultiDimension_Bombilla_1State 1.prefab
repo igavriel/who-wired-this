@@ -273,9 +273,14 @@ MonoBehaviour:
   activeSubjectIndex: 0
   interactionLocked: 0
   switchAudio:
-    enabled: 0
+    enabled: 1
     audioSource: {fileID: 3044717573515584548}
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: aab07cb57be324b61966a47e59b892bb, type: 3}
+    - {fileID: 8300000, guid: 4fde9043e77784635a6a9d83b7560b2c, type: 3}
+    - {fileID: 8300000, guid: c97943308d2d24d9ebbcdbcc5a2fb4d4, type: 3}
+    - {fileID: 8300000, guid: f64d4a7a23aa64afd89127afec54a02c, type: 3}
+    - {fileID: 8300000, guid: fd170134bcc2d4c0a9c81df44251e404, type: 3}
     pitchMin: 0.94
     pitchMax: 1.06
     volumeMin: 0.88
