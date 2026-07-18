@@ -80,6 +80,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [activate_button_press_feedback_7b9a1256.plan.md](activate_button_press_feedback_7b9a1256.plan.md) | Optional press coroutine before processing + check in `RunActivateFlow`. |
 | [diagnostic_after_solve_flow_4a02306d.plan.md](diagnostic_after_solve_flow_4a02306d.plan.md) | Waiting state until Solve; then processing, then show real diagnostic result. |
 | [tutorial-diagnostic-decode-matrix.md](tutorial-diagnostic-decode-matrix.md) | **Implemented (Tutorial only):** Mastermind-style hidden feedback in a 40×12 hex decode matrix; pure-C# `TutorialDiagnosticReport` + `TutorialDiagnosticController` + editor wire tool; cross-partner displays on `Tutorial.unity`. |
+| [pipes-diagnostic-log-format.md](pipes-diagnostic-log-format.md) | **Implemented:** Pipes 40×12 log diagnostic (close/far Ordered + LogRows layout); Signal stays LegacyHints. |
 
 ---
 

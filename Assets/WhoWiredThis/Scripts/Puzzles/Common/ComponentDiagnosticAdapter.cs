@@ -12,12 +12,19 @@ namespace WhoWiredThis.Puzzles.Common
         Categorical
     }
 
+    public enum ComponentDiagnosticBodyLayout
+    {
+        LegacyHints,
+        LogRows
+    }
+
     [Serializable]
     public class ComponentDiagnosticDefinition
     {
         public MultiDimension input;
         public ComponentDiagnosticType diagnosticType = ComponentDiagnosticType.Ordered;
 
+        [Header("LegacyHints sentences")]
         [TextArea(1, 2)]
         public string correctText = "COMPONENT LOOKS STABLE.";
 
@@ -29,6 +36,28 @@ namespace WhoWiredThis.Puzzles.Common
 
         [TextArea(1, 2)]
         public string mismatchText = "COMPONENT DOES NOT MATCH.";
+
+        [Header("LogRows short status")]
+        [Tooltip("Left-side label on the log row (e.g. PRESSURE).")]
+        public string rowLabel = "COMPONENT";
+
+        [Tooltip("Status when this slot matches the solution.")]
+        public string correctStatus = "OK";
+
+        [Tooltip("Close: submitted index is 1 below correct (TooLow direction).")]
+        public string closeTooLowStatus = "A BIT HIGH";
+
+        [Tooltip("Close: submitted index is 1 above correct (TooHigh direction).")]
+        public string closeTooHighStatus = "A BIT LOW";
+
+        [Tooltip("Far: submitted index is 2+ below correct (TooLow direction).")]
+        public string farTooLowStatus = "TOO HIGH";
+
+        [Tooltip("Far: submitted index is 2+ above correct (TooHigh direction).")]
+        public string farTooHighStatus = "TOO LOW";
+
+        [Tooltip("Categorical mismatch status (e.g. NOT BALANCED).")]
+        public string mismatchStatus = "NOT BALANCED";
 
         public bool eligibleForHints = true;
     }
@@ -42,15 +71,30 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private MultiDimensionPuzzleManager puzzleManager;
         [SerializeField] private DiagnosticDisplayController diagnosticDisplay;
 
+        [Header("Layout")]
+        [SerializeField] private ComponentDiagnosticBodyLayout bodyLayout = ComponentDiagnosticBodyLayout.LegacyHints;
+
         [Header("Components")]
         [SerializeField] private ComponentDiagnosticDefinition[] components;
 
-        [Header("System messages")]
+        [Header("System messages (LegacyHints)")]
         [SerializeField] private string solvedMessage = "PIPE LINE CALIBRATED.";
         [SerializeField] private string systemNoneCorrect = "PIPE RESPONSE IS UNSTABLE.";
         [SerializeField] private string systemOneCorrect = "ONE PIPE SECTION RESPONDS.";
         [SerializeField] private string systemTwoCorrect = "PIPE RESPONSE IS CLOSE.";
         [SerializeField] private string partnerLine = "TELL YOUR PARTNER WHAT YOU LEARNED.";
+
+        [Header("LogRows chrome")]
+        [SerializeField] private string headerLine1 = "OTHER PLAYER SUBMITS // YOU READ";
+        [SerializeField] private string headerLine2 = "### FIND THE PATTERN IN THE LOG ###";
+        [SerializeField] private string logTitlePrefix = "DIAGNOSTIC LOG // REVISION";
+        [SerializeField] private string statusLabel = "STATUS";
+        [SerializeField] private string statusValue = "ANALYZING";
+        [SerializeField] private string footerLine = "WAITING FOR PARTNER INPUT";
+        [SerializeField] private int lineWidth = ComponentDiagnosticLogFormatter.DefaultWidth;
+        [SerializeField] private int totalLines = ComponentDiagnosticLogFormatter.DefaultTotalLines;
+
+        private int attemptCounter;
 
         private struct SlotEvaluation
         {
@@ -112,6 +156,7 @@ namespace WhoWiredThis.Puzzles.Common
                 return;
             }
 
+            attemptCounter++;
             string body = BuildFailedAttemptBody(result);
             diagnosticDisplay.SetDiagnosticBody(body);
         }
@@ -119,6 +164,47 @@ namespace WhoWiredThis.Puzzles.Common
         private string BuildFailedAttemptBody(MultiDimensionAttemptResult result)
         {
             List<SlotEvaluation> evaluations = EvaluateSlots(result);
+            if (bodyLayout == ComponentDiagnosticBodyLayout.LogRows)
+            {
+                return BuildLogRowsBody(evaluations);
+            }
+
+            return BuildLegacyHintsBody(evaluations);
+        }
+
+        private string BuildLogRowsBody(List<SlotEvaluation> evaluations)
+        {
+            var rows = new List<string>();
+            for (int i = 0; i < evaluations.Count; i++)
+            {
+                SlotEvaluation eval = evaluations[i];
+                if (eval.Definition == null)
+                {
+                    continue;
+                }
+
+                string label = string.IsNullOrEmpty(eval.Definition.rowLabel)
+                    ? "COMPONENT"
+                    : eval.Definition.rowLabel;
+                string status = ResolveLogStatus(eval);
+                rows.Add(ComponentDiagnosticLogFormatter.FormatLabelStatus(label, status, lineWidth));
+            }
+
+            return ComponentDiagnosticLogFormatter.BuildLogBody(
+                headerLine1,
+                headerLine2,
+                logTitlePrefix,
+                attemptCounter,
+                statusLabel,
+                statusValue,
+                rows,
+                footerLine,
+                lineWidth,
+                totalLines);
+        }
+
+        private string BuildLegacyHintsBody(List<SlotEvaluation> evaluations)
+        {
             int correctCount = 0;
             for (int i = 0; i < evaluations.Count; i++)
             {
@@ -159,6 +245,7 @@ namespace WhoWiredThis.Puzzles.Common
                 return evaluations;
             }
 
+            // Preserve Inspector array order for LogRows (do not re-sort by slot index).
             for (int c = 0; c < components.Length; c++)
             {
                 ComponentDiagnosticDefinition def = components[c];
@@ -194,7 +281,11 @@ namespace WhoWiredThis.Puzzles.Common
                 });
             }
 
-            evaluations.Sort((a, b) => a.SlotIndex.CompareTo(b.SlotIndex));
+            if (bodyLayout == ComponentDiagnosticBodyLayout.LegacyHints)
+            {
+                evaluations.Sort((a, b) => a.SlotIndex.CompareTo(b.SlotIndex));
+            }
+
             return evaluations;
         }
 
@@ -285,14 +376,62 @@ namespace WhoWiredThis.Puzzles.Common
             switch (eval.Status)
             {
                 case ComponentSlotDiagnosticStatus.TooLow:
-                    return def.tooLowText;
+                case ComponentSlotDiagnosticStatus.FarTooLow:
+                    return FirstNonEmpty(def.farTooLowStatus, def.tooLowText);
+                case ComponentSlotDiagnosticStatus.CloseTooLow:
+                    return FirstNonEmpty(def.closeTooLowStatus, def.tooLowText);
                 case ComponentSlotDiagnosticStatus.TooHigh:
-                    return def.tooHighText;
+                case ComponentSlotDiagnosticStatus.FarTooHigh:
+                    return FirstNonEmpty(def.farTooHighStatus, def.tooHighText);
+                case ComponentSlotDiagnosticStatus.CloseTooHigh:
+                    return FirstNonEmpty(def.closeTooHighStatus, def.tooHighText);
                 case ComponentSlotDiagnosticStatus.Mismatch:
-                    return def.mismatchText;
+                    return FirstNonEmpty(def.mismatchStatus, def.mismatchText);
                 default:
                     return null;
             }
+        }
+
+        private static string ResolveLogStatus(SlotEvaluation eval)
+        {
+            ComponentDiagnosticDefinition def = eval.Definition;
+            switch (eval.Status)
+            {
+                case ComponentSlotDiagnosticStatus.Correct:
+                    return FirstNonEmpty(def.correctStatus, "OK");
+                case ComponentSlotDiagnosticStatus.CloseTooLow:
+                    return FirstNonEmpty(def.closeTooLowStatus, def.tooLowText, "A BIT HIGH");
+                case ComponentSlotDiagnosticStatus.CloseTooHigh:
+                    return FirstNonEmpty(def.closeTooHighStatus, def.tooHighText, "A BIT LOW");
+                case ComponentSlotDiagnosticStatus.FarTooLow:
+                case ComponentSlotDiagnosticStatus.TooLow:
+                    return FirstNonEmpty(def.farTooLowStatus, def.tooLowText, "TOO HIGH");
+                case ComponentSlotDiagnosticStatus.FarTooHigh:
+                case ComponentSlotDiagnosticStatus.TooHigh:
+                    return FirstNonEmpty(def.farTooHighStatus, def.tooHighText, "TOO LOW");
+                case ComponentSlotDiagnosticStatus.Mismatch:
+                    return FirstNonEmpty(def.mismatchStatus, def.mismatchText, "NOT BALANCED");
+                default:
+                    return "???";
+            }
+        }
+
+        private static string FirstNonEmpty(params string[] values)
+        {
+            if (values == null)
+            {
+                return string.Empty;
+            }
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(values[i]))
+                {
+                    return values[i];
+                }
+            }
+
+            return string.Empty;
         }
 
         private string ResolveSystemMessage(int correctCount)

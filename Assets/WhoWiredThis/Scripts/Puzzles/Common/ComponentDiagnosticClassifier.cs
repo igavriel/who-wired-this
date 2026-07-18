@@ -3,14 +3,21 @@ namespace WhoWiredThis.Puzzles.Common
     public enum ComponentSlotDiagnosticStatus
     {
         Correct,
+        /// <summary>Legacy: submitted below correct (prefer Close/FarTooLow).</summary>
         TooLow,
+        /// <summary>Legacy: submitted above correct (prefer Close/FarTooHigh).</summary>
         TooHigh,
-        Mismatch
+        Mismatch,
+        CloseTooLow,
+        CloseTooHigh,
+        FarTooLow,
+        FarTooHigh
     }
 
     /// <summary>
     /// Shared per-slot diagnostic classification for pipe puzzles (text + result lights).
     /// Result light subject indices: 0=red, 1=orange, 2=green.
+    /// Ordered proximity: |delta|==1 close, |delta|&gt;=2 far.
     /// </summary>
     public static class ComponentDiagnosticClassifier
     {
@@ -33,12 +40,20 @@ namespace WhoWiredThis.Puzzles.Common
                 return ComponentSlotDiagnosticStatus.Mismatch;
             }
 
-            if (submitted < correctIndex)
+            int delta = submitted - correctIndex;
+            int abs = delta < 0 ? -delta : delta;
+            bool close = abs == 1;
+
+            if (delta < 0)
             {
-                return ComponentSlotDiagnosticStatus.TooLow;
+                return close
+                    ? ComponentSlotDiagnosticStatus.CloseTooLow
+                    : ComponentSlotDiagnosticStatus.FarTooLow;
             }
 
-            return ComponentSlotDiagnosticStatus.TooHigh;
+            return close
+                ? ComponentSlotDiagnosticStatus.CloseTooHigh
+                : ComponentSlotDiagnosticStatus.FarTooHigh;
         }
 
         public static int ResolveColorIndex(
@@ -50,8 +65,12 @@ namespace WhoWiredThis.Puzzles.Common
             {
                 case ComponentSlotDiagnosticStatus.Correct:
                     return ColorGreen;
+                case ComponentSlotDiagnosticStatus.CloseTooLow:
+                case ComponentSlotDiagnosticStatus.CloseTooHigh:
                 case ComponentSlotDiagnosticStatus.TooLow:
                     return ColorOrange;
+                case ComponentSlotDiagnosticStatus.FarTooLow:
+                case ComponentSlotDiagnosticStatus.FarTooHigh:
                 case ComponentSlotDiagnosticStatus.TooHigh:
                 case ComponentSlotDiagnosticStatus.Mismatch:
                 default:
