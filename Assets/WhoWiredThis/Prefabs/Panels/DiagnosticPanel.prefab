@@ -281,9 +281,21 @@ MonoBehaviour:
   machineFeedbackText: {fileID: 8844221100667443355}
   statusLampRenderer: {fileID: 4666046874431597336}
   title: DIAGNOSTIC
-  waitingText: 'WAITING FOR
+  waitingText: '>> ERROR: LOCAL DATA INCOMPLETE
 
-    NEXT ATTEMPT...'
+    >> PARTNER INPUT REQUIRED
+
+
+    -
+    ASK YOUR PARTNER FOR PANEL INFORMATION.
+
+    - REPORT ALL CLUES OUT LOUD.
+
+    -
+    COORDINATE SETTINGS BEFORE TESTING.
+
+
+    STATUS: AWAITING TEAM COORDINATION'
   clearText: NO DATA
   metricLabelMinWidth: 10
   lampWaitingMaterial: {fileID: 2100000, guid: 2fb7a24a4642848f4b1e0fa4c7e7544f, type: 2}
@@ -611,27 +623,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1. WAITING FOR
-
-    2. NEXT ATTEMPT...
-
-    3. This is a very long line
-    and shold have a new line
-
-    4. LINE
-
-    5. 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
-    6 7 8 9 0 1 2 3 4
-
-    6. LINE
-
-    7. LINE
-
-    8. LINE
-
-    9. LINE
-
-'
+  m_text: "Other player submit // YOU read Results\n## There is a PATTERN in the
+    results ##\n\n       -->  ZERO is GOOD  <--\n\nDIAGNOSTIC LOG  REV 2956\nSTATUS
+    .... ANALYZING\n\n79 13 6E ## 68 97 CD ## 19 C3 44 D7 ##\n57 1B 4D ## F8 07 DF
+    ## 8C 30 E8 08 ##\n58 93 C9 ## 8C 2A 4B ## EA CA BD 35 ##\n4B 4D 79 ## 80 BC
+    B6 ## 73 CD 77 26 ##\nBE 48 44 ## 5C 0A 48 ## 3D B2 F6 A2 ##\n9E 8C 9D ## D3
+    FF C7 ## 03 9C E3 57 ##"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
   m_sharedMaterial: {fileID: 8417226646715229935, guid: 0fa373e2af9b045ba822079a9fd0c9ef, type: 2}
@@ -658,8 +655,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.65
-  m_fontSizeBase: 0.65
+  m_fontSize: 0.55
+  m_fontSizeBase: 0.55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -697,7 +694,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.17598987, y: 0.15795529, z: -0.32781196, w: -0.11951184}
+  m_margin: {x: 0.12920158, y: 0.15795529, z: -0.3639965, w: 0.0074774325}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0

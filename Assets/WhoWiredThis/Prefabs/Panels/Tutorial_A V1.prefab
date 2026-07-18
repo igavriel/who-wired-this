@@ -1235,9 +1235,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right_Stick_3State-A
       objectReference: {fileID: 0}
+    - target: {fileID: 3733320865629853919, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4179658977762053959, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792392767931793771, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535501722763335251, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: activeSubjectIndex
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1912,12 +1924,6 @@ PrefabInstance:
       value: DIAGNOSTIC RED
       objectReference: {fileID: 0}
     - target: {fileID: 553826040521772839, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: waitingText
-      value: 'WAITING FOR RED PLAYER
-
-        NEXT ATTEMPT...'
-      objectReference: {fileID: 0}
-    - target: {fileID: 553826040521772839, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: lampWaitingMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 105a0f04b376346a4ae3860ed1bfd1ad, type: 2}
@@ -2097,23 +2103,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-    - target: {fileID: 6590241200266695463, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: m_text
-      value: "Other player submit // YOU read Results\n## There is a PATTERN in the
-        results ##\n\n       -->  ZERO is GOOD  <--\n\nDIAGNOSTIC LOG  REV 2956\nSTATUS
-        .... ANALYZING\n\n79 13 6E ## 68 97 CD ## 19 C3 44 D7 ##\n57 1B 4D ## F8
-        07 DF ## 8C 30 E8 08 ##\n58 93 C9 ## 8C 2A 4B ## EA CA BD 35 ##\n4B 4D 79
-        ## 80 BC B6 ## 73 CD 77 26 ##\nBE 48 44 ## 5C 0A 48 ## 3D B2 F6 A2 ##\n9E
-        8C 9D ## D3 FF C7 ## 03 9C E3 57 ##"
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590241200266695463, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: m_fontSize
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590241200266695463, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 0.55
-      objectReference: {fileID: 0}
     - target: {fileID: 7732998071210968153, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2603,9 +2592,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Left_Stick_3State-A
       objectReference: {fileID: 0}
+    - target: {fileID: 3733320865629853919, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4179658977762053959, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792392767931793771, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8535501722763335251, guid: d4311a6bb0de4415ba5b278acc877e70, type: 3}
+      propertyPath: activeSubjectIndex
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

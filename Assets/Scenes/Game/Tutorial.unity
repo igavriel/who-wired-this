@@ -373,7 +373,6 @@ GameObject:
   m_Component:
   - component: {fileID: 950581922}
   - component: {fileID: 950581923}
-  - component: {fileID: 950581925}
   - component: {fileID: 950581926}
   - component: {fileID: 950581927}
   m_Layer: 0
@@ -442,50 +441,59 @@ MonoBehaviour:
     overlayInstructionText: {fileID: 1019864811}
   playerADiagnosticDisplay: {fileID: 968524634}
   playerBDiagnosticDisplay: {fileID: 8752344511047424878}
-  playerAIntroBody: 'OPERATOR MODE
+  playerAIntroBody: '[ OPERATOR MODE ACTIVATED ]
 
 
-    SET TWO CONTROLS.
+    SET BOTH CONTROLS.
+
+    PRESS
+    SUBMIT.
+
+
+    YOUR PARTNER READS
+
+    THE RESULTS.'
+  playerBIntroBody: '[ DIAGNOSTIC MODE ACTIVATED ]
+
+
+    YOUR PARTNER CONTROLS THE
+    MACHINE.
+
+    YOU READ THE RESULTS.
+
+
+    REPORT WHAT YOU SEE.
+
+    FIND THE
+    PATTERN.'
+  playerABodyAfterPlayerASolved: '[ DIAGNOSTIC MODE ACTIVATED ]
+
+
+    [V] YOUR SIDE
+    IS CALIBRATED.
+
+    ROLE SWITCH: READ THE RESULTS.
+
+
+    YOUR PARTNER CONTROLS
+    THE MACHINE.
+
+    REPORT WHAT YOU SEE.'
+  playerBBodyAfterPlayerASolved: '[ OPERATOR MODE ACTIVATED ]
+
+
+    YOUR TURN.
+
+
+    SET
+    BOTH CONTROLS.
 
     PRESS SUBMIT.
 
 
-    YOUR
-    PARTNER READS
+    YOUR PARTNER READS
 
-    THE MACHINE.'
-  playerBIntroBody: 'DIAGNOSTIC MODE
-
-
-    READ THIS PANEL.
-
-    EXPLAIN WHAT THE
-
-    MACHINE
-    UNDERSTOOD.
-
-
-    FIND THE PATTERN.'
-  playerABodyAfterPlayerASolved: 'BLUE SIDE CALIBRATED.
-
-
-    ROLE SWITCH:
-
-    NOW
-    READ THE MACHINE.
-
-
-    HELP YOUR PARTNER.'
-  playerBBodyAfterPlayerASolved: 'YOUR TURN.
-
-
-    SET TWO CONTROLS.
-
-    PRESS SUBMIT.
-
-
-    YOUR
-    PARTNER READS.'
+    THE RESULTS.'
   objectsToDisableOnComplete:
   - {fileID: 1611184913}
   exitDoorBlockersToDisableOnComplete: []
@@ -496,30 +504,6 @@ MonoBehaviour:
     continue.'
   simultaneousOperators: 0
   roleSwapMode: 1
---- !u!114 &950581925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950581921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8f3c2e91b4d4f6a9e2d7c5b1a0e8f40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Tutorial.TutorialSummaryPopupPresenter
-  sceneStageManager: {fileID: 950581923}
-  tutorialMetricsTracker: {fileID: 1696186569}
-  playerHudViewA: {fileID: 1418667857}
-  playerHudViewB: {fileID: 1418667858}
-  headerLine: CALIBRATION COMPLETE
-  teamAttemptsLabel: TEAM ATTEMPTS
-  teamTimeLabel: TEAM TIME
-  playerALabel: BLUE PLAYER
-  playerBLabel: RED PLAYER
-  attemptsSuffix: ATTEMPTS
-  flavorLine: THE MACHINE SURVIVED.
-  includeFlavorLine: 1
 --- !u!114 &950581926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,6 +697,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 132276841}
+    - target: {fileID: 382257231895652228, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.2886634
@@ -740,6 +728,14 @@ PrefabInstance:
     - target: {fileID: 503462826306571276, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 586822364393385616, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 730902411596034657, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1038268887291008958, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
@@ -789,6 +785,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3337315469216914277, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418810486827831125, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3569594469706872101, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -821,6 +825,10 @@ PrefabInstance:
       propertyPath: frameFillPercent
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 3874710391148368122, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4061770106136863069, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -838,6 +846,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4531496927363932352, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586118121973113337, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -865,7 +877,15 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 5774743163208069216, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5804004274648882346, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918963861438180497, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -937,6 +957,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6723524007204436340, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6816369041996032341, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: places
       value: 
@@ -961,6 +985,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7468630340328603401, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7604735728984943573, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -970,6 +998,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7748745321242048292, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909852604956675594, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -984,6 +1016,14 @@ PrefabInstance:
     - target: {fileID: 8276720087879913652, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: Priority.m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525396728337843605, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607156918043873701, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8935994412904738480, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
       propertyPath: machineFeedbackText
@@ -7935,11 +7975,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3761088457438132311, guid: bedc9f9ca5b4949f1ad6e2ede6eee28d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4427278846818744024, guid: bedc9f9ca5b4949f1ad6e2ede6eee28d, type: 3}
+    - target: {fileID: 2121796418330143919, guid: bedc9f9ca5b4949f1ad6e2ede6eee28d, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -8074,8 +8110,15 @@ MonoBehaviour:
   puzzleManager: {fileID: 1674202233}
   display: {fileID: 8752344511047424878}
   strings:
-    InfoMessage: "Other player submit // YOU read Results\n### There is a PATTERN
-      in the results ### \nZERO is GOOD"
+    InfoMessage: 'PARTNER SUBMITS // YOU READ THE RESULTS
+
+
+      ### FIND THE PATTERN
+      IN THE RESULTS ###
+
+      ### LOWER VALUES INDICATE A BETTER MATCH ###
+
+'
     ResultReadout: 'DIAGNOSTIC LOG  REV {0}
 
       STATUS .... ANALYZING'
@@ -8331,11 +8374,11 @@ MonoBehaviour:
   tutorialMetricsTracker: {fileID: 1696186569}
   playerHudViewA: {fileID: 1418667857}
   playerHudViewB: {fileID: 1418667858}
-  headerLine: CALIBRATION COMPLETE
-  teamAttemptsLabel: TEAM ATTEMPTS
-  teamTimeLabel: TEAM TIME
+  headerLine: '[ CALIBRATION COMPLETE ]'
+  teamAttemptsLabel: TOTAL ATTEMPTS
+  teamTimeLabel: COMPLETION TIME
   playerALabel: BLUE PLAYER
-  playerBLabel: RED PLAYER
+  playerBLabel: RED  PLAYER
   attemptsSuffix: ATTEMPTS
   flavorLine: THE MACHINE SURVIVED.
   includeFlavorLine: 1
@@ -8502,8 +8545,15 @@ MonoBehaviour:
   puzzleManager: {fileID: 1019864809}
   display: {fileID: 968524634}
   strings:
-    InfoMessage: "Other player submit // YOU read Results\n### There is a PATTERN
-      in the results ### \nZERO is GOOD"
+    InfoMessage: 'PARTNER SUBMITS // YOU READ THE RESULTS
+
+
+      ### FIND THE PATTERN
+      IN THE RESULTS ###
+
+      ### LOWER VALUES INDICATE A BETTER MATCH ###
+
+'
     ResultReadout: 'DIAGNOSTIC LOG  REV {0}
 
       STATUS .... ANALYZING'
