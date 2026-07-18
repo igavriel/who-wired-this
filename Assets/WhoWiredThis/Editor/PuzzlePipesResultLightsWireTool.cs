@@ -96,6 +96,10 @@ namespace WhoWiredThis.Editor
         private static int WireAllBridges()
         {
             RemovePrefabBridgeLightsFromPanels();
+            // SplitResultPipesController owns ResultLights. Clear legacy SCBridge display
+            // refs so they cannot overwrite visibleToPlayer / layers on submit.
+            ClearSubmittedCombinationResultLightDisplays(PanelAName, AllowedPlayerTag.Player_B);
+            ClearSubmittedCombinationResultLightDisplays(PanelBName, AllowedPlayerTag.Player_A);
 
             int issues = 0;
             issues += WireBridge(
@@ -110,6 +114,55 @@ namespace WhoWiredThis.Editor
                 partnerPanelName: PanelAName,
                 visibleToPlayer: AllowedPlayerTag.Player_A);
             return issues;
+        }
+
+        /// <summary>
+        /// Nulls ResultLight display slots on <see cref="SubmittedCombinationMultiDimensionBridge"/>
+        /// under the panel. That bridge used to drive the same lamps and overwrote layers
+        /// (e.g. B-operator → A's lights forced to Player_B / DimensionB).
+        /// </summary>
+        private static void ClearSubmittedCombinationResultLightDisplays(
+            string panelName,
+            AllowedPlayerTag partnerVisibleToPlayer)
+        {
+            GameObject panel = GameObject.Find(panelName);
+            if (panel == null)
+            {
+                return;
+            }
+
+            SubmittedCombinationMultiDimensionBridge[] bridges =
+                panel.GetComponentsInChildren<SubmittedCombinationMultiDimensionBridge>(true);
+            for (int b = 0; b < bridges.Length; b++)
+            {
+                SubmittedCombinationMultiDimensionBridge bridge = bridges[b];
+                SerializedObject so = new SerializedObject(bridge);
+                so.FindProperty("visibleToPlayer").enumValueIndex = (int)partnerVisibleToPlayer;
+
+                SerializedProperty slots = so.FindProperty("slots");
+                for (int s = 0; s < slots.arraySize; s++)
+                {
+                    SerializedProperty displayProp =
+                        slots.GetArrayElementAtIndex(s).FindPropertyRelative("display");
+                    MultiDimension display = displayProp.objectReferenceValue as MultiDimension;
+                    if (display == null)
+                    {
+                        continue;
+                    }
+
+                    if (display.name.IndexOf("ResultLight", System.StringComparison.Ordinal) < 0 &&
+                        (display.transform.parent == null ||
+                         display.transform.parent.name != "ResultLight"))
+                    {
+                        continue;
+                    }
+
+                    displayProp.objectReferenceValue = null;
+                }
+
+                so.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(bridge);
+            }
         }
 
         private static bool EnsureSceneActive()

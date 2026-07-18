@@ -81,6 +81,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [diagnostic_after_solve_flow_4a02306d.plan.md](diagnostic_after_solve_flow_4a02306d.plan.md) | Waiting state until Solve; then processing, then show real diagnostic result. |
 | [tutorial-diagnostic-decode-matrix.md](tutorial-diagnostic-decode-matrix.md) | **Implemented (Tutorial only):** Mastermind-style hidden feedback in a 40×12 hex decode matrix; pure-C# `TutorialDiagnosticReport` + `TutorialDiagnosticController` + editor wire tool; cross-partner displays on `Tutorial.unity`. |
 | [pipes-diagnostic-log-format.md](pipes-diagnostic-log-format.md) | **Implemented:** Pipes 40×12 log diagnostic (close/far Ordered + LogRows layout); Signal stays LegacyHints. |
+| [pipes-result-lights-scbridge-layer-overwrite.md](pipes-result-lights-scbridge-layer-overwrite.md) | **Implemented:** Stop SCBridge from overwriting ResultLight layers (B-op → A diag stuck on DimB). |
 
 ---
 

@@ -853,14 +853,25 @@ namespace WhoWiredThis.Editor
 
         private static void WireResultVisualizerForPanels(GameObject panelA, GameObject panelB)
         {
-            WireResultBridgeForOperatorPanel(panelA, panelB);
-            WireResultBridgeForOperatorPanel(panelB, panelA);
+            // ResultLights are owned by scene SplitResultPipesController bridges
+            // (PuzzlePipes_ResultLights). Do not wire SubmittedCombinationMultiDimensionBridge
+            // displays to ResultLights — that overwrote layers (B-operator → A's lamps on DimB).
+            ClearResultLightDisplaysOnSubmittedBridge(panelA, AllowedPlayerTag.Player_B);
+            ClearResultLightDisplaysOnSubmittedBridge(panelB, AllowedPlayerTag.Player_A);
+            Debug.Log(
+                "[PipePressurePuzzlePipesWireTool] Cleared SCBridge ResultLight displays; " +
+                "use Who Wired This/Pipe Pressure/Wire Puzzle Pipes Result Lights for lamps.");
         }
 
-        private static void WireResultBridgeForOperatorPanel(
+        private static void ClearResultLightDisplaysOnSubmittedBridge(
             GameObject operatorPanel,
-            GameObject partnerPanel)
+            AllowedPlayerTag partnerVisibleToPlayer)
         {
+            if (operatorPanel == null)
+            {
+                return;
+            }
+
             SubmittedCombinationMultiDimensionBridge bridge =
                 operatorPanel.GetComponentInChildren<SubmittedCombinationMultiDimensionBridge>(true);
             if (bridge == null)
@@ -870,43 +881,37 @@ namespace WhoWiredThis.Editor
 
             MultiDimensionPuzzleManager puzzleManager =
                 operatorPanel.GetComponentInChildren<MultiDimensionPuzzleManager>(true);
-            Transform resultLightRoot = FindChildTransform(partnerPanel.transform, "ResultLight");
-            if (puzzleManager == null || resultLightRoot == null)
-            {
-                Debug.LogWarning(
-                    $"[PipePressurePuzzlePipesWireTool] Missing puzzleManager or ResultLight under '{partnerPanel.name}'.");
-                return;
-            }
-
-            Transform upper = FindChildTransform(resultLightRoot, "ResultLight-Upper");
-            Transform middle = FindChildTransform(resultLightRoot, "ResultLight-Middle");
-            Transform lower = FindChildTransform(resultLightRoot, "ResultLight-Lower");
-            if (upper == null || middle == null || lower == null)
-            {
-                Debug.LogWarning(
-                    $"[PipePressurePuzzlePipesWireTool] Missing ResultLight children under '{partnerPanel.name}/ResultLight'.");
-                return;
-            }
 
             SerializedObject bridgeSo = new SerializedObject(bridge);
-            bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
-            WireBridgeSlot(bridgeSo, 0, upper);
-            WireBridgeSlot(bridgeSo, 1, middle);
-            WireBridgeSlot(bridgeSo, 2, lower);
-            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
-        }
-
-        private static void WireBridgeSlot(SerializedObject bridgeSo, int index, Transform displayTransform)
-        {
-            SerializedProperty slots = bridgeSo.FindProperty("slots");
-            if (index >= slots.arraySize)
+            if (puzzleManager != null)
             {
-                return;
+                bridgeSo.FindProperty("puzzleManager").objectReferenceValue = puzzleManager;
             }
 
-            SerializedProperty slot = slots.GetArrayElementAtIndex(index);
-            slot.FindPropertyRelative("display").objectReferenceValue =
-                displayTransform.GetComponent<MultiDimension>();
+            bridgeSo.FindProperty("visibleToPlayer").enumValueIndex = (int)partnerVisibleToPlayer;
+
+            SerializedProperty slots = bridgeSo.FindProperty("slots");
+            for (int i = 0; i < slots.arraySize; i++)
+            {
+                SerializedProperty displayProp =
+                    slots.GetArrayElementAtIndex(i).FindPropertyRelative("display");
+                MultiDimension display = displayProp.objectReferenceValue as MultiDimension;
+                if (display == null)
+                {
+                    continue;
+                }
+
+                bool isResultLight =
+                    display.name.IndexOf("ResultLight", System.StringComparison.Ordinal) >= 0 ||
+                    (display.transform.parent != null && display.transform.parent.name == "ResultLight");
+                if (isResultLight)
+                {
+                    displayProp.objectReferenceValue = null;
+                }
+            }
+
+            bridgeSo.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(bridge);
         }
 
         private static Transform FindChildTransform(Transform root, string childName)

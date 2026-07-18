@@ -18,8 +18,9 @@ namespace WhoWiredThis.Puzzles.Common
     }
 
     /// <summary>
-    /// Puzzle Pipes: drives three partner result lamps from per-element too-high / too-low / correct classification.
-    /// Uses MultiDimension subject indices 0=red, 1=orange, 2=green.
+    /// Puzzle Pipes: drives three partner result lamps from per-element classification.
+    /// ResultLight subjects: 0=red, 1=orange (ORNG), 2=green.
+    /// Ordered: OK→green, |delta|==1→orange, |delta|&gt;=2→red. Categorical: OK→green, else red.
     /// </summary>
     public class SplitResultPipesController : MonoBehaviour
     {
@@ -196,6 +197,45 @@ namespace WhoWiredThis.Puzzles.Common
 
             int clamped = Mathf.Clamp(colorIndex, 0, subjectCount - 1);
             lamp.SetSelection(visibleToPlayer, clamped);
+            SyncButtonLamps(lamp, clamped);
+        }
+
+        /// <summary>
+        /// ResultLight meshes use <see cref="ButtonLamp"/> emission. Disable decorative random blink
+        /// and force the active subject lamp on so diagnostic colors are visible.
+        /// </summary>
+        private static void SyncButtonLamps(MultiDimension lamp, int activeIndex)
+        {
+            if (lamp == null)
+            {
+                return;
+            }
+
+            var animate = lamp.GetComponent<ControlAnimateLights>();
+            if (animate != null && animate.enabled)
+            {
+                animate.enabled = false;
+                animate.CancelInvoke();
+            }
+
+            for (int i = 0; i < lamp.SubjectCount; i++)
+            {
+                if (!lamp.TryGetSubjectRoot(i, out GameObject subjectRoot) || subjectRoot == null)
+                {
+                    continue;
+                }
+
+                ButtonLamp buttonLamp = subjectRoot.GetComponent<ButtonLamp>();
+                if (buttonLamp == null)
+                {
+                    buttonLamp = subjectRoot.GetComponentInChildren<ButtonLamp>(true);
+                }
+
+                if (buttonLamp != null)
+                {
+                    buttonLamp.on = i == activeIndex;
+                }
+            }
         }
 
         private bool TryResolveSlotIndex(MultiDimension input, out int slotIndex)

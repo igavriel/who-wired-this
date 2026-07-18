@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
   puzzleManager: {fileID: 688847750655734185}
   diagnosticDisplay: {fileID: 0}
+  bodyLayout: 0
   components:
   - input: {fileID: 238572733619012849}
     diagnosticType: 1
@@ -143,6 +144,13 @@ MonoBehaviour:
     tooLowText: 
     tooHighText: 
     mismatchText: WAVE PATTERN DOES NOT MATCH.
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 7822772951869487276}
     diagnosticType: 0
@@ -150,6 +158,13 @@ MonoBehaviour:
     tooLowText: FREQ IS TOO LOW.
     tooHighText: FREQ IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 729658223693443716}
     diagnosticType: 0
@@ -157,12 +172,27 @@ MonoBehaviour:
     tooLowText: GAIN IS TOO LOW.
     tooHighText: GAIN IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   solvedMessage: SIGNAL LINK CALIBRATED.
   systemNoneCorrect: SIGNAL IS UNSTABLE.
   systemOneCorrect: ONE SIGNAL CHANNEL RESPONDS.
   systemTwoCorrect: SIGNAL IS CLOSE.
   partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### FIND THE PATTERN IN THE LOG ###'
+  logTitlePrefix: DIAGNOSTIC LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  footerLine: WAITING FOR PARTNER INPUT
+  lineWidth: 40
+  totalLines: 12
 --- !u!1 &4503684670133526234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,6 +1065,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7732998071210968153, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306221754097362646, guid: efa2223faa65a44889f2492a423bfebf, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -2685,6 +2719,10 @@ PrefabInstance:
     - target: {fileID: 7648358613066156202, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965172444543646573, guid: 772c9e58e361d4117bed456fe5793224, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3561202279528570942, guid: 772c9e58e361d4117bed456fe5793224, type: 3}

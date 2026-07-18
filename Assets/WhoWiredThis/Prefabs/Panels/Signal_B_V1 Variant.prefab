@@ -226,6 +226,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 2236530994074464607, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2237477665971069492, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -834,6 +838,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 9169881232063123659, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9205809981427567483, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -887,6 +895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
   puzzleManager: {fileID: 7774900945367379355}
   diagnosticDisplay: {fileID: 0}
+  bodyLayout: 0
   components:
   - input: {fileID: 1079362921855132830}
     diagnosticType: 0
@@ -894,6 +903,13 @@ MonoBehaviour:
     tooLowText: TUNE IS TOO LOW.
     tooHighText: TUNE IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 7515096140457537206}
     diagnosticType: 0
@@ -901,6 +917,13 @@ MonoBehaviour:
     tooLowText: AMP IS TOO LOW.
     tooHighText: AMP IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 7000050628712290499}
     diagnosticType: 1
@@ -908,12 +931,27 @@ MonoBehaviour:
     tooLowText: 
     tooHighText: 
     mismatchText: MODE PATTERN DOES NOT MATCH.
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   solvedMessage: SIGNAL LINK CALIBRATED.
   systemNoneCorrect: SIGNAL IS UNSTABLE.
   systemOneCorrect: ONE SIGNAL CHANNEL RESPONDS.
   systemTwoCorrect: SIGNAL IS CLOSE.
   partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### FIND THE PATTERN IN THE LOG ###'
+  logTitlePrefix: DIAGNOSTIC LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  footerLine: WAITING FOR PARTNER INPUT
+  lineWidth: 40
+  totalLines: 12
 --- !u!114 &7000050628712290499 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 238572733619012849, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}

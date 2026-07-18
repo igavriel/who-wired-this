@@ -499,6 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
   puzzleManager: {fileID: 4200811316871725700}
   diagnosticDisplay: {fileID: 0}
+  bodyLayout: 0
   components:
   - input: {fileID: 6868853984598887297}
     diagnosticType: 0
@@ -506,6 +507,13 @@ MonoBehaviour:
     tooLowText: FREQ IS TOO LOW.
     tooHighText: FREQ IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 4171253040211116457}
     diagnosticType: 0
@@ -513,6 +521,13 @@ MonoBehaviour:
     tooLowText: GAIN IS TOO LOW.
     tooHighText: GAIN IS TOO HIGH.
     mismatchText: 
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   - input: {fileID: 3498334154033559516}
     diagnosticType: 1
@@ -520,12 +535,27 @@ MonoBehaviour:
     tooLowText: 
     tooHighText: 
     mismatchText: WAVE PATTERN DOES NOT MATCH.
+    rowLabel: COMPONENT
+    correctStatus: OK
+    closeTooLowStatus: A BIT HIGH
+    closeTooHighStatus: A BIT LOW
+    farTooLowStatus: TOO HIGH
+    farTooHighStatus: TOO LOW
+    mismatchStatus: NOT BALANCED
     eligibleForHints: 1
   solvedMessage: SIGNAL LINK CALIBRATED.
   systemNoneCorrect: SIGNAL IS UNSTABLE.
   systemOneCorrect: ONE SIGNAL CHANNEL RESPONDS.
   systemTwoCorrect: SIGNAL IS CLOSE.
   partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### FIND THE PATTERN IN THE LOG ###'
+  logTitlePrefix: DIAGNOSTIC LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  footerLine: WAITING FOR PARTNER INPUT
+  lineWidth: 40
+  totalLines: 12
 --- !u!114 &3082796488159849022 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1804619438778685715, guid: 72adafd3addd24fd19b6ad1a00b76ca6, type: 3}
