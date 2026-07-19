@@ -224,14 +224,94 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[0].label
+      value: TUNE
+      objectReference: {fileID: 0}
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[1].label
+      value: MODE
+      objectReference: {fileID: 0}
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[0].display
+      value: 
+      objectReference: {fileID: 8876350188898915186}
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[1].display
+      value: 
+      objectReference: {fileID: 6503936460192240213}
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[0].sourceInput
+      value: 
+      objectReference: {fileID: 8118027822504411789}
+    - target: {fileID: 353600387725215402, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: slots.Array.data[1].sourceInput
+      value: 
+      objectReference: {fileID: 2267141736304180944}
     - target: {fileID: 1324512571802788048, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1512378728622305426, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: 'inputOrder.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8118027822504411789}
+    - target: {fileID: 1512378728622305426, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: 'inputOrder.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2267141736304180944}
     - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 5467342557167739274}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].input
+      value: 
+      objectReference: {fileID: 8118027822504411789}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].input
+      value: 
+      objectReference: {fileID: 2267141736304180944}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].tooLowText
+      value: TUNE IS TOO LOW.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].tooLowText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].correctText
+      value: TUNE LOOKS STABLE.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].tooHighText
+      value: TUNE IS TOO HIGH.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].correctText
+      value: WAVE MODE MATCHES.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].tooHighText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].mismatchText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].mismatchText
+      value: WAVE MODE DOES NOT MATCH.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[0].diagnosticType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2035577596599024205, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].diagnosticType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2706264579464113469, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -328,6 +408,54 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].input
+      value: 
+      objectReference: {fileID: 2267141736304180944}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].input
+      value: 
+      objectReference: {fileID: 1592393619100879013}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].tooLowText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].tooLowText
+      value: AMP IS TOO LOW.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].correctText
+      value: MODE PATTERN MATCHES.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].tooHighText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].correctText
+      value: AMP LOOKS STABLE.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].tooHighText
+      value: AMP IS TOO HIGH.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].mismatchText
+      value: MODE PATTERN DOES NOT MATCH.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].mismatchText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[1].diagnosticType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017503172941430589, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: components.Array.data[2].diagnosticType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7196113271199116581, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.299
@@ -360,6 +488,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[0].label
+      value: TUNE
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[1].label
+      value: MODE
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[0].highlightAnchor
+      value: 
+      objectReference: {fileID: 4385405842863791001}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[1].highlightAnchor
+      value: 
+      objectReference: {fileID: 8150913692261586275}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[0].interactableReference
+      value: 
+      objectReference: {fileID: 1508475349642239200}
+    - target: {fileID: 7478446815307929893, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: interactableButtons.Array.data[1].interactableReference
+      value: 
+      objectReference: {fileID: 3256452957629503528}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: 'interactionsToDisable.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8118027822504411789}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: 'interactionsToDisable.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2267141736304180944}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: puzzleElements.Array.data[0].element
+      value: 
+      objectReference: {fileID: 8118027822504411789}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: puzzleElements.Array.data[1].element
+      value: 
+      objectReference: {fileID: 2267141736304180944}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: puzzleElements.Array.data[0].correctIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7774900945367379355, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+      propertyPath: puzzleElements.Array.data[1].correctIndex
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -368,8 +544,95 @@ PrefabInstance:
       addedObject: {fileID: 4479848616299777925}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+--- !u!114 &1508475349642239200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7691167151648013043, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c3e8d1b42f4a6e9c0d1e2f3a4b5c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionSubjectCycler
+--- !u!114 &1592393619100879013 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7515096140457537206, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &2267141736304180944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7000050628712290499, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &3256452957629503528 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6008526648289066555, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c3e8d1b42f4a6e9c0d1e2f3a4b5c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimensionSubjectCycler
+--- !u!4 &4385405842863791001 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4796257676083051914, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4622534420189556874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4500546286072632985, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
   m_PrefabInstance: {fileID: 9102810109221414419}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6503936460192240213 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2598913781404955718, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &8118027822504411789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1079362921855132830, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!4 &8150913692261586275 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1102943485421728624, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8876350188898915186 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 395345791313556833, guid: d14e85c2ecbc04434affbad83627f328, type: 3}
+  m_PrefabInstance: {fileID: 9102810109221414419}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
