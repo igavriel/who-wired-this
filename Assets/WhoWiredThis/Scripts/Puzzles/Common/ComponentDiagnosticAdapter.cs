@@ -119,10 +119,6 @@ namespace WhoWiredThis.Puzzles.Common
             {
                 diagnosticDisplay.SetSuccess(solvedMessage);
             }
-            else
-            {
-                diagnosticDisplay.SetWaiting();
-            }
         }
 
         private void OnDisable()
@@ -131,16 +127,6 @@ namespace WhoWiredThis.Puzzles.Common
             {
                 puzzleManager.OnAttemptSubmitted -= HandleAttemptSubmitted;
             }
-        }
-
-        private void Start()
-        {
-            if (diagnosticDisplay == null || puzzleManager == null || puzzleManager.Solved)
-            {
-                return;
-            }
-
-            diagnosticDisplay.SetWaiting();
         }
 
         private void HandleAttemptSubmitted(MultiDimensionAttemptResult result)
@@ -195,6 +181,43 @@ namespace WhoWiredThis.Puzzles.Common
                 headerLine2,
                 logTitlePrefix,
                 attemptCounter,
+                statusLabel,
+                statusValue,
+                rows,
+                footerLine,
+                lineWidth,
+                totalLines);
+        }
+
+        /// <summary>40×12 pre-submit standby for the partner monitor (LogRows layout only).</summary>
+        public string BuildStandbyBody()
+        {
+            if (bodyLayout != ComponentDiagnosticBodyLayout.LogRows)
+            {
+                return partnerLine ?? string.Empty;
+            }
+
+            var rows = new List<string>();
+            if (components != null)
+            {
+                for (int i = 0; i < components.Length; i++)
+                {
+                    ComponentDiagnosticDefinition def = components[i];
+                    if (def == null)
+                    {
+                        continue;
+                    }
+
+                    string label = string.IsNullOrEmpty(def.rowLabel) ? "COMPONENT" : def.rowLabel;
+                    rows.Add(ComponentDiagnosticLogFormatter.FormatLabelStatus(label, "STANDBY", lineWidth));
+                }
+            }
+
+            return ComponentDiagnosticLogFormatter.BuildLogBody(
+                headerLine1,
+                headerLine2,
+                logTitlePrefix,
+                0,
                 statusLabel,
                 statusValue,
                 rows,

@@ -164,6 +164,7 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [firstperson_tutorial_room_plan_bbd75af7.plan.md](firstperson_tutorial_room_plan_bbd75af7.plan.md) | Minimal asymmetric co-op tutorial room reusing FP + interaction + visibility. |
 | [puzzle-signal-v1.md](puzzle-signal-v1.md) | **In progress:** Phases 1–3 done on `Puzzle Signal.unity`; Phases 4–5 (5-slot visualizer, QA) open. |
 | [signal-live-scope-and-waveform-diagnostic.md](signal-live-scope-and-waveform-diagnostic.md) | **Implemented:** Signal live scope preview on control change (`OnActiveIndexChanged` + `LiveCombinationPreviewBridge`) + Pipes-style 40×12 log diagnostic with target-waveform ASCII (`SignalDiagnosticAdapter`); Puzzle Signal only. Play-mode validated 2026-07-22. |
+| [puzzle-startup-diagnostic-intro-standby.md](puzzle-startup-diagnostic-intro-standby.md) | **Implemented:** Dual-surface startup for Pipes + Signal — Rules panel TSM role intro + Monitor standby log via `PuzzleDiagnosticStartupSequence`; adapters expose `BuildStandbyBody()`. |
 
 ---
 

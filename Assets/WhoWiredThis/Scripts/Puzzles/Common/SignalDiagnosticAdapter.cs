@@ -61,10 +61,6 @@ namespace WhoWiredThis.Puzzles.Common
             {
                 diagnosticDisplay.SetSuccess(solvedMessage);
             }
-            else
-            {
-                diagnosticDisplay.SetWaiting();
-            }
         }
 
         private void OnDisable()
@@ -75,14 +71,22 @@ namespace WhoWiredThis.Puzzles.Common
             }
         }
 
-        private void Start()
+        /// <summary>40×12 pre-submit standby for the partner monitor (no target waveform).</summary>
+        public string BuildStandbyBody()
         {
-            if (diagnosticDisplay == null || puzzleManager == null || puzzleManager.Solved)
-            {
-                return;
-            }
-
-            diagnosticDisplay.SetWaiting();
+            return SignalDiagnosticFormatter.BuildStandbyDiagnostic(
+                "STANDBY",
+                headerLine1,
+                headerLine2,
+                logTitlePrefix,
+                statusLabel,
+                statusValue,
+                rateLabel,
+                powerLabel,
+                waveformLabel,
+                footerLine,
+                lineWidth,
+                totalLines);
         }
 
         private void HandleAttemptSubmitted(MultiDimensionAttemptResult result)

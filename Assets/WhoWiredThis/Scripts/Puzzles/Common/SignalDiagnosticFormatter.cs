@@ -86,5 +86,51 @@ namespace WhoWiredThis.Puzzles.Common
 
             return ComponentDiagnosticLogFormatter.FitToScreen(sb.ToString().Split('\n'), width, totalLines);
         }
+
+        /// <summary>
+        /// Pre-submit standby log: same chrome as a failed attempt but every metric row reads
+        /// <paramref name="standbyStatus"/> and the waveform block is blank (no target hint).
+        /// </summary>
+        public static string BuildStandbyDiagnostic(
+            string standbyStatus = "STANDBY",
+            string headerLine1 = "OTHER PLAYER SUBMITS // YOU READ",
+            string headerLine2 = "### MATCH THE TARGET SIGNAL ###",
+            string logTitlePrefix = "SIGNAL LOG // REVISION",
+            string statusLabel = "STATUS",
+            string statusValue = "ANALYZING",
+            string rateLabel = "SIGNAL RATE",
+            string powerLabel = "SIGNAL POWER",
+            string waveformLabel = "WAVEFORM MATCH",
+            string footerLine = "TELL YOUR PARTNER WHAT YOU SEE",
+            int width = ComponentDiagnosticLogFormatter.DefaultWidth,
+            int totalLines = ComponentDiagnosticLogFormatter.DefaultTotalLines)
+        {
+            string[] blankWave = SignalWaveformAsciiLibrary.GetLines(0);
+            for (int i = 0; i < blankWave.Length; i++)
+            {
+                blankWave[i] = string.Empty;
+            }
+
+            var lines = new List<string>(totalLines)
+            {
+                ComponentDiagnosticLogFormatter.PadRight(headerLine1, width),
+                ComponentDiagnosticLogFormatter.PadRight(headerLine2, width),
+                ComponentDiagnosticLogFormatter.PadRight($"{logTitlePrefix} 0", width),
+                ComponentDiagnosticLogFormatter.FormatLabelStatus(statusLabel, statusValue, width)
+            };
+
+            for (int i = 0; i < blankWave.Length; i++)
+            {
+                lines.Add(blankWave[i] ?? string.Empty);
+            }
+
+            lines.Add(ComponentDiagnosticLogFormatter.FormatLabelStatus(rateLabel, standbyStatus, width));
+            lines.Add(ComponentDiagnosticLogFormatter.FormatLabelStatus(powerLabel, standbyStatus, width));
+            lines.Add(ComponentDiagnosticLogFormatter.FormatLabelStatus(waveformLabel, standbyStatus, width));
+            lines.Add(string.Empty);
+            lines.Add(ComponentDiagnosticLogFormatter.PadRight(footerLine, width));
+
+            return ComponentDiagnosticLogFormatter.FitToScreen(lines, width, totalLines);
+        }
     }
 }
