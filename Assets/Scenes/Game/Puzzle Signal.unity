@@ -622,6 +622,74 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292135621}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &292984132 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3958861288484912639, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+  m_PrefabInstance: {fileID: 1589562381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &292984135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292984132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59adb58507e54dec83cb743170af85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SignalDiagnosticAdapter
+  puzzleManager: {fileID: 350930814}
+  diagnosticDisplay: {fileID: 1588602194}
+  rateInput: {fileID: 1967542682}
+  powerInput: {fileID: 497740648}
+  waveformInput: {fileID: 1355264719}
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### MATCH THE TARGET SIGNAL ###'
+  logTitlePrefix: SIGNAL LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  rateLabel: SIGNAL RATE
+  powerLabel: SIGNAL POWER
+  waveformLabel: WAVEFORM MATCH
+  footerLine: TELL YOUR PARTNER WHAT YOU SEE
+  solvedMessage: SIGNAL LINK CALIBRATED.
+  lineWidth: 40
+  totalLines: 12
+--- !u!1 &297948613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9104862925214006166, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+  m_PrefabInstance: {fileID: 714350131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &297948616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297948613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59adb58507e54dec83cb743170af85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.SignalDiagnosticAdapter
+  puzzleManager: {fileID: 960074571}
+  diagnosticDisplay: {fileID: 389738978}
+  rateInput: {fileID: 354676507}
+  powerInput: {fileID: 2053626295}
+  waveformInput: {fileID: 1091092620}
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### MATCH THE TARGET SIGNAL ###'
+  logTitlePrefix: SIGNAL LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  rateLabel: SIGNAL RATE
+  powerLabel: SIGNAL POWER
+  waveformLabel: WAVEFORM MATCH
+  footerLine: TELL YOUR PARTNER WHAT YOU SEE
+  solvedMessage: SIGNAL LINK CALIBRATED.
+  lineWidth: 40
+  totalLines: 12
 --- !u!114 &350930814 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1564528800950291336, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
@@ -908,6 +976,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1988991488681006015, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988991488681006015, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 389738978}
@@ -921,6 +993,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3072844573908871572, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3082209614352882231, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3082209614352882231, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
@@ -996,6 +1072,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9104862925214006166, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 297948616}
+    - targetCorrespondingSourceObject: {fileID: 4991149015286994704, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 714350137}
     - targetCorrespondingSourceObject: {fileID: 6415907232977152311, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -1045,6 +1127,67 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+--- !u!114 &714350132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8072253470458382650, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+  m_PrefabInstance: {fileID: 714350131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &714350133 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3712490829604689179, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+  m_PrefabInstance: {fileID: 714350131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &714350134 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1362572030490793020, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+  m_PrefabInstance: {fileID: 714350131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!1 &714350135 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4991149015286994704, guid: a6bc45b9228944710be86581c0a81d01, type: 3}
+  m_PrefabInstance: {fileID: 714350131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &714350137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714350135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a4baabc2c4e4b03b531ad641399a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.LiveCombinationPreviewBridge
+  visibleToPlayer: 1
+  slots:
+  - label: FREQ
+    sourceInput: {fileID: 354676507}
+    display: {fileID: 714350133}
+  - label: WAVE
+    sourceInput: {fileID: 1091092620}
+    display: {fileID: 714350134}
+  - label: GAIN
+    sourceInput: {fileID: 2053626295}
+    display: {fileID: 714350132}
 --- !u!136 &819684639 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 5613318576446748892, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
@@ -8689,6 +8832,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2247437382395861294, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247437382395861294, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 1588602194}
@@ -8765,6 +8912,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7092182716581223518, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092182716581223518, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
       propertyPath: diagnosticDisplay
       value: 
       objectReference: {fileID: 1588602194}
@@ -8784,6 +8935,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3958861288484912639, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 292984135}
+    - targetCorrespondingSourceObject: {fileID: 1003832535560081785, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1589562387}
     - targetCorrespondingSourceObject: {fileID: 1271046883506614110, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -8833,6 +8990,67 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+--- !u!114 &1589562382 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4083687383288450899, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+  m_PrefabInstance: {fileID: 1589562381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &1589562383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8876350188898915186, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+  m_PrefabInstance: {fileID: 1589562381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!114 &1589562384 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6503936460192240213, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+  m_PrefabInstance: {fileID: 1589562381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b905ec74cd94d59a6c2c33d1acf6f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Visibility.MultiDimension
+--- !u!1 &1589562385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1003832535560081785, guid: 6ed91498a8b26498f8a45cd85d0217d5, type: 3}
+  m_PrefabInstance: {fileID: 1589562381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1589562387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589562385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a4baabc2c4e4b03b531ad641399a30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.LiveCombinationPreviewBridge
+  visibleToPlayer: 2
+  slots:
+  - label: TUNE
+    sourceInput: {fileID: 1967542682}
+    display: {fileID: 1589562383}
+  - label: MODE
+    sourceInput: {fileID: 1355264719}
+    display: {fileID: 1589562384}
+  - label: AMP
+    sourceInput: {fileID: 497740648}
+    display: {fileID: 1589562382}
 --- !u!1 &1637695269
 GameObject:
   m_ObjectHideFlags: 0

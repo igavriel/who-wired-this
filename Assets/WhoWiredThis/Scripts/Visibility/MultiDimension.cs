@@ -61,6 +61,13 @@ namespace WhoWiredThis.Visibility
         private bool _defaultsCaptured;
         private bool _loggedMissingSwitchAudioSource;
 
+        /// <summary>
+        /// Raised after <see cref="activeSubjectIndex"/> changes through the public selection APIs
+        /// (<see cref="SetSelection"/>, <see cref="SetActiveSubjectIndex"/>, <see cref="AdvanceIndexForPlayer"/>).
+        /// Payload is the new active subject index. Not raised when the index is unchanged.
+        /// </summary>
+        public event Action<int> OnActiveIndexChanged;
+
         private void Awake()
         {
             CaptureDefaultLayers();
@@ -113,16 +120,20 @@ namespace WhoWiredThis.Visibility
         /// </summary>
         public void SetSelection(AllowedPlayerTag player, int subjectIndex)
         {
+            int previousIndex = activeSubjectIndex;
             visibleToPlayer = player;
             activeSubjectIndex = subjectIndex;
             ApplyConfiguration();
+            RaiseIndexChangedIfNeeded(previousIndex);
         }
 
         /// <summary>Updates the active subject index without changing the configured visibility player tag.</summary>
         public void SetActiveSubjectIndex(int subjectIndex)
         {
+            int previousIndex = activeSubjectIndex;
             activeSubjectIndex = subjectIndex;
             ApplyConfiguration();
+            RaiseIndexChangedIfNeeded(previousIndex);
         }
 
         /// <summary>Number of subject slots (length of the subjects array).</summary>
@@ -199,7 +210,19 @@ namespace WhoWiredThis.Visibility
                 TryPlaySwitchAudio();
             }
 
+            // SetSelection sees an already-updated index, so it will not raise the change event itself.
             SetSelection(visibleToPlayer, activeSubjectIndex);
+            RaiseIndexChangedIfNeeded(previousIndex);
+        }
+
+        private void RaiseIndexChangedIfNeeded(int previousIndex)
+        {
+            if (previousIndex == activeSubjectIndex)
+            {
+                return;
+            }
+
+            OnActiveIndexChanged?.Invoke(activeSubjectIndex);
         }
 
         /// <summary>
