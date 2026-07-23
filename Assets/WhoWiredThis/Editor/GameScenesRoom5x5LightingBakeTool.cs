@@ -9,13 +9,14 @@ namespace WhoWiredThis.Editor
 {
     /// <summary>
     /// Opens each top-level <c>Assets/Scenes/Game/*.unity</c> scene that contains
-    /// <c>Room5x5</c> and runs a full lightmap bake (same as Generate Lighting).
+    /// <c>Room5x5-Static</c> and runs a full lightmap bake (same as Generate Lighting).
     /// </summary>
     public static class GameScenesRoom5x5LightingBakeTool
     {
-        private const string MenuPath = "Who Wired This/Scenes/Bake Lighting (Active Scene, Room5x5)";
-        private const string BatchMenuPath = "Who Wired This/Scenes/Bake Lighting (All Game Scenes With Room5x5)";
-        private const string McpBatchMenuPath = "Who Wired This/Scenes/MCP/Bake Lighting (All Game Scenes With Room5x5)";
+        private const string Room5x5StaticPrefabPath = "Assets/WhoWiredThis/Prefabs/Rooms/Room5x5-Static.prefab";
+        private const string MenuPath = "Who Wired This/Scenes/Bake Lighting (Active Scene, Room5x5-Static)";
+        private const string BatchMenuPath = "Who Wired This/Scenes/Bake Lighting (All Game Scenes With Room5x5-Static)";
+        private const string McpBatchMenuPath = "Who Wired This/Scenes/MCP/Bake Lighting (All Game Scenes With Room5x5-Static)";
 
         private static readonly List<string> PendingScenePaths = new List<string>();
         private static string restoreActiveScenePath;
@@ -27,10 +28,10 @@ namespace WhoWiredThis.Editor
         public static void BakeActiveScene()
         {
             Scene scene = SceneManager.GetActiveScene();
-            if (!Room5x5StaticGiSetupTool.SceneContainsRoom5x5(scene))
+            if (!SceneContainsRoom5x5Static(scene))
             {
                 Debug.LogWarning(
-                    $"[GameScenesRoom5x5LightingBakeTool] Active scene '{scene.path}' has no Room5x5. Skipped.");
+                    $"[GameScenesRoom5x5LightingBakeTool] Active scene '{scene.path}' has no Room5x5-Static. Skipped.");
                 return;
             }
 
@@ -50,13 +51,13 @@ namespace WhoWiredThis.Editor
             List<string> scenePaths = CollectScenePathsWithRoom5x5();
             if (scenePaths.Count == 0)
             {
-                Debug.Log("[GameScenesRoom5x5LightingBakeTool] No Game scenes with Room5x5 found.");
+                Debug.Log("[GameScenesRoom5x5LightingBakeTool] No Game scenes with Room5x5-Static found.");
                 return;
             }
 
             if (!EditorUtility.DisplayDialog(
                     "Bake lighting for Game scenes",
-                    $"Bake lighting for {scenePaths.Count} scene(s) with Room5x5?\n\n" +
+                    $"Bake lighting for {scenePaths.Count} scene(s) with Room5x5-Static?\n\n" +
                     "This can take several minutes per scene and will overwrite each scene's LightingData.",
                     "Bake",
                     "Cancel"))
@@ -82,7 +83,7 @@ namespace WhoWiredThis.Editor
             List<string> scenePaths = CollectScenePathsWithRoom5x5();
             if (scenePaths.Count == 0)
             {
-                Debug.Log("[GameScenesRoom5x5LightingBakeTool] MCP batch: no Game scenes with Room5x5 found.");
+                Debug.Log("[GameScenesRoom5x5LightingBakeTool] MCP batch: no Game scenes with Room5x5-Static found.");
                 return;
             }
 
@@ -169,14 +170,16 @@ namespace WhoWiredThis.Editor
 
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
             Scene scene = SceneManager.GetActiveScene();
-            if (!Room5x5StaticGiSetupTool.SceneContainsRoom5x5(scene))
+            if (!SceneContainsRoom5x5Static(scene))
             {
                 Debug.LogWarning(
-                    $"[GameScenesRoom5x5LightingBakeTool] '{scenePath}' no longer has Room5x5. Skipped.");
+                    $"[GameScenesRoom5x5LightingBakeTool] '{scenePath}' no longer has Room5x5-Static. Skipped.");
                 skippedSceneCount++;
                 BakeNextSceneAsync();
                 return;
             }
+
+            Room5x5StaticGiSetupTool.EnsureRoom5x5StaticInScene(scene, logScenePath: false);
 
             Debug.Log(
                 $"[GameScenesRoom5x5LightingBakeTool] Baking ({bakedSceneCount + skippedSceneCount + 1}) '{scenePath}'...");
@@ -229,12 +232,14 @@ namespace WhoWiredThis.Editor
             }
 
             Scene scene = SceneManager.GetActiveScene();
-            if (!Room5x5StaticGiSetupTool.SceneContainsRoom5x5(scene))
+            if (!SceneContainsRoom5x5Static(scene))
             {
                 Debug.LogWarning(
-                    $"[GameScenesRoom5x5LightingBakeTool] '{scenePath}' has no Room5x5. Skipped.");
+                    $"[GameScenesRoom5x5LightingBakeTool] '{scenePath}' has no Room5x5-Static. Skipped.");
                 return false;
             }
+
+            Room5x5StaticGiSetupTool.EnsureRoom5x5StaticInScene(scene, logScenePath: false);
 
             if (showProgressBar)
             {
@@ -252,15 +257,37 @@ namespace WhoWiredThis.Editor
         private static List<string> CollectScenePathsWithRoom5x5()
         {
             var scenePaths = new List<string>();
+            string roomGuid = Room5x5StaticPrefabGuid;
+            if (string.IsNullOrEmpty(roomGuid))
+            {
+                Debug.LogError(
+                    $"[GameScenesRoom5x5LightingBakeTool] Could not resolve GUID for '{Room5x5StaticPrefabPath}'.");
+                return scenePaths;
+            }
+
             foreach (string scenePath in Room5x5StaticGiSetupTool.EnumerateTopLevelGameScenePaths())
             {
-                if (Room5x5StaticGiSetupTool.SceneFileContainsRoom5x5(scenePath))
+                if (SceneFileContainsRoom5x5Static(scenePath, roomGuid))
                 {
                     scenePaths.Add(scenePath);
                 }
             }
 
             return scenePaths;
+        }
+
+        private static string Room5x5StaticPrefabGuid =>
+            Room5x5StaticGiSetupTool.Room5x5PrefabGuid;
+
+        private static bool SceneContainsRoom5x5Static(Scene scene)
+        {
+            return Room5x5StaticGiSetupTool.SceneContainsRoom5x5(scene);
+        }
+
+        private static bool SceneFileContainsRoom5x5Static(string scenePath, string roomGuid)
+        {
+            return !string.IsNullOrEmpty(roomGuid) &&
+                   System.IO.File.ReadAllText(scenePath).Contains(roomGuid);
         }
 
         private static void CancelRunningBakeIfNeeded()

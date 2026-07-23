@@ -9,19 +9,28 @@ using UnityEngine.SceneManagement;
 namespace WhoWiredThis.Editor
 {
     /// <summary>
-    /// Ensures every <c>Room5x5</c> prefab instance in a scene has full static editor flags
+    /// Ensures every <c>Room5x5-Static</c> prefab instance in a scene has full static editor flags
     /// (Contribute GI, etc.) on all descendants — required for baked lighting to match Tutorial.
     /// </summary>
     public static class Room5x5StaticGiSetupTool
     {
-        private const string Room5x5PrefabPath = "Assets/WhoWiredThis/Prefabs/Rooms/Room5x5.prefab";
-        public const string Room5x5PrefabGuid = "1fa38ca0ec0bd4b2a9f949a51f345a12";
+        private const string Room5x5PrefabPath = "Assets/WhoWiredThis/Prefabs/Rooms/Room5x5-Static.prefab";
+        public static string Room5x5PrefabGuid => AssetDatabase.AssetPathToGUID(Room5x5PrefabPath);
         private const string GameScenesFolder = "Assets/Scenes/Game";
         private const string MenuPath = "Who Wired This/Scenes/Ensure Room5x5 Static GI (Active Scene)";
         private const string BatchMenuPath = "Who Wired This/Scenes/Ensure Room5x5 Static GI (All Game Scenes)";
         private const string McpBatchMenuPath = "Who Wired This/Scenes/MCP/Ensure Room5x5 Static GI (All Game Scenes)";
 
-        private static readonly StaticEditorFlags TargetFlags = (StaticEditorFlags)(-1);
+        // Unity serializes "all static flags enabled" as 2147483647 (not (StaticEditorFlags)(-1)).
+        private const int FullyStaticSerializedValue = 2147483647;
+        private static readonly StaticEditorFlags TargetFlags = (StaticEditorFlags)FullyStaticSerializedValue;
+        private static bool? room5x5PrefabIsFullyStatic;
+
+        private static bool IsFullyStatic(StaticEditorFlags flags)
+        {
+            int value = (int)flags;
+            return value == FullyStaticSerializedValue || value == -1;
+        }
 
         [MenuItem(MenuPath)]
         public static void EnsureActiveScene()
@@ -96,7 +105,8 @@ namespace WhoWiredThis.Editor
 
         public static bool SceneFileContainsRoom5x5(string scenePath)
         {
-            return File.ReadAllText(scenePath).Contains(Room5x5PrefabGuid);
+            string guid = Room5x5PrefabGuid;
+            return !string.IsNullOrEmpty(guid) && File.ReadAllText(scenePath).Contains(guid);
         }
 
         public static bool SceneContainsRoom5x5(Scene scene)
@@ -112,6 +122,17 @@ namespace WhoWiredThis.Editor
                 if (logScenePath)
                 {
                     Debug.Log($"[Room5x5StaticGiSetupTool] No Room5x5 in '{scene.path}'. Skipped.");
+                }
+
+                return 0;
+            }
+
+            if (IsRoom5x5PrefabFullyStatic())
+            {
+                if (logScenePath)
+                {
+                    Debug.Log(
+                        $"[Room5x5StaticGiSetupTool] '{scene.path}': Room5x5-Static prefab already has static GI flags. Skipped {roomRoots.Count} instance(s).");
                 }
 
                 return 0;
@@ -141,13 +162,55 @@ namespace WhoWiredThis.Editor
 
             foreach (GameObject rootObject in scene.GetRootGameObjects())
             {
-                if (PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(rootObject) == Room5x5PrefabPath)
+                string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(rootObject);
+                if (string.IsNullOrEmpty(assetPath))
+                {
+                    continue;
+                }
+
+                string guid = Room5x5PrefabGuid;
+                if (!string.IsNullOrEmpty(guid) && AssetDatabase.AssetPathToGUID(assetPath) == guid)
                 {
                     roots.Add(rootObject);
                 }
             }
 
             return roots;
+        }
+
+        private static bool IsRoom5x5PrefabFullyStatic()
+        {
+            if (room5x5PrefabIsFullyStatic.HasValue)
+            {
+                return room5x5PrefabIsFullyStatic.Value;
+            }
+
+            GameObject prefabRoot = PrefabUtility.LoadPrefabContents(Room5x5PrefabPath);
+            if (prefabRoot == null)
+            {
+                room5x5PrefabIsFullyStatic = false;
+                return false;
+            }
+
+            try
+            {
+                foreach (Transform transform in prefabRoot.GetComponentsInChildren<Transform>(true))
+                {
+                    StaticEditorFlags current = GameObjectUtility.GetStaticEditorFlags(transform.gameObject);
+                    if (!IsFullyStatic(current))
+                    {
+                        room5x5PrefabIsFullyStatic = false;
+                        return false;
+                    }
+                }
+
+                room5x5PrefabIsFullyStatic = true;
+                return true;
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(prefabRoot);
+            }
         }
 
         private static int ApplyStaticFlagsUnderRoot(GameObject roomRoot)
@@ -158,7 +221,7 @@ namespace WhoWiredThis.Editor
             {
                 GameObject gameObject = transform.gameObject;
                 StaticEditorFlags current = GameObjectUtility.GetStaticEditorFlags(gameObject);
-                if (current == TargetFlags)
+                if (IsFullyStatic(current))
                 {
                     continue;
                 }
