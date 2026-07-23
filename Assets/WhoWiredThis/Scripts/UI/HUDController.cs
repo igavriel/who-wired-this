@@ -56,12 +56,21 @@ namespace WhoWiredThis.UI
             helpMenuButton?.onClick.AddListener(ToggleHelp);
             aboutMenuButton?.onClick.AddListener(ShowAbout);
 
-            ScoreManager.Instance.OnScoreChanged += RefreshScore;
-            TimerManager.Instance.OnTimerUpdated  += RefreshTimer;
-            GameManager.Instance.OnZoneChanged    += RefreshZone;
+            if (TimerManager.Instance != null)
+            {
+                TimerManager.Instance.OnTimerUpdated += RefreshTimer;
+            }
 
-            RefreshScore(ScoreManager.Instance.CurrentScore);
-            RefreshZone(GameManager.Instance.currentZoneName);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnZoneChanged += RefreshZone;
+                RefreshZone(GameManager.Instance.currentZoneName);
+            }
+
+            if (scoreText != null)
+            {
+                scoreText.text = string.Empty;
+            }
 
             inventoryPanel?.SetActive(false);
             menuPanel?.SetActive(false);
@@ -77,14 +86,6 @@ namespace WhoWiredThis.UI
 
         // ── Refresh helpers ──────────────────────────────────────────────────
 
-        void RefreshScore(int score)
-        {
-            if (scoreText != null)
-            {
-                scoreText.text = $"Score: {score}/{ScoreManager.MaxScore}";
-            }
-        }
-
         void RefreshTimer(float seconds)
         {
             if (timerText == null)
@@ -92,8 +93,9 @@ namespace WhoWiredThis.UI
                 return;
             }
 
-            int m = (int)seconds / 60;
-            int s = (int)seconds % 60;
+            int total = Mathf.Max(0, Mathf.FloorToInt(seconds));
+            int m = total / 60;
+            int s = total % 60;
             timerText.text = $"{m:00}:{s:00}";
         }
 

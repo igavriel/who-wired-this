@@ -43,9 +43,10 @@ namespace WhoWiredThis.Core
 
             isFlowTransitionActive = true;
             ExitAllPanelFocus();
+            TimerManager.Instance?.StopLevelCountdown();
             PlaytestRunSummary.Clear();
             SceneRoleState.Reset();
-            PlaytestRunTotal.ResetRun();
+            ScoreManager.ResetRun();
 
             if (!PlaytestSceneLoadUtility.TryLoadSingleScene(startSceneName, out error, clearSharedHistory: true))
             {
@@ -71,11 +72,12 @@ namespace WhoWiredThis.Core
 
             isFlowTransitionActive = true;
             ExitAllPanelFocus();
+            TimerManager.Instance?.StopLevelCountdown();
 
             string activeSceneName = SceneManager.GetActiveScene().name;
-            if (ShouldCountSceneForPlaytestTotal(activeSceneName))
+            if (ScoreManager.IsGameplayLevel(activeSceneName))
             {
-                PlaytestRunTotal.CompleteCurrentScene(activeSceneName);
+                ScoreManager.CompleteCurrentScene(activeSceneName);
             }
 
             PlaytestRunSummary.Set(PlaytestRunSummaryBuilder.Build(abandoned));
@@ -89,13 +91,6 @@ namespace WhoWiredThis.Core
             }
 
             return true;
-        }
-
-        private static bool ShouldCountSceneForPlaytestTotal(string sceneName)
-        {
-            return string.Equals(sceneName, "Tutorial", System.StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Pipes", System.StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Signal", System.StringComparison.Ordinal);
         }
 
         private static void ExitAllPanelFocus()

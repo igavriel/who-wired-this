@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WhoWiredThis.Core;
 using WhoWiredThis.Environment;
@@ -13,18 +12,12 @@ namespace WhoWiredThis.UI
 {
     public class GameOverSceneController : MonoBehaviour
     {
-        private const string BestTimeKey = "PlaytestBestTimeSeconds";
-
-        [SerializeField] private TMP_Text completionTimeLabel;
-        [SerializeField] private TMP_Text bestTimeLabel;
         [SerializeField] private TMP_Text crewRankLabel;
         [SerializeField] private Button restartButton;
         [SerializeField] private Button quitButton;
         [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
-        [SerializeField] private KeyCode bossModifierKey = KeyCode.F12;
-        [SerializeField] private KeyCode bossResetKey = KeyCode.Alpha1;
 
         private bool hasRestarted;
 
@@ -34,59 +27,19 @@ namespace WhoWiredThis.UI
 
             float elapsedSeconds = PlaytestRunSummary.HasSummary
                 ? PlaytestRunSummary.Current.RunTimeSeconds
-                : PlaytestRunTotal.GetTotalSeconds();
+                : ScoreManager.GetTotalSeconds();
 
-            Debug.Log($"[GameOverSceneController] Final total elapsed time: {elapsedSeconds:F2}s ({PlaytestRunTotal.FormatTime(elapsedSeconds)}).");
-
-            float bestSeconds = PlayerPrefs.GetFloat(BestTimeKey, 0f);
-            bool hasValidBest = PlayerPrefs.HasKey(BestTimeKey) && bestSeconds > 0f;
-            bool hasValidCurrentRun = elapsedSeconds > 0f;
-
-            if (!hasValidBest)
-            {
-                if (hasValidCurrentRun)
-                {
-                    bestSeconds = elapsedSeconds;
-                    PlayerPrefs.SetFloat(BestTimeKey, bestSeconds);
-                    PlayerPrefs.Save();
-                    Debug.Log($"[GameOverSceneController] First valid run. Best time initialized to {bestSeconds:F2}s.");
-                }
-                else
-                {
-                    Debug.Log("[GameOverSceneController] No valid current run time yet; 00:00 best is ignored.");
-                }
-            }
-            else
-            {
-                if (hasValidCurrentRun && elapsedSeconds < bestSeconds)
-                {
-                    bestSeconds = elapsedSeconds;
-                    PlayerPrefs.SetFloat(BestTimeKey, bestSeconds);
-                    PlayerPrefs.Save();
-                    Debug.Log($"[GameOverSceneController] New best time saved: {bestSeconds:F2}s.");
-                }
-                else
-                {
-                    Debug.Log($"[GameOverSceneController] Best time not updated. Current best: {bestSeconds:F2}s.");
-                }
-            }
-
-            if (completionTimeLabel != null)
-            {
-                completionTimeLabel.text = $"Completion Time: {PlaytestRunTotal.FormatTime(elapsedSeconds)}";
-            }
-
-            if (bestTimeLabel != null)
-            {
-                bestTimeLabel.text = $"Best Time: {PlaytestRunTotal.FormatTime(bestSeconds)}";
-            }
-
-            if (crewRankLabel != null)
-            {
-                crewRankLabel.text = $"Crew Rank: {GetCrewRank(elapsedSeconds)}";
-            }
+            int teamScore = PlaytestTeamScoreCalculator.CalculateTeamScore();
+            Debug.Log(
+                $"[GameOverSceneController] Final total elapsed time: {elapsedSeconds:F2}s " +
+                $"({ScoreManager.FormatTime(elapsedSeconds)}). Team score: {teamScore}.");
 
             ApplyRunSummaryDisplays();
+
+            if (!PlaytestRunSummary.HasSummary && crewRankLabel != null)
+            {
+                crewRankLabel.text = $"Score: {teamScore}";
+            }
 
             if (restartButton != null)
             {
@@ -103,11 +56,6 @@ namespace WhoWiredThis.UI
 
         private void Update()
         {
-            if (IsBossResetPressed())
-            {
-                ResetBestTime();
-            }
-
             if (hasRestarted)
             {
                 return;
@@ -122,16 +70,6 @@ namespace WhoWiredThis.UI
 
         private void ValidateReferences()
         {
-            if (completionTimeLabel == null)
-            {
-                Debug.LogWarning("[GameOverSceneController] completionTimeLabel is not assigned.", this);
-            }
-
-            if (bestTimeLabel == null)
-            {
-                Debug.LogWarning("[GameOverSceneController] bestTimeLabel is not assigned.", this);
-            }
-
             if (crewRankLabel == null)
             {
                 Debug.LogWarning("[GameOverSceneController] crewRankLabel is not assigned.", this);
@@ -145,24 +83,6 @@ namespace WhoWiredThis.UI
             if (quitButton == null)
             {
                 Debug.LogWarning("[GameOverSceneController] quitButton is not assigned.", this);
-            }
-        }
-
-        private bool IsBossResetPressed()
-        {
-            return (Input.GetKey(bossModifierKey) && Input.GetKeyDown(bossResetKey)) ||
-                   (Input.GetKey(bossResetKey) && Input.GetKeyDown(bossModifierKey));
-        }
-
-        private void ResetBestTime()
-        {
-            PlayerPrefs.DeleteKey(BestTimeKey);
-            PlayerPrefs.Save();
-            Debug.Log("[GameOverSceneController] Boss key pressed. Best time was reset.");
-
-            if (bestTimeLabel != null)
-            {
-                bestTimeLabel.text = "Best Time: 00:00";
             }
         }
 
@@ -210,26 +130,6 @@ namespace WhoWiredThis.UI
 #endif
         }
 
-        private static string GetCrewRank(float elapsedSeconds)
-        {
-            if (elapsedSeconds < 300f)
-            {
-                return "Expert Repair Crew";
-            }
-
-            if (elapsedSeconds < 480f)
-            {
-                return "Certified Operators";
-            }
-
-            if (elapsedSeconds < 720f)
-            {
-                return "Trainee Technicians";
-            }
-
-            return "System Still Concerned";
-        }
-
         private static void ApplyRunSummaryDisplays()
         {
             if (!PlaytestRunSummary.HasSummary)
@@ -246,6 +146,7 @@ namespace WhoWiredThis.UI
                 TMP_Text label = labels[i];
                 if (label != null && label.name == "RunSummaryText")
                 {
+                    ConfigureSummaryLabel(label);
                     label.text = summaryText;
                     appliedToSummaryLabel = true;
                 }
@@ -256,14 +157,37 @@ namespace WhoWiredThis.UI
                 return;
             }
 
-            // Dual-display fallback: both GameOver canvases expose CrewRankText.
             for (int i = 0; i < labels.Length; i++)
             {
                 TMP_Text label = labels[i];
                 if (label != null && label.name == "CrewRankText")
                 {
+                    ConfigureSummaryLabel(label);
                     label.text = summaryText;
                 }
+            }
+        }
+
+        private static void ConfigureSummaryLabel(TMP_Text label)
+        {
+            label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Overflow;
+            label.alignment = TextAlignmentOptions.TopLeft;
+            label.characterSpacing = 0f;
+            label.lineSpacing = 0f;
+
+            TMP_FontAsset monoFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/VT323-Regular SDF");
+            if (monoFont == null)
+            {
+#if UNITY_EDITOR
+                monoFont = UnityEditor.AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(
+                    "Assets/TextMesh Pro/Fonts/VT323-Regular SDF.asset");
+#endif
+            }
+
+            if (monoFont != null)
+            {
+                label.font = monoFont;
             }
         }
     }

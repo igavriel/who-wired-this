@@ -17,7 +17,7 @@ namespace WhoWiredThis.Scenes
     /// <summary>
     /// Static, play-session-scoped operator phase that persists across a role-swap cut-scene
     /// round trip (e.g. Puzzle -> CutScene-*-Swap -> Puzzle). Mirrors the project's existing
-    /// cross-scene persistence pattern (see <see cref="PlaytestRunTotal"/>);
+    /// cross-scene persistence pattern (see <see cref="ScoreManager"/>);
     /// there is no DontDestroyOnLoad. Defaults to Phase 1 so loading a scene directly behaves normally.
     /// </summary>
     public static class SceneRoleState

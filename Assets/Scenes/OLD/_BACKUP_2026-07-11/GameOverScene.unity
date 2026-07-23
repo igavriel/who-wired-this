@@ -442,8 +442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87a051387c0466aa640e0739e5c7f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.GameOverSceneController
-  completionTimeLabel: {fileID: 1413536966}
-  bestTimeLabel: {fileID: 641350190}
   crewRankLabel: {fileID: 1901138824}
   restartButton: {fileID: 1131922900}
   quitButton: {fileID: 1361101725}
@@ -676,17 +674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba582a01155214e88a9a6050d16bc5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Environment.PlaytestSceneFlowBootstrap
---- !u!114 &641350190 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 349496738996346868, guid: 08de7deac3c7646ab8c71f8fec74ba01, type: 3}
-  m_PrefabInstance: {fileID: 2648232091737231500}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &1120304993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -878,17 +865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!114 &1413536966 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 472679274386263850, guid: 08de7deac3c7646ab8c71f8fec74ba01, type: 3}
-  m_PrefabInstance: {fileID: 2648232091737231500}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1901138824 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 794329063257625676, guid: 08de7deac3c7646ab8c71f8fec74ba01, type: 3}

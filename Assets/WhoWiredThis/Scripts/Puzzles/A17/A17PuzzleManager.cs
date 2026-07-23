@@ -39,7 +39,6 @@ namespace WhoWiredThis.Puzzles.A17
             if (CheckSolution())
             {
                 IsSolved = true;
-                ScoreManager.Instance?.SetScore(ComputeCurrentScore());
                 GameManager.Instance?.SolvePuzzle();
                 OnSuccess?.Invoke();
                 return true;

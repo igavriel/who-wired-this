@@ -166,9 +166,9 @@ namespace WhoWiredThis.Core
 
         private static void LoadSceneInternal(string targetSceneName, string activeSceneName)
         {
-            if (ShouldCountSceneForPlaytestTotal(activeSceneName))
+            if (ShouldCompleteGameplaySceneForTotal(activeSceneName, targetSceneName))
             {
-                PlaytestRunTotal.CompleteCurrentScene(activeSceneName);
+                ScoreManager.CompleteCurrentScene(activeSceneName);
             }
 
             if (string.Equals(targetSceneName, PlaytestFlowUtility.GameOverSceneName, StringComparison.Ordinal))
@@ -193,6 +193,34 @@ namespace WhoWiredThis.Core
             }
         }
 
+        /// <summary>
+        /// Gameplay levels count toward the run total only when permanently leaving them.
+        /// Role-swap cutscenes (<c>*Swap</c>) are temporary round-trips and must not finalize the level.
+        /// </summary>
+        private static bool ShouldCompleteGameplaySceneForTotal(string activeSceneName, string targetSceneName)
+        {
+            if (!ScoreManager.IsGameplayLevel(activeSceneName))
+            {
+                return false;
+            }
+
+            if (IsRoleSwapCutscene(targetSceneName))
+            {
+                Debug.Log(
+                    $"[SceneTransitionUtility] Skipping CompleteCurrentScene for '{activeSceneName}' " +
+                    $"(temporary role-swap leave to '{targetSceneName}').");
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsRoleSwapCutscene(string sceneName)
+        {
+            return !string.IsNullOrEmpty(sceneName) &&
+                   sceneName.IndexOf("Swap", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
         private static void ExitAllPanelFocus()
         {
             PlayerPanelFocusController[] controllers =
@@ -206,13 +234,6 @@ namespace WhoWiredThis.Core
                     controller.ExitFocus();
                 }
             }
-        }
-
-        private static bool ShouldCountSceneForPlaytestTotal(string sceneName)
-        {
-            return string.Equals(sceneName, "Tutorial", StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Pipes", StringComparison.Ordinal) ||
-                   string.Equals(sceneName, "Puzzle Signal", StringComparison.Ordinal);
         }
     }
 }

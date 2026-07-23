@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Visibility;
 
 namespace WhoWiredThis.Core
@@ -17,11 +16,11 @@ namespace WhoWiredThis.Core
                 WasAbandoned = abandoned,
                 LastPuzzleCompleted = lastPuzzleCompleted,
                 LastPuzzleName = sceneName,
-                RunTimeSeconds = PlaytestRunTotal.GetTotalSecondsIncludingCurrentSegment(),
+                RunTimeSeconds = ScoreManager.GetTotalSecondsIncludingCurrentSegment(),
                 SceneTimerSeconds = TimerManager.Instance != null ? TimerManager.Instance.ElapsedSeconds : 0f,
-                Score = ScoreManager.Instance != null ? ScoreManager.Instance.CurrentScore : 0,
-                CompletedPuzzleCount = PlaytestRunTotal.GetCompletedSceneCount(),
-                AttemptCount = SharedHistorySO.GetMaxAttemptNumber()
+                CompletedPuzzleCount = ScoreManager.GetCompletedSceneCount(),
+                AttemptCount = ScoreManager.GetTotalAttemptsAcrossLevels(),
+                RetryCount = ScoreManager.GetTotalRetriesAcrossLevels()
             };
         }
 

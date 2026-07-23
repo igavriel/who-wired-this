@@ -15,7 +15,6 @@ namespace WhoWiredThis.UI
 
         private string currentRoomNameA = string.Empty;
         private string currentRoomNameB = string.Empty;
-        private string currentScoreLine = string.Empty;
         private string currentTimeLine = "00:00";
         private bool subscribed;
 
@@ -51,12 +50,11 @@ namespace WhoWiredThis.UI
                 return true;
             }
 
-            if (ScoreManager.Instance == null || TimerManager.Instance == null)
+            if (TimerManager.Instance == null)
             {
                 return false;
             }
 
-            ScoreManager.Instance.OnScoreChanged += HandleScoreChanged;
             TimerManager.Instance.OnTimerUpdated += HandleTimerUpdated;
 
             if (PlayerZoneTracker.Instance != null)
@@ -78,11 +76,6 @@ namespace WhoWiredThis.UI
             if (!subscribed)
             {
                 return;
-            }
-
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.OnScoreChanged -= HandleScoreChanged;
             }
 
             if (TimerManager.Instance != null)
@@ -116,29 +109,28 @@ namespace WhoWiredThis.UI
                 HandleSharedZoneChanged(GameManager.Instance.currentZoneName);
             }
 
-            if (ScoreManager.Instance != null)
-            {
-                HandleScoreChanged(ScoreManager.Instance.CurrentScore);
-            }
-
             if (TimerManager.Instance != null)
             {
-                HandleTimerUpdated(TimerManager.Instance.ElapsedSeconds);
+                HandleTimerUpdated(TimerManager.Instance.GetDisplaySeconds());
             }
-        }
-
-        private void HandleScoreChanged(int score)
-        {
-            currentScoreLine = $"Score: {score}/{ScoreManager.MaxScore}";
-            PushToViews();
+            else
+            {
+                PushToViews();
+            }
         }
 
         private void HandleTimerUpdated(float seconds)
         {
-            int minutes = (int)seconds / 60;
-            int secs = (int)seconds % 60;
-            currentTimeLine = $"{minutes:00}:{secs:00}";
+            currentTimeLine = FormatTimeLine(seconds);
             PushToViews();
+        }
+
+        private static string FormatTimeLine(float seconds)
+        {
+            int total = Mathf.Max(0, Mathf.FloorToInt(seconds));
+            int minutes = total / 60;
+            int secs = total % 60;
+            return $"{minutes:00}:{secs:00}";
         }
 
         private void HandlePlayerAZoneChanged(string zoneName)
@@ -168,7 +160,7 @@ namespace WhoWiredThis.UI
             }
             else
             {
-                playerHudViewA.ApplySharedHudState(currentRoomNameA, currentScoreLine, currentTimeLine);
+                playerHudViewA.ApplySharedHudState(currentRoomNameA, string.Empty, currentTimeLine);
             }
 
             if (playerHudViewB == null)
@@ -177,7 +169,7 @@ namespace WhoWiredThis.UI
             }
             else
             {
-                playerHudViewB.ApplySharedHudState(currentRoomNameB, currentScoreLine, currentTimeLine);
+                playerHudViewB.ApplySharedHudState(currentRoomNameB, string.Empty, currentTimeLine);
             }
         }
     }

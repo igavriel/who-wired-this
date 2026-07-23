@@ -9,7 +9,6 @@ namespace WhoWiredThis.Interactables
     public class Collectible : MonoBehaviour, IInteractable
     {
         public ItemData itemData;
-        public int scoreValue = 1;
 
         public string GetPromptText() =>
             itemData != null ? $"$INTERACT$ Pick up {itemData.itemName}" : "$INTERACT$ Pick up";
@@ -23,7 +22,6 @@ namespace WhoWiredThis.Interactables
 
             if (InventoryManager.Instance.TryAddItem(itemData))
             {
-                ScoreManager.Instance?.AddScore(scoreValue);
                 PlayerHudPopupRouter.Show(interactor, $"Picked up: <b>{itemData.itemName}</b>\n{itemData.description}");
                 gameObject.SetActive(false);
             }

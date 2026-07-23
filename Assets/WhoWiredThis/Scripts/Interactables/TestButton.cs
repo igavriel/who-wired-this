@@ -61,7 +61,6 @@ namespace WhoWiredThis.Interactables
 
         void OnSuccess(GameObject interactor)
         {
-            ScoreManager.Instance?.AddScore(2);
             GameManager.Instance?.SolvePuzzle();
 
             if (buttonRenderer != null && successMaterial != null)

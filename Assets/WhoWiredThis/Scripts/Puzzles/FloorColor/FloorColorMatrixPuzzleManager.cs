@@ -116,7 +116,6 @@ namespace WhoWiredThis.Puzzles.FloorColor
 
         private void HandleSuccess(int score)
         {
-            ScoreManager.Instance?.SetScore(score);
             GameManager.Instance?.SolvePuzzle();
             OnSuccess?.Invoke();
         }

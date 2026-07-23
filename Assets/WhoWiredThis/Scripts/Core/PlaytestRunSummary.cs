@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace WhoWiredThis.Core
 {
     /// <summary>
@@ -12,9 +10,9 @@ namespace WhoWiredThis.Core
         public bool LastPuzzleCompleted;
         public string LastPuzzleName;
         public int AttemptCount;
+        public int RetryCount;
         public float RunTimeSeconds;
         public float SceneTimerSeconds;
-        public int Score;
         public int CompletedPuzzleCount;
     }
 
@@ -41,6 +39,9 @@ namespace WhoWiredThis.Core
             current = default;
         }
 
+        /// <summary>
+        /// Formats the run as a fixed 50×12 Game Over grid.
+        /// </summary>
         public static string FormatDisplayText()
         {
             if (!current.HasData)
@@ -48,48 +49,7 @@ namespace WhoWiredThis.Core
                 return string.Empty;
             }
 
-            var builder = new StringBuilder();
-            builder.AppendLine("Run Summary");
-            builder.AppendLine();
-
-            string status = current.WasAbandoned
-                ? "Status: Abandoned by players"
-                : current.LastPuzzleCompleted
-                    ? "Status: Run completed"
-                    : "Status: Ended";
-
-            builder.AppendLine(status);
-            builder.AppendLine($"Last puzzle: {current.LastPuzzleName ?? "Unknown"}");
-
-            if (current.LastPuzzleCompleted)
-            {
-                builder.AppendLine("Puzzle result: Completed");
-            }
-            else if (current.WasAbandoned)
-            {
-                builder.AppendLine("Puzzle result: Abandoned");
-            }
-
-            if (current.CompletedPuzzleCount > 0)
-            {
-                builder.AppendLine($"Completed puzzles: {current.CompletedPuzzleCount}");
-            }
-
-            if (current.AttemptCount > 0)
-            {
-                builder.AppendLine($"Attempts: {current.AttemptCount}");
-            }
-
-            builder.AppendLine($"Time: {PlaytestRunTotal.FormatTime(current.RunTimeSeconds)}");
-
-            if (current.SceneTimerSeconds > 0f)
-            {
-                builder.AppendLine($"Scene timer: {PlaytestRunTotal.FormatTime(current.SceneTimerSeconds)}");
-            }
-
-            builder.AppendLine($"Score: {current.Score}");
-
-            return builder.ToString().TrimEnd();
+            return PlaytestRunSummaryGridFormatter.Format(current);
         }
     }
 }

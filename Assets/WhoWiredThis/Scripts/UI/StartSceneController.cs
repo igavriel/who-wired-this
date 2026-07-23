@@ -11,15 +11,11 @@ namespace WhoWiredThis.UI
 {
     public class StartSceneController : MonoBehaviour
     {
-        private const string BestTimeKey = "PlaytestBestTimeSeconds";
-
         [SerializeField] private TMP_Text introTextLabel;
         [SerializeField] private Button startButton;
         [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
-        [SerializeField] private KeyCode bossModifierKey = KeyCode.F12;
-        [SerializeField] private KeyCode bossResetKey = KeyCode.Alpha1;
 
         private bool hasStarted;
         private float inputReadyTime;
@@ -44,11 +40,6 @@ namespace WhoWiredThis.UI
 
         private void Update()
         {
-            if (IsBossResetPressed())
-            {
-                ResetBestTime();
-            }
-
             if (hasStarted || Time.unscaledTime < inputReadyTime)
             {
                 return;
@@ -74,7 +65,7 @@ namespace WhoWiredThis.UI
             PlaytestRunSummary.Clear();
             SharedHistorySO.ClearAllLoaded();
             SceneRoleState.Reset();
-            PlaytestRunTotal.BeginRun();
+            ScoreManager.BeginRun();
             Debug.Log("[StartSceneController] Total-time run tracking started.");
 
             if (flowBootstrap == null)
@@ -85,7 +76,7 @@ namespace WhoWiredThis.UI
             if (flowBootstrap == null)
             {
                 Debug.LogError("[StartSceneController] PlaytestSceneFlowBootstrap not found.", this);
-                PlaytestRunTotal.ResetRun();
+                ScoreManager.ResetRun();
                 hasStarted = false;
                 return;
             }
@@ -99,22 +90,9 @@ namespace WhoWiredThis.UI
                     out string loadError))
             {
                 Debug.LogError($"[StartSceneController] Failed to load next scene: {loadError}");
-                PlaytestRunTotal.ResetRun();
+                ScoreManager.ResetRun();
                 hasStarted = false;
             }
-        }
-
-        private bool IsBossResetPressed()
-        {
-            return (Input.GetKey(bossModifierKey) && Input.GetKeyDown(bossResetKey)) ||
-                   (Input.GetKey(bossResetKey) && Input.GetKeyDown(bossModifierKey));
-        }
-
-        private static void ResetBestTime()
-        {
-            PlayerPrefs.DeleteKey(BestTimeKey);
-            PlayerPrefs.Save();
-            Debug.Log("[StartSceneController] Boss key pressed. Best time was reset.");
         }
     }
 }
