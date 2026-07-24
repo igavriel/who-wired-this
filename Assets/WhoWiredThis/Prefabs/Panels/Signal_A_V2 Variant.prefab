@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 8658361826802196242}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.619, y: 0.453, z: -0.974}
+  m_LocalPosition: {x: 1.5, y: 0.4, z: -0.215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -129,15 +129,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3635533483811537466, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.512
+      value: 2.389
       objectReference: {fileID: 0}
     - target: {fileID: 3635533483811537466, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.054
+      value: -0.1067
       objectReference: {fileID: 0}
     - target: {fileID: 3635533483811537466, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.259
+      value: -0.8636
       objectReference: {fileID: 0}
     - target: {fileID: 3635533483811537466, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -158,6 +158,14 @@ PrefabInstance:
     - target: {fileID: 3635533483811537466, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793854271515242323, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3843390866177217774, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3918553150498846266, guid: 29bf8385de6904ce88fc407ab458774f, type: 3}
       propertyPath: interactableButtons.Array.data[0].label
@@ -563,6 +571,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2762681926438402812, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3360725076329633284, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -570,6 +582,10 @@ PrefabInstance:
     - target: {fileID: 3467264449368021054, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_Name
       value: DiagnosticPanel Monitor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4626490648377243336, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4651844477184714779, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_Layer
@@ -605,7 +621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8365680074205480399, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.44799995
+      value: -0.91
       objectReference: {fileID: 0}
     - target: {fileID: 8365680074205480399, guid: fc507c66266aa459d80375d4b62278ee, type: 3}
       propertyPath: m_LocalRotation.w

@@ -792,6 +792,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 897
       objectReference: {fileID: 0}
+    - target: {fileID: 8585764540490722548, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8586617157140211498, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
       propertyPath: visibleToPlayer
       value: 1
@@ -943,12 +947,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Puzzles.Common.ComponentDiagnosticAdapter
   puzzleManager: {fileID: 0}
   diagnosticDisplay: {fileID: 0}
+  bodyLayout: 0
   components: []
   solvedMessage: PIPE LINE CALIBRATED.
   systemNoneCorrect: PIPE RESPONSE IS UNSTABLE.
   systemOneCorrect: ONE PIPE SECTION RESPONDS.
   systemTwoCorrect: PIPE RESPONSE IS CLOSE.
   partnerLine: TELL YOUR PARTNER WHAT YOU LEARNED.
+  headerLine1: OTHER PLAYER SUBMITS // YOU READ
+  headerLine2: '### FIND THE PATTERN IN THE LOG ###'
+  logTitlePrefix: DIAGNOSTIC LOG // REVISION
+  statusLabel: STATUS
+  statusValue: ANALYZING
+  footerLine: WAITING FOR PARTNER INPUT
+  lineWidth: 40
+  totalLines: 12
 --- !u!114 &878433133327748641 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3383061087320299235, guid: 90a3f7aa7546f478a8c4b06b6e9d1d5c, type: 3}
