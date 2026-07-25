@@ -23,6 +23,13 @@ namespace WhoWiredThis.Puzzles.Common
             Error = 4
         }
 
+        public enum OperationGuideRole
+        {
+            None = 0,
+            Operator = 1,
+            Reader = 2
+        }
+
         [Header("References")]
         [Tooltip("World-space TMP component for the title line. Use TextMeshPro (3D), not TextMeshProUGUI.")]
         [SerializeField] private TMP_Text titleText;
@@ -42,6 +49,12 @@ namespace WhoWiredThis.Puzzles.Common
         [SerializeField] private string title = "DIAGNOSTIC";
 
         [SerializeField] [TextArea(2, 4)] private string waitingText = "WAITING FOR\nNEXT ATTEMPT...";
+
+        [Header("Operation guide (optional)")]
+        [Tooltip("When set, SetWaiting() shows the formatted 40×12 operator or reader guide for guidePlayer instead of waitingText.")]
+        [SerializeField] private OperationGuideRole guideRole = OperationGuideRole.None;
+
+        [SerializeField] private AllowedPlayerTag guidePlayer = AllowedPlayerTag.Player_A;
 
         [SerializeField] private string clearText = "NO DATA";
 
@@ -141,9 +154,22 @@ namespace WhoWiredThis.Puzzles.Common
         public void SetWaiting()
         {
             currentState = DisplayState.Waiting;
-            WriteBody(waitingText);
+            WriteBody(ResolveWaitingBody());
             ApplyLampMaterial(lampWaitingMaterial);
             ApplyMultiDimensionLampValue(waitingLampValue);
+        }
+
+        private string ResolveWaitingBody()
+        {
+            switch (guideRole)
+            {
+                case OperationGuideRole.Operator:
+                    return PanelOperationGuideFormatter.BuildOperatorGuide(guidePlayer);
+                case OperationGuideRole.Reader:
+                    return PanelOperationGuideFormatter.BuildReaderGuide(guidePlayer);
+                default:
+                    return waitingText;
+            }
         }
 
         public void SetDiagnosticResult(

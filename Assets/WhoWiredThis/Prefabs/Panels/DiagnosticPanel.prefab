@@ -281,21 +281,9 @@ MonoBehaviour:
   machineFeedbackText: {fileID: 8844221100667443355}
   statusLampRenderer: {fileID: 4666046874431597336}
   title: DIAGNOSTIC
-  waitingText: '>> ERROR: LOCAL DATA INCOMPLETE
-
-    >> PARTNER INPUT REQUIRED
-
-
-    -
-    ASK YOUR PARTNER FOR PANEL INFORMATION.
-
-    - REPORT ALL CLUES OUT LOUD.
-
-    -
-    COORDINATE SETTINGS BEFORE TESTING.
-
-
-    STATUS: AWAITING TEAM COORDINATION'
+  waitingText: WAITING FOR OPERATION GUIDE...
+  guideRole: 1
+  guidePlayer: 1
   clearText: NO DATA
   metricLabelMinWidth: 10
   lampWaitingMaterial: {fileID: 2100000, guid: 2fb7a24a4642848f4b1e0fa4c7e7544f, type: 2}

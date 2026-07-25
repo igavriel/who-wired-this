@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using WhoWiredThis.Enums;
 using WhoWiredThis.PanelFocus;
 using WhoWiredThis.Puzzles.Common;
 using WhoWiredThis.Visibility;
@@ -145,6 +146,10 @@ namespace WhoWiredThis.Scenes
         private ScenePanelLockBundle playerBPanelLock;
 
         [Header("Diagnostic Body_TMP (stage copy at boundaries)")]
+        [SerializeField]
+        [Tooltip("When enabled, intro and post-solve bodies use PanelOperationGuideFormatter instead of the TextArea fields below.")]
+        private bool useFormattedOperationGuides = true;
+
         [SerializeField]
         private DiagnosticDisplayController playerADiagnosticDisplay;
 
@@ -301,6 +306,19 @@ namespace WhoWiredThis.Scenes
 
         private void ApplyIntroDiagnosticBodies()
         {
+            if (useFormattedOperationGuides)
+            {
+                TrySetInstructionBody(
+                    playerADiagnosticDisplay,
+                    PanelOperationGuideFormatter.BuildOperatorGuide(AllowedPlayerTag.Player_A),
+                    "playerADiagnosticDisplay is not assigned; skipping intro body copy.");
+                TrySetInstructionBody(
+                    playerBDiagnosticDisplay,
+                    PanelOperationGuideFormatter.BuildReaderGuide(AllowedPlayerTag.Player_B),
+                    "playerBDiagnosticDisplay is not assigned; skipping intro body copy.");
+                return;
+            }
+
             TrySetInstructionBody(playerADiagnosticDisplay, playerAIntroBody, "playerADiagnosticDisplay is not assigned; skipping intro body copy.");
             TrySetInstructionBody(playerBDiagnosticDisplay, playerBIntroBody, "playerBDiagnosticDisplay is not assigned; skipping intro body copy.");
         }
@@ -313,6 +331,19 @@ namespace WhoWiredThis.Scenes
 
         private void ApplyRoleSwitchDiagnosticBodies()
         {
+            if (useFormattedOperationGuides)
+            {
+                TrySetInstructionBody(
+                    playerADiagnosticDisplay,
+                    PanelOperationGuideFormatter.BuildReaderGuide(AllowedPlayerTag.Player_A),
+                    "playerADiagnosticDisplay is not assigned; skipping post-solve body copy.");
+                TrySetInstructionBody(
+                    playerBDiagnosticDisplay,
+                    PanelOperationGuideFormatter.BuildOperatorGuide(AllowedPlayerTag.Player_B),
+                    "playerBDiagnosticDisplay is not assigned; skipping post-solve body copy.");
+                return;
+            }
+
             TrySetInstructionBody(
                 playerADiagnosticDisplay,
                 playerABodyAfterPlayerASolved,

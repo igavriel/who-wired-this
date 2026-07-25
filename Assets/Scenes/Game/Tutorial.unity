@@ -508,6 +508,7 @@ MonoBehaviour:
     continue.'
   simultaneousOperators: 0
   roleSwapMode: 1
+  useFormattedOperationGuides: 1
 --- !u!114 &950581926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,6 +1029,14 @@ PrefabInstance:
     - target: {fileID: 2498567552922972306, guid: cb4b86c427208445cb610a34ee0f28a8, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8452096141551699684, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: guideRole
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8452096141551699684, guid: b02fe3e85b8bd43bc891937b5d0822d8, type: 3}
+      propertyPath: guidePlayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -6731,22 +6740,12 @@ PrefabInstance:
       value: '[ DIAGNOSTIC TERMINAL ]'
       objectReference: {fileID: 0}
     - target: {fileID: 9185001599381384125, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
-      propertyPath: waitingText
-      value: '>> ERROR: LOCAL DATA INCOMPLETE
-
-        >> REMOTE INPUT REQUIRED
-
-
-        -
-        ASK PARTNER FOR PANEL DATA.
-
-        - REPORT ALL CLUES VERBALLY.
-
-        -
-        SYNC SETTINGS BEFORE TESTING.
-
-
-        STATUS: AWAITING TEAM COORDINATION'
+      propertyPath: guideRole
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185001599381384125, guid: 72fcbe0c5f34641eca8b3d5cfee9f9a6, type: 3}
+      propertyPath: guidePlayer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
