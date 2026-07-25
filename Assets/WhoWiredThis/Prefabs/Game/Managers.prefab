@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6151463977448403461}
   - component: {fileID: 5566198571770203838}
   - component: {fileID: 4857823788025606068}
+  - component: {fileID: 7123456789012345678}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -103,6 +104,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.PlayerZoneTracker
   defaultZoneName: Relay Room
+--- !u!114 &7123456789012345678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249580574213425681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d1c0b09a8b7c6d5e4f3a2b1c0d9e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.GameConfigProvider
+  config: {fileID: 11400000, guid: 8fea1a7749751465ea1cc6fbe0d90516, type: 2}
 --- !u!1 &2825607707972407109
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 654907cef530648cf97e00c9f4e6895a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.SceneHotkeySwitcher
-  flowConfig: {fileID: 11400000, guid: 8fea1a7749751465ea1cc6fbe0d90516, type: 2}
+  gameConfig: {fileID: 11400000, guid: 8fea1a7749751465ea1cc6fbe0d90516, type: 2}
   bindings:
   - sceneId: 1
     shortcut: 49
@@ -360,7 +374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5342775897917043609, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
       propertyPath: m_Name
-      value: PlaytestSceneFlowBootstrap
+      value: SceneFlowBootstrapConfig
       objectReference: {fileID: 0}
     - target: {fileID: 7851520530427776092, guid: c8dafab584b60441b8ee0d033485b1f5, type: 3}
       propertyPath: m_LocalPosition.x

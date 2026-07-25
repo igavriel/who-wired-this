@@ -20,7 +20,7 @@ namespace WhoWiredThis.Editor
     {
         private const string PuzzleSignalScenePath = "Assets/Scenes/Game/Puzzle Signal.unity";
         private const string CutSceneSignalSwapPath = "Assets/Scenes/Game/CutScene-Signal-Swap.unity";
-        private const string FlowConfigPath = "Assets/WhoWiredThis/Data/Playtest/PlaytestSceneFlowConfig.asset";
+        private const string FlowConfigPath = "Assets/WhoWiredThis/Data/Playtest/GameConfig.asset";
 
         private const string WireMenuPath = "Who Wired This/Signal Calibration/Wire Puzzle Signal Role-Swap Cutscene";
         private const string McpWireMenuPath = "Who Wired This/Signal Calibration/MCP/Wire Puzzle Signal Role-Swap Cutscene";
@@ -66,7 +66,7 @@ namespace WhoWiredThis.Editor
 
         private static int EnsureFlowConfigEntry()
         {
-            PlaytestSceneFlowConfigSO config = AssetDatabase.LoadAssetAtPath<PlaytestSceneFlowConfigSO>(FlowConfigPath);
+            GameConfigSO config = AssetDatabase.LoadAssetAtPath<GameConfigSO>(FlowConfigPath);
             if (config == null)
             {
                 Debug.LogError($"[PuzzleSignalRoleSwapCutsceneWireTool] Missing flow config at '{FlowConfigPath}'.");
@@ -93,7 +93,7 @@ namespace WhoWiredThis.Editor
             entry.FindPropertyRelative("sceneName").stringValue = "CutScene-Signal-Swap";
             so.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(config);
-            Debug.Log("[PuzzleSignalRoleSwapCutsceneWireTool] Added CutSceneSignalSwap to PlaytestSceneFlowConfig.");
+            Debug.Log("[PuzzleSignalRoleSwapCutsceneWireTool] Added CutSceneSignalSwap to GameConfig.");
             return 0;
         }
 
@@ -145,7 +145,7 @@ namespace WhoWiredThis.Editor
             }
 
             Scene scene = EditorSceneManager.OpenScene(CutSceneSignalSwapPath, OpenSceneMode.Single);
-            PlaytestSceneFlowBootstrap bootstrap = Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
             if (bootstrap != null)
             {
                 SerializedObject bootstrapSo = new SerializedObject(bootstrap);
@@ -225,14 +225,14 @@ namespace WhoWiredThis.Editor
             swapSo.FindProperty("loadOnce").boolValue = true;
             swapSo.FindProperty("fadeOutDurationSeconds").floatValue = 1f;
 
-            PlaytestSceneFlowBootstrap bootstrap = Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
             if (bootstrap != null)
             {
                 swapSo.FindProperty("flowBootstrap").objectReferenceValue = bootstrap;
             }
             else
             {
-                Debug.LogWarning("[PuzzleSignalRoleSwapCutsceneWireTool] No PlaytestSceneFlowBootstrap in scene.");
+                Debug.LogWarning("[PuzzleSignalRoleSwapCutsceneWireTool] No SceneFlowBootstrapConfig in scene.");
                 issues++;
             }
 

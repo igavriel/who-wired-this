@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using WhoWiredThis.Core;
 using WhoWiredThis.Environment;
 
@@ -19,7 +20,10 @@ namespace WhoWiredThis.Core
         }
 
         [Header("Flow")]
-        [SerializeField] private PlaytestSceneFlowConfigSO flowConfig;
+        [Tooltip("Optional override. When unset, uses GameConfigProvider.Active.")]
+        [FormerlySerializedAs("flowConfig")]
+        [SerializeField]
+        private GameConfigSO gameConfig;
 
         [Header("Bindings")]
         [SerializeField] private SceneHotkeyBinding[] bindings = Array.Empty<SceneHotkeyBinding>();
@@ -28,6 +32,16 @@ namespace WhoWiredThis.Core
         [Header("Boss Key")]
         [SerializeField] private KeyCode bossKey = KeyCode.F12;
         [SerializeField] private bool hotkeysEnabled = true;
+
+        private GameConfigSO ResolveConfig()
+        {
+            if (gameConfig != null)
+            {
+                return gameConfig;
+            }
+
+            return GameConfigProvider.Active;
+        }
 
         private void Update()
         {
@@ -42,7 +56,8 @@ namespace WhoWiredThis.Core
                 return;
             }
 
-            if (flowConfig == null)
+            GameConfigSO config = ResolveConfig();
+            if (config == null)
             {
                 return;
             }
@@ -61,7 +76,7 @@ namespace WhoWiredThis.Core
                     continue;
                 }
 
-                if (!flowConfig.TryGetSceneName(binding.SceneId, out string sceneName))
+                if (!config.TryGetSceneName(binding.SceneId, out string sceneName))
                 {
                     Debug.LogWarning($"[SceneHotkeySwitcher] Binding {i} scene id '{binding.SceneId}' is not configured.");
                     continue;

@@ -1,23 +1,29 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using WhoWiredThis.Core;
 using WhoWiredThis.UI;
 
 namespace WhoWiredThis.Environment
 {
     /// <summary>
-    /// Declares this scene's <see cref="PlaytestSceneId"/> and loads the next scene from shared flow config.
+    /// Declares this scene's <see cref="PlaytestSceneId"/> and loads the next scene from <see cref="GameConfigSO"/>.
     /// </summary>
     [DisallowMultipleComponent]
-    public class PlaytestSceneFlowBootstrap : MonoBehaviour
+    public class SceneFlowBootstrapConfig : MonoBehaviour
     {
-        private const string LogPrefix = "[PlaytestSceneFlowBootstrap]";
+        private const string LogPrefix = "[SceneFlowBootstrapConfig]";
 
-        [SerializeField] private PlaytestSceneFlowConfigSO flowConfig;
-        [SerializeField] private PlaytestSceneId sceneId;
+        [Tooltip("Optional override. When unset, uses GameConfigProvider.Active.")]
+        [FormerlySerializedAs("flowConfig")]
+        [SerializeField]
+        private GameConfigSO gameConfig;
 
-        public static PlaytestSceneFlowBootstrap Instance { get; private set; }
+        [SerializeField]
+        private PlaytestSceneId sceneId;
 
-        public PlaytestSceneFlowConfigSO FlowConfig => flowConfig;
+        public static SceneFlowBootstrapConfig Instance { get; private set; }
+
+        public GameConfigSO FlowConfig => ResolveConfig();
         public PlaytestSceneId SceneId => sceneId;
 
         private void Awake()
@@ -33,17 +39,28 @@ namespace WhoWiredThis.Environment
             }
         }
 
-        public static PlaytestSceneFlowBootstrap FindBootstrap()
+        public static SceneFlowBootstrapConfig FindBootstrap()
         {
-            return Instance != null ? Instance : FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            return Instance != null ? Instance : FindFirstObjectByType<SceneFlowBootstrapConfig>();
+        }
+
+        private GameConfigSO ResolveConfig()
+        {
+            if (gameConfig != null)
+            {
+                return gameConfig;
+            }
+
+            return GameConfigProvider.Active;
         }
 
         public bool TryGetNextSceneName(out string sceneName)
         {
             sceneName = null;
-            if (flowConfig == null)
+            GameConfigSO config = ResolveConfig();
+            if (config == null)
             {
-                Debug.LogWarning($"{LogPrefix} flowConfig is not assigned on '{name}'.", this);
+                Debug.LogWarning($"{LogPrefix} GameConfig is not available on '{name}'.", this);
                 return false;
             }
 
@@ -53,7 +70,7 @@ namespace WhoWiredThis.Environment
                 return false;
             }
 
-            return flowConfig.TryGetNextSceneName(sceneId, out sceneName);
+            return config.TryGetNextSceneName(sceneId, out sceneName);
         }
 
         public bool TryLoadNextScene(
@@ -109,13 +126,14 @@ namespace WhoWiredThis.Environment
             out string error)
         {
             error = null;
-            if (flowConfig == null)
+            GameConfigSO config = ResolveConfig();
+            if (config == null)
             {
-                error = "flowConfig is not assigned.";
+                error = "GameConfig is not available.";
                 return false;
             }
 
-            if (!flowConfig.TryGetSceneName(targetId, out string sceneName))
+            if (!config.TryGetSceneName(targetId, out string sceneName))
             {
                 error = $"Scene name not configured for '{targetId}'.";
                 return false;

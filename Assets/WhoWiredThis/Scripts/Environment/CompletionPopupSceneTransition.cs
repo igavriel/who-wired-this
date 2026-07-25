@@ -25,7 +25,7 @@ namespace WhoWiredThis.Environment
         [SerializeField] private MessagePanel completionPopupPanelB;
 
         [Header("Flow")]
-        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+        [SerializeField] private SceneFlowBootstrapConfig flowBootstrap;
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
         [SerializeField] private bool loadOnce = true;
 
@@ -88,10 +88,10 @@ namespace WhoWiredThis.Environment
             ResolveFlowBootstrap();
             Debug.Log($"{LogPrefix} Summary popup dismissed — starting fade to '{GetNextSceneNameForLog()}'.", this);
 
-            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            SceneFlowBootstrapConfig bootstrap = flowBootstrap;
             if (bootstrap == null)
             {
-                Debug.LogWarning($"{LogPrefix} PlaytestSceneFlowBootstrap not found.", this);
+                Debug.LogWarning($"{LogPrefix} SceneFlowBootstrapConfig not found.", this);
                 return;
             }
 
@@ -175,7 +175,7 @@ namespace WhoWiredThis.Environment
         {
             if (flowBootstrap == null)
             {
-                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+                flowBootstrap = SceneFlowBootstrapConfig.FindBootstrap();
             }
         }
 

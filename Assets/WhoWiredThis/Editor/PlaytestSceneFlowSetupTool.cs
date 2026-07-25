@@ -20,8 +20,8 @@ namespace WhoWiredThis.Editor
         private const string ValidateMenuPath = "Who Wired This/Playtest/Validate Scene Flow Config";
         private const string TestLogicMenuPath = "Who Wired This/Playtest/Run Scene Flow Logic Tests";
 
-        private const string ConfigAssetPath = "Assets/WhoWiredThis/Data/Playtest/PlaytestSceneFlowConfig.asset";
-        private const string BootstrapPrefabPath = "Assets/WhoWiredThis/Prefabs/Game/PlaytestSceneFlowBootstrap.prefab";
+        private const string ConfigAssetPath = "Assets/WhoWiredThis/Data/Playtest/GameConfig.asset";
+        private const string BootstrapPrefabPath = "Assets/WhoWiredThis/Prefabs/Game/SceneFlowBootstrapConfig.prefab";
         private const string ManagersPrefabPath = "Assets/WhoWiredThis/Prefabs/Game/Managers.prefab";
 
         private static readonly (string ScenePath, PlaytestSceneId SceneId)[] PlaytestScenes =
@@ -40,7 +40,7 @@ namespace WhoWiredThis.Editor
         public static void SetupSceneFlowConfig()
         {
             EnsureFolder("Assets/WhoWiredThis/Data/Playtest");
-            PlaytestSceneFlowConfigSO config = LoadOrCreateConfig();
+            GameConfigSO config = LoadOrCreateConfig();
             CreateOrUpdateBootstrapPrefab(config);
             UpdateManagersHotkeys(config);
             AssetDatabase.SaveAssets();
@@ -55,7 +55,7 @@ namespace WhoWiredThis.Editor
 
         public static void MigrateAllPlaytestScenes()
         {
-            PlaytestSceneFlowConfigSO config = LoadOrCreateConfig();
+            GameConfigSO config = LoadOrCreateConfig();
             GameObject bootstrapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(BootstrapPrefabPath);
             if (bootstrapPrefab == null)
             {
@@ -87,7 +87,7 @@ namespace WhoWiredThis.Editor
 
         public static void EnsureCurrentSceneBootstrap(PlaytestSceneId sceneId)
         {
-            PlaytestSceneFlowConfigSO config = LoadOrCreateConfig();
+            GameConfigSO config = LoadOrCreateConfig();
             GameObject bootstrapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(BootstrapPrefabPath);
             if (bootstrapPrefab == null)
             {
@@ -102,7 +102,7 @@ namespace WhoWiredThis.Editor
         [MenuItem(ValidateMenuPath)]
         public static void ValidateSceneFlowConfig()
         {
-            PlaytestSceneFlowConfigSO config = AssetDatabase.LoadAssetAtPath<PlaytestSceneFlowConfigSO>(ConfigAssetPath);
+            GameConfigSO config = AssetDatabase.LoadAssetAtPath<GameConfigSO>(ConfigAssetPath);
             int errors = 0;
             int warnings = 0;
             var report = new StringBuilder();
@@ -110,7 +110,7 @@ namespace WhoWiredThis.Editor
 
             if (config == null)
             {
-                report.AppendLine("ERROR: PlaytestSceneFlowConfig asset not found.");
+                report.AppendLine("ERROR: GameConfig asset not found.");
                 Debug.LogError(report.ToString());
                 return;
             }
@@ -147,8 +147,8 @@ namespace WhoWiredThis.Editor
         [MenuItem(TestLogicMenuPath)]
         public static void RunSceneFlowLogicTests()
         {
-            PlaytestSceneFlowConfigSO config = ScriptableObject.CreateInstance<PlaytestSceneFlowConfigSO>();
-            config.SetDefaultsForCurrentPlaytestChain();
+            GameConfigSO config = ScriptableObject.CreateInstance<GameConfigSO>();
+            config.SetDefaultsForCurrentChain();
 
             int failed = 0;
             failed += AssertTrue(config.TryGetSceneName(PlaytestSceneId.Tutorial, out string tutorialName), "Tutorial name");
@@ -173,22 +173,22 @@ namespace WhoWiredThis.Editor
             }
         }
 
-        private static PlaytestSceneFlowConfigSO LoadOrCreateConfig()
+        private static GameConfigSO LoadOrCreateConfig()
         {
-            PlaytestSceneFlowConfigSO config = AssetDatabase.LoadAssetAtPath<PlaytestSceneFlowConfigSO>(ConfigAssetPath);
+            GameConfigSO config = AssetDatabase.LoadAssetAtPath<GameConfigSO>(ConfigAssetPath);
             if (config != null)
             {
                 return config;
             }
 
-            config = ScriptableObject.CreateInstance<PlaytestSceneFlowConfigSO>();
-            config.SetDefaultsForCurrentPlaytestChain();
+            config = ScriptableObject.CreateInstance<GameConfigSO>();
+            config.SetDefaultsForCurrentChain();
             AssetDatabase.CreateAsset(config, ConfigAssetPath);
             Debug.Log($"[PlaytestSceneFlowSetupTool] Created {ConfigAssetPath}");
             return config;
         }
 
-        private static GameObject CreateOrUpdateBootstrapPrefab(PlaytestSceneFlowConfigSO config)
+        private static GameObject CreateOrUpdateBootstrapPrefab(GameConfigSO config)
         {
             EnsureFolder("Assets/WhoWiredThis/Prefabs/Game");
 
@@ -198,14 +198,14 @@ namespace WhoWiredThis.Editor
                 GameObject instance = PrefabUtility.LoadPrefabContents(BootstrapPrefabPath);
                 try
                 {
-                    PlaytestSceneFlowBootstrap bootstrap = instance.GetComponent<PlaytestSceneFlowBootstrap>();
+                    SceneFlowBootstrapConfig bootstrap = instance.GetComponent<SceneFlowBootstrapConfig>();
                     if (bootstrap == null)
                     {
-                        bootstrap = instance.AddComponent<PlaytestSceneFlowBootstrap>();
+                        bootstrap = instance.AddComponent<SceneFlowBootstrapConfig>();
                     }
 
                     SerializedObject serializedObject = new SerializedObject(bootstrap);
-                    serializedObject.FindProperty("flowConfig").objectReferenceValue = config;
+                    serializedObject.FindProperty("gameConfig").objectReferenceValue = config;
                     serializedObject.ApplyModifiedPropertiesWithoutUndo();
                     PrefabUtility.SaveAsPrefabAsset(instance, BootstrapPrefabPath);
                 }
@@ -217,10 +217,10 @@ namespace WhoWiredThis.Editor
                 return existing;
             }
 
-            GameObject root = new GameObject("PlaytestSceneFlowBootstrap");
-            PlaytestSceneFlowBootstrap newBootstrap = root.AddComponent<PlaytestSceneFlowBootstrap>();
+            GameObject root = new GameObject("SceneFlowBootstrapConfig");
+            SceneFlowBootstrapConfig newBootstrap = root.AddComponent<SceneFlowBootstrapConfig>();
             SerializedObject bootstrapObject = new SerializedObject(newBootstrap);
-            bootstrapObject.FindProperty("flowConfig").objectReferenceValue = config;
+            bootstrapObject.FindProperty("gameConfig").objectReferenceValue = config;
             bootstrapObject.ApplyModifiedPropertiesWithoutUndo();
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, BootstrapPrefabPath);
             UnityEngine.Object.DestroyImmediate(root);
@@ -229,16 +229,16 @@ namespace WhoWiredThis.Editor
         }
 
         private static void EnsureBootstrapInScene(
-            PlaytestSceneFlowConfigSO config,
+            GameConfigSO config,
             GameObject bootstrapPrefab,
             PlaytestSceneId sceneId)
         {
-            PlaytestSceneFlowBootstrap bootstrap = UnityEngine.Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = UnityEngine.Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
             if (bootstrap == null)
             {
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(bootstrapPrefab);
-                instance.name = "PlaytestSceneFlowBootstrap";
-                bootstrap = instance.GetComponent<PlaytestSceneFlowBootstrap>();
+                instance.name = "SceneFlowBootstrapConfig";
+                bootstrap = instance.GetComponent<SceneFlowBootstrapConfig>();
             }
 
             SerializedObject serializedObject = new SerializedObject(bootstrap);
@@ -247,19 +247,19 @@ namespace WhoWiredThis.Editor
 
             if (PrefabUtility.IsPartOfPrefabInstance(bootstrap.gameObject))
             {
-                SerializedProperty flowConfigProperty = serializedObject.FindProperty("flowConfig");
+                SerializedProperty flowConfigProperty = serializedObject.FindProperty("gameConfig");
                 PrefabUtility.RevertPropertyOverride(flowConfigProperty, InteractionMode.AutomatedAction);
             }
             else
             {
-                serializedObject.FindProperty("flowConfig").objectReferenceValue = config;
+                serializedObject.FindProperty("gameConfig").objectReferenceValue = config;
                 serializedObject.ApplyModifiedPropertiesWithoutUndo();
             }
         }
 
-        private static void WireBookendControllers(PlaytestSceneFlowConfigSO config)
+        private static void WireBookendControllers(GameConfigSO config)
         {
-            PlaytestSceneFlowBootstrap bootstrap = UnityEngine.Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = UnityEngine.Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
             if (bootstrap == null)
             {
                 return;
@@ -282,7 +282,7 @@ namespace WhoWiredThis.Editor
             }
         }
 
-        private static void UpdateManagersHotkeys(PlaytestSceneFlowConfigSO config)
+        private static void UpdateManagersHotkeys(GameConfigSO config)
         {
             GameObject prefabRoot = PrefabUtility.LoadPrefabContents(ManagersPrefabPath);
             if (prefabRoot == null)
@@ -293,14 +293,23 @@ namespace WhoWiredThis.Editor
 
             try
             {
+                GameConfigProvider configProvider = prefabRoot.GetComponent<GameConfigProvider>();
+                if (configProvider != null)
+                {
+                    SerializedObject providerSo = new SerializedObject(configProvider);
+                    providerSo.FindProperty("config").objectReferenceValue = config;
+                    providerSo.ApplyModifiedPropertiesWithoutUndo();
+                }
+
                 SceneHotkeySwitcher switcher = prefabRoot.GetComponent<SceneHotkeySwitcher>();
                 if (switcher == null)
                 {
+                    PrefabUtility.SaveAsPrefabAsset(prefabRoot, ManagersPrefabPath);
                     return;
                 }
 
                 SerializedObject serializedObject = new SerializedObject(switcher);
-                serializedObject.FindProperty("flowConfig").objectReferenceValue = config;
+                serializedObject.FindProperty("gameConfig").objectReferenceValue = config;
 
                 SerializedProperty bindings = serializedObject.FindProperty("bindings");
                 bindings.arraySize = 6;
@@ -326,7 +335,7 @@ namespace WhoWiredThis.Editor
         }
 
         private static void ValidateConfigAsset(
-            PlaytestSceneFlowConfigSO config,
+            GameConfigSO config,
             StringBuilder report,
             ref int errors,
             ref int warnings)
@@ -367,17 +376,17 @@ namespace WhoWiredThis.Editor
         private static void ValidateSceneFile(
             string scenePath,
             PlaytestSceneId expectedId,
-            PlaytestSceneFlowConfigSO config,
+            GameConfigSO config,
             StringBuilder report,
             ref int errors,
             ref int warnings)
         {
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
             string sceneName = Path.GetFileNameWithoutExtension(scenePath);
-            PlaytestSceneFlowBootstrap bootstrap = UnityEngine.Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = UnityEngine.Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
             if (bootstrap == null)
             {
-                report.AppendLine($"ERROR: {sceneName} — missing PlaytestSceneFlowBootstrap.");
+                report.AppendLine($"ERROR: {sceneName} — missing SceneFlowBootstrapConfig.");
                 errors++;
             }
             else
@@ -418,7 +427,7 @@ namespace WhoWiredThis.Editor
         }
 
         private static void ValidateManagersPrefab(
-            PlaytestSceneFlowConfigSO config,
+            GameConfigSO config,
             StringBuilder report,
             ref int errors,
             ref int warnings)
@@ -439,15 +448,35 @@ namespace WhoWiredThis.Editor
                 return;
             }
 
-            SerializedObject serializedObject = new SerializedObject(switcher);
-            if (serializedObject.FindProperty("flowConfig").objectReferenceValue == null)
+            GameConfigProvider configProvider = prefab.GetComponentInChildren<GameConfigProvider>(true);
+            if (configProvider == null)
             {
-                report.AppendLine("ERROR: Managers SceneHotkeySwitcher.flowConfig is not assigned.");
+                report.AppendLine("ERROR: GameConfigProvider missing on Managers prefab.");
                 errors++;
             }
             else
             {
-                report.AppendLine("OK: Managers prefab hotkeys wired to flow config.");
+                SerializedObject providerSo = new SerializedObject(configProvider);
+                if (providerSo.FindProperty("config").objectReferenceValue == null)
+                {
+                    report.AppendLine("ERROR: Managers GameConfigProvider.config is not assigned.");
+                    errors++;
+                }
+                else
+                {
+                    report.AppendLine("OK: Managers GameConfigProvider wired to GameConfig.");
+                }
+            }
+
+            SerializedObject serializedObject = new SerializedObject(switcher);
+            if (serializedObject.FindProperty("gameConfig").objectReferenceValue == null)
+            {
+                report.AppendLine("WARNING: Managers SceneHotkeySwitcher.gameConfig is unset (falls back to GameConfigProvider).");
+                warnings++;
+            }
+            else
+            {
+                report.AppendLine("OK: Managers prefab hotkeys wired to GameConfig.");
             }
         }
 

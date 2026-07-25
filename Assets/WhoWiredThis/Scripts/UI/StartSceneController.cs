@@ -13,7 +13,7 @@ namespace WhoWiredThis.UI
     {
         [SerializeField] private TMP_Text introTextLabel;
         [SerializeField] private Button startButton;
-        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+        [SerializeField] private SceneFlowBootstrapConfig flowBootstrap;
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
 
@@ -70,12 +70,12 @@ namespace WhoWiredThis.UI
 
             if (flowBootstrap == null)
             {
-                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+                flowBootstrap = SceneFlowBootstrapConfig.FindBootstrap();
             }
 
             if (flowBootstrap == null)
             {
-                Debug.LogError("[StartSceneController] PlaytestSceneFlowBootstrap not found.", this);
+                Debug.LogError("[StartSceneController] SceneFlowBootstrapConfig not found.", this);
                 ScoreManager.ResetRun();
                 hasStarted = false;
                 return;

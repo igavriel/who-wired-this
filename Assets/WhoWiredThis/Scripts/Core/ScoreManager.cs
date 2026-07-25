@@ -111,9 +111,35 @@ namespace WhoWiredThis.Core
 
         public static bool IsGameplayLevel(string sceneName)
         {
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                return false;
+            }
+
+            GameConfigSO config = GameConfigProvider.Active;
+            if (config != null)
+            {
+                if (MatchesConfiguredScene(config, PlaytestSceneId.Tutorial, sceneName) ||
+                    MatchesConfiguredScene(config, PlaytestSceneId.PuzzlePipes, sceneName) ||
+                    MatchesConfiguredScene(config, PlaytestSceneId.PuzzleSignal, sceneName))
+                {
+                    return true;
+                }
+            }
+
+            // Fallback when GameConfig is unavailable (domain reload / missing provider).
             return string.Equals(sceneName, "Tutorial", StringComparison.Ordinal) ||
                    string.Equals(sceneName, "Puzzle Pipes", StringComparison.Ordinal) ||
                    string.Equals(sceneName, "Puzzle Signal", StringComparison.Ordinal);
+        }
+
+        private static bool MatchesConfiguredScene(
+            GameConfigSO config,
+            PlaytestSceneId id,
+            string sceneName)
+        {
+            return config.TryGetSceneName(id, out string configuredName) &&
+                   string.Equals(sceneName, configuredName, StringComparison.Ordinal);
         }
 
         /// <summary>

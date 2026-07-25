@@ -1,7 +1,7 @@
 namespace WhoWiredThis.Core
 {
     /// <summary>
-    /// Stable playtest scene identifiers. Scene names are mapped in <see cref="PlaytestSceneFlowConfigSO"/>.
+    /// Stable playtest scene identifiers. Scene names are mapped in <see cref="GameConfigSO"/>.
     /// </summary>
     public enum PlaytestSceneId
     {

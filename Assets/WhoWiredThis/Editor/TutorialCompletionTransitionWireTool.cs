@@ -13,7 +13,7 @@ namespace WhoWiredThis.Editor
 {
     /// <summary>
     /// Wires playtest scenes: hide Exit in focus, fade overlays on dual HUD, completion popup scene transition.
-    /// Scene targets come from <see cref="PlaytestSceneFlowBootstrap"/> + flow config SO.
+    /// Scene targets come from <see cref="SceneFlowBootstrapConfig"/> + flow config SO.
     /// </summary>
     public static class TutorialCompletionTransitionWireTool
     {
@@ -231,7 +231,7 @@ namespace WhoWiredThis.Editor
                 transition = stageManager.gameObject.AddComponent<CompletionPopupSceneTransition>();
             }
 
-            PlaytestSceneFlowBootstrap bootstrap = Object.FindFirstObjectByType<PlaytestSceneFlowBootstrap>();
+            SceneFlowBootstrapConfig bootstrap = Object.FindFirstObjectByType<SceneFlowBootstrapConfig>();
 
             SerializedObject serializedObject = new SerializedObject(transition);
             serializedObject.FindProperty("sceneStageManager").objectReferenceValue = stageManager;

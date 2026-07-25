@@ -6,13 +6,11 @@ namespace WhoWiredThis.Core
 {
     public class TimerManager : MonoBehaviour
     {
-        public const float DefaultLevelDurationSeconds = 480f;
-
         public static TimerManager Instance { get; private set; }
 
         public float ElapsedSeconds { get; private set; }
         public float RemainingSeconds { get; private set; }
-        public float LevelDurationSeconds { get; private set; } = DefaultLevelDurationSeconds;
+        public float LevelDurationSeconds { get; private set; }
         public bool IsCountdownActive { get; private set; }
         public bool IsRunning { get; private set; } = true;
 
@@ -63,9 +61,17 @@ namespace WhoWiredThis.Core
 
         public void Resume() => IsRunning = true;
 
-        public void StartLevelCountdown(float durationSeconds = DefaultLevelDurationSeconds)
+        public void StartLevelCountdown(float? durationSeconds = null)
         {
-            LevelDurationSeconds = Mathf.Max(1f, durationSeconds);
+            // Editor / hotkey entry often skips StartScene; ensure timeout can still end the run.
+            if (!ScoreManager.HasActiveRun)
+            {
+                ScoreManager.BeginRun();
+                Debug.Log("[TimerManager] No active run; BeginRun() called for level countdown.");
+            }
+
+            float resolvedDuration = durationSeconds ?? GameConfigProvider.Active.SceneTimeCapSeconds;
+            LevelDurationSeconds = Mathf.Max(1f, resolvedDuration);
             RemainingSeconds = LevelDurationSeconds;
             ElapsedSeconds = 0f;
             IsCountdownActive = true;
@@ -96,20 +102,26 @@ namespace WhoWiredThis.Core
             expiredHandled = true;
             Debug.Log("[TimerManager] Level countdown expired.");
 
-            if (!ScoreManager.HasActiveRun)
-            {
-                return;
-            }
-
             string activeSceneName = SceneManager.GetActiveScene().name;
             if (!ScoreManager.IsGameplayLevel(activeSceneName))
             {
+                Debug.LogWarning(
+                    $"[TimerManager] Timeout on non-gameplay scene '{activeSceneName}'; skipping Game Over.",
+                    this);
                 return;
+            }
+
+            if (!ScoreManager.HasActiveRun)
+            {
+                ScoreManager.BeginRun();
+                Debug.LogWarning(
+                    "[TimerManager] No active run at timeout; BeginRun() called so Game Over can load.",
+                    this);
             }
 
             if (!PlaytestFlowUtility.TryEndRunAndLoadGameOver(abandoned: true, out string error))
             {
-                Debug.LogWarning($"[TimerManager] Failed to load Game Over after timeout: {error}");
+                Debug.LogWarning($"[TimerManager] Failed to load Game Over after timeout: {error}", this);
             }
         }
     }

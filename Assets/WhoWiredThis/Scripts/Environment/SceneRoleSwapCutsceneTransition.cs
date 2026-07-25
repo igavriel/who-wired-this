@@ -32,7 +32,7 @@ namespace WhoWiredThis.Environment
         [SerializeField] private bool useUnscaledTime = true;
 
         [Header("Flow")]
-        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+        [SerializeField] private SceneFlowBootstrapConfig flowBootstrap;
 
         [Tooltip("Cut scene loaded after Player A solves.")]
         [SerializeField] private PlaytestSceneId targetCutScene = PlaytestSceneId.CutSceneTutorialSwap;
@@ -171,7 +171,7 @@ namespace WhoWiredThis.Environment
         {
             if (flowBootstrap == null)
             {
-                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+                flowBootstrap = SceneFlowBootstrapConfig.FindBootstrap();
             }
         }
 

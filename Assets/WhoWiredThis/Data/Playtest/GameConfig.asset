@@ -10,8 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ace152710e1aa400aa59af08fa52edce, type: 3}
-  m_Name: PlaytestSceneFlowConfig
-  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.PlaytestSceneFlowConfigSO
+  m_Name: GameConfig
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.Core.GameConfigSO
+  expertSeconds: 120
+  newPlayerSeconds: 180
+  sceneTimeCapSeconds: 300
+  attemptPenalty: 2
+  hurryUpSeconds: 10
   sceneEntries:
   - id: 1
     sceneName: StartScene

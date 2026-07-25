@@ -82,15 +82,35 @@ namespace WhoWiredThis.Core
 
             PlaytestRunSummary.Set(PlaytestRunSummaryBuilder.Build(abandoned));
 
-            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(GameOverSceneName, out error, clearSharedHistory: false))
+            string gameOverSceneName = ResolveGameOverSceneName();
+            if (!PlaytestSceneLoadUtility.TryLoadSingleScene(gameOverSceneName, out error, clearSharedHistory: false))
             {
-                Debug.LogError($"[PlaytestFlowUtility] Failed to load '{GameOverSceneName}': {error}");
+                Debug.LogError($"[PlaytestFlowUtility] Failed to load '{gameOverSceneName}': {error}");
                 PlaytestRunSummary.Clear();
                 isFlowTransitionActive = false;
                 return false;
             }
 
             return true;
+        }
+
+        private static string ResolveGameOverSceneName()
+        {
+            if (GameConfigProvider.Active != null &&
+                GameConfigProvider.Active.TryGetSceneName(PlaytestSceneId.GameOverScene, out string configuredName) &&
+                !string.IsNullOrWhiteSpace(configuredName))
+            {
+                if (PlaytestSceneLoadUtility.CanStreamScene(configuredName))
+                {
+                    return configuredName;
+                }
+
+                Debug.LogWarning(
+                    $"[PlaytestFlowUtility] GameConfig GameOver scene '{configuredName}' is not in Build Settings; " +
+                    $"falling back to '{GameOverSceneName}'.");
+            }
+
+            return GameOverSceneName;
         }
 
         private static void ExitAllPanelFocus()

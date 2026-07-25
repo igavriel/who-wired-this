@@ -16,6 +16,7 @@ namespace WhoWiredThis.UI
         private string currentRoomNameA = string.Empty;
         private string currentRoomNameB = string.Empty;
         private string currentTimeLine = "00:00";
+        private string currentUrgencyPrompt;
         private bool subscribed;
 
         void Start()
@@ -122,6 +123,7 @@ namespace WhoWiredThis.UI
         private void HandleTimerUpdated(float seconds)
         {
             currentTimeLine = FormatTimeLine(seconds);
+            currentUrgencyPrompt = ResolveUrgencyPrompt(seconds);
             PushToViews();
         }
 
@@ -131,6 +133,30 @@ namespace WhoWiredThis.UI
             int minutes = total / 60;
             int secs = total % 60;
             return $"{minutes:00}:{secs:00}";
+        }
+
+        private static string ResolveUrgencyPrompt(float remainingSeconds)
+        {
+            TimerManager timer = TimerManager.Instance;
+            if (timer == null || !timer.IsCountdownActive)
+            {
+                return null;
+            }
+
+            int hurryWindow = GameConfigProvider.Active.HurryUpSeconds;
+            if (hurryWindow <= 0)
+            {
+                return null;
+            }
+
+            // Match TopBar floor seconds so HURRY UP! N aligns with MM:SS.
+            int remaining = Mathf.Max(0, Mathf.FloorToInt(remainingSeconds));
+            if (remaining > hurryWindow)
+            {
+                return null;
+            }
+
+            return $"HURRY UP! {remaining}";
         }
 
         private void HandlePlayerAZoneChanged(string zoneName)
@@ -161,6 +187,7 @@ namespace WhoWiredThis.UI
             else
             {
                 playerHudViewA.ApplySharedHudState(currentRoomNameA, string.Empty, currentTimeLine);
+                playerHudViewA.SetUrgencyPrompt(currentUrgencyPrompt);
             }
 
             if (playerHudViewB == null)
@@ -170,6 +197,7 @@ namespace WhoWiredThis.UI
             else
             {
                 playerHudViewB.ApplySharedHudState(currentRoomNameB, string.Empty, currentTimeLine);
+                playerHudViewB.SetUrgencyPrompt(currentUrgencyPrompt);
             }
         }
     }

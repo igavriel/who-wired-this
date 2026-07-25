@@ -33,6 +33,8 @@ namespace WhoWiredThis.UI
         private bool inventoryVisible;
         private bool soundEnabled = true;
         private string interactKeyLabel = "E";
+        private string interactPrompt;
+        private string urgencyPrompt;
 
         void Awake()
         {
@@ -88,15 +90,41 @@ namespace WhoWiredThis.UI
 
         void RefreshTimer(float seconds)
         {
-            if (timerText == null)
+            if (timerText != null)
             {
+                int total = Mathf.Max(0, Mathf.FloorToInt(seconds));
+                int m = total / 60;
+                int s = total % 60;
+                timerText.text = $"{m:00}:{s:00}";
+            }
+
+            UpdateUrgencyFromTimer(seconds);
+        }
+
+        private void UpdateUrgencyFromTimer(float remainingSeconds)
+        {
+            TimerManager timer = TimerManager.Instance;
+            if (timer == null || !timer.IsCountdownActive)
+            {
+                SetUrgencyPrompt(null);
                 return;
             }
 
-            int total = Mathf.Max(0, Mathf.FloorToInt(seconds));
-            int m = total / 60;
-            int s = total % 60;
-            timerText.text = $"{m:00}:{s:00}";
+            int hurryWindow = GameConfigProvider.Active.HurryUpSeconds;
+            if (hurryWindow <= 0)
+            {
+                SetUrgencyPrompt(null);
+                return;
+            }
+
+            int remaining = Mathf.Max(0, Mathf.FloorToInt(remainingSeconds));
+            if (remaining > hurryWindow)
+            {
+                SetUrgencyPrompt(null);
+                return;
+            }
+
+            SetUrgencyPrompt($"HURRY UP! {remaining}");
         }
 
         void RefreshZone(string zoneName)
@@ -111,17 +139,30 @@ namespace WhoWiredThis.UI
 
         public void SetInteractPrompt(string text)
         {
+            interactPrompt = text;
+            RefreshInteractPromptDisplay();
+        }
+
+        public void SetUrgencyPrompt(string text)
+        {
+            urgencyPrompt = text;
+            RefreshInteractPromptDisplay();
+        }
+
+        private void RefreshInteractPromptDisplay()
+        {
             if (interactPromptText == null)
             {
                 return;
             }
 
-            bool hasText = !string.IsNullOrEmpty(text);
+            string display = !string.IsNullOrEmpty(urgencyPrompt) ? urgencyPrompt : interactPrompt;
+            bool hasText = !string.IsNullOrEmpty(display);
             interactPromptText.gameObject.SetActive(hasText);
 
             if (hasText)
             {
-                interactPromptText.text = text;
+                interactPromptText.text = display;
             }
         }
 

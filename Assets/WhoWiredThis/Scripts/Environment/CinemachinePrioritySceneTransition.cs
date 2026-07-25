@@ -28,7 +28,7 @@ namespace WhoWiredThis.Environment
         [SerializeField] private bool useUnscaledTime = true;
 
         [Header("Flow")]
-        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+        [SerializeField] private SceneFlowBootstrapConfig flowBootstrap;
 
         [Tooltip("Optional: when set (not None), load this scene id instead of the chain 'next'. " +
             "Used for return-to-Tutorial cut scenes that are explicit side-trips (e.g. CutScene-Tutorial-Swap -> Tutorial).")]
@@ -161,10 +161,10 @@ namespace WhoWiredThis.Environment
 
             Debug.Log($"{LogPrefix} Fading to '{GetNextSceneNameForLog()}'.", this);
 
-            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            SceneFlowBootstrapConfig bootstrap = flowBootstrap;
             if (bootstrap == null)
             {
-                error = "PlaytestSceneFlowBootstrap not found.";
+                error = "SceneFlowBootstrapConfig not found.";
                 return false;
             }
 
@@ -195,10 +195,10 @@ namespace WhoWiredThis.Environment
                     out error);
             }
 
-            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            SceneFlowBootstrapConfig bootstrap = flowBootstrap;
             if (bootstrap == null)
             {
-                error = "PlaytestSceneFlowBootstrap not found.";
+                error = "SceneFlowBootstrapConfig not found.";
                 return false;
             }
 
@@ -246,7 +246,7 @@ namespace WhoWiredThis.Environment
         {
             if (flowBootstrap == null)
             {
-                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+                flowBootstrap = SceneFlowBootstrapConfig.FindBootstrap();
             }
         }
 

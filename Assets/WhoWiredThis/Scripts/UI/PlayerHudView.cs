@@ -13,6 +13,9 @@ namespace WhoWiredThis.UI
         [Header("Interact Prompt")]
         [SerializeField] private TMP_Text interactPromptText;
 
+        private string interactPrompt;
+        private string urgencyPrompt;
+
         [Header("Popup")]
         [SerializeField] private MessagePanel messagePanel;
 
@@ -87,9 +90,26 @@ namespace WhoWiredThis.UI
 
         public void SetInteractPrompt(string text)
         {
+            interactPrompt = text;
+            RefreshInteractPromptDisplay();
+        }
+
+        public void SetUrgencyPrompt(string text)
+        {
+            urgencyPrompt = text;
+            RefreshInteractPromptDisplay();
+        }
+
+        public void ClearInteractPrompt()
+        {
+            SetInteractPrompt(null);
+        }
+
+        private void RefreshInteractPromptDisplay()
+        {
             if (interactPromptText == null)
             {
-                if (!string.IsNullOrEmpty(text))
+                if (!string.IsNullOrEmpty(urgencyPrompt) || !string.IsNullOrEmpty(interactPrompt))
                 {
                     Debug.LogWarning("[PlayerHudView] interactPromptText is not assigned.", this);
                 }
@@ -97,18 +117,15 @@ namespace WhoWiredThis.UI
                 return;
             }
 
-            bool hasText = !string.IsNullOrEmpty(text);
+            // Urgency wins during the final countdown window so PlayerActions cannot overwrite it.
+            string display = !string.IsNullOrEmpty(urgencyPrompt) ? urgencyPrompt : interactPrompt;
+            bool hasText = !string.IsNullOrEmpty(display);
             interactPromptText.gameObject.SetActive(hasText);
 
             if (hasText)
             {
-                interactPromptText.text = text;
+                interactPromptText.text = display;
             }
-        }
-
-        public void ClearInteractPrompt()
-        {
-            SetInteractPrompt(null);
         }
 
         public void ShowPopup(string message)

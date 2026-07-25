@@ -10,7 +10,7 @@ namespace WhoWiredThis.Environment
     public class SceneTransitionTrigger : MonoBehaviour
     {
         [Header("Flow")]
-        [SerializeField] private PlaytestSceneFlowBootstrap flowBootstrap;
+        [SerializeField] private SceneFlowBootstrapConfig flowBootstrap;
         [Tooltip("If the active scene name matches the target scene name, the trigger will not load the target scene.")]
         [SerializeField] private bool ignoreWhenAlreadyInTargetScene = true;
 
@@ -150,10 +150,10 @@ namespace WhoWiredThis.Environment
             }
 
             ResolveFlowBootstrap();
-            PlaytestSceneFlowBootstrap bootstrap = flowBootstrap;
+            SceneFlowBootstrapConfig bootstrap = flowBootstrap;
             if (bootstrap == null)
             {
-                Debug.LogWarning("[SceneTransitionTrigger] PlaytestSceneFlowBootstrap not found.", this);
+                Debug.LogWarning("[SceneTransitionTrigger] SceneFlowBootstrapConfig not found.", this);
                 return;
             }
 
@@ -174,7 +174,7 @@ namespace WhoWiredThis.Environment
         {
             if (flowBootstrap == null)
             {
-                flowBootstrap = PlaytestSceneFlowBootstrap.FindBootstrap();
+                flowBootstrap = SceneFlowBootstrapConfig.FindBootstrap();
             }
         }
     }
