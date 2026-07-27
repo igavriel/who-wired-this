@@ -816,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 889923644}
   - component: {fileID: 889923643}
+  - component: {fileID: 889923645}
   m_Layer: 0
   m_Name: YoutubeWebView
   m_TagString: Untagged
@@ -856,6 +857,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &889923645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889923642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f53e44d85cd48f7a15f860ebea6cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.StartSceneTrailerSequence
+  youtube: {fileID: 889923643}
+  introUiRoots:
+  - {fileID: 623298131420265409}
+  - {fileID: 623298131420265408}
+  - {fileID: 1527309836}
+  - {fileID: 1527309835}
+  introSeconds: 30
+  videoPlaySeconds: 56
 --- !u!1 &936845575
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &936845576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,6 +1190,10 @@ PrefabInstance:
       propertyPath: m_TargetDisplay
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4464272898303177628, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
       propertyPath: m_Name
       value: UI-Canvas-Start-B
@@ -1189,6 +1214,16 @@ PrefabInstance:
       addedObject: {fileID: 936845578}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+--- !u!1 &1527309835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925532740801625238, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 1527309834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527309836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9149638955573306401, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 1527309834}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1924597331 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7665391742140704141, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
@@ -1293,6 +1328,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4464272898303177628, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
       propertyPath: m_Name
       value: UI-Canvas-Start-A
@@ -1302,6 +1341,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+--- !u!1 &623298131420265408 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925532740801625238, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 623298131420265407}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &623298131420265409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9149638955573306401, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 623298131420265407}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

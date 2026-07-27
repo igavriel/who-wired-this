@@ -14,6 +14,7 @@ namespace WhoWiredThis.UI
     {
         private const string LogPrefix = "[YoutubeWebView]";
         private const float Aspect = 16f / 9f;
+        private const string EndedMessage = "ended";
 
         private static readonly FieldInfo WebViewTextureField = typeof(WebViewObject).GetField(
             "texture",
@@ -41,12 +42,30 @@ namespace WhoWiredThis.UI
 
         private WebViewObject webViewA;
         private bool started;
+        private bool endedSignaled;
+
+        /// <summary>Raised once when the trailer reaches its natural end (not on StopPlayback).</summary>
+        public event System.Action PlaybackEnded;
+
+        public bool IsPlaying => started && webViewA != null;
+
+        private void Awake()
+        {
+            SetVideoSurfacesVisible(false);
+        }
 
         private void OnEnable()
         {
-            if (config != null && config.PlayOnAwake)
+            // When a StartSceneTrailerSequence is present it owns timing; do not auto-play.
+            if (config != null &&
+                config.PlayOnAwake &&
+                GetComponent<StartSceneTrailerSequence>() == null)
             {
                 StartCoroutine(StartPlaybackNextFrame());
+            }
+            else if (!started)
+            {
+                SetVideoSurfacesVisible(false);
             }
         }
 
@@ -106,15 +125,18 @@ namespace WhoWiredThis.UI
             DestroyLeftoverNamedWebViews();
             EnsureWebView(ref webViewA, "YouTubeWebView-A");
 
+            SetVideoSurfacesVisible(true);
             SizeAnchorsToFit();
             ApplyMargins(webViewA, canvasAAnchor, canvasACamera);
             ConfigureDisplay2Mirror();
 
+            endedSignaled = false;
             if (webViewA != null)
             {
                 ApplyYoutubeRefererHeaders(webViewA, referer);
                 webViewA.LoadURL(embedUrl);
                 webViewA.SetVisibility(true);
+                StartCoroutine(ArmEndedListenerWhenReady());
             }
 
             started = true;
@@ -127,6 +149,27 @@ namespace WhoWiredThis.UI
         public void StopPlayback()
         {
             StopAndDestroyWebViews();
+        }
+
+        /// <summary>
+        /// Show/hide YoutubeAnchor-16x9 (and Display 2 mirror) when playback is idle.
+        /// </summary>
+        private void SetVideoSurfacesVisible(bool visible)
+        {
+            if (canvasAAnchor != null)
+            {
+                canvasAAnchor.gameObject.SetActive(visible);
+            }
+
+            if (canvasBAnchor != null)
+            {
+                canvasBAnchor.gameObject.SetActive(visible);
+            }
+
+            if (display2Mirror != null)
+            {
+                display2Mirror.gameObject.SetActive(visible);
+            }
         }
 
         private void ConfigureDisplay2Mirror()
@@ -223,7 +266,7 @@ namespace WhoWiredThis.UI
             go.transform.SetParent(transform, false);
             webView = go.AddComponent<WebViewObject>();
             webView.Init(
-                cb: null,
+                cb: OnWebViewJsMessage,
                 err: msg => Debug.LogWarning($"{LogPrefix} {objectName} error: {msg}", this),
                 httpErr: msg => Debug.LogWarning($"{LogPrefix} {objectName} http error: {msg}", this),
                 ld: null,
@@ -236,6 +279,53 @@ namespace WhoWiredThis.UI
                 radius: 0,
                 androidForceDarkMode: 0,
                 enableWKWebView: true);
+        }
+
+        private void OnWebViewJsMessage(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                return;
+            }
+
+            if (!string.Equals(message, EndedMessage, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            if (endedSignaled)
+            {
+                return;
+            }
+
+            endedSignaled = true;
+            Debug.Log($"{LogPrefix} Trailer ended.", this);
+            PlaybackEnded?.Invoke();
+        }
+
+        private System.Collections.IEnumerator ArmEndedListenerWhenReady()
+        {
+            // Video element appears after the embed loads.
+            for (int attempt = 0; attempt < 20 && webViewA != null && started; attempt++)
+            {
+                yield return new WaitForSecondsRealtime(0.5f);
+                if (webViewA == null || !started)
+                {
+                    yield break;
+                }
+
+                webViewA.EvaluateJS(
+                    "(function(){" +
+                    "function arm(){" +
+                    "var v=document.querySelector('video');" +
+                    "if(!v){return;}" +
+                    "if(v._wwtEndedArmed){return;}" +
+                    "v._wwtEndedArmed=true;" +
+                    "v.addEventListener('ended',function(){try{Unity.call('ended');}catch(e){}});" +
+                    "}" +
+                    "arm();" +
+                    "})();");
+            }
         }
 
         private static void ApplyMargins(WebViewObject webView, RectTransform anchor, Camera canvasCamera)
@@ -298,6 +388,7 @@ namespace WhoWiredThis.UI
             if (!started && webViewA == null)
             {
                 DestroyLeftoverNamedWebViews();
+                SetVideoSurfacesVisible(false);
                 return;
             }
 
@@ -308,6 +399,7 @@ namespace WhoWiredThis.UI
             }
 
             DestroyWebView(ref webViewA);
+            SetVideoSurfacesVisible(false);
             DestroyLeftoverNamedWebViews();
         }
 
@@ -332,7 +424,7 @@ namespace WhoWiredThis.UI
                 StopNativePlayback(webView);
             }
 
-            Object.Destroy(leftover);
+            UnityEngine.Object.Destroy(leftover);
         }
 
         private static void DestroyWebView(ref WebViewObject webView)
@@ -346,7 +438,7 @@ namespace WhoWiredThis.UI
 
             if (webView.gameObject != null)
             {
-                Object.Destroy(webView.gameObject);
+                UnityEngine.Object.Destroy(webView.gameObject);
             }
 
             webView = null;

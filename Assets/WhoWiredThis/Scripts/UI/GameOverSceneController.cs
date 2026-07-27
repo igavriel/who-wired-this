@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,12 @@ namespace WhoWiredThis.UI
         [SerializeField] private KeyCode playerAActionKey = KeyCode.LeftControl;
         [SerializeField] private KeyCode playerBActionKey = KeyCode.RightControl;
 
+        [Tooltip("If Restart/CTRL is not pressed, auto-return to StartScene after this many seconds.")]
+        [SerializeField]
+        private float idleReturnSeconds = 30f;
+
         private bool hasRestarted;
+        private Coroutine idleReturnRoutine;
 
         private void Start()
         {
@@ -52,6 +58,20 @@ namespace WhoWiredThis.UI
                 quitButton.gameObject.SetActive(false);
                 quitButton.onClick.RemoveListener(HandleQuitClicked);
             }
+
+            if (idleReturnSeconds > 0f)
+            {
+                idleReturnRoutine = StartCoroutine(IdleReturnToStart());
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (idleReturnRoutine != null)
+            {
+                StopCoroutine(idleReturnRoutine);
+                idleReturnRoutine = null;
+            }
         }
 
         private void Update()
@@ -66,6 +86,23 @@ namespace WhoWiredThis.UI
                 Debug.Log("[GameOverSceneController] Player action key pressed. Restarting run.");
                 HandleRestartClicked();
             }
+        }
+
+        private IEnumerator IdleReturnToStart()
+        {
+            Debug.Log(
+                $"[GameOverSceneController] Idle return armed for {idleReturnSeconds:0.#}s.",
+                this);
+            yield return new WaitForSecondsRealtime(idleReturnSeconds);
+
+            if (!isActiveAndEnabled || hasRestarted)
+            {
+                yield break;
+            }
+
+            Debug.Log("[GameOverSceneController] Idle timeout — returning to StartScene.", this);
+            HandleRestartClicked();
+            idleReturnRoutine = null;
         }
 
         private void ValidateReferences()
@@ -94,6 +131,12 @@ namespace WhoWiredThis.UI
             }
 
             hasRestarted = true;
+            if (idleReturnRoutine != null)
+            {
+                StopCoroutine(idleReturnRoutine);
+                idleReturnRoutine = null;
+            }
+
             Debug.Log("[GameOverSceneController] Restart clicked.");
 
             if (flowBootstrap == null)

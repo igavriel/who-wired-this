@@ -749,6 +749,7 @@ GameObject:
   m_Component:
   - component: {fileID: 548617245}
   - component: {fileID: 548617244}
+  - component: {fileID: 548617246}
   m_Layer: 0
   m_Name: YoutubeWebView
   m_TagString: Untagged
@@ -789,6 +790,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &548617246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548617243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f53e44d85cd48f7a15f860ebea6cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WhoWiredThis.UI.StartSceneTrailerSequence
+  youtube: {fileID: 548617244}
+  introUiRoots:
+  - {fileID: 6019085775733403600}
+  - {fileID: 6019085775733403599}
+  - {fileID: 1527309837}
+  - {fileID: 1527309836}
+  introSeconds: 30
+  videoPlaySeconds: 56
 --- !u!1 &874439455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,14 +1025,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4017307672172568275, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
-      propertyPath: m_Name
-      value: UI-Canvas-Start-B
-      objectReference: {fileID: 0}
     - target: {fileID: 2085160694395096916, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1092,9 +1105,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4017307672172568275, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4395054750646012761, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
       propertyPath: m_TargetDisplay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464272898303177628, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_Name
+      value: UI-Canvas-Start-B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1107,6 +1132,16 @@ PrefabInstance:
 --- !u!224 &1527309835 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7091473724645096138, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 1527309834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527309836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925532740801625238, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 1527309834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527309837 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9149638955573306401, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
   m_PrefabInstance: {fileID: 1527309834}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1924597331 stripped
@@ -1137,7 +1172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1935903161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,9 +1235,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
-      propertyPath: m_Name
-      value: UI-Canvas-Start-A
+    - target: {fileID: 8922046337265479728, guid: 1b68716d9c2f54cf08a5e2b75aa68268, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8922046337265479728, guid: 1b68716d9c2f54cf08a5e2b75aa68268, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2085160694395096916, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
       propertyPath: m_Pivot.x
@@ -1284,13 +1323,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922046337265479728, guid: 1b68716d9c2f54cf08a5e2b75aa68268, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 100
+    - target: {fileID: 4464272898303177628, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8922046337265479728, guid: 1b68716d9c2f54cf08a5e2b75aa68268, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 100
+    - target: {fileID: 6208115062015198426, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+      propertyPath: m_Name
+      value: UI-Canvas-Start-A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1300,6 +1339,16 @@ PrefabInstance:
 --- !u!224 &6019085775733403598 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7091473724645096138, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 6019085775733403597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6019085775733403599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6925532740801625238, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
+  m_PrefabInstance: {fileID: 6019085775733403597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6019085775733403600 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9149638955573306401, guid: 27c4cd15c704d480791fa93c7bcee298, type: 3}
   m_PrefabInstance: {fileID: 6019085775733403597}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

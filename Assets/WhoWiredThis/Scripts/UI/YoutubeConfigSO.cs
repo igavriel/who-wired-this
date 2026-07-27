@@ -16,7 +16,7 @@ namespace WhoWiredThis.UI
         private bool playOnAwake = true;
 
         [SerializeField]
-        private bool loop = true;
+        private bool loop = false;
 
         [Tooltip(
             "Start muted. Prefer false so Display 1 audio is heard; some browsers may still " +
