@@ -133,6 +133,8 @@ Plans are grouped by **category** below. Within each table, rows are ordered rou
 | [playtest-scene-flow-scriptable-object.md](playtest-scene-flow-scriptable-object.md) | **Implemented:** Scene bootstrap sends `PlaytestSceneId`; flow SO chain picks next; MCP validator + logic tests. |
 | [game-config-so-merge.md](game-config-so-merge.md) | **Implemented:** Merge scene-flow + team-score ScriptableObjects into one `GameConfigSO` with `GameConfigProvider` on Managers. |
 | [timer-hurry-up-interact-prompt.md](timer-hurry-up-interact-prompt.md) | **Implemented:** Final 10s `HURRY UP! N` on interact prompt line; keep Game Over when level timer hits 0. |
+| [teststart-youtube-loop.md](teststart-youtube-loop.md) | **Implemented (scene-only):** `YoutubeWebViewController` D1 audio+video, D2 texture mirror; Error 153 Referer fix; prefab deferred. |
+| [startscene-youtube-canvas-variant.md](startscene-youtube-canvas-variant.md) | **Implemented:** Backup StartScene; production Start uses `UI-Canvas-Start-A Variant` + YoutubeWebView; TestStart kept, removed from Build Settings. |
 | [phase-1-history-clear-escape-menu.md](phase-1-history-clear-escape-menu.md) | Clear shared history on scene transitions; cap at 20 entries per puzzle; Escape returns to StartScene via PlaytestFlowUtility. |
 | [tutorial-role-swap-cutscene-round-trip.md](tutorial-role-swap-cutscene-round-trip.md) | **Implemented (Tutorial only):** A solves → B reads solution diagnostic → ~3s delay → new `CutScene-Tutorial-Swap` → return to Tutorial with roles swapped (B operator/A diagnostic); static `TutorialRoleState` phase + opt-in `roleSwapMode`; new `CutSceneTutorialSwap` enum + `overrideTargetSceneId` on `CinemachinePrioritySceneTransition`. Pending manual Play Mode test. |
 
